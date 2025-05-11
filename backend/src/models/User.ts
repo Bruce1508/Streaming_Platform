@@ -1,5 +1,24 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
+import bcrypt from "bcryptjs";
 
+// Định nghĩa interface cho user document
+interface IUser extends Document {
+    fullName: string;
+    email: string;
+    password: string;
+    bio: string;
+    profilePic: string;
+    nativeLanguage: string;
+    learningLanguage: string;
+    location: string;
+    isOnboarded: boolean;
+    friends: mongoose.Types.ObjectId[] | IUser[];
+    createdAt: Date;
+    updatedAt: Date;
+    matchPassword(enteredPassword: string): Promise<boolean>;
+}
+
+// Định nghĩa schema
 const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
@@ -39,4 +58,35 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-}, { timestamps: true })
+
+    //trường friend được viết theo kiểu tham chiếu (chỉ lưu ID của đối tượng con = khóa ngoại trong sqlsql)
+    friends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }]
+}, { timestamps: true });
+
+// Middleware trước khi lưu
+userSchema.pre("save", async function(next) {
+    //nếu password không thay đổi thì bỏ qua bước này 
+    if (!this.isModified("password")) return next();
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (error: any) {
+        console.error("Error: ", error);
+        next(error);
+    }
+});
+
+// Method để so sánh password
+userSchema.methods.matchPassword = async function(enteredPassword: string): Promise<boolean> {
+    return await bcrypt.compare(enteredPassword, this.password);
+};
+
+// Tạo model với generic type
+const User = mongoose.model<IUser>("User", userSchema);
+
+export default User;
