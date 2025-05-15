@@ -14,7 +14,12 @@ export default function Home() {
     });
 
     const authUser = authData?.user;
-    
+    console.log(authUser);
+
+    const isAuthenticated = Boolean(authUser);
+    const isOnboarded = authUser?.isOnboarded;
+
+
   return (
     <main>
       <h1>hello</h1>
