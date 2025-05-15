@@ -59,7 +59,7 @@ const userSchema = new mongoose.Schema({
         default: false,
     },
 
-    //trường friend được viết theo kiểu tham chiếu (chỉ lưu ID của đối tượng con = khóa ngoại trong sqlsql)
+    //trường friend được viết theo kiểu tham chiếu (chỉ lưu ID của đối tượng con = khóa ngoại trong sql)
     friends: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

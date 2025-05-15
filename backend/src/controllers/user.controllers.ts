@@ -9,7 +9,7 @@ export async function getRecommendedUsers(req: Request, res: Response): Promise<
     }
 
     try {
-        const currentUserId = req.user?._id;
+        const currentUserId = req.user._id;
         const currentUser = req.user;
 
         const recommendedUsers = await User.find({
@@ -36,7 +36,7 @@ export async function getMyFriends(req: Request, res: Response): Promise<Respons
     }
 
     try {
-        const user = await User.findById(req.user?._id)
+        const user = await User.findById(req.user._id)
             .select("friends")
             .populate("friends", "fullName profilePic nativeLanguage learningLanguage");
 
@@ -52,7 +52,7 @@ export async function getMyFriends(req: Request, res: Response): Promise<Respons
 }
 
 export async function sendFriendRequest(req: Request, res: Response): Promise<Response | any> {
-    const myId = req.user?._id;
+    const myId = req.user._id;
     const { id: recipientId } = req.params;
     if (myId === recipientId) {
         return res.status(400).json({ message: "You can't send friend request to yourself" });
@@ -62,7 +62,6 @@ export async function sendFriendRequest(req: Request, res: Response): Promise<Re
         const recipient = await User.findById(recipientId);
         if (!recipient) {
             return res.status(404).json({ message: "Recipient not found" });
-
         }
 
         if (recipient.friends.some(friendId => friendId.toString() === myId)) {
@@ -93,14 +92,78 @@ export async function sendFriendRequest(req: Request, res: Response): Promise<Re
     }
 }
 
-export async function acceptFriendRequest() {
+export async function acceptFriendRequest(req: Request, res: Response): Promise<Response | any> {
+    const { id: recipientId } = req.params;
 
+    try {
+        const friend_request = await friendRequest.findById(recipientId);
+        if (!friend_request) {
+            return res.status(404).json({ message: "Friend request not found" });
+        }
+
+        // Verify the current user is the recipient
+        if (friend_request.recipient.toString() !== req.user._id) {
+            return res.status(403).json({ message: "You are not authorized to accept this request" });
+        }
+
+        friend_request.status = "accepted";
+        await friend_request.save();
+
+        await User.findByIdAndUpdate(friend_request.sender, {
+            $addToSet: { friends: friend_request.recipient },
+        });
+
+        await User.findByIdAndUpdate(friend_request.recipient, {
+            $addToSet: { friends: friend_request.sender },
+        })
+
+        res.status(200).json({ message: "Friend request accepted" });
+    } catch (error: any) {
+        console.log("Error in acceptFriendRequests controllers: ", error.message)
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
 }
 
-export async function getFriendRequests() {
+export async function getFriendRequests(req: Request, res: Response): Promise<Response | any> {
+    const recipient_ID = req.user._id;
+    if (!recipient_ID) {
+        return res.status(400).json({ message: "Recipient not found" });
+    }
 
+    try {
+        //lấy các yêu cầu kết ban từ người khác gửi đến
+        const incomingRequests = await friendRequest.find({
+            recipient: recipient_ID,
+            status: "pending",
+        }).populate("sender", "fullName profilePic nativeLanguage learningLanguage");
+
+        //lấy những lời mời kết bạn đã gửi đi và được chấp nhận bởi người khác
+        const acceptedRequests = await friendRequest.find({
+            sender: recipient_ID,
+            status: "accepted",
+        }).populate("recipient", "fullName profilePic");
+
+        return res.status(200).json({ incomingRequests, acceptedRequests });
+    } catch (error: any) {
+        console.log("Error in getPendingFriendRequests controller", error.message);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
 }
 
-export async function getOutgoingFriendReqs() {
+export async function getOutgoingFriendReqs(req: Request, res: Response): Promise<Response | any> {
+    const recipient_ID = req.user._id;
+    if (!recipient_ID) {
+        return res.status(400).json({ message: "Recipient not found" });
+    }
 
+    try {
+        const pendingRequests = await friendRequest.find({
+            sender: recipient_ID,
+            status: "pending",
+        }).populate("recipient", "fullName profilePic nativeLanguage learningLanguage");
+        return res.status(200).json(pendingRequests);
+    } catch (error: any) {
+        console.log("Error in getOutGoingFriendReqs controller", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
 }
