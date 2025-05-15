@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
+import chatRoutes from "./routes/chat.routes";
 import { connectDB } from "./lib/db";
 
 dotenv.config();
