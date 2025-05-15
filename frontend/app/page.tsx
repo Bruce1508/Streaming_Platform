@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axiosInstance";
 
 export default function Home() {
-  const { data, isLoading, error } = useQuery({
-        queryKey: ["todos"],
+  const { data: authData, isLoading, error } = useQuery({
+        queryKey: ["authUser"],
         queryFn: async () => {
             const res = await axiosInstance.get("/auth/me");
             return res.data;
@@ -14,8 +13,8 @@ export default function Home() {
         retry: false,
     });
 
-    console.log(data);
-
+    const authUser = authData?.user;
+    
   return (
     <main>
       <h1>hello</h1>
