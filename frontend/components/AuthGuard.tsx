@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from "@tanstack/react-query";
-import { axiosInstance } from "@/lib/axiosInstance";
+import { axiosInstance } from "@/lib/axios";
 import { useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 

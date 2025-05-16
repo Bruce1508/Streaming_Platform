@@ -1,21 +1,23 @@
 // app/sign-up/page.tsx
 'use client';
 
-import { useState } from "react";
+import { useFormState } from "react-dom";
 import { ShipWheelIcon } from "lucide-react";
 import Link from "next/link";
-import { signUp } from "@/app/actions/auth"; // Server Action
-import { useFormState } from "react-dom";
 import Image from "next/image";
+import { signUp } from "../actions/auth";
+import SubmitButton from "@/components/ui/submitButton";
 
 export default function SignUpPage() {
-    const [isPending, setIsPending] = useState(false);
 
-    // Sử dụng useFormState để lấy kết quả từ server action
-    const [state, formAction] = useFormState(signUp, {
+    const initialState = {
         success: false,
-        message: null
-    });
+        message: null,
+        errors: {}
+    };
+
+    //state chứa kết quả từ server action còn formAction gán vào action của form
+    const [state, formAction] = useFormState(signUp, initialState);
 
     return (
         <div className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8" data-theme="dark">
@@ -111,16 +113,7 @@ export default function SignUpPage() {
                                     </div>
                                 </div>
 
-                                <button className="btn btn-primary w-full" type="submit" disabled={isPending}>
-                                    {isPending ? (
-                                        <>
-                                            <span className="loading loading-spinner loading-xs"></span>
-                                            Loading...
-                                        </>
-                                    ) : (
-                                        "Create Account"
-                                    )}
-                                </button>
+                                <SubmitButton text="Create Account" loadingText="Loading..."/>
 
                                 <div className="text-center mt-4">
                                     <p className="text-sm">
