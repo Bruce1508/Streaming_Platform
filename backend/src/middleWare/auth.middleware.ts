@@ -7,7 +7,6 @@ dotenv.config();
 
 //chỉ những người đã đăng nhập mới có thể truy cập vào các route được bảo vệ
 export const protectRoute = async (req: Request, res: Response, next: NextFunction): Promise<Response | any> => {
-    res.send("ProtectRoute is working");
     //lấy JWT từ cookie của request
     try {
         const token = req.cookies.jwt;
