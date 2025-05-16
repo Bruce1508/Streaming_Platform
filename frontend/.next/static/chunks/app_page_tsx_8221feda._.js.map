@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/tranh/OneDrive%20-%20Seneca/Documents/VSCODE/project/Streaming_Platform/frontend/app/page.tsx"],"sourcesContent":["'use client';\nimport toast from \"react-hot-toast\";\n\nexport default function Home() {\n  return (\n    <main>\n      <h1 className=\"text-3xl font-bold underline\">Hello world!</h1>\n      <button className=\"btn btn-primary\" onClick={() => toast.success(\"hello world\")}>Button</button>\n    </main>\n  )\n}"],"names":[],"mappings":";;;;AACA;AADA;;;AAGe,SAAS;IACtB,qBACE,6LAAC;;0BACC,6LAAC;gBAAG,WAAU;0BAA+B;;;;;;0BAC7C,6LAAC;gBAAO,WAAU;gBAAkB,SAAS,IAAM,0JAAA,CAAA,UAAK,CAAC,OAAO,CAAC;0BAAgB;;;;;;;;;;;;AAGvF;KAPwB","debugId":null}}]
+}
