@@ -5,7 +5,7 @@ import { signup } from "@/lib/api";
 // State type
 interface SignUpState {
     success: boolean;
-    message: string | null;
+    message?: string | null;
     errors?: {
         fullName?: string;
         email?: string;
@@ -51,7 +51,7 @@ export async function signUp(prevState: SignUpState, formData: FormData): Promis
         if (result.success) {
             return {
                 success: true,
-                message: "Account created successfully! Redirecting to login..."
+                message: "Account created successfully!"
             };
 
         } else {

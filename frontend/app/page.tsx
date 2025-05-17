@@ -4,7 +4,7 @@ export default function Home() {
 	return (
 		<AuthGuard>
 			<main>
-				<h1>Hello</h1>
+				<h1>HomePage</h1>
 			</main>
 		</AuthGuard>
 	);

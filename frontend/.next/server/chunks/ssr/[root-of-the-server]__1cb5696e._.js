@@ -134,12 +134,22 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$axios$2e$ts__$5b$app$
 const signup = async (signupData)=>{
     try {
         console.log("Sending signup data:", signupData);
-        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$axios$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["axiosInstance"].post("auth/sign-up", signupData);
+        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$axios$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["axiosInstance"].post("/auth/sign-up", signupData);
         console.log("Signup response:", response.data);
         return response.data;
     } catch (error) {
-        console.error("Signup error:", error);
-        console.error("Error response:", error.response?.data);
+        if (error.response) {
+            // Thông tin chi tiết hơn về lỗi từ server
+            console.error("Error status:", error.response.status);
+            console.error("Error data:", error.response.data);
+            console.error("Error headers:", error.response.headers);
+        } else if (error.request) {
+            // Request đã được gửi nhưng không nhận được response
+            console.error("Error request:", error.request);
+        } else {
+            // Lỗi khi setting up request
+            console.error("Error message:", error.message);
+        }
         return {
             success: false,
             message: error.response?.data?.message || 'Failed to sign up'
@@ -252,7 +262,7 @@ async function signUp(prevState, formData) {
         if (result.success) {
             return {
                 success: true,
-                message: "Account created successfully! Redirecting to login..."
+                message: "Account created successfully!"
             };
         } else {
             return {

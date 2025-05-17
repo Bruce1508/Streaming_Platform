@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axios";
 import { useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import PageLoader from "./ui/PageLoader";
 
 interface AuthGuardProps {
     children: ReactNode;
@@ -42,7 +43,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
         }
     }, [isLoading, isAuthenticated, isOnboarded, router]);
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <PageLoader/>;
     if (!isAuthenticated || !isOnboarded) return null;
 
     return <>{children}</>;
