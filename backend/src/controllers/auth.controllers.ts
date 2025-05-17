@@ -24,7 +24,7 @@ function isValidEmail(email: string): boolean {
     return emailRegex.test(email);
 };
 
-export async function signIn(req: Request, res: Response): Promise<Response | void | any> {
+export async function signUp(req: Request, res: Response): Promise<Response | void | any> {
     const { email, password, fullName } = req.body;
 
     try {
@@ -80,7 +80,7 @@ export async function signIn(req: Request, res: Response): Promise<Response | vo
             secure: process.env.NODE_ENV === "production",
         });
 
-        return res.status(201).json({ sucess: true, user: newUser });
+        return res.status(201).json({ success: true, user: newUser });
 
     } catch (error: any) {
         console.log("Error in SignIn function: ", error);
@@ -88,7 +88,7 @@ export async function signIn(req: Request, res: Response): Promise<Response | vo
     }
 };
 
-export async function signUp(req: Request, res: Response): Promise<Response | void | any> {
+export async function signIn(req: Request, res: Response): Promise<Response | void | any> {
     try {
         const { email, password } = req.body;
 
