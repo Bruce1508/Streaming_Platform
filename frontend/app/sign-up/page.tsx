@@ -7,6 +7,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { signUp } from "../actions/auth";
 import SubmitButton from "@/components/ui/submitButton";
+import { useEffect } from "react";
+import toast from 'react-hot-toast';
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function SignUpPage() {
 
@@ -16,8 +20,25 @@ export default function SignUpPage() {
         errors: {}
     };
 
+    const router = useRouter();
+    const queryClient = useQueryClient();
+
     //state chứa kết quả từ server action còn formAction gán vào action của form
     const [state, formAction] = useFormState(signUp, initialState);
+
+    useEffect(() => {
+        if (state.success) {
+            toast.success(state.message || "Registration successful!");
+            queryClient.invalidateQueries({ queryKey: ['authUser'] });
+
+            // Chuyển hướng sau một chút để người dùng thấy thông báo
+            const timer = setTimeout(() => {
+                router.push('/');
+            }, 2000); // Đợi 2 giây
+
+            return () => clearTimeout(timer);
+        }
+    }, [state.success, state.message, router, queryClient])
 
     return (
         <div className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8" data-theme="dark">
@@ -113,7 +134,7 @@ export default function SignUpPage() {
                                     </div>
                                 </div>
 
-                                <SubmitButton text="Create Account" loadingText="Loading..."/>
+                                <SubmitButton text="Create Account" loadingText="Loading..." />
 
                                 <div className="text-center mt-4">
                                     <p className="text-sm">

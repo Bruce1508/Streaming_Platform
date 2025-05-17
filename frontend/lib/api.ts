@@ -40,9 +40,13 @@ interface AuthResponse {
 // Authentication APIs
 export const signup = async (signupData: SignupData): Promise<AuthResponse> => {
     try {
-        const response = await axiosInstance.post("/auth/signup", signupData);
+        console.log("Sending signup data:", signupData);
+        const response = await axiosInstance.post("auth/sign-up", signupData);
+        console.log("Signup response:", response.data);
         return response.data;
     } catch (error: any) {
+        console.error("Signup error:", error);
+        console.error("Error response:", error.response?.data);
         return {
             success: false,
             message: error.response?.data?.message || 'Failed to sign up'
@@ -57,7 +61,7 @@ export const login = async (loginData: LoginData): Promise<AuthResponse> => {
     } catch (error: any) {
         return {
             success: false,
-            message: error.response?.data?.message || 'Failed to sign up'
+            message: error.response?.data?.message || 'Failed to sign in'
         };
     }
 

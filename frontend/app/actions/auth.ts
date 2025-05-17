@@ -15,12 +15,19 @@ interface SignUpState {
     };
 }
 
-export async function signUp(prevState: SignUpState, formData: FormData): Promise <SignUpState> {
+export async function signUp(prevState: SignUpState, formData: FormData): Promise<SignUpState> {
     try {
         const fullName = formData.get('fullName') as string;
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
         const termsAccepted = formData.get('terms') === 'on';
+
+        console.log("Server Action received data:", {
+            fullName,
+            email,
+            password,
+            termsAccepted
+        });
 
         const errors: SignUpState['errors'] = {};
 
@@ -39,13 +46,14 @@ export async function signUp(prevState: SignUpState, formData: FormData): Promis
         }
 
         //gọi API signup từ api.ts và truyền dữ liệu từ form. cái này sẽ được gửi request đến backend
-        const result = await signup({fullName, email, password});
+        const result = await signup({ fullName, email, password });
 
-        if(result.success) {
+        if (result.success) {
             return {
                 success: true,
                 message: "Account created successfully! Redirecting to login..."
             };
+
         } else {
             return {
                 success: false,

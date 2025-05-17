@@ -99,7 +99,7 @@ __turbopack_context__.s({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-rsc] (ecmascript)");
 ;
-const BASE_URL = "http://localhost:5001/api";
+const BASE_URL = ("TURBOPACK compile-time value", "http://localhost:5001/api") || "http://localhost:5001/api";
 const axiosInstance = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].create({
     baseURL: BASE_URL,
     withCredentials: true
@@ -133,9 +133,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$axios$2e$ts__$5b$app$
 ;
 const signup = async (signupData)=>{
     try {
-        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$axios$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["axiosInstance"].post("/auth/signup", signupData);
+        console.log("Sending signup data:", signupData);
+        const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$axios$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["axiosInstance"].post("auth/sign-up", signupData);
+        console.log("Signup response:", response.data);
         return response.data;
     } catch (error) {
+        console.error("Signup error:", error);
+        console.error("Error response:", error.response?.data);
         return {
             success: false,
             message: error.response?.data?.message || 'Failed to sign up'
@@ -149,7 +153,7 @@ const login = async (loginData)=>{
     } catch (error) {
         return {
             success: false,
-            message: error.response?.data?.message || 'Failed to sign up'
+            message: error.response?.data?.message || 'Failed to sign in'
         };
     }
 };
@@ -220,6 +224,12 @@ async function signUp(prevState, formData) {
         const email = formData.get('email');
         const password = formData.get('password');
         const termsAccepted = formData.get('terms') === 'on';
+        console.log("Server Action received data:", {
+            fullName,
+            email,
+            password,
+            termsAccepted
+        });
         const errors = {};
         if (!fullName) errors.fullName = 'Full name is required';
         if (!email) errors.email = 'Email is required';
