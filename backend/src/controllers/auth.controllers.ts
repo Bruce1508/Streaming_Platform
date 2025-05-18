@@ -114,7 +114,7 @@ export async function signIn(req: Request, res: Response): Promise<Response | vo
             maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true, // prevent XSS attacks,
             sameSite: "strict", // prevent CSRF attacks
-            secure: process.env.NODE_ENV === "production",
+            secure: falsefalse,
         });
 
         return res.status(200).json({ success: true, checkedUser });

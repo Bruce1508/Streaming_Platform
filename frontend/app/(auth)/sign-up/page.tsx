@@ -5,7 +5,7 @@ import { useFormState } from "react-dom";
 import { ShipWheelIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { signUp } from "../actions/auth";
+import { signUp } from "@/app/actions/auth";
 import SubmitButton from "@/components/ui/submitButton";
 import { useEffect } from "react";
 import toast from 'react-hot-toast';
@@ -28,17 +28,19 @@ export default function SignUpPage() {
 
     useEffect(() => {
         if (state.success) {
+            // Đánh dấu vừa đăng ký thành công trong sessionStorage
+            sessionStorage.setItem('justSignedUp', 'true');
+            
             toast.success(state.message || "Registration successful!");
             queryClient.invalidateQueries({ queryKey: ['authUser'] });
 
-            // Chuyển hướng sau một chút để người dùng thấy thông báo
             const timer = setTimeout(() => {
                 router.push('/');
-            }, 2000); // Đợi 2 giây
+            }, 2000);
 
             return () => clearTimeout(timer);
         }
-    }, [state.success, state.message, router, queryClient])
+    }, [state.success, state.message, router, queryClient]);
 
     return (
         <div className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8" data-theme="dark">

@@ -29,8 +29,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen data-theme="dark"`}
       >
-        <Providers>{children}</Providers>
-        <ToasterProvider />
+        <Providers>
+          {children}
+          <ToasterProvider />
+        </Providers>
       </body>
     </html>
   );

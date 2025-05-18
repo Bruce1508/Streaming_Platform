@@ -57,6 +57,7 @@
     --tracking-wider: .05em;
     --leading-tight: 1.25;
     --radius-xl: .75rem;
+    --animate-spin: spin 1s linear infinite;
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
   }
@@ -2066,8 +2067,17 @@
     height: calc(var(--spacing) * 9);
   }
 
+  .size-10 {
+    width: calc(var(--spacing) * 10);
+    height: calc(var(--spacing) * 10);
+  }
+
   .h-screen {
     height: 100vh;
+  }
+
+  .min-h-screen {
+    min-height: 100vh;
   }
 
   .loading-xs {
@@ -2088,6 +2098,10 @@
 
   .max-w-sm {
     max-width: var(--container-sm);
+  }
+
+  .animate-spin {
+    animation: var(--animate-spin);
   }
 
   .cursor-pointer {
@@ -2548,6 +2562,12 @@
   syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /*# sourceMappingURL=app_globals_css_f9ee138c._.single.css.map*/
