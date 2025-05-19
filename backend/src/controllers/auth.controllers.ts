@@ -24,7 +24,7 @@ function isValidEmail(email: string): boolean {
     return emailRegex.test(email);
 };
 
-export async function signUp(req: Request, res: Response): Promise<Response | void | any> {
+export async function signUp(req: Request, res: Response): Promise <Response | any> {
     const { email, password, fullName } = req.body;
 
     try {
@@ -114,7 +114,7 @@ export async function signIn(req: Request, res: Response): Promise<Response | vo
             maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true, // prevent XSS attacks,
             sameSite: "strict", // prevent CSRF attacks
-            secure: falsefalse,
+            secure: false,
         });
 
         return res.status(200).json({ success: true, checkedUser });

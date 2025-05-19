@@ -12,10 +12,9 @@ router.post("/sign-out", signOut);
 
 router.post("/onboarding",protectRoute, onBoarding);
 
-// This route is protected and requires authentication
 // The protectRoute middleware checks if the user is authenticated
-router.get("/me", protectRoute, (req:Request, res:Response) => {
-    res.status(200).json({success:true, user:req.user});
+router.get("/me", protectRoute, (req: Request, res: Response): Response|any => {
+    return res.status(200).json({success:true, user:req.user});
 });
 
 export default router;

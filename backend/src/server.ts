@@ -23,14 +23,18 @@ app.use(
     })
 );
 
-app.use(helmet());
-
-app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
-
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 
+// 4. Bảo mật - với cấu hình phù hợp cho môi trường phát triển
+app.use(
+    helmet({
+        crossOriginResourcePolicy: { policy: "cross-origin" },
+        contentSecurityPolicy: false,
+    })
+);
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World");
 });
