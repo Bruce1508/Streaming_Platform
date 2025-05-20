@@ -1,11 +1,10 @@
 'use client';
 
-import { useQuery } from "@tanstack/react-query";
-import { axiosInstance } from "@/lib/axios";
 import { useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import PageLoader from "@/components/ui/PageLoader";
 import { usePathname } from "next/navigation";
+import useAuthUser from "@/hooks/useAuthUser";
 
 export default function ProtectedLayout({ children }: { children: ReactNode }) {
     const router = useRouter();
@@ -15,25 +14,12 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
     const justSignedUp = typeof window !== 'undefined' && 
         sessionStorage.getItem('justSignedUp') === 'true';
 
-    const { data: authData, isLoading } = useQuery({
-        queryKey: ["authUser"],
-        queryFn: async () => {
-            try {
-                const res = await axiosInstance.get("/auth/me");
-                return res.data;
-            } catch (error) {
-                console.error("Auth check failed:", error);
-                return null;
-            }
-        },
-        retry: false,
-    });
+    const {isLoading, authUser} = useAuthUser();
 
-    const authUser = authData?.user;
     const isAuthenticated = Boolean(authUser) || justSignedUp;
     const isOnboarded = authUser?.isOnboarded || justSignedUp;
 
-    console.log('Protected layout - Auth data:', authData);
+    console.log('Protected layout - Auth data:', authUser);
     console.log('Protected layout - isAuthenticated:', isAuthenticated);
     console.log('Protected layout - isOnboarded:', isOnboarded);
     console.log('Protected layout - justSignedUp:', justSignedUp);
@@ -58,7 +44,6 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
     if (isLoading) return <PageLoader />;
     
     // Nếu không xác thực hoặc không onboarded (trừ trang onboarding),
-    // không hiển thị nội dung nhưng không chuyển hướng ở đây
     if (!isAuthenticated || (!isOnboarded && pathname !== "/onboarding")) {
         return <PageLoader />;
     }
