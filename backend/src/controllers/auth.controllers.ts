@@ -15,7 +15,6 @@ interface IUser {
     learningLanguage?: string;
     location?: string;
     isOnboarded: boolean;
-    // Thêm các trường khác nếu cần
 }
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -65,7 +64,7 @@ export async function signUp(req: Request, res: Response): Promise <Response | a
             console.log(`Stream user created for ${newUser.fullName}`);
         } catch (error: any) {
             console.log("Error creating Stream User: ", error);
-        }
+        };
 
         const token = jwt.sign(
             { userId: newUser._id },
@@ -73,17 +72,21 @@ export async function signUp(req: Request, res: Response): Promise <Response | a
             { expiresIn: "7d" }
         );
 
+        if (!token) {
+            return res.status(500).json({message: "Token not found"});
+        }
+
         res.cookie("jwt", token, {
             maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true, // prevent XSS attacks,
             sameSite: "strict", // prevent CSRF attacks
-            secure: process.env.NODE_ENV === "production",
+            secure: false,
         });
 
         return res.status(201).json({ success: true, user: newUser });
 
     } catch (error: any) {
-        console.log("Error in SignIn function: ", error);
+        console.log("Error in SignUp function: ", error);
         return res.status(500).json({ message: "Something went wrong" });
     }
 };

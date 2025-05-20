@@ -1,4 +1,4 @@
-import express, {Request,Response} from "express";
+import express, { Request,Response } from "express";
 import { signIn, signOut, signUp, onBoarding } from "../controllers/auth.controllers";
 import { protectRoute } from "../middleWare/auth.middleware";
 
@@ -10,7 +10,7 @@ router.post("/sign-up", signUp);
 
 router.post("/sign-out", signOut);
 
-router.post("/onboarding",protectRoute, onBoarding);
+router.post("/onBoarding",protectRoute, onBoarding);
 
 // The protectRoute middleware checks if the user is authenticated
 router.get("/me", protectRoute, (req: Request, res: Response): Response|any => {
