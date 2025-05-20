@@ -11,11 +11,29 @@ interface SignUpState {
         email?: string;
         password?: string;
         terms?: string;
-        [key: string]: string | undefined;
     };
 }
 
-export async function signUp(prevState: SignUpState, formData: FormData): Promise<SignUpState> {
+interface OnBoardedData {
+    fullName: string;
+    bio?: string;
+    nativeLanguage?: string;
+    learningLanguage?: string;
+    location?: string;
+}
+
+interface OnBoardingState {
+    success: boolean;
+    message?: string | null;
+    errors?: {
+        bio?: string;
+        nativeLanguage?: string;
+        learningLanguage?: string;
+        location?: string;
+    };
+}
+
+export async function signUp(formData: FormData): Promise<SignUpState> {
     try {
         const fullName = formData.get('fullName') as string;
         const email = formData.get('email') as string;
@@ -65,7 +83,19 @@ export async function signUp(prevState: SignUpState, formData: FormData): Promis
         console.error('SignUp error:', error);
         return {
             success: false,
-            message: error.response?.data?.message || 'An unexpected error occurred'
+            message: error.response?.data?.message || 'An unexpected error occurred in signUp function in auth.ts'
         };
+    }
+}
+
+export async function handleOnBoarded(onBoardedData: FormData): Promise <OnBoardingState> {
+    try {
+        const fullName = onBoardedData.get("fullName") as string;
+    } catch (error: any) {
+        console.error('OnBoarded error:', error);
+        return {
+            success: false,
+            message: error.respone?.data?.message || 'An unexpected error occurred in handleOnBoarded function in auth.ts'
+        }
     }
 }

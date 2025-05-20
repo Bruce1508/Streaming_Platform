@@ -31,6 +31,10 @@ interface AuthResponse {
         email: string;
         profilePic: string;
         isOnboarded: boolean;
+        bio: string
+        nativeLanguage: string;
+        learningLanguage: string;
+        location: string
     };
 }
 
@@ -79,7 +83,7 @@ export const logout = async (): Promise<{ success: boolean; message: string }> =
     return response.data;
 };
 
-export const getAuthUser = async (): Promise <AuthResponse | null> => {
+export const getAuthUser = async (): Promise<AuthResponse | null> => {
     try {
         const res = await axiosInstance.get("/auth/me");
         return res.data;
