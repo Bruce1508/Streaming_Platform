@@ -1,6 +1,4 @@
 {
-  "/(protected)/(homePage)/page": "app/(protected)/(homePage)/page.js",
-  "/(protected)/(notifications)/page": "app/(protected)/(notifications)/page.js",
-  "/(protected)/(onBoarding)/page": "app/(protected)/(onBoarding)/page.js",
+  "/(protected)/page": "app/(protected)/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }

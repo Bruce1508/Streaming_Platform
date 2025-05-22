@@ -1,6 +1,6 @@
 'use server'
 
-import { signup } from "@/lib/api";
+import { completeOnboarding, signup } from "@/lib/api";
 
 // State type
 interface SignUpState {
@@ -14,14 +14,6 @@ interface SignUpState {
     };
 }
 
-interface OnBoardedData {
-    fullName: string;
-    bio?: string;
-    nativeLanguage?: string;
-    learningLanguage?: string;
-    location?: string;
-}
-
 interface OnBoardingState {
     success: boolean;
     message?: string | null;
@@ -33,7 +25,8 @@ interface OnBoardingState {
     };
 }
 
-export async function signUp(formData: FormData): Promise<SignUpState> {
+export async function signUp(prevState: SignUpState, formData: FormData): Promise<SignUpState> {
+
     try {
         const fullName = formData.get('fullName') as string;
         const email = formData.get('email') as string;
@@ -88,14 +81,58 @@ export async function signUp(formData: FormData): Promise<SignUpState> {
     }
 }
 
-export async function handleOnBoarded(onBoardedData: FormData): Promise <OnBoardingState> {
+export async function handleOnBoarded(prevState: OnBoardingState, onBoardedData: FormData): Promise <OnBoardingState> {
+
     try {
         const fullName = onBoardedData.get("fullName") as string;
+        const bio = onBoardedData.get("bio") as string;
+        const nativeLanguage = onBoardedData.get("nativeLanguage") as string;
+        const learningLanguage = onBoardedData.get("learningLanguage") as string;
+        const location = onBoardedData.get("location") as string;
+        const profilePic = onBoardedData.get("profilePic") as string;
+
+        console.log("Server action of onBoarding received data: ", fullName, bio, nativeLanguage, learningLanguage, location, profilePic);
+
+        const errors: OnBoardingState['errors'] = {};
+
+        // Validate required fields
+        if (!nativeLanguage) errors.nativeLanguage = 'Native language is required';
+        if (!learningLanguage) errors.learningLanguage = 'Learning language is required';
+
+        if (Object.keys(errors).length > 0) {
+            return {
+                success: false,
+                message: 'Please fix the errors below',
+                errors
+            };
+        }
+
+        const result = await completeOnboarding({
+            fullName,
+            bio,
+            nativeLanguage,
+            learningLanguage,
+            location,
+            profilePic,
+        });
+
+        if (result.success) {
+            return {
+                success: true,
+                message: "OnBoarding successfully"
+            }
+        } else {
+            return {
+                success: false,
+                message: result.message || "OnBoarding failed at auth.ts"
+            }
+        }
+
     } catch (error: any) {
         console.error('OnBoarded error:', error);
         return {
             success: false,
-            message: error.respone?.data?.message || 'An unexpected error occurred in handleOnBoarded function in auth.ts'
+            message: error.response?.data?.message || 'An unexpected error occurred in handleOnBoarded function in auth.ts'
         }
     }
 }
