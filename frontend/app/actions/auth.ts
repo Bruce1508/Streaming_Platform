@@ -18,6 +18,7 @@ interface OnBoardingState {
     success: boolean;
     message?: string | null;
     errors?: {
+        fullName?: string;
         bio?: string;
         nativeLanguage?: string;
         learningLanguage?: string;
@@ -81,23 +82,29 @@ export async function signUp(prevState: SignUpState, formData: FormData): Promis
     }
 }
 
-export async function handleOnBoarded(prevState: OnBoardingState, onBoardedData: FormData): Promise <OnBoardingState> {
-
+// app/actions/auth.ts
+export async function handleOnBoarded(prevState: OnBoardingState, formData: FormData): Promise<OnBoardingState> {
     try {
-        const fullName = onBoardedData.get("fullName") as string;
-        const bio = onBoardedData.get("bio") as string;
-        const nativeLanguage = onBoardedData.get("nativeLanguage") as string;
-        const learningLanguage = onBoardedData.get("learningLanguage") as string;
-        const location = onBoardedData.get("location") as string;
-        const profilePic = onBoardedData.get("profilePic") as string;
+        const fullName = formData.get("fullName") as string;
+        const bio = formData.get("bio") as string;
+        const nativeLanguage = formData.get("nativeLanguage") as string;
+        const learningLanguage = formData.get("learningLanguage") as string;
+        const location = formData.get("location") as string;
+        const profilePic = formData.get("profilePic") as string;
 
-        console.log("Server action of onBoarding received data: ", fullName, bio, nativeLanguage, learningLanguage, location, profilePic);
+        console.log("Server action of onBoarding received data: ", {
+            fullName, bio, nativeLanguage, learningLanguage, location, profilePic
+        });
 
         const errors: OnBoardingState['errors'] = {};
 
         // Validate required fields
+        if (!fullName?.trim()) errors.fullName = 'Full name is required';
         if (!nativeLanguage) errors.nativeLanguage = 'Native language is required';
         if (!learningLanguage) errors.learningLanguage = 'Learning language is required';
+        if (nativeLanguage === learningLanguage) {
+            errors.learningLanguage = 'Learning language must be different from native language';
+        }
 
         if (Object.keys(errors).length > 0) {
             return {
@@ -108,31 +115,31 @@ export async function handleOnBoarded(prevState: OnBoardingState, onBoardedData:
         }
 
         const result = await completeOnboarding({
-            fullName,
-            bio,
+            fullName: fullName.trim(),
+            bio: bio?.trim() || "",
             nativeLanguage,
             learningLanguage,
-            location,
+            location: location?.trim() || "",
             profilePic,
         });
 
         if (result.success) {
             return {
                 success: true,
-                message: "OnBoarding successfully"
+                message: "Profile completed successfully!"
             }
         } else {
             return {
                 success: false,
-                message: result.message || "OnBoarding failed at auth.ts"
+                message: result.message || "Failed to complete onboarding"
             }
         }
 
     } catch (error: any) {
-        console.error('OnBoarded error:', error);
+        console.error('OnBoarding error:', error);
         return {
             success: false,
-            message: error.response?.data?.message || 'An unexpected error occurred in handleOnBoarded function in auth.ts'
+            message: error.response?.data?.message || 'An unexpected error occurred during onBoarding process'
         }
     }
 }

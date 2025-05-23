@@ -33,7 +33,7 @@ export default function SignUpPage() {
             queryClient.invalidateQueries({ queryKey: ['authUser'] });
 
             const timer = setTimeout(() => {
-                router.push('/');
+                router.push('/onBoarding');
             }, 2000);
 
             return () => clearTimeout(timer);
