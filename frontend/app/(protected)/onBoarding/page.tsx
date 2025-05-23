@@ -74,30 +74,28 @@ const Page = () => {
                         {/* PROFILE PIC CONTAINER */}
                         <div className="flex flex-col items-center justify-center space-y-4">
                             {/* IMAGE PREVIEW */}
-                            <div className="size-32 rounded-full bg-base-300 overflow-hidden">
+                            <div className="relative w-32 h-32 rounded-full bg-base-300 overflow-hidden">
                                 {profilePic ? (
                                     <Image
                                         src={profilePic}
                                         alt="Profile Preview"
                                         fill
                                         priority
-                                        className="w-full h-full object-cover" 
+                                        className="object-cover"
                                         sizes="(max-width: 768px) 100vw, 33vw"
                                     />
                                 ) : (
-                                    <div className="flex items-center justify-center h-full">
-                                        <CameraIcon className="size-12 text-base-content opacity-40" />
+                                    <div className="flex items-center justify-center w-full h-full">
+                                        <CameraIcon className="w-12 h-12 text-base-content opacity-40" />
                                     </div>
                                 )}
                             </div>
-
                             {/* Hidden input để gửi profilePic data */}
                             <input 
                                 type="hidden" 
                                 name="profilePic" 
                                 value={profilePic} 
                             />
-
                             {/* Generate Random Avatar BTN */}
                             <div className="flex items-center gap-2">
                                 <button 
@@ -106,61 +104,64 @@ const Page = () => {
                                     className="btn btn-accent"
                                     disabled={isPending}
                                 >
-                                    <ShuffleIcon className="size-4 mr-2" />
+                                    <ShuffleIcon className="w-4 h-4 mr-2" />
                                     Generate Random Avatar
                                 </button>
                             </div>
                         </div>
 
                         {/* FULL NAME */}
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Full Name *</span>
+                        <fieldset className="fieldset">
+                            <label className="label" htmlFor="fullName">
+                                <span>Full Name *</span>
                             </label>
                             <input
+                                id="fullName"
                                 type="text"
                                 name="fullName"
                                 defaultValue={authUser?.fullName || ""}
-                                className="input input-bordered w-full"
+                                className="input w-full"
                                 placeholder="Your full name"
                                 required
                             />
                             {state.errors?.fullName && (
                                 <label className="label">
-                                    <span className="label-text-alt text-error">
+                                    <span className="text-error">
                                         {state.errors.fullName}
                                     </span>
                                 </label>
                             )}
-                        </div>
+                        </fieldset>
 
                         {/* BIO */}
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Bio</span>
+                        <fieldset className="fieldset">
+                            <label className="label" htmlFor="bio">
+                                <span>Bio</span>
                             </label>
                             <textarea
+                                id="bio"
                                 name="bio"
                                 defaultValue={authUser?.bio || ""}
-                                className="textarea textarea-bordered h-24"
+                                className="textarea w-full h-24 resize-none"
                                 placeholder="Tell others about yourself and your language learning goals"
                             />
-                        </div>
+                        </fieldset>
 
                         {/* LANGUAGES */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {/* NATIVE LANGUAGE */}
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">Native Language *</span>
+                            <fieldset className="fieldset">
+                                <label className="label" htmlFor="nativeLanguage">
+                                    <span>Native Language *</span>
                                 </label>
                                 <select
+                                    id="nativeLanguage"
                                     name="nativeLanguage"
-                                    defaultValue={authUser?.nativeLanguage || ""}
-                                    className="select select-bordered w-full"
+                                    className="select w-full"
                                     required
+                                    defaultValue={authUser?.nativeLanguage || ""}
                                 >
-                                    <option value="">Select your native language</option>
+                                    <option value="" disabled hidden>Select your native language</option>
                                     {LANGUAGES.map((lang) => (
                                         <option key={`native-${lang}`} value={lang.toLowerCase()}>
                                             {lang}
@@ -169,25 +170,25 @@ const Page = () => {
                                 </select>
                                 {state.errors?.nativeLanguage && (
                                     <label className="label">
-                                        <span className="label-text-alt text-error">
+                                        <span className="text-error">
                                             {state.errors.nativeLanguage}
                                         </span>
                                     </label>
                                 )}
-                            </div>
-
+                            </fieldset>
                             {/* LEARNING LANGUAGE */}
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text">Learning Language *</span>
+                            <fieldset className="fieldset">
+                                <label className="label" htmlFor="learningLanguage">
+                                    <span>Learning Language *</span>
                                 </label>
                                 <select
+                                    id="learningLanguage"
                                     name="learningLanguage"
-                                    defaultValue={authUser?.learningLanguage || ""}
-                                    className="select select-bordered w-full"
+                                    className="select w-full"
                                     required
+                                    defaultValue={authUser?.learningLanguage || ""}
                                 >
-                                    <option value="">Select language you are learning</option>
+                                    <option value="" disabled hidden>Select the language you like to learn</option>
                                     {LANGUAGES.map((lang) => (
                                         <option key={`learning-${lang}`} value={lang.toLowerCase()}>
                                             {lang}
@@ -196,30 +197,31 @@ const Page = () => {
                                 </select>
                                 {state.errors?.learningLanguage && (
                                     <label className="label">
-                                        <span className="label-text-alt text-error">
+                                        <span className="text-error">
                                             {state.errors.learningLanguage}
                                         </span>
                                     </label>
                                 )}
-                            </div>
+                            </fieldset>
                         </div>
 
                         {/* LOCATION */}
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Location</span>
+                        <fieldset className="fieldset">
+                            <label className="label" htmlFor="location">
+                                <span>Location</span>
                             </label>
                             <div className="relative">
-                                <MapPinIcon className="absolute top-1/2 transform -translate-y-1/2 left-3 size-5 text-base-content opacity-70" />
+                                <MapPinIcon className="absolute top-1/2 transform -translate-y-1/2 left-3 w-5 h-5 text-base-content opacity-70" />
                                 <input
+                                    id="location"
                                     type="text"
                                     name="location"
                                     defaultValue={authUser?.location || ""}
-                                    className="input input-bordered w-full pl-10"
+                                    className="input w-full pl-[2.5rem]"
                                     placeholder="City, Country"
                                 />
                             </div>
-                        </div>
+                        </fieldset>
 
                         {/* SUBMIT BUTTON */}
                         <button 
