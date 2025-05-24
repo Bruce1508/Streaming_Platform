@@ -39,7 +39,7 @@ interface AuthResponse {
 }
 
 // Authentication APIs
-export const signup = async (signupData: SignupData): Promise <AuthResponse> => {
+export const signup = async (signupData: SignupData): Promise<AuthResponse> => {
     try {
         console.log("Sending signup data:", signupData);
         const response = await axiosInstance.post("/auth/sign-up", signupData);
@@ -93,9 +93,39 @@ export const getAuthUser = async (): Promise<AuthResponse | null> => {
     }
 };
 
-export const completeOnboarding = async (userData: UserData): Promise<AuthResponse> => {
-    const response = await axiosInstance.post("/auth/onboarding", userData);
-    return response.data;
+// frontend/lib/api.ts
+export const completeOnboarding = async (
+    userData: UserData, 
+    options?: { cookieHeader?: string }
+): Promise<AuthResponse> => {
+    try {
+        // Nếu có cookieHeader, sử dụng fetch (cho Server Actions)
+        if (options?.cookieHeader) {
+            const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+            
+            const response = await fetch(`${backendUrl}/auth/onBoarding`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': options.cookieHeader,
+                },
+                body: JSON.stringify(userData),
+            });
+
+            const data = await response.json();
+            return data;
+        } 
+        // Nếu không có cookieHeader, sử dụng axios (cho client-side)
+        else {
+            const response = await axiosInstance.post("/auth/onboarding", userData);
+            return response.data;
+        }
+    } catch (error: any) {
+        return {
+            success: false,
+            message: error.response?.data?.message || 'Failed to complete onboarding'
+        };
+    }
 };
 
 // User and Friends APIs

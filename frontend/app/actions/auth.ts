@@ -1,8 +1,8 @@
 'use server'
 
 import { completeOnboarding, signup } from "@/lib/api";
+import { cookies } from "next/headers";
 
-// State type
 interface SignUpState {
     success: boolean;
     message?: string | null;
@@ -82,7 +82,6 @@ export async function signUp(prevState: SignUpState, formData: FormData): Promis
     }
 }
 
-// app/actions/auth.ts
 export async function handleOnBoarded(prevState: OnBoardingState, formData: FormData): Promise<OnBoardingState> {
     try {
         const fullName = formData.get("fullName") as string;
@@ -114,14 +113,31 @@ export async function handleOnBoarded(prevState: OnBoardingState, formData: Form
             };
         }
 
-        const result = await completeOnboarding({
-            fullName: fullName.trim(),
-            bio: bio?.trim() || "",
-            nativeLanguage,
-            learningLanguage,
-            location: location?.trim() || "",
-            profilePic,
-        });
+        const cookieStore = await cookies();
+        const jwtCookie = cookieStore.get('jwt');
+        const cookieHeader = jwtCookie ? `jwt=${jwtCookie.value}` : '';
+
+        console.log('🍪 JWT Cookie:', jwtCookie);
+        console.log('🍪 Cookie header:', cookieHeader);
+
+        if (!cookieHeader) {
+            return {
+                success: false,
+                message: 'Authentication required. Please login again.'
+            };
+        }
+
+        const result = await completeOnboarding(
+            {
+                fullName: fullName.trim(),
+                bio: bio?.trim() || "",
+                nativeLanguage,
+                learningLanguage,
+                location: location?.trim() || "",
+                profilePic,
+            },
+            { cookieHeader } // Truyền cookie
+        );
 
         if (result.success) {
             return {

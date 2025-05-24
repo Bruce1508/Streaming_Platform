@@ -180,9 +180,31 @@ const getAuthUser = async ()=>{
         return null;
     }
 };
-const completeOnboarding = async (userData)=>{
-    const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$axios$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["axiosInstance"].post("/auth/onboarding", userData);
-    return response.data;
+const completeOnboarding = async (userData, options)=>{
+    try {
+        // Nếu có cookieHeader, sử dụng fetch (cho Server Actions)
+        if (options?.cookieHeader) {
+            const backendUrl = ("TURBOPACK compile-time value", "http://localhost:5001/api") || 'http://localhost:5001/api';
+            const response = await fetch(`${backendUrl}/auth/onBoarding`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': options.cookieHeader
+                },
+                body: JSON.stringify(userData)
+            });
+            const data = await response.json();
+            return data;
+        } else {
+            const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$axios$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["axiosInstance"].post("/auth/onboarding", userData);
+            return response.data;
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.response?.data?.message || 'Failed to complete onboarding'
+        };
+    }
 };
 async function getUserFriends() {
     const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$axios$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["axiosInstance"].get("/users/friends");
@@ -225,7 +247,9 @@ var { g: global, __dirname } = __turbopack_context__;
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/webpack/loaders/next-flight-loader/server-reference.js [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$app$2d$render$2f$encryption$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/app-render/encryption.js [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/api.ts [app-rsc] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/headers.js [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/webpack/loaders/next-flight-loader/action-validate.js [app-rsc] (ecmascript)");
+;
 ;
 ;
 ;
@@ -310,6 +334,17 @@ async function handleOnBoarded(prevState, formData) {
                 errors
             };
         }
+        const cookieStore = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["cookies"])();
+        const jwtCookie = cookieStore.get('jwt');
+        const cookieHeader = jwtCookie ? `jwt=${jwtCookie.value}` : '';
+        console.log('🍪 JWT Cookie:', jwtCookie);
+        console.log('🍪 Cookie header:', cookieHeader);
+        if (!cookieHeader) {
+            return {
+                success: false,
+                message: 'Authentication required. Please login again.'
+            };
+        }
         const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["completeOnboarding"])({
             fullName: fullName.trim(),
             bio: bio?.trim() || "",
@@ -317,7 +352,10 @@ async function handleOnBoarded(prevState, formData) {
             learningLanguage,
             location: location?.trim() || "",
             profilePic
-        });
+        }, {
+            cookieHeader
+        } // Truyền cookie
+        );
         if (result.success) {
             return {
                 success: true,
