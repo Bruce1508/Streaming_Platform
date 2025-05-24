@@ -175,12 +175,18 @@ export async function onBoarding(req: Request, res: Response): Promise<Response 
 
             console.log(`Stream user updated after onboarding for ${updatedUser.fullName}`);
         } catch (streamError: any) {
-            console.log("Error updating Stream user during onboarding:", streamError.message);
+            console.log("Error updating Stream user during onboarding controller:", streamError.message);
         }
+
+        return res.status(200).json({
+            success: true,
+            message: "Onboarding completely successfully",
+            user: updatedUser
+        });
 
     } catch (error: any) {
         console.error("Onboarding error:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 
 }
