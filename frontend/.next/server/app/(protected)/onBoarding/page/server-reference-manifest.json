@@ -1,16 +1,4 @@
 {
-  "node": {
-    "608f27ea1a506244ea9535da98f33cda3eb1db258f": {
-      "workers": {
-        "app/(protected)/onBoarding/page": {
-          "moduleId": "[project]/.next-internal/server/app/(protected)/onBoarding/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/actions/auth.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(protected)/onBoarding/page": "action-browser"
-      }
-    }
-  },
+  "node": {},
   "edge": {}
 }

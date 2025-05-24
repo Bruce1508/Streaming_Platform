@@ -163,19 +163,49 @@ module.exports = mod;
 
 var { g: global, __dirname } = __turbopack_context__;
 {
-// lib/axiosInstance.ts
 __turbopack_context__.s({
     "axiosInstance": (()=>axiosInstance)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-ssr] (ecmascript)");
 ;
 const BASE_URL = ("TURBOPACK compile-time value", "http://localhost:5001/api") || "http://localhost:5001/api";
+console.log('🔧 Axios config - BASE_URL:', BASE_URL);
 const axiosInstance = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].create({
     baseURL: BASE_URL,
-    withCredentials: true
+    withCredentials: true,
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'application/json'
+    }
 });
-axiosInstance.interceptors.response.use((response)=>response, (error)=>{
-    // Xử lý lỗi globally, ví dụ: refresh token, redirect to login, v.v.
+// Debug interceptors
+axiosInstance.interceptors.request.use((config)=>{
+    console.log('📤 Axios request:', {
+        url: config.url,
+        fullUrl: (config.baseURL || '') + (config.url || ''),
+        method: config.method,
+        withCredentials: config.withCredentials,
+        headers: config.headers
+    });
+    return config;
+}, (error)=>{
+    console.log('❌ Request interceptor error:', error);
+    return Promise.reject(error);
+});
+axiosInstance.interceptors.response.use((response)=>{
+    console.log('📥 Axios response:', {
+        status: response.status,
+        url: response.config.url,
+        data: response.data
+    });
+    return response;
+}, (error)=>{
+    console.log('❌ Response interceptor error:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        url: error.config?.url,
+        message: error.message
+    });
     return Promise.reject(error);
 });
 }}),
@@ -243,10 +273,19 @@ const logout = async ()=>{
 };
 const getAuthUser = async ()=>{
     try {
+        console.log('🚀 Starting getAuthUser...');
+        console.log('🌐 Base URL:', ("TURBOPACK compile-time value", "http://localhost:5001/api"));
+        console.log('🔗 Making request to:', `${("TURBOPACK compile-time value", "http://localhost:5001/api")}/auth/me`);
         const res = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$axios$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["axiosInstance"].get("/auth/me");
+        console.log('✅ Response from /auth/me:', res.data);
         return res.data;
     } catch (error) {
-        console.log("Error in getAuthUser:", error);
+        console.log("❌ Detailed error in getAuthUser:");
+        console.log("Status:", error.response?.status);
+        console.log("Data:", error.response?.data);
+        console.log("Headers:", error.response?.headers);
+        console.log("Config:", error.config);
+        console.log("Full error:", error);
         return null;
     }
 };
@@ -261,12 +300,13 @@ const completeOnboarding = async (userData, options)=>{
                     'Content-Type': 'application/json',
                     'Cookie': options.cookieHeader
                 },
+                credentials: 'include',
                 body: JSON.stringify(userData)
             });
             const data = await response.json();
             return data;
         } else {
-            const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$axios$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["axiosInstance"].post("/auth/onboarding", userData);
+            const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$axios$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["axiosInstance"].post("/auth/onBoarding", userData);
             return response.data;
         }
     } catch (error) {
@@ -322,8 +362,21 @@ const useAuthUser = ()=>{
         queryKey: [
             "authUser"
         ],
-        queryFn: __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getAuthUser"],
-        retry: false
+        queryFn: async ()=>{
+            console.log('🔄 Calling getAuthUser...');
+            const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getAuthUser"])();
+            console.log('📦 getAuthUser result:', result);
+            return result;
+        },
+        retry: false,
+        staleTime: 0,
+        refetchOnMount: true
+    });
+    console.log('🎯 useAuthUser state:', {
+        isLoading: authUser.isLoading,
+        error: authUser.error,
+        data: authUser.data,
+        user: authUser.data?.user
     });
     return {
         isLoading: authUser.isLoading,

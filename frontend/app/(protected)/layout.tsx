@@ -2,68 +2,80 @@
 
 import { useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import PageLoader from "@/components/ui/PageLoader";
 import { usePathname } from "next/navigation";
-import useAuthUser from "@/hooks/useAuthUser";
+import { useAuth } from "@/contexts/AuthContext";
+import PageLoader from "@/components/ui/PageLoader";
 
 export default function ProtectedLayout({ children }: { children: ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
+    const { user, isLoading } = useAuth();
 
-    // Kiểm tra nếu người dùng vừa đăng ký
-    const justSignedUp = typeof window !== 'undefined' &&
+    // Check if user just signed up
+    const justSignedUp = typeof window !== 'undefined' && 
         sessionStorage.getItem('justSignedUp') === 'true';
 
-    const { isLoading, authUser } = useAuthUser();
+    const isAuthenticated = Boolean(user) || justSignedUp;
+    const isOnboarded = user?.isOnboarded || false;
 
-    const isAuthenticated = Boolean(authUser) || justSignedUp;
-    const isOnboarded = authUser?.isOnboarded || justSignedUp;
-
-    console.log('Protected layout - Auth data:', authUser);
-    console.log('Protected layout - isAuthenticated:', isAuthenticated);
-    console.log('Protected layout - isOnboarded:', isOnboarded);
-    console.log('Protected layout - justSignedUp:', justSignedUp);
+    console.log('🏠 Protected Layout:', {
+        user,
+        isAuthenticated,
+        isOnboarded,
+        justSignedUp,
+        pathname,
+        isLoading
+    });
 
     useEffect(() => {
         if (isLoading) return;
 
+        // If not authenticated, redirect to sign-up
         if (!isAuthenticated) {
             router.push("/sign-up");
             return;
         }
 
+        // Handle different routes
         switch (pathname) {
-            case "/onBoarding": break;
+            case "/onBoarding":
+                // Allow access to onboarding page if authenticated
+                break;
 
             case "/call":
             case "/chat":
             case "/notifications":
+                // These routes require onboarding
                 if (!isOnboarded) {
                     router.push("/onBoarding");
-                };
+                }
                 break;
+
             default:
                 // For other protected routes, require onboarding
-                if (!isOnboarded) {
-                    router.push("/onboarding");
+                if (!isOnboarded && pathname !== "/onBoarding") {
+                    router.push("/onBoarding");
                 }
         }
 
-        // Clear sign-up flag after use
-        if (justSignedUp && authUser) {
+        // Clear sign-up flag after successful auth check
+        if (justSignedUp && user) {
             sessionStorage.removeItem('justSignedUp');
         }
-    }, [isLoading, isAuthenticated, isOnboarded, router, pathname, authUser, justSignedUp]);
+    }, [isLoading, isAuthenticated, isOnboarded, router, pathname, user, justSignedUp]);
 
-    if (isLoading) return <PageLoader />;
+    // Show loader while checking auth
+    if (isLoading) {
+        return <PageLoader />;
+    }
 
-    // Don't render loader for onboarding page if user is authenticated but not onboarded
-    if (pathname === "/onboarding" && isAuthenticated) {
+    // Show loader for onboarding page if user is authenticated but not onboarded
+    if (pathname === "/onBoarding" && isAuthenticated) {
         return <>{children}</>;
     }
 
-    // Nếu không xác thực hoặc không onboarded (trừ trang onboarding),
-    if (!isAuthenticated || (!isOnboarded && pathname !== "/onboarding")) {
+    // Show loader if not authenticated or not onboarded (except onboarding page)
+    if (!isAuthenticated || (!isOnboarded && pathname !== "/onBoarding")) {
         return <PageLoader />;
     }
 

@@ -1,33 +1,22 @@
-'use client'
+'use client';
 
-import { handleOnBoarded } from "@/app/actions/auth";
-import { useEffect, useState } from "react";
-import { useActionState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import useAuthUser from "@/hooks/useAuthUser";
-import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
+import { completeOnBoarding } from "@/lib/api";
 import { LoaderIcon, MapPinIcon, ShipWheelIcon, ShuffleIcon, CameraIcon } from "lucide-react";
 import { LANGUAGES } from "@/constants";
 import Image from "next/image";
 
-const Page = () => {
+export default function OnboardingPage() {
     const router = useRouter();
-    const { authUser } = useAuthUser();
-    const queryClient = useQueryClient();
+    const { user, updateUser } = useAuth();
     
-    // Chỉ cần state cho avatar để có live preview và random button
-    const [profilePic, setProfilePic] = useState(authUser?.profilePic || "");
-    
-    const initialState = {
-        success: false,
-        message: null,
-        errors: {}
-    };
-    
-    const [state, formAction, isPending] = useActionState(handleOnBoarded, initialState);
+    const [profilePic, setProfilePic] = useState(user?.profilePic || "");
+    const [isLoading, setIsLoading] = useState(false);
+    const [errors, setErrors] = useState<any>({});
 
-    // Generate random avatar
     const handleRandomAvatar = () => {
         const idx = Math.floor(Math.random() * 100) + 1;
         const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
@@ -35,18 +24,61 @@ const Page = () => {
         toast.success("Random profile picture generated!");
     };
 
-    useEffect(() => {
-        if (state.success) {
-            toast.success(state.message || "Profile completed successfully!");
-            queryClient.invalidateQueries({ queryKey: ['authUser'] });
-            
-            const timer = setTimeout(() => {
-                router.push('/');
-            }, 2000);
-            
-            return () => clearTimeout(timer);
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setErrors({});
+
+        const formData = new FormData(e.currentTarget);
+        const fullName = (formData.get('fullName') as string)?.trim();
+        const bio = (formData.get('bio') as string)?.trim();
+        const nativeLanguage = formData.get('nativeLanguage') as string;
+        const learningLanguage = formData.get('learningLanguage') as string;
+        const location = (formData.get('location') as string)?.trim();
+
+        // Client-side validation
+        const newErrors: any = {};
+        if (!fullName) newErrors.fullName = 'Full name is required';
+        if (!nativeLanguage) newErrors.nativeLanguage = 'Native language is required';
+        if (!learningLanguage) newErrors.learningLanguage = 'Learning language is required';
+        if (nativeLanguage === learningLanguage) {
+            newErrors.learningLanguage = 'Learning language must be different from native language';
         }
-    }, [state.success, state.message, router, queryClient]);
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            setIsLoading(false);
+            return;
+        }
+
+        try {
+            const result = await completeOnBoarding({
+                fullName,
+                bio: bio || "",
+                nativeLanguage,
+                learningLanguage,
+                location: location || "",
+                profilePic,
+            });
+
+            if (result.success && result.user) {
+                // Update user in context
+                updateUser(result.user);
+                
+                toast.success("Profile completed successfully!");
+                
+                setTimeout(() => {
+                    router.push('/');
+                }, 1000);
+            } else {
+                toast.error(result.message || "Failed to complete onboarding");
+            }
+        } catch (error) {
+            toast.error("An unexpected error occurred");
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-base-100 flex items-center justify-center p-4">
@@ -56,21 +88,7 @@ const Page = () => {
                         Complete Your Profile
                     </h1>
 
-                    {/* ERROR MESSAGE */}
-                    {state.message && !state.success && (
-                        <div className="alert alert-error mb-4">
-                            <span>{state.message}</span>
-                        </div>
-                    )}
-
-                    {/* SUCCESS MESSAGE */}
-                    {state.success && (
-                        <div className="alert alert-success mb-4">
-                            <span>{state.message}</span>
-                        </div>
-                    )}
-
-                    <form action={formAction} className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         {/* PROFILE PIC CONTAINER */}
                         <div className="flex flex-col items-center justify-center space-y-4">
                             {/* IMAGE PREVIEW */}
@@ -90,24 +108,17 @@ const Page = () => {
                                     </div>
                                 )}
                             </div>
-                            {/* Hidden input để gửi profilePic data */}
-                            <input 
-                                type="hidden" 
-                                name="profilePic" 
-                                value={profilePic} 
-                            />
+
                             {/* Generate Random Avatar BTN */}
-                            <div className="flex items-center gap-2">
-                                <button 
-                                    type="button" 
-                                    onClick={handleRandomAvatar} 
-                                    className="btn btn-accent"
-                                    disabled={isPending}
-                                >
-                                    <ShuffleIcon className="w-4 h-4 mr-2" />
-                                    Generate Random Avatar
-                                </button>
-                            </div>
+                            <button 
+                                type="button" 
+                                onClick={handleRandomAvatar} 
+                                className="btn btn-accent"
+                                disabled={isLoading}
+                            >
+                                <ShuffleIcon className="w-4 h-4 mr-2" />
+                                Generate Random Avatar
+                            </button>
                         </div>
 
                         {/* FULL NAME */}
@@ -119,16 +130,14 @@ const Page = () => {
                                 id="fullName"
                                 type="text"
                                 name="fullName"
-                                defaultValue={authUser?.fullName || ""}
+                                defaultValue={user?.fullName || ""}
                                 className="input w-full"
                                 placeholder="Your full name"
-                                required
+                                disabled={isLoading}
                             />
-                            {state.errors?.fullName && (
+                            {errors.fullName && (
                                 <label className="label">
-                                    <span className="text-error">
-                                        {state.errors.fullName}
-                                    </span>
+                                    <span className="text-error text-sm">{errors.fullName}</span>
                                 </label>
                             )}
                         </fieldset>
@@ -141,9 +150,10 @@ const Page = () => {
                             <textarea
                                 id="bio"
                                 name="bio"
-                                defaultValue={authUser?.bio || ""}
+                                defaultValue={user?.bio || ""}
                                 className="textarea w-full h-24 resize-none"
                                 placeholder="Tell others about yourself and your language learning goals"
+                                disabled={isLoading}
                             />
                         </fieldset>
 
@@ -158,8 +168,8 @@ const Page = () => {
                                     id="nativeLanguage"
                                     name="nativeLanguage"
                                     className="select w-full"
-                                    required
-                                    defaultValue={authUser?.nativeLanguage || ""}
+                                    defaultValue={user?.nativeLanguage || ""}
+                                    disabled={isLoading}
                                 >
                                     <option value="" disabled hidden>Select your native language</option>
                                     {LANGUAGES.map((lang) => (
@@ -168,14 +178,13 @@ const Page = () => {
                                         </option>
                                     ))}
                                 </select>
-                                {state.errors?.nativeLanguage && (
+                                {errors.nativeLanguage && (
                                     <label className="label">
-                                        <span className="text-error">
-                                            {state.errors.nativeLanguage}
-                                        </span>
+                                        <span className="text-error text-sm">{errors.nativeLanguage}</span>
                                     </label>
                                 )}
                             </fieldset>
+
                             {/* LEARNING LANGUAGE */}
                             <fieldset className="fieldset">
                                 <label className="label" htmlFor="learningLanguage">
@@ -185,21 +194,19 @@ const Page = () => {
                                     id="learningLanguage"
                                     name="learningLanguage"
                                     className="select w-full"
-                                    required
-                                    defaultValue={authUser?.learningLanguage || ""}
+                                    defaultValue={user?.learningLanguage || ""}
+                                    disabled={isLoading}
                                 >
-                                    <option value="" disabled hidden>Select the language you like to learn</option>
+                                    <option value="" disabled hidden>Select the language you want to learn</option>
                                     {LANGUAGES.map((lang) => (
                                         <option key={`learning-${lang}`} value={lang.toLowerCase()}>
                                             {lang}
                                         </option>
                                     ))}
                                 </select>
-                                {state.errors?.learningLanguage && (
+                                {errors.learningLanguage && (
                                     <label className="label">
-                                        <span className="text-error">
-                                            {state.errors.learningLanguage}
-                                        </span>
+                                        <span className="text-error text-sm">{errors.learningLanguage}</span>
                                     </label>
                                 )}
                             </fieldset>
@@ -216,9 +223,10 @@ const Page = () => {
                                     id="location"
                                     type="text"
                                     name="location"
-                                    defaultValue={authUser?.location || ""}
+                                    defaultValue={user?.location || ""}
                                     className="input w-full pl-[2.5rem]"
                                     placeholder="City, Country"
+                                    disabled={isLoading}
                                 />
                             </div>
                         </fieldset>
@@ -226,18 +234,18 @@ const Page = () => {
                         {/* SUBMIT BUTTON */}
                         <button 
                             className="btn btn-primary w-full" 
-                            disabled={isPending} 
+                            disabled={isLoading} 
                             type="submit"
                         >
-                            {!isPending ? (
+                            {isLoading ? (
                                 <>
-                                    <ShipWheelIcon className="size-5 mr-2" />
-                                    Complete Onboarding
+                                    <LoaderIcon className="animate-spin size-5 mr-2" />
+                                    Completing Onboarding...
                                 </>
                             ) : (
                                 <>
-                                    <LoaderIcon className="animate-spin size-5 mr-2" />
-                                    Onboarding...
+                                    <ShipWheelIcon className="size-5 mr-2" />
+                                    Complete Onboarding
                                 </>
                             )}
                         </button>
@@ -246,6 +254,4 @@ const Page = () => {
             </div>
         </div>
     );
-};
-
-export default Page;
+}

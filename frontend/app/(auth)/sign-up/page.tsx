@@ -3,42 +3,70 @@
 import { ShipWheelIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { signUp } from "@/app/actions/auth";
-import SubmitButton from "@/components/ui/submitButton";
-import { useActionState, useEffect } from "react";
+import { useState } from "react";
 import toast from 'react-hot-toast';
 import { useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
+import { signUp } from "@/lib/api";
 
 export default function SignUpPage() {
-
-    const initialState = {
-        success: false,
-        message: null,
-        errors: {}
-    };
-
+    const [isLoading, setIsLoading] = useState(false);
+    const [errors, setErrors] = useState<any>({});
     const router = useRouter();
-    const queryClient = useQueryClient();
+    const { login } = useAuth();
 
-    //state chứa kết quả từ server action còn formAction gán vào action của form
-    const [state, formAction] = useActionState(signUp, initialState);
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setErrors({});
 
-    useEffect(() => {
-        if (state.success) {
-            // Đánh dấu vừa đăng ký thành công trong sessionStorage
-            sessionStorage.setItem('justSignedUp', 'true');
-            
-            toast.success(state.message || "Registration successful!");
-            queryClient.invalidateQueries({ queryKey: ['authUser'] });
+        const formData = new FormData(e.currentTarget);
+        const fullName = formData.get('fullName') as string;
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
+        const termsAccepted = formData.get('terms') === 'on';
 
-            const timer = setTimeout(() => {
-                router.push('/onBoarding');
-            }, 2000);
+        // Client-side validation
+        const newErrors: any = {};
+        if (!fullName) newErrors.fullName = 'Full name is required';
+        if (!email) newErrors.email = 'Email is required';
+        if (!password) newErrors.password = 'Password is required';
+        if (password && password.length < 6) newErrors.password = 'Password must be at least 6 characters';
+        if (!termsAccepted) newErrors.terms = 'You must accept the terms';
 
-            return () => clearTimeout(timer);
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            setIsLoading(false);
+            return;
         }
-    }, [state.success, state.message, router, queryClient]);
+
+        try {
+            const result = await signUp({ fullName, email, password });
+
+            if (result.success && result.user && result.token) {
+                // Save to context and localStorage
+                login(result.user, result.token);
+                
+                // Mark as just signed up
+                sessionStorage.setItem('justSignedUp', 'true');
+                
+                toast.success("Registration successful!");
+                
+                setTimeout(() => {
+                    router.push('/onBoarding');
+                }, 1000);
+            } else {
+                toast.error(result.message || "Registration failed");
+                if (result.message?.includes('email')) {
+                    setErrors({ email: result.message });
+                }
+            }
+        } catch (error) {
+            toast.error("An unexpected error occurred");
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8" data-theme="dark">
@@ -53,22 +81,8 @@ export default function SignUpPage() {
                         </span>
                     </div>
 
-                    {/* ERROR MESSAGE IF ANY */}
-                    {state.message && !state.success && (
-                        <div className="alert alert-error mb-4">
-                            <span>{state.message}</span>
-                        </div>
-                    )}
-
-                    {/* SUCCESS MESSAGE */}
-                    {state.success && (
-                        <div className="alert alert-success mb-4">
-                            <span>{state.message}</span>
-                        </div>
-                    )}
-
                     <div className="w-full">
-                        <form action={formAction}>
+                        <form onSubmit={handleSubmit}>
                             <div className="space-y-4">
                                 <div>
                                     <h2 className="text-xl font-semibold">Create an Account</h2>
@@ -88,8 +102,13 @@ export default function SignUpPage() {
                                             name="fullName"
                                             placeholder="John Doe"
                                             className="input w-full"
-                                            required
+                                            disabled={isLoading}
                                         />
+                                        {errors.fullName && (
+                                            <label className="label">
+                                                <span className="text-error text-sm">{errors.fullName}</span>
+                                            </label>
+                                        )}
                                     </fieldset>
 
                                     {/* EMAIL */}
@@ -102,21 +121,32 @@ export default function SignUpPage() {
                                             name="email"
                                             placeholder="john@gmail.com"
                                             className="input input-bordered w-full"
-                                            required
+                                            disabled={isLoading}
                                         />
+                                        {errors.email && (
+                                            <label className="label">
+                                                <span className="text-error text-sm">{errors.email}</span>
+                                            </label>
+                                        )}
                                     </fieldset>
+
                                     {/* PASSWORD */}
                                     <fieldset className="form-control w-full fieldset">
                                         <label className="label">
-                                            <legend className=" fieldset-legend text-sm font-medium text-gray-600">Password</legend>
+                                            <legend className="fieldset-legend text-sm font-medium text-gray-600">Password</legend>
                                         </label>
                                         <input
                                             type="password"
                                             name="password"
                                             placeholder="********"
                                             className="input input-bordered w-full"
-                                            required
+                                            disabled={isLoading}
                                         />
+                                        {errors.password && (
+                                            <label className="label">
+                                                <span className="text-error text-sm">{errors.password}</span>
+                                            </label>
+                                        )}
                                         <p className="text-xs opacity-70 mt-1">
                                             Password must be at least 6 characters long
                                         </p>
@@ -124,22 +154,45 @@ export default function SignUpPage() {
 
                                     <div className="form-control">
                                         <label className="label cursor-pointer justify-start gap-2">
-                                            <input type="checkbox" name="terms" className="checkbox checkbox-sm" required />
+                                            <input 
+                                                type="checkbox" 
+                                                name="terms" 
+                                                className="checkbox checkbox-sm" 
+                                                disabled={isLoading}
+                                            />
                                             <span className="text-xs leading-tight">
                                                 I agree to the{" "}
                                                 <span className="text-primary hover:underline">terms of service</span> and{" "}
                                                 <span className="text-primary hover:underline">privacy policy</span>
                                             </span>
                                         </label>
+                                        {errors.terms && (
+                                            <label className="label">
+                                                <span className="text-error text-sm">{errors.terms}</span>
+                                            </label>
+                                        )}
                                     </div>
                                 </div>
 
-                                <SubmitButton text="Create Account" loadingText="Loading..." />
+                                <button 
+                                    type="submit"
+                                    className="btn btn-primary w-full"
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? (
+                                        <>
+                                            <span className="loading loading-spinner loading-xs"></span>
+                                            Creating Account...
+                                        </>
+                                    ) : (
+                                        "Create Account"
+                                    )}
+                                </button>
 
                                 <div className="text-center mt-4">
                                     <p className="text-sm">
                                         Already have an account?{" "}
-                                        <Link href="/login" className="text-primary hover:underline">
+                                        <Link href="/sign-in" className="text-primary hover:underline">
                                             Sign in
                                         </Link>
                                     </p>
@@ -149,10 +202,9 @@ export default function SignUpPage() {
                     </div>
                 </div>
 
-                {/* SIGNUP FORM - RIGHT SIDE */}
+                {/* RIGHT SIDE */}
                 <div className="hidden lg:flex w-full lg:w-1/2 bg-primary/10 items-center justify-center">
                     <div className="max-w-md p-8">
-                        {/* Illustration */}
                         <div className="relative aspect-square max-w-sm mx-auto">
                             <Image
                                 src="/i.png"
