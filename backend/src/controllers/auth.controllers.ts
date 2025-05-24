@@ -163,7 +163,7 @@ export async function onBoarding(req: Request, res: Response): Promise<Response 
         }, { new: true }) as IUser; //phương thức sẽ trả về document đã được cập nhật
 
 
-        if (!updatedUser) return res.status(404).json({ message: "User not found" });
+        if (!updatedUser) return res.status(404).json({ message: "User not found in the database" });
 
         //cập nhật user trong stream database
         try {
