@@ -2,7 +2,7 @@ import mongoose, { Document, Model } from "mongoose";
 import bcrypt from "bcryptjs";
 
 // Định nghĩa interface cho user document
-interface IUser extends Document {
+export interface IUser extends Document {
     fullName: string;
     email: string;
     password: string;

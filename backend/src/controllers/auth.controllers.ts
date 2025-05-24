@@ -3,49 +3,31 @@ import User from "../models/User";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { upsertStreamUser } from "../lib/stream";
-import mongoose from "mongoose";
 
 dotenv.config();
-interface IUser {
-    _id: mongoose.Types.ObjectId;
-    fullName: string;
-    profilePic?: string;
-    bio?: string;
-    nativeLanguage?: string;
-    learningLanguage?: string;
-    location?: string;
-    isOnboarded: boolean;
-}
 
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-function isValidEmail(email: string): boolean {
-    return emailRegex.test(email);
+const generateToken = (userId: string): string => {
+    return jwt.sign({ userId }, process.env.JWT_SECRET_KEY!, { expiresIn: "7d" });
 };
 
-export async function signUp(req: Request, res: Response): Promise <Response | any> {
-    const { email, password, fullName } = req.body;
-
+export async function signUp(req: Request, res: Response): Promise<Response|void|any> {
     try {
+        const { email, password, fullName } = req.body;
+
         if (!email || !password || !fullName) {
-            return res.status(400).json({ message: "Missing required fields" });
+            return res.status(400).json({ success: false, message: "Missing required fields" });
         }
 
         if (password.length < 6) {
-            return res.status(400).json({ message: "Passwords must be at least 6 characters" });
+            return res.status(400).json({ success: false, message: "Password must be at least 6 characters" });
         }
 
-        if (!isValidEmail(email)) {
-            return res.status(400).json({ message: "Invalid email format" });
-        }
-
-        //check if user is existed or not
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ message: "Email already exists, please use a diffrent one" });
+            return res.status(400).json({ success: false, message: "Email already exists" });
         }
 
-        const idx = Math.floor(Math.random() * 100) + 1; // generate a num between 1-100
+        const idx = Math.floor(Math.random() * 100) + 1;
         const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
 
         const newUser = await User.create({
@@ -53,7 +35,7 @@ export async function signUp(req: Request, res: Response): Promise <Response | a
             fullName,
             password,
             profilePic: randomAvatar,
-        }) as IUser;
+        });
 
         try {
             await upsertStreamUser({
@@ -61,150 +43,179 @@ export async function signUp(req: Request, res: Response): Promise <Response | a
                 name: newUser.fullName,
                 image: newUser.profilePic || ""
             });
-            console.log(`Stream user created for ${newUser.fullName}`);
-        } catch (error: any) {
-            console.log("Error creating Stream User: ", error);
-        };
-
-        const token = jwt.sign(
-            { userId: newUser._id },
-            process.env.JWT_SECRET_KEY!,
-            { expiresIn: "7d" }
-        );
-
-        if (!token) {
-            return res.status(500).json({message: "Token not found"});
+        } catch (error) {
+            console.log("Error creating Stream User:", error);
         }
 
-        res.cookie("jwt", token, {
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-            httpOnly: true, // prevent XSS attacks,
-            sameSite: "strict", // prevent CSRF attacks
-            secure: false,
+        const token = generateToken(newUser._id.toString());
+
+        const userResponse = {
+            _id: newUser._id,
+            fullName: newUser.fullName,
+            email: newUser.email,
+            profilePic: newUser.profilePic,
+            isOnboarded: newUser.isOnboarded,
+            bio: newUser.bio,
+            nativeLanguage: newUser.nativeLanguage,
+            learningLanguage: newUser.learningLanguage,
+            location: newUser.location
+        };
+
+        return res.status(201).json({ 
+            success: true, 
+            user: userResponse,
+            token
         });
 
-        return res.status(201).json({ success: true, user: newUser });
-
     } catch (error: any) {
-        console.log("Error in SignUp function: ", error);
-        return res.status(500).json({ message: "Something went wrong" });
+        console.log("Error in SignUp:", error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
     }
-};
+}
 
-export async function signIn(req: Request, res: Response): Promise<Response | void | any> {
+export async function signIn(req: Request, res: Response): Promise<Response|void|any> {
     try {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(400).json({ message: "Missing required fields" });
+            return res.status(400).json({ success: false, message: "Missing required fields" });
         }
 
-        const checkedUser = await User.findOne({ email });
-        if (!checkedUser) {
-            return res.status(400).json({ message: "Invalid email or password" });
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ success: false, message: "Invalid credentials" });
         }
 
-        const isPasswordCorrect = await checkedUser.matchPassword(password);
-        if (!isPasswordCorrect) return res.status(401).json({ message: "Invalid email or password" });
+        const isPasswordCorrect = await user.matchPassword(password);
+        if (!isPasswordCorrect) {
+            return res.status(401).json({ success: false, message: "Invalid credentials" });
+        }
 
-        const token = jwt.sign(
-            { userId: checkedUser._id },
-            process.env.JWT_SECRET_KEY!,
-            { expiresIn: "7d" }
-        );
+        const token = generateToken(user._id.toString());
 
-        res.cookie("jwt", token, {
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-            httpOnly: true, // prevent XSS attacks,
-            sameSite: "strict", // prevent CSRF attacks
-            secure: false,
+        const userResponse = {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            profilePic: user.profilePic,
+            isOnboarded: user.isOnboarded,
+            bio: user.bio,
+            nativeLanguage: user.nativeLanguage,
+            learningLanguage: user.learningLanguage,
+            location: user.location
+        };
+
+        return res.status(200).json({ 
+            success: true, 
+            user: userResponse,
+            token 
         });
 
-        return res.status(200).json({ success: true, checkedUser });
-
     } catch (error: any) {
-        console.log("Error in login controller", error.message);
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.log("Error in signIn:", error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
     }
-};
+}
 
-export function signOut(req: Request, res: Response): Response | any {
-    res.clearCookie("jwt");
-    return res.status(200).json({ success: true, message: "Logout successful" });
-};
-
-export async function onBoarding(req: Request, res: Response): Promise<Response | any> {
-    // Kiểm tra nếu user không tồn tại
+export async function getMe(req: Request, res: Response): Promise<Response|void|any> {
     try {
-        if (!req.user) {
-            return res.status(401).json({ message: "Unauthorized - User not authenticated" });
+        const user = (req as any).user;
+        
+        if (!user) {
+            return res.status(401).json({ success: false, message: "Unauthorized" });
         }
-        const userId = req.user._id;
-        const { fullName, bio, nativeLanguage, learningLanguage, location } = req.body;
 
-        if (!fullName || !bio || !nativeLanguage || !learningLanguage || !location) {
+        const userResponse = {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            profilePic: user.profilePic,
+            isOnboarded: user.isOnboarded,
+            bio: user.bio,
+            nativeLanguage: user.nativeLanguage,
+            learningLanguage: user.learningLanguage,
+            location: user.location
+        };
+
+        return res.status(200).json({ success: true, user: userResponse });
+    } catch (error) {
+        console.log("Error in getMe:", error);
+        return res.status(500).json({ success: false, message: "Server error in auth.controller.ts" });
+    }
+}
+
+export async function onBoarding(req: Request, res: Response): Promise<Response|void|any> {
+    try {
+        const user = (req as any).user;
+        
+        if (!user) {
+            return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+
+        const { fullName, bio, nativeLanguage, learningLanguage, location, profilePic } = req.body;
+
+        if (!fullName || !nativeLanguage || !learningLanguage) {
             return res.status(400).json({
-                message: "All fields are required",
-                //hiển thị ra các trường bị thiếu
-                missingFields: [
-                    !fullName && "fullName",
-                    !bio && "bio",
-                    !nativeLanguage && "nativeLanguage",
-                    !learningLanguage && "learningLanguage",
-                    !location && "location",
-                ].filter(Boolean) //loại bỏ các giá trị false trong mảng
+                success: false,
+                message: "Full name, native language, and learning language are required"
             });
         }
 
-        //cập nhật thông tin người dùng trong MongoDB
-        const updatedUser = await User.findByIdAndUpdate(userId, {
-            ...req.body,
-            isOnboarded: true, //đánh dấu rằng người dùng đã hoàn thành quá trình onboarding
-        }, { new: true }) as IUser; //phương thức sẽ trả về document đã được cập nhật
+        if (nativeLanguage === learningLanguage) {
+            return res.status(400).json({
+                success: false,
+                message: "Native and learning languages must be different"
+            });
+        }
 
+        const updatedUser = await User.findByIdAndUpdate(
+            user._id,
+            {
+                fullName: fullName.trim(),
+                bio: bio?.trim() || "",
+                nativeLanguage,
+                learningLanguage,
+                location: location?.trim() || "",
+                profilePic: profilePic || user.profilePic,
+                isOnboarded: true
+            },
+            { new: true }
+        );
 
-        if (!updatedUser) return res.status(404).json({ message: "User not found in the database" });
+        if (!updatedUser) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
 
-        //cập nhật user trong stream database
         try {
             await upsertStreamUser({
                 id: updatedUser._id.toString(),
                 name: updatedUser.fullName,
-                image: updatedUser.profilePic || "",
-            })
-
-            console.log(`Stream user updated after onboarding for ${updatedUser.fullName}`);
-        } catch (streamError: any) {
-            console.log("Error updating Stream user during onboarding controller:", streamError.message);
+                image: updatedUser.profilePic || ""
+            });
+        } catch (error) {
+            console.log("Error updating Stream user:", error);
         }
+
+        const userResponse = {
+            _id: updatedUser._id,
+            fullName: updatedUser.fullName,
+            email: updatedUser.email,
+            profilePic: updatedUser.profilePic,
+            isOnboarded: updatedUser.isOnboarded,
+            bio: updatedUser.bio,
+            nativeLanguage: updatedUser.nativeLanguage,
+            learningLanguage: updatedUser.learningLanguage,
+            location: updatedUser.location
+        };
 
         return res.status(200).json({
             success: true,
-            message: "Onboarding completely successfully",
-            user: updatedUser
+            message: "Onboarding completed successfully",
+            user: userResponse
         });
 
-    } catch (error: any) {
-        console.error("Onboarding error:", error);
-        return res.status(500).json({ message: "Internal Server Error" });
+    } catch (error) {
+        console.log("Error in onBoarding:", error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
