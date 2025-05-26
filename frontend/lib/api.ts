@@ -1,3 +1,5 @@
+import { asyncWrapProviders } from "async_hooks";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 interface ApiResponse<T = any> {
@@ -120,3 +122,121 @@ export const completeOnBoarding = async (userData: OnboardingData): Promise<ApiR
         }
     }
 }
+
+export async function getUserFriends(): Promise<any[]> {
+    try {
+        const response = await makeAuthenticationRequest('/user/friends');
+        if (!response.ok) {
+            throw new Error('Failed to fetch friends');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error: any) {
+        console.error('Get friends error:', error);
+        throw error;
+    };
+}
+
+export async function getRecommendedUsers(): Promise<any[]> {
+    try {
+        const response = await makeAuthenticationRequest('/user/');
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch recommended users');
+        }
+        
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Get recommended users error:', error);
+        throw error;
+    }
+}
+
+export async function getOutgoingFriendReqs(): Promise<any[]> {
+    try {
+        const response = await makeAuthenticationRequest('/user/outgoing-friend-requests');
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch outgoing requests');
+        }
+        
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Get outgoing requests error:', error);
+        throw error;
+    }
+}
+
+
+export async function sendFriendRequest(userId: string): Promise<any> {
+    try {
+        const response = await makeAuthenticationRequest(`/user/friend-request/${userId}`, {
+            method: 'POST',
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to send friend request');
+        }
+        
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Send friend request error:', error);
+        throw error;
+    }
+}
+
+export async function getFriendRequests(): Promise<any> {
+    try {
+        const response = await makeAuthenticationRequest('/user/friend-requests');
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch friend requests');
+        }
+        
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Get friend requests error:', error);
+        throw error;
+    }
+}
+
+export async function acceptFriendRequest(requestId: string): Promise<any> {
+    try {
+        const response = await makeAuthenticationRequest(`/users/friend-request/${requestId}/accept`, {
+            method: 'PUT',
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to accept friend request');
+        }
+        
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Accept friend request error:', error);
+        throw error;
+    }
+}
+
+// Chat APIs
+export async function getStreamToken(): Promise<any> {
+    try {
+        const response = await makeAuthenticationRequest('/chat/token');
+        
+        if (!response.ok) {
+            throw new Error('Failed to get stream token');
+        }
+        
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Get stream token error:', error);
+        throw error;
+    }
+}
+

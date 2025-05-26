@@ -117,6 +117,7 @@ const completeOnBoarding = async (userData)=>{
         };
     }
 };
+const ;
 }}),
 "[project]/app/(auth)/sign-up/page.tsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
@@ -184,7 +185,7 @@ function SignUpPage() {
                 sessionStorage.setItem('justSignedUp', 'true');
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].success("Registration successful!");
                 setTimeout(()=>{
-                    router.push('/onboarding');
+                    router.push('/onBoarding');
                 }, 1000);
             } else {
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].error(result.message || "Registration failed");
