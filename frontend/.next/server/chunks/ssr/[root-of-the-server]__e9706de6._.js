@@ -91,30 +91,28 @@ function ProtectedLayout({ children }) {
         isLoading
     });
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        // Don't redirect while loading
         if (isLoading) return;
         // If not authenticated, redirect to sign-up
         if (!isAuthenticated) {
+            console.log('❌ Not authenticated, redirecting to sign-up');
             router.push("/sign-up");
             return;
         }
-        // Handle different routes
-        switch(pathname){
-            case "/onBoarding":
-                break;
-            case "/call":
-            case "/chat":
-            case "/notifications":
-                // These routes require onboarding
-                if (!isOnboarded) {
-                    router.push("/onBoarding");
-                }
-                break;
-            default:
-                // For other protected routes, require onboarding
-                if (!isOnboarded && pathname !== "/onBoarding") {
-                    router.push("/onBoarding");
-                }
+        // If authenticated but not onboarded
+        if (isAuthenticated && !isOnboarded) {
+            // Allow access to onboarding page
+            if (pathname === "/onboarding") {
+                console.log('✅ Allowing access to onboarding page');
+                return;
+            }
+            // Redirect other pages to onboarding
+            console.log('🔄 Redirecting to onboarding');
+            router.push("/onboarding");
+            return;
         }
+        // If authenticated and onboarded, allow access to all protected routes
+        console.log('✅ User is authenticated and onboarded');
         // Clear sign-up flag after successful auth check
         if ("TURBOPACK compile-time falsy", 0) {
             "TURBOPACK unreachable";
@@ -130,26 +128,33 @@ function ProtectedLayout({ children }) {
     ]);
     // Show loader while checking auth
     if (isLoading) {
+        console.log('⏳ Loading auth state...');
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$PageLoader$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/app/(protected)/layout.tsx",
-            lineNumber: 69,
+            lineNumber: 67,
             columnNumber: 16
         }, this);
     }
-    // Show loader for onboarding page if user is authenticated but not onboarded
-    if (pathname === "/onBoarding" && isAuthenticated) {
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
-            children: children
-        }, void 0, false);
+    // If not authenticated, show loader (redirect is happening)
+    if (!isAuthenticated) {
+        console.log('🔄 Redirecting to sign-up...');
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$PageLoader$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+            fileName: "[project]/app/(protected)/layout.tsx",
+            lineNumber: 73,
+            columnNumber: 16
+        }, this);
     }
-    // Show loader if not authenticated or not onboarded (except onboarding page)
-    if (!isAuthenticated || !isOnboarded && pathname !== "/onBoarding") {
+    // If authenticated but not onboarded and not on onboarding page
+    if (isAuthenticated && !isOnboarded && pathname !== "/onboarding") {
+        console.log('🔄 Redirecting to onboarding...');
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$PageLoader$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/app/(protected)/layout.tsx",
             lineNumber: 79,
             columnNumber: 16
         }, this);
     }
+    // Render children if all checks pass
+    console.log('✅ Rendering protected content');
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
         children: children
     }, void 0, false);

@@ -1,5 +1,3 @@
-import { asyncWrapProviders } from "async_hooks";
-
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 interface ApiResponse<T = any> {
@@ -125,7 +123,7 @@ export const completeOnBoarding = async (userData: OnboardingData): Promise<ApiR
 
 export async function getUserFriends(): Promise<any[]> {
     try {
-        const response = await makeAuthenticationRequest('/user/friends');
+        const response = await makeAuthenticationRequest('/users/friends');
         if (!response.ok) {
             throw new Error('Failed to fetch friends');
         }
@@ -140,7 +138,7 @@ export async function getUserFriends(): Promise<any[]> {
 
 export async function getRecommendedUsers(): Promise<any[]> {
     try {
-        const response = await makeAuthenticationRequest('/user/');
+        const response = await makeAuthenticationRequest('/users/');
         
         if (!response.ok) {
             throw new Error('Failed to fetch recommended users');
@@ -156,7 +154,7 @@ export async function getRecommendedUsers(): Promise<any[]> {
 
 export async function getOutgoingFriendReqs(): Promise<any[]> {
     try {
-        const response = await makeAuthenticationRequest('/user/outgoing-friend-requests');
+        const response = await makeAuthenticationRequest('/users/outgoing-friend-requests');
         
         if (!response.ok) {
             throw new Error('Failed to fetch outgoing requests');
@@ -173,7 +171,7 @@ export async function getOutgoingFriendReqs(): Promise<any[]> {
 
 export async function sendFriendRequest(userId: string): Promise<any> {
     try {
-        const response = await makeAuthenticationRequest(`/user/friend-request/${userId}`, {
+        const response = await makeAuthenticationRequest(`/users/friend-request/${userId}`, {
             method: 'POST',
         });
         
@@ -191,7 +189,7 @@ export async function sendFriendRequest(userId: string): Promise<any> {
 
 export async function getFriendRequests(): Promise<any> {
     try {
-        const response = await makeAuthenticationRequest('/user/friend-requests');
+        const response = await makeAuthenticationRequest('/users/friend-requests');
         
         if (!response.ok) {
             throw new Error('Failed to fetch friend requests');

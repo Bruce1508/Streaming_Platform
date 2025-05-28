@@ -1,6 +1,5 @@
 {
-  "/(auth)/sign-up/page": "app/(auth)/sign-up/page.js",
-  "/(protected)/onBoarding/page": "app/(protected)/onBoarding/page.js",
+  "/(protected)/notifications/page": "app/(protected)/notifications/page.js",
   "/(protected)/page": "app/(protected)/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }

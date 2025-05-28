@@ -6,8 +6,15 @@ module.exports = {
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
+    "acceptFriendRequest": (()=>acceptFriendRequest),
     "completeOnBoarding": (()=>completeOnBoarding),
     "getAuthUser": (()=>getAuthUser),
+    "getFriendRequests": (()=>getFriendRequests),
+    "getOutgoingFriendReqs": (()=>getOutgoingFriendReqs),
+    "getRecommendedUsers": (()=>getRecommendedUsers),
+    "getStreamToken": (()=>getStreamToken),
+    "getUserFriends": (()=>getUserFriends),
+    "sendFriendRequest": (()=>sendFriendRequest),
     "signIn": (()=>signIn),
     "signUp": (()=>signUp)
 });
@@ -93,6 +100,102 @@ const completeOnBoarding = async (userData)=>{
         };
     }
 };
+async function getUserFriends() {
+    try {
+        const response = await makeAuthenticationRequest('/user/friends');
+        if (!response.ok) {
+            throw new Error('Failed to fetch friends');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Get friends error:', error);
+        throw error;
+    }
+    ;
+}
+async function getRecommendedUsers() {
+    try {
+        const response = await makeAuthenticationRequest('/user/');
+        if (!response.ok) {
+            throw new Error('Failed to fetch recommended users');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Get recommended users error:', error);
+        throw error;
+    }
+}
+async function getOutgoingFriendReqs() {
+    try {
+        const response = await makeAuthenticationRequest('/user/outgoing-friend-requests');
+        if (!response.ok) {
+            throw new Error('Failed to fetch outgoing requests');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Get outgoing requests error:', error);
+        throw error;
+    }
+}
+async function sendFriendRequest(userId) {
+    try {
+        const response = await makeAuthenticationRequest(`/user/friend-request/${userId}`, {
+            method: 'POST'
+        });
+        if (!response.ok) {
+            throw new Error('Failed to send friend request');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Send friend request error:', error);
+        throw error;
+    }
+}
+async function getFriendRequests() {
+    try {
+        const response = await makeAuthenticationRequest('/user/friend-requests');
+        if (!response.ok) {
+            throw new Error('Failed to fetch friend requests');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Get friend requests error:', error);
+        throw error;
+    }
+}
+async function acceptFriendRequest(requestId) {
+    try {
+        const response = await makeAuthenticationRequest(`/users/friend-request/${requestId}/accept`, {
+            method: 'PUT'
+        });
+        if (!response.ok) {
+            throw new Error('Failed to accept friend request');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Accept friend request error:', error);
+        throw error;
+    }
+}
+async function getStreamToken() {
+    try {
+        const response = await makeAuthenticationRequest('/chat/token');
+        if (!response.ok) {
+            throw new Error('Failed to get stream token');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Get stream token error:', error);
+        throw error;
+    }
+}
 }}),
 "[project]/constants/index.ts [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
