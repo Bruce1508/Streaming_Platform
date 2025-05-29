@@ -189,16 +189,29 @@ export async function sendFriendRequest(userId: string): Promise<any> {
 
 export async function getFriendRequests(): Promise<any> {
     try {
+        console.log('🌐 Making API call to /users/friend-requests');
+        
         const response = await makeAuthenticationRequest('/users/friend-requests');
+        console.log('📡 Response status:', response.status);
         
         if (!response.ok) {
+            console.error('❌ Response not OK:', response.status, response.statusText);
             throw new Error('Failed to fetch friend requests');
         }
         
         const data = await response.json();
-        return data;
+        console.log('📦 Raw API response:', data);
+        
+        // Check backend response structure
+        const result = {
+            incomingRequests: data.incomingRequests || data.incomingReqs || [],
+            acceptedRequests: data.acceptedRequests || data.acceptedReqs || []
+        };
+        
+        console.log('🔄 Mapped result:', result);
+        return result;
     } catch (error) {
-        console.error('Get friend requests error:', error);
+        console.error('❌ Get friend requests error:', error);
         throw error;
     }
 }

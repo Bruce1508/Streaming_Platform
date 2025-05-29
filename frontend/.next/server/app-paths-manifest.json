@@ -1,5 +1,5 @@
 {
-  "/(protected)/notifications/page": "app/(protected)/notifications/page.js",
-  "/(protected)/page": "app/(protected)/page.js",
+  "/(protected)/(DashBoard)/notifications/page": "app/(protected)/(DashBoard)/notifications/page.js",
+  "/(protected)/(DashBoard)/page": "app/(protected)/(DashBoard)/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }

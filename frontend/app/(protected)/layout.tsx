@@ -41,14 +41,14 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
         // If authenticated but not onboarded
         if (isAuthenticated && !isOnboarded) {
             // Allow access to onboarding page
-            if (pathname === "/onboarding") {
+            if (pathname === "/onBoarding") {
                 console.log('✅ Allowing access to onboarding page');
                 return;
             }
             
             // Redirect other pages to onboarding
             console.log('🔄 Redirecting to onboarding');
-            router.push("/onboarding");
+            router.push("/onBoarding");
             return;
         }
 
@@ -74,7 +74,7 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
     }
 
     // If authenticated but not onboarded and not on onboarding page
-    if (isAuthenticated && !isOnboarded && pathname !== "/onboarding") {
+    if (isAuthenticated && !isOnboarded && pathname !== "/onBoarding") {
         console.log('🔄 Redirecting to onboarding...');
         return <PageLoader />;
     }

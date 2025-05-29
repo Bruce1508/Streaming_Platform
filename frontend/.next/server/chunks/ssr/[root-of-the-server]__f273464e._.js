@@ -126,7 +126,7 @@ const completeOnBoarding = async (userData)=>{
 };
 async function getUserFriends() {
     try {
-        const response = await makeAuthenticationRequest('/user/friends');
+        const response = await makeAuthenticationRequest('/users/friends');
         if (!response.ok) {
             throw new Error('Failed to fetch friends');
         }
@@ -140,7 +140,7 @@ async function getUserFriends() {
 }
 async function getRecommendedUsers() {
     try {
-        const response = await makeAuthenticationRequest('/user/');
+        const response = await makeAuthenticationRequest('/users/');
         if (!response.ok) {
             throw new Error('Failed to fetch recommended users');
         }
@@ -153,7 +153,7 @@ async function getRecommendedUsers() {
 }
 async function getOutgoingFriendReqs() {
     try {
-        const response = await makeAuthenticationRequest('/user/outgoing-friend-requests');
+        const response = await makeAuthenticationRequest('/users/outgoing-friend-requests');
         if (!response.ok) {
             throw new Error('Failed to fetch outgoing requests');
         }
@@ -166,7 +166,7 @@ async function getOutgoingFriendReqs() {
 }
 async function sendFriendRequest(userId) {
     try {
-        const response = await makeAuthenticationRequest(`/user/friend-request/${userId}`, {
+        const response = await makeAuthenticationRequest(`/users/friend-request/${userId}`, {
             method: 'POST'
         });
         if (!response.ok) {
@@ -181,14 +181,24 @@ async function sendFriendRequest(userId) {
 }
 async function getFriendRequests() {
     try {
-        const response = await makeAuthenticationRequest('/user/friend-requests');
+        console.log('🌐 Making API call to /users/friend-requests');
+        const response = await makeAuthenticationRequest('/users/friend-requests');
+        console.log('📡 Response status:', response.status);
         if (!response.ok) {
+            console.error('❌ Response not OK:', response.status, response.statusText);
             throw new Error('Failed to fetch friend requests');
         }
         const data = await response.json();
-        return data;
+        console.log('📦 Raw API response:', data);
+        // Check backend response structure
+        const result = {
+            incomingRequests: data.incomingRequests || data.incomingReqs || [],
+            acceptedRequests: data.acceptedRequests || data.acceptedReqs || []
+        };
+        console.log('🔄 Mapped result:', result);
+        return result;
     } catch (error) {
-        console.error('Get friend requests error:', error);
+        console.error('❌ Get friend requests error:', error);
         throw error;
     }
 }

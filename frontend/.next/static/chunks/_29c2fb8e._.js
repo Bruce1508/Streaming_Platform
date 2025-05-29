@@ -87,13 +87,13 @@ function ProtectedLayout({ children }) {
             // If authenticated but not onboarded
             if (isAuthenticated && !isOnboarded) {
                 // Allow access to onboarding page
-                if (pathname === "/onboarding") {
+                if (pathname === "/onBoarding") {
                     console.log('✅ Allowing access to onboarding page');
                     return;
                 }
                 // Redirect other pages to onboarding
                 console.log('🔄 Redirecting to onboarding');
-                router.push("/onboarding");
+                router.push("/onBoarding");
                 return;
             }
             // If authenticated and onboarded, allow access to all protected routes
@@ -131,7 +131,7 @@ function ProtectedLayout({ children }) {
         }, this);
     }
     // If authenticated but not onboarded and not on onboarding page
-    if (isAuthenticated && !isOnboarded && pathname !== "/onboarding") {
+    if (isAuthenticated && !isOnboarded && pathname !== "/onBoarding") {
         console.log('🔄 Redirecting to onboarding...');
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$PageLoader$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/app/(protected)/layout.tsx",

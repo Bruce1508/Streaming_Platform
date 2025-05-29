@@ -9,13 +9,22 @@ import { LoaderIcon, MapPinIcon, ShipWheelIcon, ShuffleIcon, CameraIcon } from "
 import { LANGUAGES } from "@/constants";
 import Image from "next/image";
 
+// Define the error type for form errors
+interface FormErrors {
+    fullName?: string;
+    bio?: string;
+    nativeLanguage?: string;
+    learningLanguage?: string;
+    location?: string;
+}
+
 export default function OnboardingPage() {
     const router = useRouter();
     const { user, updateUser } = useAuth();
     
     const [profilePic, setProfilePic] = useState(user?.profilePic || "");
     const [isLoading, setIsLoading] = useState(false);
-    const [errors, setErrors] = useState<any>({});
+    const [errors, setErrors] = useState<FormErrors>({});
 
     const handleRandomAvatar = () => {
         const idx = Math.floor(Math.random() * 100) + 1;
@@ -37,7 +46,7 @@ export default function OnboardingPage() {
         const location = (formData.get('location') as string)?.trim();
 
         // Client-side validation
-        const newErrors: any = {};
+        const newErrors: FormErrors = {};
         if (!fullName) newErrors.fullName = 'Full name is required';
         if (!nativeLanguage) newErrors.nativeLanguage = 'Native language is required';
         if (!learningLanguage) newErrors.learningLanguage = 'Learning language is required';
@@ -74,6 +83,7 @@ export default function OnboardingPage() {
                 toast.error(result.message || "Failed to complete onboarding");
             }
         } catch (error) {
+            console.error('Onboarding error:', error);
             toast.error("An unexpected error occurred");
         } finally {
             setIsLoading(false);

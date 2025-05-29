@@ -1,10 +1,10 @@
 {
   "app": {
-    "[project]/app/(protected)/notifications/page": [
+    "[project]/app/(protected)/(DashBoard)/notifications/page": [
       "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
       "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
     ],
-    "[project]/app/(protected)/page": [
+    "[project]/app/(protected)/(DashBoard)/page": [
       "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2",
       "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2"
     ]
