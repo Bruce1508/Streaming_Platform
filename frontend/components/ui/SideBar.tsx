@@ -35,21 +35,21 @@ const Sidebar = () => {
                 </Link>
 
                 <Link
-                    href="/friends"
-                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/friends" ? "btn-active" : ""
-                        }`}
-                >
-                    <UsersIcon className="size-5 text-base-content opacity-70" />
-                    <span>Friends</span>
-                </Link>
-
-                <Link
                     href="/notifications"
                     className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/notifications" ? "btn-active" : ""
                         }`}
                 >
                     <BellIcon className="size-5 text-base-content opacity-70" />
                     <span>Notifications</span>
+                </Link>
+
+                <Link
+                    href="/friends"
+                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/friends" ? "btn-active" : ""
+                        }`}
+                >
+                    <UsersIcon className="size-5 text-base-content opacity-70" />
+                    <span>Friends</span>
                 </Link>
             </nav>
 
@@ -65,6 +65,7 @@ const Sidebar = () => {
                                     fill
                                     className="object-cover"
                                     sizes="40px"
+                                    priority
                                 />
                             )}
                         </div>

@@ -11,8 +11,8 @@ import {
 	sendFriendRequest
 } from "@/lib/api";
 import { capitialize } from "@/lib/utils";
-import FriendCard, {getLanguageFlag} from "@/components/ui/FriendCard";
-import NoFriendsFound from "@/components/ui/NoFriendFound"; 
+import FriendCard, { getLanguageFlag } from "@/components/ui/FriendCard";
+import NoFriendsFound from "@/components/ui/NoFriendFound";
 import toast from "react-hot-toast";
 import Image from "next/image";
 
@@ -199,6 +199,7 @@ export default function HomePage() {
 														alt={user.fullName}
 														className="w-full h-full object-cover"
 														fill
+														sizes="64px"
 													/>
 												</div>
 

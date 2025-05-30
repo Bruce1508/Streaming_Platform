@@ -41,7 +41,7 @@ const Navbar = () => {
                     )}
 
                     {/* RIGHT SIDE CONTROLS */}
-                    <div className="flex items-center gap-3 sm:gap-4 ml-auto">
+                    <div className="flex items-center gap-3 sm:gap-4 ml-auto mr-4">
                         {/* Notifications - only show in navbar if not in sidebar */}
                         {isChatPage && (
                             <Link href="/notifications">
@@ -64,6 +64,7 @@ const Navbar = () => {
                                         fill
                                         className="object-cover"
                                         sizes="36px"
+                                        priority
                                     />
                                 )}
                             </div>

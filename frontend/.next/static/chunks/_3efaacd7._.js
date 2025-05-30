@@ -796,7 +796,8 @@ function HomePage() {
                                                             src: user.profilePic,
                                                             alt: user.fullName,
                                                             className: "w-full h-full object-cover",
-                                                            fill: true
+                                                            fill: true,
+                                                            sizes: "64px"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
                                                             lineNumber: 197,
@@ -814,7 +815,7 @@ function HomePage() {
                                                                 children: user.fullName
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
-                                                                lineNumber: 206,
+                                                                lineNumber: 207,
                                                                 columnNumber: 14
                                                             }, this),
                                                             user.location && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -824,20 +825,20 @@ function HomePage() {
                                                                         className: "size-3 mr-1"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
-                                                                        lineNumber: 209,
+                                                                        lineNumber: 210,
                                                                         columnNumber: 16
                                                                     }, this),
                                                                     user.location
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
-                                                                lineNumber: 208,
+                                                                lineNumber: 209,
                                                                 columnNumber: 15
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
-                                                        lineNumber: 205,
+                                                        lineNumber: 206,
                                                         columnNumber: 13
                                                     }, this)
                                                 ]
@@ -858,7 +859,7 @@ function HomePage() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
-                                                        lineNumber: 218,
+                                                        lineNumber: 219,
                                                         columnNumber: 13
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -870,13 +871,13 @@ function HomePage() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
-                                                        lineNumber: 222,
+                                                        lineNumber: 223,
                                                         columnNumber: 13
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
-                                                lineNumber: 217,
+                                                lineNumber: 218,
                                                 columnNumber: 12
                                             }, this),
                                             user.bio && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -884,7 +885,7 @@ function HomePage() {
                                                 children: user.bio
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
-                                                lineNumber: 228,
+                                                lineNumber: 229,
                                                 columnNumber: 25
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -897,7 +898,7 @@ function HomePage() {
                                                             className: "loading loading-spinner loading-xs mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
-                                                            lineNumber: 239,
+                                                            lineNumber: 240,
                                                             columnNumber: 15
                                                         }, this),
                                                         "Sending..."
@@ -908,7 +909,7 @@ function HomePage() {
                                                             className: "size-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
-                                                            lineNumber: 244,
+                                                            lineNumber: 245,
                                                             columnNumber: 15
                                                         }, this),
                                                         "Request Sent"
@@ -919,7 +920,7 @@ function HomePage() {
                                                             className: "size-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
-                                                            lineNumber: 249,
+                                                            lineNumber: 250,
                                                             columnNumber: 15
                                                         }, this),
                                                         "Send Friend Request"
@@ -927,7 +928,7 @@ function HomePage() {
                                                 }, void 0, true)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(protected)/(DashBoard)/page.tsx",
-                                                lineNumber: 231,
+                                                lineNumber: 232,
                                                 columnNumber: 12
                                             }, this)
                                         ]

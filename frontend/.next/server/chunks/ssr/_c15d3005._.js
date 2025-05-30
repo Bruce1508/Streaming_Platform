@@ -419,7 +419,7 @@ async function getStreamToken() {
         console.log('✅ Stream token received:', data);
         return data;
     } catch (error) {
-        console.error('❌ Get stream token error in the frontendfrontend:', error);
+        console.error('❌ Get stream token error in the frontend:', error);
         throw error;
     }
 }

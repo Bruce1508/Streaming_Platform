@@ -1,0 +1,32 @@
+{
+  "pages": {
+    "/(protected)/call/[id]/page": [
+      "static/chunks/node_modules_next_dist_1a6ee436._.js",
+      "static/chunks/app_favicon_ico_mjs_659ce808._.js",
+      "static/chunks/[root-of-the-server]__9d126714._.css",
+      "static/chunks/_d679ef20._.js",
+      "static/chunks/app_layout_tsx_c0237562._.js",
+      "static/chunks/_29c2fb8e._.js",
+      "static/chunks/app_(protected)_layout_tsx_67451fcf._.js",
+      "static/chunks/node_modules_@stream-io_video-react-sdk_dist_latency-chart-Bj5OSYzg_es_347e7e52.js",
+      "static/chunks/node_modules_webrtc-adapter_src_js_4b238dc5._.js",
+      "static/chunks/node_modules_@protobuf-ts_runtime_build_es2015_cc5371aa._.js",
+      "static/chunks/node_modules_axios_lib_99999129._.js",
+      "static/chunks/node_modules_rxjs_dist_esm5_internal_ead6f4c2._.js",
+      "static/chunks/node_modules_@stream-io_video-client_dist_index_browser_es_2cabe3d0.js",
+      "static/chunks/node_modules_@floating-ui_react_dist_c1a64d8e._.js",
+      "static/chunks/node_modules_@stream-io_video-react-sdk_dist_index_es_ebec999d.js",
+      "static/chunks/node_modules_e89a9bc2._.js",
+      "static/chunks/_50092d74._.js",
+      "static/chunks/node_modules_@stream-io_video-react-sdk_dist_css_styles_73dab3bd.css",
+      "static/chunks/app_(protected)_call_[id]_page_tsx_7f748c8d._.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_fd44f5a4._.js",
+      "static/chunks/node_modules_next_dist_compiled_2ce9398a._.js",
+      "static/chunks/node_modules_next_dist_client_8f19e6fb._.js",
+      "static/chunks/node_modules_next_dist_2ecbf5fa._.js",
+      "static/chunks/node_modules_@swc_helpers_cjs_00636ac3._.js",
+      "static/chunks/_e69f0d32._.js",
+      "static/chunks/_93808211._.js"
+    ]
+  }
+}

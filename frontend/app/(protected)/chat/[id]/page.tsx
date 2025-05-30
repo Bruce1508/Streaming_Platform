@@ -26,7 +26,6 @@ console.log('🔧 Environment check:', {
 });
 
 const ChatPage = () => {
-
     const params = useParams();
     const targetUserId = params.id as string;
 
@@ -121,10 +120,16 @@ const ChatPage = () => {
     const handleVideoCall = () => {
         if (channel) {
             const callUrl = `${window.location.origin}/call/${channel.id}`;
+
+            // Send message in chat
             channel.sendMessage({
                 text: `🎥 I've started a video call. Join me here: ${callUrl}`,
             });
-            toast.success("Video call link sent successfully!");
+
+            // Immediately join the call
+            window.open(callUrl, '_blank');
+
+            toast.success("Video call started!");
         }
     };
 

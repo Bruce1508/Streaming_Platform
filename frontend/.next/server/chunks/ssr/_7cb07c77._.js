@@ -550,7 +550,7 @@ const Navbar = ()=>{
                         columnNumber: 25
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex items-center gap-3 sm:gap-4 ml-auto",
+                        className: "flex items-center gap-3 sm:gap-4 ml-auto mr-4",
                         children: [
                             isChatPage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                 href: "/notifications",
@@ -587,7 +587,8 @@ const Navbar = ()=>{
                                         alt: "User Avatar",
                                         fill: true,
                                         className: "object-cover",
-                                        sizes: "36px"
+                                        sizes: "36px",
+                                        priority: true
                                     }, void 0, false, {
                                         fileName: "[project]/components/ui/NavBar.tsx",
                                         lineNumber: 61,
@@ -610,12 +611,12 @@ const Navbar = ()=>{
                                     className: "h-6 w-6 text-base-content opacity-70"
                                 }, void 0, false, {
                                     fileName: "[project]/components/ui/NavBar.tsx",
-                                    lineNumber: 77,
+                                    lineNumber: 78,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/NavBar.tsx",
-                                lineNumber: 73,
+                                lineNumber: 74,
                                 columnNumber: 25
                             }, this)
                         ]
@@ -733,10 +734,10 @@ const Sidebar = ()=>{
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                        href: "/friends",
-                        className: `btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/friends" ? "btn-active" : ""}`,
+                        href: "/notifications",
+                        className: `btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/notifications" ? "btn-active" : ""}`,
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$users$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UsersIcon$3e$__["UsersIcon"], {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__BellIcon$3e$__["BellIcon"], {
                                 className: "size-5 text-base-content opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
@@ -744,7 +745,7 @@ const Sidebar = ()=>{
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                children: "Friends"
+                                children: "Notifications"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
                                 lineNumber: 43,
@@ -757,10 +758,10 @@ const Sidebar = ()=>{
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                        href: "/notifications",
-                        className: `btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/notifications" ? "btn-active" : ""}`,
+                        href: "/friends",
+                        className: `btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/friends" ? "btn-active" : ""}`,
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__BellIcon$3e$__["BellIcon"], {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$users$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UsersIcon$3e$__["UsersIcon"], {
                                 className: "size-5 text-base-content opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
@@ -768,7 +769,7 @@ const Sidebar = ()=>{
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                children: "Notifications"
+                                children: "Friends"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
                                 lineNumber: 52,
@@ -800,7 +801,8 @@ const Sidebar = ()=>{
                                     alt: "User Avatar",
                                     fill: true,
                                     className: "object-cover",
-                                    sizes: "40px"
+                                    sizes: "40px",
+                                    priority: true
                                 }, void 0, false, {
                                     fileName: "[project]/components/ui/SideBar.tsx",
                                     lineNumber: 62,
@@ -824,7 +826,7 @@ const Sidebar = ()=>{
                                     children: user?.fullName
                                 }, void 0, false, {
                                     fileName: "[project]/components/ui/SideBar.tsx",
-                                    lineNumber: 73,
+                                    lineNumber: 74,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -834,20 +836,20 @@ const Sidebar = ()=>{
                                             className: "size-2 rounded-full bg-success inline-block"
                                         }, void 0, false, {
                                             fileName: "[project]/components/ui/SideBar.tsx",
-                                            lineNumber: 75,
+                                            lineNumber: 76,
                                             columnNumber: 29
                                         }, this),
                                         "Online"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/ui/SideBar.tsx",
-                                    lineNumber: 74,
+                                    lineNumber: 75,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/ui/SideBar.tsx",
-                            lineNumber: 72,
+                            lineNumber: 73,
                             columnNumber: 21
                         }, this)
                     ]

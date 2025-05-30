@@ -11,11 +11,11 @@ const CallButton = ({ handleVideoCall }: CallButtonProps) => {
         <div className="absolute top-4 right-4 z-10">
             <button
                 onClick={handleVideoCall}
-                className="btn btn-primary btn-sm gap-2"
+                className="btn btn-primary btn-sm gap-2 shadow-lg"
                 title="Start video call"
             >
                 <VideoIcon className="size-4" />
-                Video Call
+                Start Video Call
             </button>
         </div>
     );
