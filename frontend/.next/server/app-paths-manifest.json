@@ -1,5 +1,7 @@
 {
+  "/(protected)/(DashBoard)/chat/[id]/page": "app/(protected)/(DashBoard)/chat/[id]/page.js",
   "/(protected)/(DashBoard)/notifications/page": "app/(protected)/(DashBoard)/notifications/page.js",
   "/(protected)/(DashBoard)/page": "app/(protected)/(DashBoard)/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }

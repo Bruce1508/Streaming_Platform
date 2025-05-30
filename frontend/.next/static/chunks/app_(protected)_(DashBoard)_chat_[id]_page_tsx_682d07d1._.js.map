@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Bruce%20Vo/Documents/project/Streaming_Platform/frontend/app/%28protected%29/%28DashBoard%29/chat/%5Bid%5D/page.tsx"],"sourcesContent":["'use client';\r\n\r\nimport { useParams } from 'next/navigation'\r\n\r\nconst ChatPage = () => {\r\n\r\n    const {id} = useParams();\r\n    console.log(id);\r\n\r\n    return (\r\n        <div>Chat with {id}</div>\r\n    )\r\n}\r\n\r\nexport default ChatPage"],"names":[],"mappings":";;;;AAEA;;;AAFA;;AAIA,MAAM,WAAW;;IAEb,MAAM,EAAC,EAAE,EAAC,GAAG,CAAA,GAAA,qIAAA,CAAA,YAAS,AAAD;IACrB,QAAQ,GAAG,CAAC;IAEZ,qBACI,6LAAC;;YAAI;YAAW;;;;;;;AAExB;GARM;;QAEW,qIAAA,CAAA,YAAS;;;KAFpB;uCAUS","debugId":null}}]
+}

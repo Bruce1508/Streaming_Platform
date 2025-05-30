@@ -180,29 +180,39 @@ async function getFriendRequests() {
 }
 async function acceptFriendRequest(requestId) {
     try {
+        console.log('🔄 Accepting friend request:', requestId);
         const response = await makeAuthenticationRequest(`/users/friend-request/${requestId}/accept`, {
             method: 'PUT'
         });
+        console.log('📡 Accept response status:', response.status);
         if (!response.ok) {
-            throw new Error('Failed to accept friend request');
+            const errorData = await response.json();
+            console.error('❌ Accept failed:', errorData);
+            throw new Error(errorData.message || 'Failed to accept friend request');
         }
         const data = await response.json();
+        console.log('✅ Accept success:', data);
         return data;
     } catch (error) {
-        console.error('Accept friend request error:', error);
+        console.error('❌ Accept friend request error:', error);
         throw error;
     }
 }
 async function getStreamToken() {
     try {
+        console.log('🔄 Requesting Stream token...');
         const response = await makeAuthenticationRequest('/chat/token');
+        console.log('📡 Response status:', response.status);
         if (!response.ok) {
-            throw new Error('Failed to get stream token');
+            const errorData = await response.json();
+            console.error('❌ Token request failed:', errorData);
+            throw new Error(errorData.message || 'Failed to get stream token in frontend api.ts');
         }
         const data = await response.json();
+        console.log('✅ Stream token received:', data);
         return data;
     } catch (error) {
-        console.error('Get stream token error:', error);
+        console.error('❌ Get stream token error in the frontend:', error);
         throw error;
     }
 }

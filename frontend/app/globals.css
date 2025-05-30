@@ -1,4 +1,30 @@
 @import "tailwindcss";
+@import 'stream-chat-react/dist/css/v2/index.css';
 @plugin "daisyui" {
   themes: all;
+}
+
+/* Custom Stream Chat styling */
+.str-chat {
+  font-family: inherit;
+}
+
+.str-chat__container {
+  height: 100%;
+}
+
+.str-chat__channel {
+  height: 100%;
+}
+
+.str-chat__main-panel {
+  height: 100%;
+}
+
+/* Dark theme compatibility */
+[data-theme="dark"] .str-chat {
+  --str-chat__primary-color: hsl(var(--p));
+  --str-chat__background-color: hsl(var(--b1));
+  --str-chat__secondary-background-color: hsl(var(--b2));
+  --str-chat__text-color: hsl(var(--bc));
 }
