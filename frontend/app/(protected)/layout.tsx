@@ -4,12 +4,17 @@ import { useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import { useSession } from "next-auth/react";
 import PageLoader from "@/components/ui/PageLoader";
 
 export default function ProtectedLayout({ children }: { children: ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
-    const { user, isLoading } = useAuth();
+    const { user, isLoading: authLoading } = useAuth();
+    const { status: sessionStatus } = useSession();
+
+    // Combined loading state
+    const isLoading = authLoading || sessionStatus === 'loading';
 
     // Check if user just signed up
     const justSignedUp = typeof window !== 'undefined' && 
@@ -19,12 +24,13 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
     const isOnboarded = user?.isOnboarded || false;
 
     console.log('🏠 Protected Layout:', {
-        user,
+        user: user?._id,
         isAuthenticated,
         isOnboarded,
         justSignedUp,
         pathname,
-        isLoading
+        isLoading,
+        authMethod: user ? 'detected' : 'none'
     });
 
     useEffect(() => {
@@ -51,9 +57,6 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
             router.push("/onBoarding");
             return;
         }
-
-        // If authenticated and onboarded, allow access to all protected routes
-        console.log('✅ User is authenticated and onboarded');
 
         // Clear sign-up flag after successful auth check
         if (justSignedUp && user) {

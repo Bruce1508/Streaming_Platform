@@ -31,7 +31,15 @@ const makeAuthenticationRequest = async (
     endpoint: string, 
     options: RequestInit = {}
 ): Promise<Response> => {
-    const token = localStorage.getItem('auth_token');
+    // Lấy token từ localStorage hoặc session
+    let token = localStorage.getItem('auth_token');
+    
+    // Nếu không có trong localStorage, có thể đang dùng OAuth
+    if (!token) {
+        // Có thể lấy từ NextAuth session nếu cần
+        const session = await getSession();
+        token = session?.accessToken || null;
+    }
 
     const headers = {
         'Content-Type': 'application/json',
