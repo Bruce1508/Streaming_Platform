@@ -63,7 +63,16 @@ const userSchema = new mongoose.Schema({
     friends: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    }]
+    }],
+    authProvider: {
+        type: String,
+        enum: ["local", "google", "github", "facebook"],
+        default: "local"
+    },
+    providerId: {
+        type: String,
+        default: ""
+    }
 }, { timestamps: true });
 
 // Middleware trước khi lưu

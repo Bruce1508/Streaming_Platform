@@ -93,34 +93,68 @@ export async function sendFriendRequest(req: Request, res: Response): Promise<Re
 }
 
 export async function acceptFriendRequest(req: Request, res: Response): Promise<Response | any> {
-    const { id: recipientId } = req.params;
-
     try {
-        const friend_request = await friendRequest.findById(recipientId);
+        const { id: requestId } = req.params;
+        const currentUserId = req.user._id;
+
+        console.log('🔍 Accept request - Request ID:', requestId);
+        console.log('🔍 Accept request - Current User ID:', currentUserId);
+
+        // Find the friend request by ID
+        const friend_request = await friendRequest.findById(requestId);
         if (!friend_request) {
-            return res.status(404).json({ message: "Friend request not found" });
+            console.log('❌ Friend request not found');
+            return res.status(404).json({ success: false, message: "Friend request not found" });
         }
 
-        // Verify the current user is the recipient
-        if (friend_request.recipient.toString() !== req.user._id) {
-            return res.status(403).json({ message: "You are not authorized to accept this request" });
+        console.log('📋 Friend request details:', {
+            sender: friend_request.sender,
+            recipient: friend_request.recipient,
+            status: friend_request.status
+        });
+
+        // Verify the current user is the recipient (person who can accept)
+        if (friend_request.recipient.toString() !== currentUserId.toString()) {
+            console.log('❌ Authorization failed - User is not the recipient');
+            return res.status(403).json({ 
+                success: false, 
+                message: "You are not authorized to accept this request" 
+            });
         }
 
+        // Check if already accepted
+        if (friend_request.status === 'accepted') {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Friend request already accepted" 
+            });
+        }
+
+        // Update friend request status
         friend_request.status = "accepted";
         await friend_request.save();
 
+        // Add each other as friends
         await User.findByIdAndUpdate(friend_request.sender, {
             $addToSet: { friends: friend_request.recipient },
         });
 
         await User.findByIdAndUpdate(friend_request.recipient, {
             $addToSet: { friends: friend_request.sender },
-        })
+        });
 
-        res.status(200).json({ message: "Friend request accepted" });
+        console.log('✅ Friend request accepted successfully');
+        return res.status(200).json({ 
+            success: true, 
+            message: "Friend request accepted" 
+        });
+
     } catch (error: any) {
-        console.log("Error in acceptFriendRequests controllers: ", error.message)
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.log("❌ Error in acceptFriendRequest controller:", error.message);
+        return res.status(500).json({ 
+            success: false, 
+            message: "Internal Server Error" 
+        });
     }
 }
 

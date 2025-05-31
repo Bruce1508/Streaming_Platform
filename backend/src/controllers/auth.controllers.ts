@@ -219,3 +219,85 @@ export async function onBoarding(req: Request, res: Response): Promise<Response|
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
 }
+
+export async function oAuthSignIn(req: Request, res: Response): Promise<Response|void|any> {
+    try {
+        const { provider, email, fullName, profilePic, providerId } = req.body;
+
+        if (!email || !provider || !providerId) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Missing required OAuth fields" 
+            });
+        }
+
+        // Check if user exists
+        let user = await User.findOne({ email });
+
+        if (!user) {
+            // Create new user
+            user = await User.create({
+                email,
+                fullName: fullName || email.split('@')[0],
+                password: `oauth_${provider}_${providerId}`, // OAuth users don't use password
+                profilePic: profilePic || "",
+                authProvider: provider,
+                providerId: providerId
+            });
+
+            // Create Stream user
+            try {
+                await upsertStreamUser({
+                    id: user._id.toString(),
+                    name: user.fullName,
+                    image: user.profilePic || ""
+                });
+            } catch (error) {
+                console.log("Error creating Stream User:", error);
+            }
+        } else {
+            // Update existing user
+            user.fullName = fullName || user.fullName;
+            user.profilePic = profilePic || user.profilePic;
+            await user.save();
+
+            // Update Stream user
+            try {
+                await upsertStreamUser({
+                    id: user._id.toString(),
+                    name: user.fullName,
+                    image: user.profilePic || ""
+                });
+            } catch (error) {
+                console.log("Error updating Stream User:", error);
+            }
+        }
+
+        const token = generateToken(user._id.toString());
+
+        const userResponse = {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            profilePic: user.profilePic,
+            isOnboarded: user.isOnboarded,
+            bio: user.bio,
+            nativeLanguage: user.nativeLanguage,
+            learningLanguage: user.learningLanguage,
+            location: user.location
+        };
+
+        return res.status(200).json({ 
+            success: true, 
+            user: userResponse,
+            token 
+        });
+
+    } catch (error: any) {
+        console.log("Error in OAuth SignIn:", error);
+        return res.status(500).json({ 
+            success: false, 
+            message: "Internal server error" 
+        });
+    }
+}
