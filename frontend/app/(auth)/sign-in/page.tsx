@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { signIn as loginApi } from "@/lib/api";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react"
 
 // Define the error type
 interface ApiError extends Error {
@@ -32,6 +33,10 @@ const LoginPage = () => {
     // Loading and error states
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState<ApiError | null>(null);
+
+    const handleGoogleSignIn = () => {
+        signIn("google", { callbackUrl: "/" })
+    }
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -79,7 +84,7 @@ const LoginPage = () => {
                     <div className="mb-8 flex items-center justify-start gap-2">
                         <ShipWheelIcon className="size-9 text-primary" />
                         <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
-                            STREAMIFY
+                            LINGUEX
                         </span>
                     </div>
 
