@@ -1,3 +1,5 @@
+import { getSession } from "next-auth/react";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 interface ApiResponse<T = any> {

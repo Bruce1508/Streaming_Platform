@@ -225,9 +225,18 @@ __turbopack_context__.s({
     "signIn": (()=>signIn),
     "signUp": (()=>signUp)
 });
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next-auth/react/index.js [app-ssr] (ecmascript)");
+;
 const BASE_URL = ("TURBOPACK compile-time value", "http://localhost:5001/api") || 'http://localhost:5001/api';
 const makeAuthenticationRequest = async (endpoint, options = {})=>{
-    const token = localStorage.getItem('auth_token');
+    // Lấy token từ localStorage hoặc session
+    let token = localStorage.getItem('auth_token');
+    // Nếu không có trong localStorage, có thể đang dùng OAuth
+    if (!token) {
+        // Có thể lấy từ NextAuth session nếu cần
+        const session = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getSession"])();
+        token = session?.accessToken || null;
+    }
     const headers = {
         'Content-Type': 'application/json',
         ...token && {
