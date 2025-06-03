@@ -1,6 +1,6 @@
 {
-  "/(auth)/sign-up/page": "app/(auth)/sign-up/page.js",
   "/(protected)/(DashBoard)/page": "app/(protected)/(DashBoard)/page.js",
+  "/(protected)/onBoarding/page": "app/(protected)/onBoarding/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }

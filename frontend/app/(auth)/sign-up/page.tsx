@@ -25,6 +25,10 @@ export default function SignUpPage() {
     const { login } = useAuth();
 
     const hasGoogleAuth = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    console.log('🔧 Google Auth Check:', {
+        hasGoogleAuth: !!hasGoogleAuth,
+        clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID?.substring(0, 10) + '...'
+    });
 
     const handleGoogleSignUp = async () => {
         setOauthLoading('google');

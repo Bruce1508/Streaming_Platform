@@ -37,6 +37,10 @@ const LoginPage = () => {
 
     // Check if OAuth is configured
     const hasGoogleAuth = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    console.log('🔧 Google Auth Check:', {
+        hasGoogleAuth: !!hasGoogleAuth,
+        clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID?.substring(0, 10) + '...'
+    });
     // const hasMicrosoftAuth = process.env.NEXT_PUBLIC_MICROSOFT_CLIENT_ID;
 
     const handleGoogleSignIn = async () => {
