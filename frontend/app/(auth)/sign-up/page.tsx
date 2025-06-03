@@ -13,7 +13,14 @@ import { signIn } from "next-auth/react";
 export default function SignUpPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [oauthLoading, setOauthLoading] = useState<string | null>(null);
-    const [errors, setErrors] = useState<any>({});
+    type Errors = {
+        fullName?: string;
+        email?: string;
+        password?: string;
+        confirmPassword?: string;
+        terms?: string;
+    };
+    const [errors, setErrors] = useState<Errors>({});
     const router = useRouter();
     const { login } = useAuth();
 
@@ -22,9 +29,9 @@ export default function SignUpPage() {
     const handleGoogleSignUp = async () => {
         setOauthLoading('google');
         try {
-            await signIn("google", { callbackUrl: "/" });
-        } catch (error) {
-            toast.error("Failed to sign up with Google");
+            await signIn("google", { callbackUrl: "/onBoarding" });
+        } catch (error: any) {
+            toast.error("Failed to sign up with Google: ", error);
             setOauthLoading(null);
         }
     }
@@ -35,14 +42,14 @@ export default function SignUpPage() {
         setErrors({});
 
         const formData = new FormData(e.currentTarget);
-        const fullName = formData.get('fullName') as string;
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
         const confirmPassword = formData.get('confirmPassword') as string;
+        const fullName = formData.get('fullName') as string;
         const termsAccepted = formData.get('terms') === 'on';
 
         // Client-side validation
-        const newErrors: any = {};
+        const newErrors: Errors = {};
         if (!fullName) newErrors.fullName = 'Full name is required';
         if (!email) newErrors.email = 'Email is required';
         if (!password) newErrors.password = 'Password is required';
@@ -63,7 +70,7 @@ export default function SignUpPage() {
                 login(result.user, result.token);
                 sessionStorage.setItem('justSignedUp', 'true');
                 toast.success("Registration successful!");
-                
+
                 setTimeout(() => {
                     router.push('/onBoarding');
                 }, 1000);
@@ -81,149 +88,186 @@ export default function SignUpPage() {
     };
 
     return (
-        <div className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8" data-theme="dark">
-            <div className="border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-lg overflow-hidden">
-                
-                {/* SIGNUP FORM SECTION */}
-                <div className="w-full lg:w-1/2 p-4 sm:p-8 flex flex-col">
-                    {/* LOGO */}
-                    <div className="mb-6 flex items-center justify-start gap-2">
-                        <ShipWheelIcon className="size-9 text-primary" />
-                        <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
-                            LINGUEX
-                        </span>
+        <div className="min-h-screen flex items-center justify-center p-4 lg:p-8 my-8" data-theme="dark">
+            <div className="w-full max-w-6xl mx-auto">
+                <div className="border border-primary/20 flex flex-col lg:flex-row bg-base-100 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-sm">
+
+                    {/* IMAGE SECTION - LEFT SIDE */}
+                    <div className="hidden lg:flex w-full lg:w-1/2 bg-gradient-to-br from-primary/10 to-secondary/10 items-center justify-center p-8 lg:p-12">
+                        <div className="max-w-md">
+                            <div className="relative aspect-square max-w-[280px] mx-auto mb-8">
+                                <div className="absolute inset-0 bg-secondary/20 rounded-full blur-3xl animate-pulse"></div>
+                                <Image
+                                    src="/i.png"
+                                    alt="Language connection illustration"
+                                    fill
+                                    priority
+                                    className="object-cover relative z-10 drop-shadow-2xl"
+                                    sizes="280px"
+                                />
+                            </div>
+
+                            <div className="text-center space-y-4">
+                                <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                                    Join the Linguex Community
+                                </h2>
+                                <p className="text-base opacity-80 text-base-content/70">
+                                    Connect with native speakers and master new languages
+                                </p>
+
+                                {/* Compact Benefits with better spacing */}
+                                <div className="flex flex-col gap-3 mt-6 text-left">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                                            <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <span className="text-sm">Real-time video conversations</span>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                                            <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <span className="text-sm">Native speakers from 50+ countries</span>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                                            <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <span className="text-sm">Personalized language matching</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="w-full">
-                        <div className="space-y-4">
-                            {/* CENTERED HEADER */}
-                            <div className="text-center mb-6">
-                                <h2 className="text-2xl font-semibold">Create an Account</h2>
-                                <p className="text-sm opacity-70 mt-1">
-                                    Start your language learning adventure today
+                    {/* SIGNUP FORM - RIGHT SIDE */}
+                    <div className="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col">
+                        {/* LOGO */}
+                        <div className="mb-8 flex items-center justify-start gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                                <ShipWheelIcon className="size-6 text-primary" />
+                            </div>
+                            <span className="text-4xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+                                LINGUEX
+                            </span>
+                        </div>
+
+                        <div className="w-full space-y-6 max-w-md mx-auto">
+                            {/* HEADER */}
+                            <div>
+                                <h2 className="text-3xl font-bold mb-2">Create an Account</h2>
+                                <p className="text-base opacity-70">
+                                    Start your language learning adventure
                                 </p>
                             </div>
 
-                            {/* OAUTH BUTTON */}
+                            {/* OAUTH BUTTONS */}
                             {hasGoogleAuth && (
-                                <>
-                                    <button
-                                        type="button"
-                                        onClick={handleGoogleSignUp}
-                                        disabled={oauthLoading === 'google' || isLoading}
-                                        className="btn btn-outline w-full gap-3"
-                                    >
-                                        {oauthLoading === 'google' ? (
-                                            <span className="loading loading-spinner loading-xs"></span>
-                                        ) : (
-                                            <svg className="w-5 h-5" viewBox="0 0 24 24">
-                                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                                            </svg>
-                                        )}
-                                        <span className="font-medium">Sign up with Google</span>
-                                    </button>
+                                <div className="space-y-3">
+                                    {hasGoogleAuth && (
+                                        <button
+                                            type="button"
+                                            onClick={handleGoogleSignUp}
+                                            disabled={oauthLoading === 'google' || isLoading}
+                                            className="btn btn-outline w-full gap-3 h-12 hover:bg-base-200"
+                                        >
+                                            {oauthLoading === 'google' ? (
+                                                <span className="loading loading-spinner loading-sm"></span>
+                                            ) : (
+                                                <svg className="w-5 h-5" viewBox="0 0 24 24">
+                                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                                                </svg>
+                                            )}
+                                            <span>Continue with Google</span>
+                                        </button>
+                                    )}
+                                </div>
+                            )}
 
-                                    <div className="divider">OR</div>
-                                </>
+                            {/* DIVIDER */}
+                            {hasGoogleAuth && (
+                                <div className="divider">OR</div>
                             )}
 
                             {/* SIGNUP FORM */}
                             <form onSubmit={handleSubmit} className="space-y-4">
-                                {/* FULLNAME */}
-                                <div className="form-control w-full">
-                                    <label className="label py-1">
-                                        <span className="label-text text-sm">Full Name</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="fullName"
-                                        placeholder="John Doe"
-                                        className="input input-bordered input-sm w-full"
-                                        disabled={isLoading || oauthLoading !== null}
-                                    />
-                                    {errors.fullName && (
-                                        <label className="label py-0">
-                                            <span className="text-error text-xs">{errors.fullName}</span>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {/* FULLNAME */}
+                                    <div className="form-control w-full">
+                                        <label className="label">
+                                            <span className="label-text">Full Name</span>
                                         </label>
-                                    )}
-                                </div>
+                                        <input
+                                            type="text"
+                                            name="fullName"
+                                            placeholder="John Doe"
+                                            className="input input-bordered w-full"
+                                            disabled={isLoading || oauthLoading !== null}
+                                        />
+                                        {errors.fullName && (
+                                            <span className="text-error text-sm mt-1">{errors.fullName}</span>
+                                        )}
+                                    </div>
 
-                                {/* EMAIL */}
-                                <div className="form-control w-full">
-                                    <label className="label py-1">
-                                        <span className="label-text text-sm">Email</span>
-                                    </label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        placeholder="john@example.com"
-                                        className="input input-bordered input-sm w-full"
-                                        disabled={isLoading || oauthLoading !== null}
-                                    />
-                                    {errors.email && (
-                                        <label className="label py-0">
-                                            <span className="text-error text-xs">{errors.email}</span>
+                                    {/* EMAIL */}
+                                    <div className="form-control w-full">
+                                        <label className="label">
+                                            <span className="label-text">Email</span>
                                         </label>
-                                    )}
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            placeholder="john@example.com"
+                                            className="input input-bordered w-full"
+                                            disabled={isLoading || oauthLoading !== null}
+                                        />
+                                        {errors.email && (
+                                            <span className="text-error text-sm mt-1">{errors.email}</span>
+                                        )}
+                                    </div>
                                 </div>
 
                                 {/* PASSWORD */}
                                 <div className="form-control w-full">
-                                    <label className="label py-1">
-                                        <span className="label-text text-sm">Password</span>
+                                    <label className="label">
+                                        <span className="label-text">Password</span>
                                     </label>
                                     <input
                                         type="password"
                                         name="password"
                                         placeholder="••••••••"
-                                        className="input input-bordered input-sm w-full"
+                                        className="input input-bordered w-full"
                                         disabled={isLoading || oauthLoading !== null}
                                     />
-                                    {errors.password && (
-                                        <label className="label py-0">
-                                            <span className="text-error text-xs">{errors.password}</span>
-                                        </label>
-                                    )}
-                                    <label className="label py-0">
-                                        <span className="text-xs opacity-70">Must be at least 6 characters</span>
-                                    </label>
-                                </div>
+                                    <span className="text-xs text-base-content/60 italic">Min 6 characters</span>
 
-                                {/* CONFIRM PASSWORD */}
-                                <div className="form-control w-full">
-                                    <label className="label py-1">
-                                        <span className="label-text text-sm">Confirm Password</span>
-                                    </label>
-                                    <input
-                                        type="password"
-                                        name="confirmPassword"
-                                        placeholder="••••••••"
-                                        className="input input-bordered input-sm w-full"
-                                        disabled={isLoading || oauthLoading !== null}
-                                    />
-                                    {errors.confirmPassword && (
-                                        <label className="label py-0">
-                                            <span className="text-error text-xs">{errors.confirmPassword}</span>
-                                        </label>
+                                    {errors.password && (
+                                        <span className="text-error text-sm mt-1">{errors.password}</span>
                                     )}
                                 </div>
 
                                 {/* TERMS */}
                                 <div className="form-control">
-                                    <label className="label cursor-pointer justify-start gap-2 py-1">
-                                        <input 
-                                            type="checkbox" 
-                                            name="terms" 
-                                            className="checkbox checkbox-primary checkbox-sm" 
+                                    <label className="label cursor-pointer justify-start gap-3">
+                                        <input
+                                            type="checkbox"
+                                            name="terms"
+                                            className="checkbox checkbox-primary"
                                             disabled={isLoading || oauthLoading !== null}
                                         />
-                                        <span className="label-text text-sm">
+                                        <span className="label-text">
                                             I agree to the{" "}
                                             <Link href="/terms" className="text-primary hover:underline">
-                                                Terms of Service
+                                                Terms
                                             </Link>{" "}
                                             and{" "}
                                             <Link href="/privacy" className="text-primary hover:underline">
@@ -232,21 +276,19 @@ export default function SignUpPage() {
                                         </span>
                                     </label>
                                     {errors.terms && (
-                                        <label className="label py-0">
-                                            <span className="text-error text-xs ml-7">{errors.terms}</span>
-                                        </label>
+                                        <span className="text-error text-sm ml-7">{errors.terms}</span>
                                     )}
                                 </div>
 
                                 {/* SUBMIT BUTTON */}
-                                <button 
+                                <button
                                     type="submit"
-                                    className="btn btn-primary w-full"
+                                    className="btn btn-primary w-full h-12"
                                     disabled={isLoading || oauthLoading !== null}
                                 >
                                     {isLoading ? (
                                         <>
-                                            <span className="loading loading-spinner loading-xs"></span>
+                                            <span className="loading loading-spinner loading-sm"></span>
                                             Creating Account...
                                         </>
                                     ) : (
@@ -256,39 +298,14 @@ export default function SignUpPage() {
                             </form>
 
                             {/* SIGN IN LINK */}
-                            <div className="text-center mt-4">
-                                <p className="text-sm">
+                            <div className="text-center pt-4">
+                                <p className="text-base">
                                     Already have an account?{" "}
-                                    <Link href="/sign-in" className="text-primary hover:underline">
+                                    <Link href="/sign-in" className="text-primary hover:underline font-semibold">
                                         Sign in
                                     </Link>
                                 </p>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* IMAGE SECTION */}
-                <div className="hidden lg:flex w-full lg:w-1/2 bg-primary/10 items-center justify-center">
-                    <div className="max-w-md p-8">
-                        <div className="relative aspect-square max-w-sm mx-auto">
-                            <Image
-                                src="/i.png"
-                                alt="Language connection illustration"
-                                fill
-                                className="object-cover"
-                                priority
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                            />
-                        </div>
-
-                        <div className="text-center space-y-3 mt-6">
-                            <h2 className="text-xl font-semibold">
-                                Connect with language partners worldwide
-                            </h2>
-                            <p className="opacity-70">
-                                Practice conversations, make friends, and improve your language skills together
-                            </p>
                         </div>
                     </div>
                 </div>

@@ -1,20 +1,22 @@
 import NextAuth from "next-auth"
+import { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { MongoDBAdapter } from "@auth/mongodb-adapter"
-import clientPromise from "@/lib/mongoDB"
-import { NextAuthOptions } from "next-auth"
 
-const authOptions: NextAuthOptions = {
-    adapter: MongoDBAdapter(clientPromise),
+export const authOptions: NextAuthOptions = {
     providers: [
-        // Google Provider
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            authorization: {
+                params: {
+                    prompt: "consent",
+                    access_type: "offline",
+                    response_type: "code"
+                }
+            }
         }),
 
-        // Credentials Provider cho login thông thường
         CredentialsProvider({
             name: "credentials",
             credentials: {
@@ -43,9 +45,13 @@ const authOptions: NextAuthOptions = {
                             id: data.user._id,
                             email: data.user.email,
                             name: data.user.fullName,
-                            image: data.user.profilePic,
-                            ...data.user,
-                            accessToken: data.token
+                            image: data.user.profilePic || "",
+                            isOnboarded: data.user.isOnboarded || false,
+                            bio: data.user.bio || "",
+                            nativeLanguage: data.user.nativeLanguage || "",
+                            learningLanguage: data.user.learningLanguage || "",
+                            location: data.user.location || "",
+                            accessToken: data.token // Ensure this is always defined
                         }
                     }
                     return null
@@ -57,9 +63,10 @@ const authOptions: NextAuthOptions = {
         })
     ],
 
+    debug: true,
+
     session: {
         strategy: "jwt",
-        maxAge: 7 * 24 * 60 * 60, // 7 days
     },
 
     pages: {
@@ -69,9 +76,10 @@ const authOptions: NextAuthOptions = {
 
     callbacks: {
         async signIn({ user, account, profile }) {
+            console.log("SignIn callback - user:", user);
+
             if (account?.provider === "google") {
                 try {
-                    // Gọi API backend để create/update user
                     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/oauth`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -85,39 +93,70 @@ const authOptions: NextAuthOptions = {
                     })
 
                     const data = await response.json()
+                    console.log("OAuth API response:", data);
 
                     if (data.success) {
                         user.id = data.user._id
-                        user.accessToken = data.token
+                        user.isOnboarded = data.user.isOnboarded || false
+                        user.bio = data.user.bio || ""
+                        user.nativeLanguage = data.user.nativeLanguage || ""
+                        user.learningLanguage = data.user.learningLanguage || ""
+                        user.location = data.user.location || ""
+                        user.accessToken = data.token // Ensure token is set
                         return true
                     }
                     return false
                 } catch (error) {
-                    console.error("OAuth error:", error)
+                    console.error("OAuth API error:", error)
                     return false
                 }
             }
+
             return true
         },
 
         async jwt({ token, user, account }) {
+            // Initial sign in
             if (user) {
                 token.id = user.id
-                token.accessToken = user.accessToken
+                token.email = user.email
+                token.name = user.name
+                token.picture = user.image
                 token.isOnboarded = user.isOnboarded
+                token.bio = user.bio
+                token.nativeLanguage = user.nativeLanguage
+                token.learningLanguage = user.learningLanguage
+                token.location = user.location
+                // Use optional chaining and provide default empty string
+                token.accessToken = user.accessToken || ""
+                console.log("JWT callback - token:", token);
             }
             return token
         },
 
         async session({ session, token }) {
+            console.log("Session callback - session:", session);
             if (session.user) {
                 session.user.id = token.id as string
-                session.accessToken = token.accessToken as string
+                session.user.email = token.email as string
+                session.user.name = token.name as string
+                session.user.image = token.picture as string
                 session.user.isOnboarded = token.isOnboarded as boolean
+                session.user.bio = token.bio as string
+                session.user.nativeLanguage = token.nativeLanguage as string
+                session.user.learningLanguage = token.learningLanguage as string
+                session.user.location = token.location as string
             }
+            // Use optional chaining and provide default empty string
+            session.accessToken = token.accessToken || ""
             return session
         },
-    },
+
+        async redirect({ url, baseUrl }) {
+            if (url.startsWith(baseUrl)) return url
+            return baseUrl
+        }
+    }
 }
 
 const handler = NextAuth(authOptions)

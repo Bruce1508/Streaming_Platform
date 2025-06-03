@@ -43,8 +43,8 @@ const LoginPage = () => {
         setOauthLoading('google');
         try {
             await signIn("google", { callbackUrl: "/" });
-        } catch (error) {
-            toast.error("Failed to sign in with Google");
+        } catch (error: any) {
+            toast.error("Failed to sign in with Google: ", error);
             setOauthLoading(null);
         }
     }
