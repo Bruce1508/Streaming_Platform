@@ -6,121 +6,149 @@ import { upsertStreamUser } from "../lib/stream";
 
 dotenv.config();
 
-const generateToken = (userId: string): string => {
-    return jwt.sign({ userId }, process.env.JWT_SECRET_KEY!, { expiresIn: "7d" });
-};
+// const generateToken = (userId: string): string => {
+//     return jwt.sign({ userId }, process.env.JWT_SECRET_KEY!, { expiresIn: "7d" });
+// };
 
-export async function signUp(req: Request, res: Response): Promise<Response|void|any> {
+export const signUp = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password, fullName } = req.body;
 
-        if (!email || !password || !fullName) {
-            return res.status(400).json({ success: false, message: "Missing required fields" });
-        }
-
-        if (password.length < 6) {
-            return res.status(400).json({ success: false, message: "Password must be at least 6 characters" });
-        }
-
+        // Check if user exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ success: false, message: "Email already exists" });
+            res.status(400).json({
+                success: false,
+                message: "User already exists"
+            });
+            return;
         }
 
-        const idx = Math.floor(Math.random() * 100) + 1;
-        const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
-
-        const newUser = await User.create({
+        // Create new user
+        const user = new User({
             email,
-            fullName,
             password,
-            profilePic: randomAvatar,
+            fullName,
+            authProvider: "local",
+            isOnboarded: false
         });
 
-        try {
-            await upsertStreamUser({
-                id: newUser._id.toString(),
-                name: newUser.fullName,
-                image: newUser.profilePic || ""
-            });
-        } catch (error) {
-            console.log("Error creating Stream User:", error);
-        }
+        await user.save();
 
-        const token = generateToken(newUser._id.toString());
+        // Generate token
+        const token = jwt.sign(
+            { userId: user._id },
+            process.env.JWT_SECRET!,
+            { expiresIn: "7d" }
+        );
 
-        const userResponse = {
-            _id: newUser._id,
-            fullName: newUser.fullName,
-            email: newUser.email,
-            profilePic: newUser.profilePic,
-            isOnboarded: newUser.isOnboarded,
-            bio: newUser.bio,
-            nativeLanguage: newUser.nativeLanguage,
-            learningLanguage: newUser.learningLanguage,
-            location: newUser.location
-        };
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
 
-        return res.status(201).json({ 
-            success: true, 
-            user: userResponse,
+        res.status(201).json({
+            success: true,
+            message: "User created successfully",
+            user: {
+                _id: user._id,
+                email: user.email,
+                fullName: user.fullName,
+                isOnboarded: user.isOnboarded
+            },
             token
         });
-
-    } catch (error: any) {
-        console.log("Error in SignUp:", error);
-        return res.status(500).json({ success: false, message: "Internal server error" });
+    } catch (error) {
+        console.error("Signup error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Server error"
+        });
     }
-}
+};
 
-export async function signIn(req: Request, res: Response): Promise<Response|void|any> {
+export const signIn = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password } = req.body;
 
-        if (!email || !password) {
-            return res.status(400).json({ success: false, message: "Missing required fields" });
-        }
-
         const user = await User.findOne({ email });
+
         if (!user) {
-            return res.status(400).json({ success: false, message: "Invalid credentials" });
+            res.status(401).json({
+                success: false,
+                message: "Invalid credentials"
+            });
+            return;
         }
 
-        const isPasswordCorrect = await user.matchPassword(password);
-        if (!isPasswordCorrect) {
-            return res.status(401).json({ success: false, message: "Invalid credentials" });
+        // Check if user registered with OAuth
+        if (user.authProvider !== "local") {
+            res.status(400).json({
+                success: false,
+                message: `Please sign in with ${user.authProvider}`
+            });
+            return;
         }
 
-        const token = generateToken(user._id.toString());
+        // Check password for local users
+        const isPasswordValid = await user.matchPassword(password);
+        if (!isPasswordValid) {
+            res.status(401).json({
+                success: false,
+                message: "Invalid credentials"
+            });
+            return;
+        }
 
-        const userResponse = {
-            _id: user._id,
-            fullName: user.fullName,
-            email: user.email,
-            profilePic: user.profilePic,
-            isOnboarded: user.isOnboarded,
-            bio: user.bio,
-            nativeLanguage: user.nativeLanguage,
-            learningLanguage: user.learningLanguage,
-            location: user.location
-        };
+        // Update last login
+        user.lastLogin = new Date();
+        await user.save();
 
-        return res.status(200).json({ 
-            success: true, 
-            user: userResponse,
-            token 
+        // Generate token
+        const token = jwt.sign(
+            { userId: user._id },
+            process.env.JWT_SECRET!,
+            { expiresIn: "7d" }
+        );
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
-    } catch (error: any) {
-        console.log("Error in signIn:", error);
-        return res.status(500).json({ success: false, message: "Internal server error" });
+        res.status(200).json({
+            success: true,
+            message: "Login successful",
+            user: {
+                _id: user._id,
+                email: user.email,
+                fullName: user.fullName,
+                profilePic: user.profilePic,
+                isOnboarded: user.isOnboarded,
+                bio: user.bio,
+                nativeLanguage: user.nativeLanguage,
+                learningLanguage: user.learningLanguage,
+                location: user.location
+            },
+            token
+        });
+    } catch (error) {
+        console.error("Signin error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Server error"
+        });
     }
-}
+};
 
-export async function getMe(req: Request, res: Response): Promise<Response|void|any> {
+export async function getMe(req: Request, res: Response): Promise<Response | void | any> {
     try {
         const user = (req as any).user;
-        
+
         if (!user) {
             return res.status(401).json({ success: false, message: "Unauthorized" });
         }
@@ -144,10 +172,10 @@ export async function getMe(req: Request, res: Response): Promise<Response|void|
     }
 }
 
-export async function onBoarding(req: Request, res: Response): Promise<Response|void|any> {
+export async function onBoarding(req: Request, res: Response): Promise<Response | void | any> {
     try {
         const user = (req as any).user;
-        
+
         if (!user) {
             return res.status(401).json({ success: false, message: "Unauthorized" });
         }
@@ -220,84 +248,106 @@ export async function onBoarding(req: Request, res: Response): Promise<Response|
     }
 }
 
-export async function oAuthSignIn(req: Request, res: Response): Promise<Response|void|any> {
+interface OAuthRequest {
+    provider: string;
+    email: string;
+    fullName?: string;
+    profilePic?: string;
+    providerId: string;
+}
+
+export const oauth = async (req: Request<{}, {}, OAuthRequest>, res: Response): Promise<void> => {
     try {
         const { provider, email, fullName, profilePic, providerId } = req.body;
 
-        if (!email || !provider || !providerId) {
-            return res.status(400).json({ 
-                success: false, 
-                message: "Missing required OAuth fields" 
+        console.log("OAuth Request:", { provider, email, fullName });
+
+        if (!email || !provider) {
+            res.status(400).json({
+                success: false,
+                message: "Email and provider are required"
             });
+            return;
         }
 
         // Check if user exists
         let user = await User.findOne({ email });
 
-        if (!user) {
-            // Create new user
-            user = await User.create({
+        if (user) {
+            // Update existing user
+            user.lastLogin = new Date();
+            if (!user.profilePic && profilePic) {
+                user.profilePic = profilePic;
+            }
+            // Update provider info if needed
+            if (user.authProvider === "local" && provider !== "local") {
+                user.authProvider = provider as any;
+                user.providerId = providerId;
+            }
+            await user.save();
+        } else {
+            // Create new user with OAuth
+            user = new User({
                 email,
                 fullName: fullName || email.split('@')[0],
-                password: `oauth_${provider}_${providerId}`, // OAuth users don't use password
                 profilePic: profilePic || "",
                 authProvider: provider,
-                providerId: providerId
+                providerId,
+                isOnboarded: false,
+                lastLogin: new Date(),
+                // Initialize other fields
+                bio: "",
+                nativeLanguage: "",
+                learningLanguage: "",
+                location: "",
+                friends: []
             });
 
-            // Create Stream user
-            try {
-                await upsertStreamUser({
-                    id: user._id.toString(),
-                    name: user.fullName,
-                    image: user.profilePic || ""
-                });
-            } catch (error) {
-                console.log("Error creating Stream User:", error);
-            }
-        } else {
-            // Update existing user
-            user.fullName = fullName || user.fullName;
-            user.profilePic = profilePic || user.profilePic;
             await user.save();
-
-            // Update Stream user
-            try {
-                await upsertStreamUser({
-                    id: user._id.toString(),
-                    name: user.fullName,
-                    image: user.profilePic || ""
-                });
-            } catch (error) {
-                console.log("Error updating Stream User:", error);
-            }
         }
 
-        const token = generateToken(user._id.toString());
+        // Generate JWT token
+        const token = jwt.sign(
+            { userId: user._id },
+            process.env.JWT_SECRET!,
+            { expiresIn: "7d" }
+        );
 
-        const userResponse = {
-            _id: user._id,
-            fullName: user.fullName,
-            email: user.email,
-            profilePic: user.profilePic,
-            isOnboarded: user.isOnboarded,
-            bio: user.bio,
-            nativeLanguage: user.nativeLanguage,
-            learningLanguage: user.learningLanguage,
-            location: user.location
-        };
-
-        return res.status(200).json({ 
-            success: true, 
-            user: userResponse,
-            token 
+        // Set cookie
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
-    } catch (error: any) {
-        console.log("Error in OAuth SignIn:", error);
-        return res.status(500).json({ 
-            success: false, 
-            message: "Internal server error" 
+        res.status(200).json({
+            success: true,
+            message: "OAuth authentication successful",
+            user: {
+                _id: user._id,
+                email: user.email,
+                fullName: user.fullName,
+                profilePic: user.profilePic,
+                isOnboarded: user.isOnboarded,
+                bio: user.bio,
+                nativeLanguage: user.nativeLanguage,
+                learningLanguage: user.learningLanguage,
+                location: user.location
+            },
+            token
+        });
+
+        console.log("OAuth Request Body:", req.body);
+        console.log("User found/created:", user);
+        console.log("Token generated:", token);
+
+    } catch (error) {
+        console.error("OAuth error:", error);
+        res.status(500).json({
+            success: false,
+            message: "OAuth authentication failed",
+            error: error instanceof Error ? error.message : "Unknown error"
         });
     }
-}
+};

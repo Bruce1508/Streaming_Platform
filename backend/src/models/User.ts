@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 export interface IUser extends Document {
     fullName: string;
     email: string;
-    password: string;
+    password?: string; // Make optional for OAuth users
     bio: string;
     profilePic: string;
     nativeLanguage: string;
@@ -15,6 +15,9 @@ export interface IUser extends Document {
     friends: mongoose.Types.ObjectId[] | IUser[];
     createdAt: Date;
     updatedAt: Date;
+    lastLogin?: Date;
+    authProvider: "local" | "google" | "github" | "facebook";
+    providerId?: string;
     matchPassword(enteredPassword: string): Promise<boolean>;
 }
 
@@ -31,7 +34,9 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: function(this: IUser): boolean {
+            return this.authProvider === "local"; // Password only required for local auth
+        },
         minlength: 6,
     },
     bio: {
@@ -58,7 +63,7 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-
+    
     //trường friend được viết theo kiểu tham chiếu (chỉ lưu ID của đối tượng con = khóa ngoại trong sql)
     friends: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -72,14 +77,17 @@ const userSchema = new mongoose.Schema({
     providerId: {
         type: String,
         default: ""
+    },
+    lastLogin: { 
+        type: Date 
     }
 }, { timestamps: true });
 
 // Middleware trước khi lưu
-userSchema.pre("save", async function(next) {
-    //nếu password không thay đổi thì bỏ qua bước này 
-    if (!this.isModified("password")) return next();
-
+userSchema.pre("save", async function (next) {
+    //nếu password không thay đổi hoặc không có password (OAuth) thì bỏ qua
+    if (!this.isModified("password") || !this.password) return next();
+    
     try {
         const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password, salt);
@@ -91,7 +99,8 @@ userSchema.pre("save", async function(next) {
 });
 
 // Method để so sánh password
-userSchema.methods.matchPassword = async function(enteredPassword: string): Promise<boolean> {
+userSchema.methods.matchPassword = async function (enteredPassword: string): Promise<boolean> {
+    if (!this.password) return false; // OAuth users don't have password
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
