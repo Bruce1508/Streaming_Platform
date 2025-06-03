@@ -38,7 +38,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
         // Generate token
         const token = jwt.sign(
             { userId: user._id },
-            process.env.JWT_SECRET!,
+            process.env.JWT_SECRET_KEY!,
             { expiresIn: "7d" }
         );
 
@@ -109,7 +109,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
         // Generate token
         const token = jwt.sign(
             { userId: user._id },
-            process.env.JWT_SECRET!,
+            process.env.JWT_SECRET_KEY!,
             { expiresIn: "7d" }
         );
 
@@ -258,6 +258,8 @@ interface OAuthRequest {
 
 export const oauth = async (req: Request<{}, {}, OAuthRequest>, res: Response): Promise<void> => {
     try {
+        
+        console.log("🔑 JWT_SECRET_KEY exists:", !!process.env.JWT_SECRET_KEY); // Debug log
         const { provider, email, fullName, profilePic, providerId } = req.body;
 
         console.log("OAuth Request:", { provider, email, fullName });
@@ -309,7 +311,7 @@ export const oauth = async (req: Request<{}, {}, OAuthRequest>, res: Response): 
         // Generate JWT token
         const token = jwt.sign(
             { userId: user._id },
-            process.env.JWT_SECRET!,
+            process.env.JWT_SECRET_KEY!,
             { expiresIn: "7d" }
         );
 

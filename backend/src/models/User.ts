@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: function(this: IUser): boolean {
+        required: function (this: IUser): boolean {
             return this.authProvider === "local"; // Password only required for local auth
         },
         minlength: 6,
@@ -55,6 +55,46 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    languageLevel: {
+        type: String,
+        default: "beginner",
+        enum: ['beginner', 'intermediate', 'advanced']
+    },
+    interests: [{
+        type: String,
+        enum: ['music', 'movies', 'books', 'games', 'sports', 'travel', 'food', 'tech', 'nature', 'art']
+    }],
+    timezone: {
+        type: String,
+        default: ""
+    },
+    availability: {
+        preferredTime: [{
+            type: String,
+            enum: ['morning', 'afternoon', 'evening', 'night']
+        }],
+        weekdays: [Number], //0-6
+    },
+    learningGoals: {
+        type: String,
+        maxLength: 500
+    },
+    speakingPace: {
+        type: String,
+        enum: ['slow', 'normal', 'fast'],
+        default: 'normal'
+    },
+    preferences: {
+        ageRange: {
+            min: { type: Number, default: 18 },
+            max: { type: Number, default: 100 }
+        },
+        genderPreference: {
+            type: String,
+            enum: ['male', 'female', 'any'],
+            default: 'any'
+        }
+    },
     location: {
         type: String,
         default: "",
@@ -63,7 +103,7 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    
+
     //trường friend được viết theo kiểu tham chiếu (chỉ lưu ID của đối tượng con = khóa ngoại trong sql)
     friends: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -78,8 +118,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    lastLogin: { 
-        type: Date 
+    lastLogin: {
+        type: Date
     }
 }, { timestamps: true });
 
@@ -87,7 +127,7 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save", async function (next) {
     //nếu password không thay đổi hoặc không có password (OAuth) thì bỏ qua
     if (!this.isModified("password") || !this.password) return next();
-    
+
     try {
         const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password, salt);

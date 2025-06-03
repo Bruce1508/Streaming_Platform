@@ -116,17 +116,17 @@ export async function acceptFriendRequest(req: Request, res: Response): Promise<
         // Verify the current user is the recipient (person who can accept)
         if (friend_request.recipient.toString() !== currentUserId.toString()) {
             console.log('❌ Authorization failed - User is not the recipient');
-            return res.status(403).json({ 
-                success: false, 
-                message: "You are not authorized to accept this request" 
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to accept this request"
             });
         }
 
         // Check if already accepted
         if (friend_request.status === 'accepted') {
-            return res.status(400).json({ 
-                success: false, 
-                message: "Friend request already accepted" 
+            return res.status(400).json({
+                success: false,
+                message: "Friend request already accepted"
             });
         }
 
@@ -144,16 +144,16 @@ export async function acceptFriendRequest(req: Request, res: Response): Promise<
         });
 
         console.log('✅ Friend request accepted successfully');
-        return res.status(200).json({ 
-            success: true, 
-            message: "Friend request accepted" 
+        return res.status(200).json({
+            success: true,
+            message: "Friend request accepted"
         });
 
     } catch (error: any) {
         console.log("❌ Error in acceptFriendRequest controller:", error.message);
-        return res.status(500).json({ 
-            success: false, 
-            message: "Internal Server Error" 
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
         });
     }
 }
@@ -199,5 +199,24 @@ export async function getOutgoingFriendReqs(req: Request, res: Response): Promis
     } catch (error: any) {
         console.log("Error in getOutGoingFriendReqs controller", error.message);
         res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export async function getSmartMatches(req: Request, res: Response): Promise<Response | any> {
+    try {
+        const matching_service = new MatchingService();
+        const matches = await matching_service.findMatches(req.user._id);
+        res.status(200).json({
+            success: true,
+            matches: matches.map(m => ({
+                user: m.user,
+                matchScore: m.score,
+                matchReasons: m.reasons
+            }))
+        });
+
+    } catch (error: any) {
+        console.log("Error in getSmartMatches controller", error.message);
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 }
