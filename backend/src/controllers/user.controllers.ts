@@ -202,21 +202,102 @@ export async function getOutgoingFriendReqs(req: Request, res: Response): Promis
     }
 }
 
-export async function getSmartMatches(req: Request, res: Response): Promise<Response | any> {
+export async function rejectFriendRequest(req: Request, res: Response): Promise<Response | any> {
     try {
-        const matching_service = new MatchingService();
-        const matches = await matching_service.findMatches(req.user._id);
-        res.status(200).json({
-            success: true,
-            matches: matches.map(m => ({
-                user: m.user,
-                matchScore: m.score,
-                matchReasons: m.reasons
-            }))
+        const { id: requestId } = req.params;
+        const currentUserId = req.user._id;
+
+        console.log('🔍 Reject request - Request ID:', requestId);
+        console.log('🔍 Reject request - Current User ID:', currentUserId);
+
+        // Find the friend request by ID
+        const friend_request = await friendRequest.findById(requestId);
+        if (!friend_request) {
+            console.log('❌ Friend request not found');
+            return res.status(404).json({ 
+                success: false, 
+                message: "Friend request not found" 
+            });
+        }
+
+        console.log('📋 Friend request details:', {
+            sender: friend_request.sender,
+            recipient: friend_request.recipient,
+            status: friend_request.status
+        });
+
+        // Verify the current user is the recipient (person who can reject)
+        if (friend_request.recipient.toString() !== currentUserId.toString()) {
+            console.log('❌ Authorization failed - User is not the recipient');
+            return res.status(403).json({ 
+                success: false, 
+                message: "You are not authorized to reject this request" 
+            });
+        }
+
+        // Check if already processed
+        if (friend_request.status !== 'pending') {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Friend request already processed" 
+            });
+        }
+
+        // Delete the friend request
+        await friendRequest.findByIdAndDelete(requestId);
+
+        console.log('✅ Friend request rejected and deleted successfully');
+        return res.status(200).json({ 
+            success: true, 
+            message: "Friend request rejected" 
         });
 
     } catch (error: any) {
-        console.log("Error in getSmartMatches controller", error.message);
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.log("❌ Error in rejectFriendRequest controller:", error.message);
+        return res.status(500).json({ 
+            success: false, 
+            message: "Internal Server Error" 
+        });
+    }
+}
+
+// Optional: Add cancel friend request (for sender to cancel their own request)
+export async function cancelFriendRequest(req: Request, res: Response): Promise<Response | any> {
+    try {
+        const { id: recipientId } = req.params;
+        const senderId = req.user._id;
+
+        console.log('🔍 Cancel request - Recipient ID:', recipientId);
+        console.log('🔍 Cancel request - Sender ID:', senderId);
+
+        // Find the pending friend request
+        const friend_request = await friendRequest.findOne({
+            sender: senderId,
+            recipient: recipientId,
+            status: 'pending'
+        });
+
+        if (!friend_request) {
+            return res.status(404).json({ 
+                success: false, 
+                message: "Friend request not found" 
+            });
+        }
+
+        // Delete the friend request
+        await friendRequest.findByIdAndDelete(friend_request._id);
+
+        console.log('✅ Friend request cancelled successfully');
+        return res.status(200).json({ 
+            success: true, 
+            message: "Friend request cancelled" 
+        });
+
+    } catch (error: any) {
+        console.log("❌ Error in cancelFriendRequest controller:", error.message);
+        return res.status(500).json({ 
+            success: false, 
+            message: "Internal Server Error" 
+        });
     }
 }

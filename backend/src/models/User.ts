@@ -55,46 +55,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-    languageLevel: {
-        type: String,
-        default: "beginner",
-        enum: ['beginner', 'intermediate', 'advanced']
-    },
-    interests: [{
-        type: String,
-        enum: ['music', 'movies', 'books', 'games', 'sports', 'travel', 'food', 'tech', 'nature', 'art']
-    }],
-    timezone: {
-        type: String,
-        default: ""
-    },
-    availability: {
-        preferredTime: [{
-            type: String,
-            enum: ['morning', 'afternoon', 'evening', 'night']
-        }],
-        weekdays: [Number], //0-6
-    },
-    learningGoals: {
-        type: String,
-        maxLength: 500
-    },
-    speakingPace: {
-        type: String,
-        enum: ['slow', 'normal', 'fast'],
-        default: 'normal'
-    },
-    preferences: {
-        ageRange: {
-            min: { type: Number, default: 18 },
-            max: { type: Number, default: 100 }
-        },
-        genderPreference: {
-            type: String,
-            enum: ['male', 'female', 'any'],
-            default: 'any'
-        }
-    },
     location: {
         type: String,
         default: "",
