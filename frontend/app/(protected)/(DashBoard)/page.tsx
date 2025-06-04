@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { CheckCircleIcon, MapPinIcon, UserPlusIcon, UsersIcon } from "lucide-react";
+import { CheckCircleIcon, MapPinIcon, UserPlusIcon, UsersIcon, XIcon } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
 	getUserFriends,
 	getRecommendedUsers,
 	getOutgoingFriendReqs,
-	sendFriendRequest
+	sendFriendRequest,
+	cancelFriendRequest
 } from "@/lib/api";
 import { capitialize } from "@/lib/utils";
 import FriendCard, { getLanguageFlag } from "@/components/ui/FriendCard";
@@ -49,6 +50,7 @@ export default function HomePage() {
 	const [loadingUsers, setLoadingUsers] = useState(true);
 	const [loadingOutgoing, setLoadingOutgoing] = useState(true);
 	const [sendingRequest, setSendingRequest] = useState<string | null>(null);
+	const [cancellingRequest, setCancellingRequest] = useState<string | null>(null);
 
 	// Fetch friends
 	const fetchFriends = async () => {
@@ -106,6 +108,21 @@ export default function HomePage() {
 			toast.error('Failed to send friend request');
 		} finally {
 			setSendingRequest(null);
+		}
+	};
+
+	const handleCancelFriendRequest = async (userId: string) => {
+		try {
+			setCancellingRequest(userId);
+			await cancelFriendRequest(userId);
+			// Refresh outgoing requests to update UI
+			await fetchOutgoingRequests();
+			toast.success('Friend request cancelled!');
+		} catch (error: any) {
+			console.error('Error cancelling friend request:', error);
+			toast.error('Failed to cancel friend request');
+		} finally {
+			setCancellingRequest(null);
 		}
 	};
 
@@ -185,6 +202,7 @@ export default function HomePage() {
 							{recommendedUsers.map((user) => {
 								const hasRequestBeenSent = outgoingRequestsIds.has(user._id);
 								const isCurrentlySending = sendingRequest === user._id;
+								const isCurrentlyCancelling = cancellingRequest === user._id;
 
 								return (
 									<div
@@ -229,21 +247,45 @@ export default function HomePage() {
 											{user.bio && <p className="text-sm opacity-70">{user.bio}</p>}
 
 											{/* Action button */}
+											{hasRequestBeenSent ? (
+											// Nếu đã gửi request, hiển thị status và nút cancel
+											<div className="space-y-2">
+												{/* Status badge */}
+												<div className="flex items-center justify-center gap-2 text-sm text-success">
+													<CheckCircleIcon className="size-4" />
+													<span>Friend request sent</span>
+												</div>
+												
+												{/* Cancel button */}
+												<button
+													className="btn btn-outline btn-error btn-sm w-full"
+													onClick={() => handleCancelFriendRequest(user._id)}
+													disabled={isCurrentlyCancelling}
+												>
+													{isCurrentlyCancelling ? (
+														<>
+															<span className="loading loading-spinner loading-xs mr-2" />
+															Cancelling...
+														</>
+													) : (
+														<>
+															<XIcon className="size-4 mr-2" />
+															Cancel Request
+														</>
+													)}
+												</button>
+											</div>
+										) : (
+											// Nếu chưa gửi request, hiển thị nút send
 											<button
-												className={`btn w-full mt-2 ${hasRequestBeenSent ? "btn-disabled" : "btn-primary"
-													}`}
+												className="btn btn-primary w-full mt-2"
 												onClick={() => handleSendFriendRequest(user._id)}
-												disabled={hasRequestBeenSent || isCurrentlySending}
+												disabled={isCurrentlySending}
 											>
 												{isCurrentlySending ? (
 													<>
 														<span className="loading loading-spinner loading-xs mr-2" />
 														Sending...
-													</>
-												) : hasRequestBeenSent ? (
-													<>
-														<CheckCircleIcon className="size-4 mr-2" />
-														Request Sent
 													</>
 												) : (
 													<>
@@ -252,6 +294,8 @@ export default function HomePage() {
 													</>
 												)}
 											</button>
+										)}
+
 										</div>
 									</div>
 								);

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getFriendRequests, acceptFriendRequest } from '@/lib/api';
+import { getFriendRequests, acceptFriendRequest, rejectFriendRequest } from '@/lib/api';
 import toast from 'react-hot-toast';
 
 interface User {
@@ -29,8 +29,8 @@ export const useNotifications = () => {
     });
     const [isLoading, setIsLoading] = useState(true);
     const [acceptingRequest, setAcceptingRequest] = useState<string | null>(null);
+    const [rejectingRequest, setRejectingRequest] = useState<string | null>(null); 
 
-    // ✅ Internal fetch function - not exposed
     const fetchData = useCallback(async () => {
         try {
             setIsLoading(true);
@@ -76,6 +76,21 @@ export const useNotifications = () => {
         }
     }, [fetchData]);
 
+    const handleRejectRequest = useCallback(async (requestId: string) => {
+        try {
+            setRejectingRequest(requestId);
+            await rejectFriendRequest(requestId);
+            toast.success('Friend request rejected!');
+            // Refetch after rejecting
+            await fetchData();
+        } catch (error: any) {
+            console.error('Error rejecting friend request:', error);
+            toast.error('Failed to reject friend request');
+        } finally {
+            setRejectingRequest(null);
+        }
+    }, [fetchData]);
+
     const refreshNotifications = useCallback(() => {
         fetchData();
     }, [fetchData]);
@@ -85,6 +100,8 @@ export const useNotifications = () => {
         isLoading,
         acceptingRequest,
         handleAcceptRequest,
-        refreshNotifications
+        refreshNotifications,
+        rejectingRequest,
+        handleRejectRequest
     };
 };

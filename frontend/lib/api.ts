@@ -275,3 +275,49 @@ export async function getStreamToken(): Promise<any> {
     }
 }
 
+export async function rejectFriendRequest(requestId: string): Promise<any> {
+    try {
+        console.log('🔄 Rejecting friend request:', requestId);
+        
+        const response = await makeAuthenticationRequest(`/users/friend-request/${requestId}/reject`, {
+            method: 'DELETE',
+        });
+        
+        console.log('📡 Reject response status:', response.status);
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('❌ Reject failed:', errorData);
+            throw new Error(errorData.message || 'Failed to reject friend request');
+        }
+        
+        const data = await response.json();
+        console.log('✅ Reject success:', data);
+        return data;
+    } catch (error) {
+        console.error('❌ Reject friend request error:', error);
+        throw error;
+    }
+}
+
+export async function cancelFriendRequest(recipientId: string): Promise<any> {
+    try {
+        console.log('🔄 Cancelling friend request to:', recipientId);
+        
+        const response = await makeAuthenticationRequest(`/users/friend-request/${recipientId}/cancel`, {
+            method: 'DELETE',
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to cancel friend request');
+        }
+        
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('❌ Cancel friend request error:', error);
+        throw error;
+    }
+}
+
