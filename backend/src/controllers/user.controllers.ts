@@ -214,9 +214,9 @@ export async function rejectFriendRequest(req: Request, res: Response): Promise<
         const friend_request = await friendRequest.findById(requestId);
         if (!friend_request) {
             console.log('❌ Friend request not found');
-            return res.status(404).json({ 
-                success: false, 
-                message: "Friend request not found" 
+            return res.status(404).json({
+                success: false,
+                message: "Friend request not found"
             });
         }
 
@@ -229,17 +229,17 @@ export async function rejectFriendRequest(req: Request, res: Response): Promise<
         // Verify the current user is the recipient (person who can reject)
         if (friend_request.recipient.toString() !== currentUserId.toString()) {
             console.log('❌ Authorization failed - User is not the recipient');
-            return res.status(403).json({ 
-                success: false, 
-                message: "You are not authorized to reject this request" 
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to reject this request"
             });
         }
 
         // Check if already processed
         if (friend_request.status !== 'pending') {
-            return res.status(400).json({ 
-                success: false, 
-                message: "Friend request already processed" 
+            return res.status(400).json({
+                success: false,
+                message: "Friend request already processed"
             });
         }
 
@@ -247,21 +247,20 @@ export async function rejectFriendRequest(req: Request, res: Response): Promise<
         await friendRequest.findByIdAndDelete(requestId);
 
         console.log('✅ Friend request rejected and deleted successfully');
-        return res.status(200).json({ 
-            success: true, 
-            message: "Friend request rejected" 
+        return res.status(200).json({
+            success: true,
+            message: "Friend request rejected"
         });
 
     } catch (error: any) {
         console.log("❌ Error in rejectFriendRequest controller:", error.message);
-        return res.status(500).json({ 
-            success: false, 
-            message: "Internal Server Error" 
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
         });
     }
 }
 
-// Optional: Add cancel friend request (for sender to cancel their own request)
 export async function cancelFriendRequest(req: Request, res: Response): Promise<Response | any> {
     try {
         const { id: recipientId } = req.params;
@@ -278,9 +277,9 @@ export async function cancelFriendRequest(req: Request, res: Response): Promise<
         });
 
         if (!friend_request) {
-            return res.status(404).json({ 
-                success: false, 
-                message: "Friend request not found" 
+            return res.status(404).json({
+                success: false,
+                message: "Friend request not found"
             });
         }
 
@@ -288,16 +287,138 @@ export async function cancelFriendRequest(req: Request, res: Response): Promise<
         await friendRequest.findByIdAndDelete(friend_request._id);
 
         console.log('✅ Friend request cancelled successfully');
-        return res.status(200).json({ 
-            success: true, 
-            message: "Friend request cancelled" 
+        return res.status(200).json({
+            success: true,
+            message: "Friend request cancelled"
         });
 
     } catch (error: any) {
         console.log("❌ Error in cancelFriendRequest controller:", error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+    }
+}
+
+export async function getMyProfile(req: Request, res: Response): Promise<Response | any> {
+    try {
+        const userId = req.user._id;
+
+        const user = await User.findById(userId).select("-password");
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            user
+        });
+
+    } catch (error: any) {
+        console.log("Error in getMyProfile:", error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+    }
+}
+
+export async function updateMyProfile(req: Request, res: Response): Promise<Response | any> {
+    try {
+        const userId = req.user._id;
+        const { fullName, bio, location, website } = req.body;
+        const updates: any = {};
+
+        if (fullName !== undefined) {
+            if (fullName.trim().length < 2) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Full name must be at least 2 characters"
+                });
+            }
+            updates.fullName = fullName.trim();
+        }
+
+        if (bio !== undefined) {
+            if (bio.length > 200) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Bio must be less than 200 characters"
+                });
+            }
+            updates.bio = bio;
+        }
+
+        if (location !== undefined) {
+            updates.location = location;
+        }
+
+        if (website !== undefined) {
+            // Basic URL validation
+            if (website && !website.match(/^https?:\/\/.+/)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Website must be a valid URL"
+                });
+            }
+            updates.website = website;
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { $set: updates },
+            { new: true, runValidators: true }
+        ).select("-password");
+
+        return res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            user: updatedUser
+        });
+    } catch (error: any) {
+        console.log("Error in updateMyProfile:", error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+    }
+}
+
+export async function updateProfilePicture(req: Request, res: Response): Promise<Response | any> {
+    try {
+        const userId = req.user._id;
+        const { profilePic } = req.body;
+
+        if (!profilePic) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Profile picture URL is required" 
+            });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { profilePic },
+            { new: true }
+        ).select("-password");
+
+        return res.status(200).json({
+            success: true,
+            message: "Profile picture updated successfully",
+            user: updatedUser
+        });
+
+    } catch (error: any) {
+        console.log("Error in updateProfilePicture:", error.message);
         return res.status(500).json({ 
             success: false, 
             message: "Internal Server Error" 
         });
     }
 }
+
