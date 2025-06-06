@@ -248,53 +248,46 @@ export default function HomePage() {
 
 											{/* Action button */}
 											{hasRequestBeenSent ? (
-											// Nếu đã gửi request, hiển thị status và nút cancel
-											<div className="space-y-2">
-												{/* Status badge */}
-												<div className="flex items-center justify-center gap-2 text-sm text-success">
-													<CheckCircleIcon className="size-4" />
-													<span>Friend request sent</span>
+												// Nếu đã gửi request, hiển thị status và nút cancel
+												<div className="space-y-2">
+													<button
+														className="btn btn-outline btn-error btn-sm w-full"
+														onClick={() => handleCancelFriendRequest(user._id)}
+														disabled={cancellingRequest === user._id}
+													>
+														{cancellingRequest === user._id ? (
+															<>
+																<span className="loading loading-spinner loading-xs mr-2" />
+																Cancelling...
+															</>
+														) : (
+															<>
+																<XIcon className="size-4 mr-2" />
+																Cancel Request
+															</>
+														)}
+													</button>
 												</div>
-												
-												{/* Cancel button */}
+											) : (
+												// Nếu chưa gửi request, hiển thị nút send
 												<button
-													className="btn btn-outline btn-error btn-sm w-full"
-													onClick={() => handleCancelFriendRequest(user._id)}
-													disabled={isCurrentlyCancelling}
+													className="btn btn-primary w-full mt-2"
+													onClick={() => handleSendFriendRequest(user._id)}
+													disabled={isCurrentlySending}
 												>
-													{isCurrentlyCancelling ? (
+													{isCurrentlySending ? (
 														<>
 															<span className="loading loading-spinner loading-xs mr-2" />
-															Cancelling...
+															Sending...
 														</>
 													) : (
 														<>
-															<XIcon className="size-4 mr-2" />
-															Cancel Request
+															<UserPlusIcon className="size-4 mr-2" />
+															Send Friend Request
 														</>
 													)}
 												</button>
-											</div>
-										) : (
-											// Nếu chưa gửi request, hiển thị nút send
-											<button
-												className="btn btn-primary w-full mt-2"
-												onClick={() => handleSendFriendRequest(user._id)}
-												disabled={isCurrentlySending}
-											>
-												{isCurrentlySending ? (
-													<>
-														<span className="loading loading-spinner loading-xs mr-2" />
-														Sending...
-													</>
-												) : (
-													<>
-														<UserPlusIcon className="size-4 mr-2" />
-														Send Friend Request
-													</>
-												)}
-											</button>
-										)}
+											)}
 
 										</div>
 									</div>

@@ -3855,6 +3855,11 @@
     --btn-fg: var(--color-accent-content);
   }
 
+  .btn-error {
+    --btn-color: var(--color-error);
+    --btn-fg: var(--color-error-content);
+  }
+
   .btn-primary {
     --btn-color: var(--color-primary);
     --btn-fg: var(--color-primary-content);

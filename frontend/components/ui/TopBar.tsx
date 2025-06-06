@@ -1,7 +1,7 @@
 "use client";
 
 import ProfileDropdown from "@/components/ui/ProfileDropDown";
-import NotificationBell from "@/components/ui/NotificationBell";
+import NotificationBell from "./NotificationBell";
 import { MenuIcon } from "lucide-react";
 
 interface TopBarProps {

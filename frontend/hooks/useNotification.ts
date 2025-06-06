@@ -80,10 +80,9 @@ export const useNotifications = () => {
         try {
             setRejectingRequest(requestId);
             await rejectFriendRequest(requestId);
-            toast.success('Friend request rejected!');
-            // Refetch after rejecting
+            toast.success('Friend request rejected');
             await fetchData();
-        } catch (error: any) {
+        } catch (error) {
             console.error('Error rejecting friend request:', error);
             toast.error('Failed to reject friend request');
         } finally {

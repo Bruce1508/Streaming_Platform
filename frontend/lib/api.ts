@@ -29,7 +29,7 @@ interface OnboardingData {
     profilePic: string;
 }
 
-const makeAuthenticationRequest = async (
+export const makeAuthenticationRequest = async (
     endpoint: string, 
     options: RequestInit = {}
 ): Promise<Response> => {
@@ -288,35 +288,99 @@ export async function rejectFriendRequest(requestId: string): Promise<any> {
         if (!response.ok) {
             const errorData = await response.json();
             console.error('❌ Reject failed:', errorData);
-            throw new Error(errorData.message || 'Failed to reject friend request');
+            throw new Error(errorData.message || 'Failed to reject friend request from api.ts');
         }
         
         const data = await response.json();
         console.log('✅ Reject success:', data);
         return data;
     } catch (error) {
-        console.error('❌ Reject friend request error:', error);
+        console.error('❌ Reject friend request error in api.ts:', error);
         throw error;
     }
 }
 
-export async function cancelFriendRequest(recipientId: string): Promise<any> {
+export async function cancelFriendRequest (recipientId: string): Promise<any> {
     try {
-        console.log('🔄 Cancelling friend request to:', recipientId);
-        
         const response = await makeAuthenticationRequest(`/users/friend-request/${recipientId}/cancel`, {
             method: 'DELETE',
         });
-        
+
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || 'Failed to cancel friend request');
         }
-        
+
+        console.log("Cancle Successfully");
+
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error('❌ Cancel friend request error:', error);
+        console.error('Error cancelling friend request:', error);
+        throw error;
+    }
+}
+
+export async function getMyProfile(): Promise<any> {
+    try {
+        const response = await makeAuthenticationRequest('/users/profile', {
+            method: 'GET',
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to fetch profile');
+        }
+        
+        const data = await response.json();
+        return data.user;
+    } catch (error) {
+        console.error('Error fetching profile:', error);
+        throw error;
+    }
+}
+
+export async function updateMyProfile(profileData: {
+    fullName?: string;
+    bio?: string;
+    location?: string;
+    website?: string;
+}): Promise<any> {
+    try {
+        const response = await makeAuthenticationRequest('/users/profile', {
+            method: 'PUT',
+            body: JSON.stringify(profileData),
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to update profile');
+        }
+        
+        const data = await response.json();
+        return data.user;
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        throw error;
+    }
+}
+
+export async function updateProfilePicture(profilePic: string): Promise<any> {
+    try {
+        const response = await makeAuthenticationRequest('/users/profile/avatar', {
+            method: 'PUT',
+            body: JSON.stringify({ profilePic }),
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to update profile picture');
+        }
+        
+        const data = await response.json();
+        return data.user;
+    } catch (error) {
+        console.error('Error updating profile picture:', error);
         throw error;
     }
 }

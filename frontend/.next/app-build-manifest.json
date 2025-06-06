@@ -1,26 +1,5 @@
 {
   "pages": {
-    "/(protected)/(DashBoard)/notifications/page": [
-      "static/chunks/node_modules_next_dist_1a6ee436._.js",
-      "static/chunks/app_favicon_ico_mjs_659ce808._.js",
-      "static/chunks/[root-of-the-server]__9d126714._.css",
-      "static/chunks/_39243d17._.js",
-      "static/chunks/app_layout_tsx_c0237562._.js",
-      "static/chunks/_0db39a3e._.js",
-      "static/chunks/app_(protected)_layout_tsx_b9ddc2ee._.js",
-      "static/chunks/node_modules_e7acc944._.js",
-      "static/chunks/_c318d877._.js",
-      "static/chunks/app_(protected)_(DashBoard)_layout_tsx_04a64ba7._.js",
-      "static/chunks/_653489e6._.js",
-      "static/chunks/app_(protected)_(DashBoard)_notifications_page_tsx_6e9819bd._.js",
-      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_fd44f5a4._.js",
-      "static/chunks/node_modules_next_dist_compiled_2ce9398a._.js",
-      "static/chunks/node_modules_next_dist_client_8f19e6fb._.js",
-      "static/chunks/node_modules_next_dist_2ecbf5fa._.js",
-      "static/chunks/node_modules_@swc_helpers_cjs_00636ac3._.js",
-      "static/chunks/_e69f0d32._.js",
-      "static/chunks/_93808211._.js"
-    ],
     "/(protected)/(DashBoard)/page": [
       "static/chunks/node_modules_next_dist_1a6ee436._.js",
       "static/chunks/app_favicon_ico_mjs_659ce808._.js",
@@ -32,7 +11,7 @@
       "static/chunks/node_modules_e7acc944._.js",
       "static/chunks/_c318d877._.js",
       "static/chunks/app_(protected)_(DashBoard)_layout_tsx_04a64ba7._.js",
-      "static/chunks/_3efaacd7._.js",
+      "static/chunks/_fc2df36e._.js",
       "static/chunks/app_(protected)_(DashBoard)_page_tsx_6e9819bd._.js",
       "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_fd44f5a4._.js",
       "static/chunks/node_modules_next_dist_compiled_2ce9398a._.js",

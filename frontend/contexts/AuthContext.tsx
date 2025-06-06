@@ -184,15 +184,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
     }, [user, token, authMethod, isLoading, status]);
 
+    const refreshUser = async () => {
+        try {
+            const userData = await getCurrentUser();
+            setUser(userData);
+        } catch (error) {
+            console.error('Failed to refresh user:', error);
+        }
+    };
+
     return (
         <AuthContext.Provider value={{ 
             user, 
             token, 
             login, 
             logout, 
+            refreshUser,
             updateUser, 
             isLoading,
-            authMethod 
+            authMethod
         }}>
             {children}
         </AuthContext.Provider>

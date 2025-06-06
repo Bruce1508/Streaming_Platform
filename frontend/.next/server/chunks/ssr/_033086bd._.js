@@ -7,6 +7,7 @@ var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({
     "acceptFriendRequest": (()=>acceptFriendRequest),
+    "cancelFriendRequest": (()=>cancelFriendRequest),
     "completeOnBoarding": (()=>completeOnBoarding),
     "getAuthUser": (()=>getAuthUser),
     "getFriendRequests": (()=>getFriendRequests),
@@ -14,6 +15,7 @@ __turbopack_context__.s({
     "getRecommendedUsers": (()=>getRecommendedUsers),
     "getStreamToken": (()=>getStreamToken),
     "getUserFriends": (()=>getUserFriends),
+    "rejectFriendRequest": (()=>rejectFriendRequest),
     "sendFriendRequest": (()=>sendFriendRequest),
     "signIn": (()=>signIn),
     "signUp": (()=>signUp)
@@ -222,6 +224,43 @@ async function getStreamToken() {
         return data;
     } catch (error) {
         console.error('❌ Get stream token error in the frontend:', error);
+        throw error;
+    }
+}
+async function rejectFriendRequest(requestId) {
+    try {
+        console.log('🔄 Rejecting friend request:', requestId);
+        const response = await makeAuthenticationRequest(`/users/friend-request/${requestId}/reject`, {
+            method: 'DELETE'
+        });
+        console.log('📡 Reject response status:', response.status);
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('❌ Reject failed:', errorData);
+            throw new Error(errorData.message || 'Failed to reject friend request');
+        }
+        const data = await response.json();
+        console.log('✅ Reject success:', data);
+        return data;
+    } catch (error) {
+        console.error('❌ Reject friend request error:', error);
+        throw error;
+    }
+}
+async function cancelFriendRequest(recipientId) {
+    try {
+        console.log('🔄 Cancelling friend request to:', recipientId);
+        const response = await makeAuthenticationRequest(`/users/friend-request/${recipientId}/cancel`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to cancel friend request');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('❌ Cancel friend request error:', error);
         throw error;
     }
 }
