@@ -12,7 +12,8 @@ import {
     getOutgoingFriendReqs,
     getMyProfile,
     updateMyProfile,
-    updateProfilePicture
+    updateProfilePicture,
+    searchUsers
 } from '../controllers/user.controllers';
 
 const router = express.Router();
@@ -22,6 +23,7 @@ router.use(protectRoute);
 
 // GET routes
 router.get("/", getRecommendedUsers);
+router.get("/search", searchUsers);
 router.get("/friends", getMyFriends);
 router.get("/friend-requests", getFriendRequests);
 router.get("/outgoing-friend-requests", getOutgoingFriendReqs);

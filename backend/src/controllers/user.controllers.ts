@@ -422,3 +422,84 @@ export async function updateProfilePicture(req: Request, res: Response): Promise
     }
 }
 
+export async function searchUsers(req: Request, res: Response): Promise<Response | any> {
+    if (!req.user) {
+        return res.status(401).json({ message: "Unauthorized - User not found" });
+    }
+
+    try {
+        const { q } = req.query;
+        const currentUserId = req.user._id;
+
+        if (!q || typeof q !== 'string') {
+            return res.status(400).json({ message: "Search query is required" });
+        }
+
+        // Trim và validate query length
+        const trimmedQuery = q.trim();
+        if (trimmedQuery.length < 2) {
+            return res.status(400).json({ 
+                message: "Search query must be at least 2 characters long" 
+            });
+        }
+
+        // Escape special regex characters để tránh lỗi
+        const escapedQuery = trimmedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        // Lấy danh sách bạn bè hiện tại để exclude
+        const currentUser = await User.findById(currentUserId).select('friends');
+        const friendIds = currentUser?.friends || [];
+
+        const searchQuery = {
+            $and: [
+                { _id: { $ne: currentUserId } }, // Exclude current user
+                { _id: { $nin: friendIds } }, // Exclude existing friends
+                { isOnboarded: true },
+                {
+                    $or: [
+                        { fullName: { $regex: escapedQuery, $options: 'i' } },
+                        { email: { $regex: escapedQuery, $options: 'i' } },
+                        // Có thể thêm username nếu có field này
+                        // { username: { $regex: escapedQuery, $options: 'i' } }
+                    ]
+                }
+            ]
+        };
+
+        const users = await User.find(searchQuery)
+            .select('fullName email profilePic nativeLanguage learningLanguage bio location')
+            .limit(20) // Tăng limit lên 20
+            .lean(); // Dùng lean() để performance tốt hơn
+
+        // Thêm thông tin về friend request status nếu cần
+        const friendRequests = await friendRequest.find({
+            $or: [
+                { sender: currentUserId, status: 'pending' },
+                { recipient: currentUserId, status: 'pending' }
+            ]
+        }).select('sender recipient');
+
+        const pendingRequestsMap = new Map();
+        friendRequests.forEach(req => {
+            if (req.sender.toString() === currentUserId) {
+                pendingRequestsMap.set(req.recipient.toString(), 'sent');
+            } else {
+                pendingRequestsMap.set(req.sender.toString(), 'received');
+            }
+        });
+
+        // Enhance users với request status
+        const enhancedUsers = users.map(user => ({
+            ...user,
+            friendRequestStatus: pendingRequestsMap.get(user._id.toString()) || null
+        }));
+
+        return res.status(200).json({ 
+            users: enhancedUsers,
+            total: enhancedUsers.length 
+        });
+    } catch (error: any) {
+        console.error("Error in searchUsers controller:", error.message);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}

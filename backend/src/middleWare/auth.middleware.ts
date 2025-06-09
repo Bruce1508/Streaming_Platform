@@ -5,6 +5,7 @@ import User from "../models/User";
 export const protectRoute = async (req: Request, res: Response, next: NextFunction): Promise<Response|void|any> => {
     try {
         const authHeader = req.headers.authorization;
+        console.log("🔐 Auth header received:", authHeader);
 
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return res.status(401).json({ success: false, message: "No token provided" });
@@ -17,6 +18,7 @@ export const protectRoute = async (req: Request, res: Response, next: NextFuncti
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY) as { userId: string };
+        console.log("✅ Token decoded:", decoded);
 
         const user = await User.findById(decoded.userId).select("-password");
         if (!user) {
