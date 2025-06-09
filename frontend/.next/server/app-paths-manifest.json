@@ -1,6 +1,6 @@
 {
-  "/(protected)/(DashBoard)/page": "app/(protected)/(DashBoard)/page.js",
+  "/(protected)/(dashBoard)/friends/add/page": "app/(protected)/(dashBoard)/friends/add/page.js",
+  "/(protected)/(dashBoard)/page": "app/(protected)/(dashBoard)/page.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js"
 }

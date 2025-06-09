@@ -48,12 +48,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/contexts/AuthContext.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next-auth/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$PageLoader$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/PageLoader.tsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 'use client';
-;
 ;
 ;
 ;
@@ -64,97 +62,75 @@ function ProtectedLayout({ children }) {
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"])();
     const { user, isLoading: authLoading } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
-    const { status: sessionStatus } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSession"])();
-    // Combined loading state
-    const isLoading = authLoading || sessionStatus === 'loading';
-    // Check if user just signed up
-    const justSignedUp = "object" !== 'undefined' && sessionStorage.getItem('justSignedUp') === 'true';
-    const isAuthenticated = Boolean(user) || justSignedUp;
-    const isOnboarded = user?.isOnboarded || false;
+    // const { status: sessionStatus } = useSession();
+    // const { status: sessionStatus } = useSession({
+    //     required: false,
+    //     onUnauthenticated() {
+    //         // Handle unauthenticated state
+    //     }
+    // })
+    const { user, isAuthenticated, isLoading } = useAuthSession();
+    // const isLoading = authLoading || sessionStatus === 'loading';
     console.log('🏠 Protected Layout:', {
-        user: user?._id,
         isAuthenticated,
-        isOnboarded,
-        justSignedUp,
-        pathname,
         isLoading,
-        authMethod: user ? 'detected' : 'none'
+        pathname
     });
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "ProtectedLayout.useEffect": ()=>{
-            // Don't redirect while loading
-            if (isLoading) return;
-            // If not authenticated, redirect to sign-up
-            if (!isAuthenticated) {
-                console.log('❌ Not authenticated, redirecting to sign-up');
-                router.push("/sign-up");
+            // QUAN TRỌNG: Phải check isLoading trước
+            if (isLoading) {
+                console.log("⏳ Auth still loading...");
                 return;
             }
-            // If authenticated but not onboarded
-            if (isAuthenticated && !isOnboarded) {
-                // Allow access to onboarding page
-                if (pathname === "/onBoarding") {
-                    console.log('✅ Allowing access to onboarding page');
-                    return;
-                }
-                // Redirect other pages to onboarding
+            // Nếu không có user VÀ không phải đang loading
+            if (!user && !isLoading) {
+                console.log('❌ No user, redirecting to sign-in');
+                router.push("/sign-in"); // ← Đổi sang sign-in thay vì sign-up
+                return;
+            }
+            // Check onboarding
+            if (user && !user.isOnboarded && pathname !== "/onBoarding") {
                 console.log('🔄 Redirecting to onboarding');
                 router.push("/onBoarding");
                 return;
             }
-            // Clear sign-up flag after successful auth check
-            if (justSignedUp && user) {
-                sessionStorage.removeItem('justSignedUp');
-            }
         }
     }["ProtectedLayout.useEffect"], [
         isLoading,
-        isAuthenticated,
-        isOnboarded,
-        router,
-        pathname,
         user,
-        justSignedUp
+        router,
+        pathname
     ]);
     // Show loader while checking auth
     if (isLoading) {
-        console.log('⏳ Loading auth state...');
+        console.log('⏳ Showing loader - auth loading');
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$PageLoader$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/app/(protected)/layout.tsx",
-            lineNumber: 70,
+            lineNumber: 60,
             columnNumber: 16
         }, this);
     }
-    // If not authenticated, show loader (redirect is happening)
-    if (!isAuthenticated) {
-        console.log('🔄 Redirecting to sign-up...');
+    // If no user after loading complete
+    if (!user) {
+        console.log('🔄 No user, showing loader while redirecting');
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$PageLoader$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/app/(protected)/layout.tsx",
-            lineNumber: 76,
+            lineNumber: 66,
             columnNumber: 16
         }, this);
     }
-    // If authenticated but not onboarded and not on onboarding page
-    if (isAuthenticated && !isOnboarded && pathname !== "/onBoarding") {
-        console.log('🔄 Redirecting to onboarding...');
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$PageLoader$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-            fileName: "[project]/app/(protected)/layout.tsx",
-            lineNumber: 82,
-            columnNumber: 16
-        }, this);
-    }
-    // Render children if all checks pass
+    // Render children if authenticated
     console.log('✅ Rendering protected content');
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: children
     }, void 0, false);
 }
-_s(ProtectedLayout, "tPgHvF3UbqoC86FFmjV2lC4sdio=", false, function() {
+_s(ProtectedLayout, "fW0Yumy6TRJ74034vt62jeU96BY=", true, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"],
-        __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"],
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSession"]
+        __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"]
     ];
 });
 _c = ProtectedLayout;

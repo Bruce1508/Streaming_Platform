@@ -1,8 +1,10 @@
+// contexts/AuthContext.tsx
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
-import { useSession, signOut as nextAuthSignOut } from "next-auth/react";
+import { useSession, signOut as nextAuthSignOut, signOut, getSession } from "next-auth/react";
 import { useRouter } from 'next/navigation';
+import { getAuthUser } from "@/lib/api"; // ✅ Import function có sẵn
 
 interface User {
     _id: string;
@@ -22,6 +24,7 @@ interface AuthContextType {
     login: (userData: User, token: string) => void;
     logout: () => void;
     updateUser: (userData: User) => void;
+    refreshUser: () => Promise<void>; // ✅ Thêm vào interface
     isLoading: boolean;
     authMethod: 'oauth' | 'credentials' | null;
 }
@@ -37,20 +40,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
     const [authMethod, setAuthMethod] = useState<'oauth' | 'credentials' | null>(null);
 
-    // Hàm helper để fetch user data từ backend
+    // ✅ Sử dụng getAuthUser thay vì fetchUserData
     const fetchUserData = useCallback(async (accessToken: string) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                return data.user;
-            }
-            return null;
+            // Token đã được set trong header bởi makeAuthenticationRequest
+            const response = await getAuthUser();
+            return response?.user || null;
         } catch (error) {
             console.error('Error fetching user data:', error);
             return null;
@@ -60,41 +55,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Effect để xử lý authentication
     useEffect(() => {
         const initAuth = async () => {
-            // Đang load NextAuth session
             if (status === 'loading') {
                 return;
             }
 
-            // Nếu có NextAuth session (OAuth login)
             if (session?.user && session?.accessToken) {
                 console.log('🔐 NextAuth session detected');
                 
-                // Fetch full user data từ backend
+                // Set token để makeAuthenticationRequest có thể sử dụng
+                localStorage.setItem('auth_token', session.accessToken);
+                
                 const fullUserData = await fetchUserData(session.accessToken);
                 
                 if (fullUserData) {
-                    const userData: User = {
-                        _id: fullUserData._id,
-                        email: fullUserData.email,
-                        fullName: fullUserData.fullName,
-                        profilePic: fullUserData.profilePic,
-                        isOnboarded: fullUserData.isOnboarded,
-                        bio: fullUserData.bio || '',
-                        nativeLanguage: fullUserData.nativeLanguage || '',
-                        learningLanguage: fullUserData.learningLanguage || '',
-                        location: fullUserData.location || ''
-                    };
-
-                    setUser(userData);
+                    setUser(fullUserData);
                     setToken(session.accessToken);
                     setAuthMethod('oauth');
-                    
-                    // Không lưu vào localStorage cho OAuth
-                    // NextAuth tự quản lý session
                 }
-            } 
-            // Nếu không có NextAuth session, check localStorage (credentials login)
-            else {
+                
+                // Clear localStorage sau khi dùng xong (OAuth không cần lưu)
+                localStorage.removeItem('auth_token');
+            } else {
                 console.log('🔑 Checking localStorage for credentials auth');
                 
                 const savedToken = localStorage.getItem('auth_token');
@@ -102,7 +83,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
                 if (savedToken && savedUser) {
                     try {
-                        // Verify token với backend
                         const userData = await fetchUserData(savedToken);
                         
                         if (userData) {
@@ -110,7 +90,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                             setToken(savedToken);
                             setAuthMethod('credentials');
                         } else {
-                            // Token invalid, clear localStorage
                             localStorage.removeItem('auth_token');
                             localStorage.removeItem('auth_user');
                         }
@@ -135,63 +114,76 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setToken(token);
         setAuthMethod('credentials');
         
-        // Chỉ lưu localStorage cho credentials auth
         localStorage.setItem('auth_token', token);
         localStorage.setItem('auth_user', JSON.stringify(userData));
     }, []);
 
-    // Unified logout function
-    const logout = useCallback(async () => {
-        console.log('🚪 Logging out...');
-        
-        // Clear local state
-        setUser(null);
-        setToken(null);
-        setAuthMethod(null);
-        
-        // Clear localStorage
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('auth_user');
-        
-        // If using OAuth, sign out from NextAuth
-        if (authMethod === 'oauth') {
-            await nextAuthSignOut({ redirect: false });
+    // Logout function
+    const logout = async () => {
+        console.log("🔴 Logout started");
+        try {
+            // Clear local storage
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("user");
+            console.log("🗑️ Local storage cleared");
+            
+            // Clear state
+            setUser(null);
+            setAuthMethod(null);
+            console.log("🔄 State cleared");
+            
+            // Clear NextAuth session if exists
+            const session = await getSession();
+            if (session) {
+                console.log("🔐 Clearing NextAuth session");
+                await signOut({ redirect: false });
+            }
+            
+            console.log("✅ Logout complete");
+            
+            // Redirect to sign-in
+            router.push("/sign-in");
+        } catch (error) {
+            console.error("❌ Logout error:", error);
         }
-        
-        // Redirect to sign-in
-        router.push('/sign-in');
-    }, [authMethod, router]);
+    };
 
     // Update user function
     const updateUser = useCallback((userData: User) => {
         console.log('🔄 Updating user data');
         setUser(userData);
         
-        // Only update localStorage if using credentials auth
         if (authMethod === 'credentials') {
             localStorage.setItem('auth_user', JSON.stringify(userData));
         }
     }, [authMethod]);
 
-    // Debug logs
-    useEffect(() => {
-        console.log('🔍 Auth State:', {
-            user: user?._id,
-            hasToken: !!token,
-            authMethod,
-            isLoading,
-            nextAuthStatus: status
-        });
-    }, [user, token, authMethod, isLoading, status]);
-
-    const refreshUser = async () => {
+    // ✅ Refresh user function
+    const refreshUser = useCallback(async () => {
         try {
-            const userData = await getCurrentUser();
-            setUser(userData);
+            console.log('🔄 Refreshing user data...');
+            
+            // Đảm bảo có token
+            if (!token && authMethod === 'oauth' && session?.accessToken) {
+                // Tạm thời set token cho OAuth
+                localStorage.setItem('auth_token', session.accessToken);
+            }
+            
+            const response = await getAuthUser();
+            
+            if (response?.user) {
+                setUser(response.user);
+                console.log('✅ User data refreshed');
+            }
+            
+            // Clear temp token nếu là OAuth
+            if (authMethod === 'oauth') {
+                localStorage.removeItem('auth_token');
+            }
         } catch (error) {
             console.error('Failed to refresh user:', error);
         }
-    };
+    }, [token, authMethod, session]);
 
     return (
         <AuthContext.Provider value={{ 
@@ -199,7 +191,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             token, 
             login, 
             logout, 
-            refreshUser,
+            refreshUser, 
             updateUser, 
             isLoading,
             authMethod
@@ -211,8 +203,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
     const context = useContext(AuthContext);
-    if (context === undefined) {
-        throw new Error('useAuth must be used within an AuthProvider');
+    if (!context) {
+        throw new Error('useAuth must be used within AuthProvider');
     }
     return context;
 }

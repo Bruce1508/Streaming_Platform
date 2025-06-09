@@ -300,7 +300,7 @@ export async function rejectFriendRequest(requestId: string): Promise<any> {
     }
 }
 
-export async function cancelFriendRequest (recipientId: string): Promise<any> {
+export async function cancelFriendRequest(recipientId: string): Promise<any> {
     try {
         const response = await makeAuthenticationRequest(`/users/friend-request/${recipientId}/cancel`, {
             method: 'DELETE',
@@ -311,10 +311,11 @@ export async function cancelFriendRequest (recipientId: string): Promise<any> {
             throw new Error(errorData.message || 'Failed to cancel friend request');
         }
 
-        console.log("Cancle Successfully");
-
         const data = await response.json();
-        return data;
+        return {
+            success: true,
+            data
+        };
     } catch (error) {
         console.error('Error cancelling friend request:', error);
         throw error;

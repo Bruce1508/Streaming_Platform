@@ -4,10 +4,10 @@ import { LANGUAGE_TO_FLAG } from "@/constants";
 
 interface Friend {
     _id: string;
-    fullName: string;
-    profilePic: string;
-    nativeLanguage: string;
-    learningLanguage: string;
+    fullName?: string;
+    profilePic?: string;
+    nativeLanguage?: string;
+    learningLanguage?: string;
     bio?: string;
     location?: string;
 }

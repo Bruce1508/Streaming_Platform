@@ -1,8 +1,10 @@
+// components/ui/TopBar.tsx
 "use client";
 
 import ProfileDropdown from "@/components/ui/ProfileDropDown";
 import NotificationBell from "./NotificationBell";
 import { MenuIcon } from "lucide-react";
+import ThemeSelector from "./ThemeSelector";
 
 interface TopBarProps {
     onMenuClick: () => void;
@@ -10,7 +12,7 @@ interface TopBarProps {
 
 export default function TopBar({ onMenuClick }: TopBarProps) {
     return (
-        <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-base-100 px-4 md:px-6 shadow-sm">
+        <header className="sticky top-0 z-40 flex h-16 items-center gap-4 bg-base-100 px-4 md:px-6 shadow-sm">
             {/* Mobile menu button */}
             <button
                 onClick={onMenuClick}
@@ -20,13 +22,13 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
                 <MenuIcon className="h-6 w-6" />
             </button>
 
-            {/* Logo/Title */}
-            <div className="flex-1">
-                <h1 className="text-xl font-semibold">Chat App</h1>
-            </div>
+            {/* Spacer */}
+            <div className="flex-1" />
 
             {/* Right side items */}
             <div className="flex items-center gap-2">
+
+                <ThemeSelector/>
                 {/* Notification Bell */}
                 <NotificationBell />
                 

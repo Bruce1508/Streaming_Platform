@@ -1,3 +1,3 @@
 {
-  "/(protected)/(DashBoard)/notifications/page": "app/(protected)/(DashBoard)/notifications/page.js"
+  "/(protected)/(dashBoard)/notifications/page": "app/(protected)/(dashBoard)/notifications/page.js"
 }

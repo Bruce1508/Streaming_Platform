@@ -1,38 +1,46 @@
 "use client";
 
-import ProfileDropdown from "@/components/ui/ProfileDropDown";
-import NotificationBell from "@/components/ui/NotificationBell";
-import { MenuIcon } from "lucide-react";
+import { useState } from "react";
+import Sidebar from "@/components/ui/SideBar";
+import TopBar from "@/components/ui/TopBar";
 
-interface TopBarProps {
-    onMenuClick: () => void;
-}
+export default function DashboardLayout({
+    children
+}: {
+    children: React.ReactNode
+}) {
 
-export default function TopBar({ onMenuClick }: TopBarProps) {
+    console.log("📦 DashboardLayout rendering");
+    console.log("👶 Children:", children);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
     return (
-        <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-base-100 px-4 md:px-6 shadow-sm">
-            {/* Mobile menu button */}
-            <button
-                onClick={onMenuClick}
-                className="md:hidden p-2 hover:bg-base-200 rounded-lg transition-colors"
-                aria-label="Toggle menu"
-            >
-                <MenuIcon className="h-6 w-6" />
-            </button>
-
-            {/* Logo/Title */}
-            <div className="flex-1">
-                <h1 className="text-xl font-semibold">Chat App</h1>
+        <div className="min-h-screen bg-base-100">
+            {/* Desktop Sidebar */}
+            <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64">
+                <Sidebar />
             </div>
 
-            {/* Right side items */}
-            <div className="flex items-center gap-2">
-                {/* Notification Bell */}
-                <NotificationBell />
+            {/* Mobile sidebar */}
+            {sidebarOpen && (
+                <div className="fixed inset-0 z-50 lg:hidden">
+                    <div className="fixed inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
+                    <div className="fixed inset-y-0 left-0 w-64 bg-base-100">
+                        <Sidebar />
+                    </div>
+                </div>
+            )}
+
+            {/* Main content */}
+            <div className="lg:pl-64 flex flex-col min-h-screen">
+                {/* Top bar */}
+                <TopBar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
                 
-                {/* Profile Dropdown */}
-                <ProfileDropdown />
+                {/* Page content - ĐÂY LÀ NƠI HIỂN THỊ NỘI DUNG */}
+                <main className="flex-1 p-6">
+                    {children}
+                </main>
             </div>
-        </header>
+        </div>
     );
 }

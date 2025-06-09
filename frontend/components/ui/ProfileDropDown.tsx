@@ -35,11 +35,14 @@ export default function ProfileDropdown() {
     }, []);
 
     const handleLogout = async () => {
-        setIsOpen(false);
-        await logout();
-        // Nếu dùng NextAuth
-        await signOut({ redirect: false });
-        router.push("/login");
+        try {
+            setIsOpen(false);
+            await logout();
+        } catch (error) {
+            console.error('Error during logout:', error);
+            // Still try to navigate even if there's an error
+            router.push('/sign-in');
+        }
     };
 
     if (!user) return null;
