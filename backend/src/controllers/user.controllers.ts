@@ -503,3 +503,31 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
         return res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
+export async function removeFriend(req: Request, res: Response): Promise<Response | any> {
+    try {
+        const currentUserId = req.user._id;
+        const { friendId } = req.params;
+
+        // Remove friend from both users
+        await User.findByIdAndUpdate(currentUserId, {
+            $pull: { friends: friendId }
+        });
+
+        await User.findByIdAndUpdate(friendId, {
+            $pull: { friends: currentUserId }
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Friend removed successfully"
+        });
+
+    } catch (error: any) {
+        console.error("Error in removeFriend:", error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+    }
+}

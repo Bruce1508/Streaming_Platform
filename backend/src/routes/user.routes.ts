@@ -13,7 +13,8 @@ import {
     getMyProfile,
     updateMyProfile,
     updateProfilePicture,
-    searchUsers
+    searchUsers,
+    removeFriend
 } from '../controllers/user.controllers';
 
 const router = express.Router();
@@ -22,9 +23,10 @@ const router = express.Router();
 router.use(protectRoute);
 
 // GET routes
-router.get("/", getRecommendedUsers);
-router.get("/search", searchUsers);
-router.get("/friends", getMyFriends);
+router.get("/recommended", getRecommendedUsers);
+router.get("/search", searchUsers); //search bạn để add friend
+router.get("/friends", getMyFriends); //lấy dánh sách bạn bè
+router.delete("/friends/:friendId", removeFriend);
 router.get("/friend-requests", getFriendRequests);
 router.get("/outgoing-friend-requests", getOutgoingFriendReqs);
 
