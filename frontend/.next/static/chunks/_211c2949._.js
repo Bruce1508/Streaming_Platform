@@ -282,37 +282,71 @@ var _s = __turbopack_context__.k.signature();
 ;
 function useFriend() {
     _s();
-    const { user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
+    const { user, token } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
     const [friends, setFriends] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [friendRequests, setFriendRequests] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    const getValidToken = ()=>{
+        // Try context first
+        if (token && typeof token === 'string' && token !== 'null') {
+            return token;
+        }
+        // Try localStorage
+        const storageToken = localStorage.getItem("auth_token");
+        if (storageToken && storageToken !== 'null' && storageToken !== 'undefined') {
+            return typeof storageToken === 'string' ? storageToken : String(storageToken);
+        }
+        return null;
+    };
     const fetchFriends = async ()=>{
         try {
-            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friends/search`, {
+            const validToken = getValidToken();
+            console.log('🔍 fetchFriends token check:', {
+                hasContextToken: !!token,
+                hasStorageToken: !!localStorage.getItem("auth_token"),
+                finalToken: !!validToken,
+                tokenType: typeof validToken
+            });
+            if (!validToken) {
+                console.error('❌ No auth token found in fetchFriends');
+                setLoading(false);
+                return;
+            }
+            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friends`, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("auth_token")}`
+                    Authorization: `Bearer ${validToken}`
                 }
             });
+            console.log('📡 fetchFriends response:', response.status);
             if (response.ok) {
                 const data = await response.json();
-                setFriends(data.friends || []);
+                console.log('✅ Friends data:', data);
+                setFriends(data || []);
+            } else {
+                const error = await response.json();
+                console.error('❌ fetchFriends error:', error);
             }
         } catch (error) {
-            console.error("Error fetching friends in hoook useFriend.ts:", error);
+            console.error("❌ Error fetching friends:", error);
         } finally{
             setLoading(false);
         }
     };
     const fetchFriendRequests = async ()=>{
         try {
+            const validToken = getValidToken();
+            if (!validToken) {
+                console.error('❌ No auth token for fetchFriendRequests');
+                return;
+            }
             const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friend-requests`, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`
+                    Authorization: `Bearer ${validToken}`
                 }
             });
             if (response.ok) {
                 const data = await response.json();
-                setFriendRequests(data.requests || []);
+                setFriendRequests(data.incomingRequests || []);
             }
         } catch (error) {
             console.error("Error fetching friend requests:", error);
@@ -320,15 +354,14 @@ function useFriend() {
     };
     const sendFriendRequest = async (recipientId)=>{
         try {
-            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friend-request`, {
+            const validToken = getValidToken();
+            if (!validToken) return false;
+            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friend-request/${recipientId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`
-                },
-                body: JSON.stringify({
-                    recipientId
-                })
+                    Authorization: `Bearer ${validToken}`
+                }
             });
             return response.ok;
         } catch (error) {
@@ -338,10 +371,11 @@ function useFriend() {
     };
     const acceptFriendRequest = async (requestId)=>{
         try {
+            const token = localStorage.getItem("auth_token");
             const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friend-request/${requestId}/accept`, {
                 method: "PUT",
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`
+                    Authorization: `Bearer ${token}`
                 }
             });
             if (response.ok) {
@@ -354,10 +388,11 @@ function useFriend() {
     };
     const declineFriendRequest = async (requestId)=>{
         try {
+            const token = localStorage.getItem("auth_token");
             const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friend-request/${requestId}/decline`, {
                 method: "PUT",
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`
+                    Authorization: `Bearer ${token}`
                 }
             });
             if (response.ok) {
@@ -369,10 +404,12 @@ function useFriend() {
     };
     const removeFriend = async (friendId)=>{
         try {
-            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/${user?._id}/friends/${friendId}`, {
+            const token = localStorage.getItem("auth_token");
+            // ✅ Tạo route DELETE friend mới trong backend
+            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friends/${friendId}`, {
                 method: "DELETE",
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`
+                    Authorization: `Bearer ${token}`
                 }
             });
             if (response.ok) {
@@ -390,7 +427,8 @@ function useFriend() {
             }
         }
     }["useFriend.useEffect"], [
-        user?._id
+        user?._id,
+        token
     ]);
     return {
         friends,
@@ -404,7 +442,7 @@ function useFriend() {
         refreshRequests: fetchFriendRequests
     };
 } //end of useFriend()
-_s(useFriend, "Hjz44wqQw8pGbp6DUSrICnXHa38=", false, function() {
+_s(useFriend, "R4CKLxFGnxwuvAr0DbEatD1qhsk=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"]
     ];

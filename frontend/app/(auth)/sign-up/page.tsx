@@ -92,7 +92,7 @@ export default function SignUpPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 lg:p-8 my-8" data-theme="dark">
+        <div className="min-h-screen flex items-center justify-center p-4 lg:p-8 " data-theme="dark">
             <div className="w-full max-w-6xl mx-auto">
                 <div className="border border-primary/20 flex flex-col lg:flex-row bg-base-100 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-sm">
 

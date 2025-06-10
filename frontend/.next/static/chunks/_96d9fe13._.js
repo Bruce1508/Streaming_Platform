@@ -16,37 +16,71 @@ var _s = __turbopack_context__.k.signature();
 ;
 function useFriend() {
     _s();
-    const { user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
+    const { user, token } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
     const [friends, setFriends] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [friendRequests, setFriendRequests] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    const getValidToken = ()=>{
+        // Try context first
+        if (token && typeof token === 'string' && token !== 'null') {
+            return token;
+        }
+        // Try localStorage
+        const storageToken = localStorage.getItem("auth_token");
+        if (storageToken && storageToken !== 'null' && storageToken !== 'undefined') {
+            return typeof storageToken === 'string' ? storageToken : String(storageToken);
+        }
+        return null;
+    };
     const fetchFriends = async ()=>{
         try {
-            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friends/search`, {
+            const validToken = getValidToken();
+            console.log('🔍 fetchFriends token check:', {
+                hasContextToken: !!token,
+                hasStorageToken: !!localStorage.getItem("auth_token"),
+                finalToken: !!validToken,
+                tokenType: typeof validToken
+            });
+            if (!validToken) {
+                console.error('❌ No auth token found in fetchFriends');
+                setLoading(false);
+                return;
+            }
+            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friends`, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("auth_token")}`
+                    Authorization: `Bearer ${validToken}`
                 }
             });
+            console.log('📡 fetchFriends response:', response.status);
             if (response.ok) {
                 const data = await response.json();
-                setFriends(data.friends || []);
+                console.log('✅ Friends data:', data);
+                setFriends(data || []);
+            } else {
+                const error = await response.json();
+                console.error('❌ fetchFriends error:', error);
             }
         } catch (error) {
-            console.error("Error fetching friends in hoook useFriend.ts:", error);
+            console.error("❌ Error fetching friends:", error);
         } finally{
             setLoading(false);
         }
     };
     const fetchFriendRequests = async ()=>{
         try {
+            const validToken = getValidToken();
+            if (!validToken) {
+                console.error('❌ No auth token for fetchFriendRequests');
+                return;
+            }
             const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friend-requests`, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`
+                    Authorization: `Bearer ${validToken}`
                 }
             });
             if (response.ok) {
                 const data = await response.json();
-                setFriendRequests(data.requests || []);
+                setFriendRequests(data.incomingRequests || []);
             }
         } catch (error) {
             console.error("Error fetching friend requests:", error);
@@ -54,15 +88,14 @@ function useFriend() {
     };
     const sendFriendRequest = async (recipientId)=>{
         try {
-            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friend-request`, {
+            const validToken = getValidToken();
+            if (!validToken) return false;
+            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friend-request/${recipientId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`
-                },
-                body: JSON.stringify({
-                    recipientId
-                })
+                    Authorization: `Bearer ${validToken}`
+                }
             });
             return response.ok;
         } catch (error) {
@@ -72,10 +105,11 @@ function useFriend() {
     };
     const acceptFriendRequest = async (requestId)=>{
         try {
+            const token = localStorage.getItem("auth_token");
             const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friend-request/${requestId}/accept`, {
                 method: "PUT",
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`
+                    Authorization: `Bearer ${token}`
                 }
             });
             if (response.ok) {
@@ -88,10 +122,11 @@ function useFriend() {
     };
     const declineFriendRequest = async (requestId)=>{
         try {
+            const token = localStorage.getItem("auth_token");
             const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friend-request/${requestId}/decline`, {
                 method: "PUT",
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`
+                    Authorization: `Bearer ${token}`
                 }
             });
             if (response.ok) {
@@ -103,10 +138,12 @@ function useFriend() {
     };
     const removeFriend = async (friendId)=>{
         try {
-            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/${user?._id}/friends/${friendId}`, {
+            const token = localStorage.getItem("auth_token");
+            // ✅ Tạo route DELETE friend mới trong backend
+            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friends/${friendId}`, {
                 method: "DELETE",
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`
+                    Authorization: `Bearer ${token}`
                 }
             });
             if (response.ok) {
@@ -124,7 +161,8 @@ function useFriend() {
             }
         }
     }["useFriend.useEffect"], [
-        user?._id
+        user?._id,
+        token
     ]);
     return {
         friends,
@@ -138,7 +176,7 @@ function useFriend() {
         refreshRequests: fetchFriendRequests
     };
 } //end of useFriend()
-_s(useFriend, "Hjz44wqQw8pGbp6DUSrICnXHa38=", false, function() {
+_s(useFriend, "R4CKLxFGnxwuvAr0DbEatD1qhsk=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"]
     ];
@@ -156,7 +194,6 @@ var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_
 __turbopack_context__.s({
     "default": (()=>AddFriendsPage)
 });
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$hooks$2f$useFriend$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/hooks/useFriend.ts [app-client] (ecmascript)");
@@ -169,9 +206,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/api.ts [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
+;
 ;
 ;
 ;
@@ -195,35 +234,29 @@ function AddFriendsPage() {
             setSearchResults([]);
             return;
         }
-        const token = localStorage.getItem("authToken");
-        if (!token || token === "null" || token === "undefined") {
-            console.error("❌ No valid auth token found");
-            // Redirect to login or show error
-            router.push("/login");
-            return;
-        }
         setLoading(true);
         try {
-            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/search?q=${encodeURIComponent(searchQuery)}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                }
-            });
-            console.log("📡 Response status:", response.status);
+            console.log('🔍 Starting user search for:', searchQuery);
+            // Sử dụng makeAuthenticationRequest thay vì fetch trực tiếp
+            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["makeAuthenticationRequest"])(`/users/search?q=${encodeURIComponent(searchQuery)}`);
+            console.log("📡 Search response status:", response.status);
             if (response.ok) {
                 const data = await response.json();
-                // Filter out current user and existing friends
+                console.log('✅ Search successful:', data);
                 const filteredUsers = (data.users || []).filter((u)=>u._id !== user?._id && !friends.some((f)=>f._id === u._id));
                 setSearchResults(filteredUsers);
-                console.log('Search query:', searchQuery);
-                console.log('API response:', data);
             } else {
                 const error = await response.json();
-                console.error("❌ Error response:", error);
+                console.error("❌ Search error:", error);
+                if (response.status === 401) {
+                    console.log('🔄 Unauthorized - clearing storage and redirecting');
+                    localStorage.removeItem('auth_token');
+                    localStorage.removeItem('auth_user');
+                    router.push("/sign-in");
+                }
             }
         } catch (error) {
-            console.error("Error searching users:", error);
+            console.error("❌ Search request failed:", error);
         } finally{
             setLoading(false);
         }
@@ -263,14 +296,14 @@ function AddFriendsPage() {
                                 className: "w-4 h-4"
                             }, void 0, false, {
                                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                lineNumber: 116,
+                                lineNumber: 113,
                                 columnNumber: 21
                             }, this),
                             "Back to Friends"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                        lineNumber: 115,
+                        lineNumber: 112,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -278,7 +311,7 @@ function AddFriendsPage() {
                         children: "Add Friends"
                     }, void 0, false, {
                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                        lineNumber: 120,
+                        lineNumber: 117,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -286,13 +319,13 @@ function AddFriendsPage() {
                         children: "Connect with language learners around the world"
                     }, void 0, false, {
                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                        lineNumber: 123,
+                        lineNumber: 120,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                lineNumber: 114,
+                lineNumber: 111,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -307,14 +340,14 @@ function AddFriendsPage() {
                                     className: "w-5 h-5"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                    lineNumber: 132,
+                                    lineNumber: 129,
                                     columnNumber: 25
                                 }, this),
                                 "Find Friends"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                            lineNumber: 131,
+                            lineNumber: 128,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -324,7 +357,7 @@ function AddFriendsPage() {
                                     className: "absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-base-content/40"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                    lineNumber: 137,
+                                    lineNumber: 134,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -336,29 +369,29 @@ function AddFriendsPage() {
                                     autoFocus: true
                                 }, void 0, false, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                    lineNumber: 138,
+                                    lineNumber: 135,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                            lineNumber: 136,
+                            lineNumber: 133,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                    lineNumber: 130,
+                    lineNumber: 127,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                lineNumber: 129,
+                lineNumber: 126,
                 columnNumber: 13
             }, this),
             loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SearchLoadingSkeleton, {}, void 0, false, {
                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                lineNumber: 152,
+                lineNumber: 149,
                 columnNumber: 17
             }, this) : searchResults.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "space-y-4",
@@ -368,12 +401,12 @@ function AddFriendsPage() {
                         requestSent: requestsSent.has(user._id)
                     }, user._id, false, {
                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                        lineNumber: 156,
+                        lineNumber: 153,
                         columnNumber: 25
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                lineNumber: 154,
+                lineNumber: 151,
                 columnNumber: 17
             }, this) : searchQuery ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "card bg-base-100 shadow-md",
@@ -388,61 +421,61 @@ function AddFriendsPage() {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                        lineNumber: 167,
+                        lineNumber: 164,
                         columnNumber: 25
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                    lineNumber: 166,
+                    lineNumber: 163,
                     columnNumber: 21
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                lineNumber: 165,
+                lineNumber: 162,
                 columnNumber: 17
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "card bg-base-100 shadow-md",
+                className: "card bg-base-100 shadow-md mt-30 max-w-2xl mx-auto",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "card-body text-center py-12",
+                    className: "card-body text-center py-16",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__["Search"], {
-                            className: "w-16 h-16 text-base-content/20 mx-auto mb-4"
+                            className: "w-20 h-20 text-base-content/20 mx-auto mb-6"
                         }, void 0, false, {
                             fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                            lineNumber: 175,
+                            lineNumber: 172,
                             columnNumber: 25
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                            className: "text-xl font-semibold",
+                            className: "text-2xl font-semibold mb-3",
                             children: "Search for friends"
                         }, void 0, false, {
                             fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                            lineNumber: 176,
+                            lineNumber: 173,
                             columnNumber: 25
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-base-content/60",
+                            className: "text-base-content/60 text-lg",
                             children: "Enter a username or email to find other language learners"
                         }, void 0, false, {
                             fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                            lineNumber: 177,
+                            lineNumber: 174,
                             columnNumber: 25
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                    lineNumber: 174,
+                    lineNumber: 171,
                     columnNumber: 21
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                lineNumber: 173,
+                lineNumber: 170,
                 columnNumber: 17
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-        lineNumber: 112,
+        lineNumber: 109,
         columnNumber: 9
     }, this);
 }
@@ -477,17 +510,17 @@ function UserCard({ user, onSendRequest, requestSent }) {
                                         height: 64
                                     }, void 0, false, {
                                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                        lineNumber: 204,
+                                        lineNumber: 201,
                                         columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                    lineNumber: 203,
+                                    lineNumber: 200,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                lineNumber: 202,
+                                lineNumber: 199,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -497,7 +530,7 @@ function UserCard({ user, onSendRequest, requestSent }) {
                                         children: user.fullName
                                     }, void 0, false, {
                                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                        lineNumber: 214,
+                                        lineNumber: 211,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -505,7 +538,7 @@ function UserCard({ user, onSendRequest, requestSent }) {
                                         children: user.email
                                     }, void 0, false, {
                                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                        lineNumber: 215,
+                                        lineNumber: 212,
                                         columnNumber: 29
                                     }, this),
                                     user.level && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -515,7 +548,7 @@ function UserCard({ user, onSendRequest, requestSent }) {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                                lineNumber: 219,
+                                                lineNumber: 216,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -523,25 +556,25 @@ function UserCard({ user, onSendRequest, requestSent }) {
                                                 children: user.level
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                                lineNumber: 220,
+                                                lineNumber: 217,
                                                 columnNumber: 37
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                        lineNumber: 218,
+                                        lineNumber: 215,
                                         columnNumber: 33
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                lineNumber: 213,
+                                lineNumber: 210,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                        lineNumber: 201,
+                        lineNumber: 198,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -553,14 +586,14 @@ function UserCard({ user, onSendRequest, requestSent }) {
                                     className: "w-4 h-4"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                    lineNumber: 229,
+                                    lineNumber: 226,
                                     columnNumber: 33
                                 }, this),
                                 "Request Sent"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                            lineNumber: 228,
+                            lineNumber: 225,
                             columnNumber: 29
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             onClick: ()=>onSendRequest(user._id),
@@ -570,35 +603,35 @@ function UserCard({ user, onSendRequest, requestSent }) {
                                     className: "w-4 h-4"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                    lineNumber: 237,
+                                    lineNumber: 234,
                                     columnNumber: 33
                                 }, this),
                                 "Send Request"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                            lineNumber: 233,
+                            lineNumber: 230,
                             columnNumber: 29
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                        lineNumber: 226,
+                        lineNumber: 223,
                         columnNumber: 21
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                lineNumber: 200,
+                lineNumber: 197,
                 columnNumber: 17
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-            lineNumber: 199,
+            lineNumber: 196,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-        lineNumber: 198,
+        lineNumber: 195,
         columnNumber: 9
     }, this);
 }
@@ -622,7 +655,7 @@ function SearchLoadingSkeleton() {
                                 className: "skeleton w-16 h-16 rounded-full"
                             }, void 0, false, {
                                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                lineNumber: 256,
+                                lineNumber: 253,
                                 columnNumber: 29
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -632,48 +665,48 @@ function SearchLoadingSkeleton() {
                                         className: "skeleton h-4 w-32 mb-2"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                        lineNumber: 258,
+                                        lineNumber: 255,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "skeleton h-3 w-48"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                        lineNumber: 259,
+                                        lineNumber: 256,
                                         columnNumber: 33
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                lineNumber: 257,
+                                lineNumber: 254,
                                 columnNumber: 29
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "skeleton h-8 w-24"
                             }, void 0, false, {
                                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                                lineNumber: 261,
+                                lineNumber: 258,
                                 columnNumber: 29
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                        lineNumber: 255,
+                        lineNumber: 252,
                         columnNumber: 25
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                    lineNumber: 254,
+                    lineNumber: 251,
                     columnNumber: 21
                 }, this)
             }, i, false, {
                 fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-                lineNumber: 253,
+                lineNumber: 250,
                 columnNumber: 17
             }, this))
     }, void 0, false, {
         fileName: "[project]/app/(protected)/(dashBoard)/friends/add/page.tsx",
-        lineNumber: 251,
+        lineNumber: 248,
         columnNumber: 9
     }, this);
 }

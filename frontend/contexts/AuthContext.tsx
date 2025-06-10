@@ -4,7 +4,8 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
 import { useSession, signOut as nextAuthSignOut, signOut, getSession } from "next-auth/react";
 import { useRouter } from 'next/navigation';
-import { getAuthUser } from "@/lib/api"; // ✅ Import function có sẵn
+import { getAuthUser } from "@/lib/api"; 
+import { setAuthToken, removeAuthToken, getAuthToken } from '@/lib/tokenUtils';
 
 interface User {
     _id: string;
@@ -109,13 +110,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Login function cho credentials
     const login = useCallback((userData: User, token: string) => {
-        console.log('🔐 Credentials login');
+        console.log('🔐 LOGIN DEBUG - Input token:', {
+            tokenExists: !!token,
+            tokenType: typeof token,
+            tokenLength: token?.length,
+            tokenValue: token // Log full token để debug
+        });
+
+        const cleanToken = typeof token === 'string' ? token : String(token);
+
+        if (!cleanToken || cleanToken === 'undefined' || cleanToken === 'null') {
+            console.error('❌ Invalid token provided to login function');
+            return;
+        }
+
         setUser(userData);
-        setToken(token);
+        setToken(cleanToken); 
         setAuthMethod('credentials');
         
-        localStorage.setItem('auth_token', token);
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('auth_user');
+        
+        localStorage.setItem('auth_token', cleanToken); // ✅ Save as string
         localStorage.setItem('auth_user', JSON.stringify(userData));
+
+        const savedToken = localStorage.getItem('auth_token');
+        console.log('🔐 Token verification after save:', {
+            saved: !!savedToken,
+            matches: savedToken === token,
+            savedLength: savedToken?.length
+        });
     }, []);
 
     // Logout function
@@ -123,7 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.log("🔴 Logout started");
         try {
             // Clear local storage
-            localStorage.removeItem("authToken");
+            removeAuthToken();
             localStorage.removeItem("user");
             console.log("🗑️ Local storage cleared");
             

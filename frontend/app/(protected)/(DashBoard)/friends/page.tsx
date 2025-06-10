@@ -191,18 +191,18 @@ export default function FriendsPage() {
                     ))}
                 </div>
             ) : (
-                <div className="card bg-base-100 shadow-md">
-                    <div className="card-body text-center py-12">
-                        <Users className="w-16 h-16 text-base-content/20 mx-auto mb-4" />
-                        <h3 className="text-xl font-semibold">No friends found</h3>
-                        <p className="text-base-content/60">
+                <div className="card bg-base-100 shadow-lg mt-30 max-w-2xl mx-auto">
+                    <div className="card-body text-center py-16">
+                        <Users className="w-20 h-20 text-base-content/20 mx-auto mb-6" />
+                        <h3 className="text-2xl font-semibold mb-3">No friends found</h3>
+                        <p className="text-base-content/60 text-lg">
                             {searchQuery 
                                 ? "Try searching with a different term"
                                 : "Start adding friends to connect with other learners"
                             }
                         </p>
                         {!searchQuery && (
-                            <Link href="/friends/add" className="btn btn-primary mt-4">
+                            <Link href="/friends/add" className="btn btn-primary mt-6">
                                 <UserPlus className="w-5 h-5" />
                                 Add Friends
                             </Link>

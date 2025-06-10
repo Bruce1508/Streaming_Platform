@@ -1,4 +1,5 @@
 import { getSession } from "next-auth/react";
+import { getAuthToken } from './tokenUtils';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
@@ -33,21 +34,51 @@ export const makeAuthenticationRequest = async (
     endpoint: string, 
     options: RequestInit = {}
 ): Promise<Response> => {
-    // Lấy token từ localStorage hoặc session
-    let token = localStorage.getItem('auth_token');
+    // ✅ Get token with proper type checking
+    let rawToken = localStorage.getItem('auth_token');
     
-    // Nếu không có trong localStorage, có thể đang dùng OAuth
+    console.log('🔍 makeAuthenticationRequest debug:', {
+        rawToken,
+        tokenType: typeof rawToken,
+        tokenLength: rawToken?.length,
+        isNull: rawToken === null,
+        isStringNull: rawToken === 'null'
+    });
+    
+    // ✅ Clean token
+    let token: string | null = null;
+    if (rawToken && rawToken !== 'null' && rawToken !== 'undefined') {
+        token = typeof rawToken === 'string' ? rawToken : String(rawToken);
+    }
+    
+    // ✅ Fallback to session if no localStorage token
     if (!token) {
-        // Có thể lấy từ NextAuth session nếu cần
-        const session = await getSession();
-        token = session?.accessToken || null;
+        console.log('🔍 No localStorage token, trying session...');
+        try {
+            const session = await getSession();
+            token = session?.accessToken || null;
+            console.log('🔍 Session token:', !!token);
+        } catch (error) {
+            console.log('❌ Session token failed:', error);
+        }
+    }
+    
+    if (!token) {
+        console.error('❌ No token available for request');
+        throw new Error('No authentication token available');
     }
 
     const headers = {
         'Content-Type': 'application/json',
-        ...(token && { Authorization: `Bearer ${token}` }),
+        'Authorization': `Bearer ${token}`,
         ...options.headers,
     };
+    
+    console.log('📡 Making request:', {
+        endpoint: `${BASE_URL}${endpoint}`,
+        hasAuth: !!headers.Authorization,
+        authPreview: headers.Authorization?.substring(0, 30) + '...'
+    });
 
     return fetch(`${BASE_URL}${endpoint}`, {
         ...options,
@@ -148,13 +179,14 @@ export async function getUserFriends(): Promise<any[]> {
 
 export async function getRecommendedUsers(): Promise<any[]> {
     try {
-        const response = await makeAuthenticationRequest('/users/');
+        const response = await makeAuthenticationRequest('/users/recommended');
         
         if (!response.ok) {
             throw new Error('Failed to fetch recommended users');
         }
         
         const data = await response.json();
+        console.log('✅ Recommended users fetched:', data);
         return data;
     } catch (error) {
         console.error('Get recommended users error:', error);

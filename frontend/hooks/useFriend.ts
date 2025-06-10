@@ -22,28 +22,64 @@ interface FriendRequest {
 }
 
 export function useFriend() {
-    const { user } = useAuth();
+    const { user, token } = useAuth();
     const [friends, setFriends] = useState<Friend[]>([]);
     const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const getValidToken = (): string | null => {
+        // Try context first
+        if (token && typeof token === 'string' && token !== 'null') {
+            return token;
+        }
+
+        // Try localStorage
+        const storageToken = localStorage.getItem("auth_token");
+        if (storageToken && storageToken !== 'null' && storageToken !== 'undefined') {
+            return typeof storageToken === 'string' ? storageToken : String(storageToken);
+        }
+
+        return null;
+    }
+
     const fetchFriends = async () => {
         try {
+            const validToken = getValidToken();
+
+            console.log('🔍 fetchFriends token check:', {
+                hasContextToken: !!token,
+                hasStorageToken: !!localStorage.getItem("auth_token"),
+                finalToken: !!validToken,
+                tokenType: typeof validToken
+            });
+
+            if (!validToken) {
+                console.error('❌ No auth token found in fetchFriends');
+                setLoading(false);
+                return;
+            }
+
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/users/friends/search`,
+                `${process.env.NEXT_PUBLIC_API_URL}/users/friends`,
                 {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+                        Authorization: `Bearer ${validToken}`,
                     },
                 }
             );
 
+            console.log('📡 fetchFriends response:', response.status);
+
             if (response.ok) {
                 const data = await response.json();
-                setFriends(data.friends || []);
+                console.log('✅ Friends data:', data);
+                setFriends(data || []);
+            } else {
+                const error = await response.json();
+                console.error('❌ fetchFriends error:', error);
             }
         } catch (error) {
-            console.error("Error fetching friends in hoook useFriend.ts:", error);
+            console.error("❌ Error fetching friends:", error);
         } finally {
             setLoading(false);
         }
@@ -51,17 +87,25 @@ export function useFriend() {
 
     const fetchFriendRequests = async () => {
         try {
+            const validToken = getValidToken();
+
+            if (!validToken) {
+                console.error('❌ No auth token for fetchFriendRequests');
+                return;
+            }
+
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/users/friend-requests`,
                 {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                        Authorization: `Bearer ${validToken}`,
                     },
                 }
             );
+
             if (response.ok) {
                 const data = await response.json();
-                setFriendRequests(data.requests || []);
+                setFriendRequests(data.incomingRequests || []);
             }
         } catch (error) {
             console.error("Error fetching friend requests:", error);
@@ -70,15 +114,17 @@ export function useFriend() {
 
     const sendFriendRequest = async (recipientId: string) => {
         try {
+            const validToken = getValidToken();
+            if (!validToken) return false;
+
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/users/friend-request`,
+                `${process.env.NEXT_PUBLIC_API_URL}/users/friend-request/${recipientId}`,
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                        Authorization: `Bearer ${validToken}`,
                     },
-                    body: JSON.stringify({ recipientId }),
                 }
             );
             return response.ok;
@@ -90,12 +136,13 @@ export function useFriend() {
 
     const acceptFriendRequest = async (requestId: string) => {
         try {
+            const token = localStorage.getItem("auth_token");
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/users/friend-request/${requestId}/accept`,
                 {
                     method: "PUT",
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                        Authorization: `Bearer ${token}`,
                     },
                 }
             );
@@ -110,12 +157,13 @@ export function useFriend() {
 
     const declineFriendRequest = async (requestId: string) => {
         try {
+            const token = localStorage.getItem("auth_token");
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/users/friend-request/${requestId}/decline`,
                 {
                     method: "PUT",
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                        Authorization: `Bearer ${token}`,
                     },
                 }
             );
@@ -129,12 +177,14 @@ export function useFriend() {
 
     const removeFriend = async (friendId: string) => {
         try {
+            const token = localStorage.getItem("auth_token");
+            // ✅ Tạo route DELETE friend mới trong backend
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/users/${user?._id}/friends/${friendId}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/users/friends/${friendId}`,
                 {
                     method: "DELETE",
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                        Authorization: `Bearer ${token}`,
                     },
                 }
             );
@@ -151,7 +201,7 @@ export function useFriend() {
             fetchFriends();
             fetchFriendRequests();
         }
-    }, [user?._id]);
+    }, [user?._id, token]);
 
     return {
         friends,

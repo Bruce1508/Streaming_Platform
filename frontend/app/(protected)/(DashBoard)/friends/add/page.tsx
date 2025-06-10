@@ -17,6 +17,8 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { makeAuthenticationRequest } from "@/lib/api";
+import { getAuthToken } from "@/lib/tokenUtils";
 
 interface SearchUser {
     _id: string;
@@ -48,45 +50,40 @@ export default function AddFriendsPage() {
             setSearchResults([]);
             return;
         }
-
-        const token = localStorage.getItem("authToken");
-        if (!token || token === "null" || token === "undefined") {
-            console.error("❌ No valid auth token found");
-            // Redirect to login or show error
-            router.push("/login");
-            return;
-        }
-
+    
         setLoading(true);
         try {
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/users/search?q=${encodeURIComponent(searchQuery)}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    },
-                }
+            console.log('🔍 Starting user search for:', searchQuery);
+            
+            // Sử dụng makeAuthenticationRequest thay vì fetch trực tiếp
+            const response = await makeAuthenticationRequest(
+                `/users/search?q=${encodeURIComponent(searchQuery)}`,
             );
-
-            console.log("📡 Response status:", response.status);
-
+    
+            console.log("📡 Search response status:", response.status);
+    
             if (response.ok) {
                 const data = await response.json();
-                // Filter out current user and existing friends
+                console.log('✅ Search successful:', data);
+                
                 const filteredUsers = (data.users || []).filter((u: SearchUser) =>
                     u._id !== user?._id &&
                     !friends.some(f => f._id === u._id)
                 );
                 setSearchResults(filteredUsers);
-                console.log('Search query:', searchQuery);
-                console.log('API response:', data);
             } else {
                 const error = await response.json();
-                console.error("❌ Error response:", error);
+                console.error("❌ Search error:", error);
+                
+                if (response.status === 401) {
+                    console.log('🔄 Unauthorized - clearing storage and redirecting');
+                    localStorage.removeItem('auth_token');
+                    localStorage.removeItem('auth_user');
+                    router.push("/sign-in");
+                }
             }
         } catch (error) {
-            console.error("Error searching users:", error);
+            console.error("❌ Search request failed:", error);
         } finally {
             setLoading(false);
         }
@@ -170,11 +167,11 @@ export default function AddFriendsPage() {
                     </div>
                 </div>
             ) : (
-                <div className="card bg-base-100 shadow-md">
-                    <div className="card-body text-center py-12">
-                        <Search className="w-16 h-16 text-base-content/20 mx-auto mb-4" />
-                        <h3 className="text-xl font-semibold">Search for friends</h3>
-                        <p className="text-base-content/60">
+                <div className="card bg-base-100 shadow-md mt-30 max-w-2xl mx-auto">
+                    <div className="card-body text-center py-16">
+                        <Search className="w-20 h-20 text-base-content/20 mx-auto mb-6" />
+                        <h3 className="text-2xl font-semibold mb-3">Search for friends</h3>
+                        <p className="text-base-content/60 text-lg">
                             Enter a username or email to find other language learners
                         </p>
                     </div>
