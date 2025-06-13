@@ -1,5 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
+import { makeAuthenticationRequest } from "@/lib/api";
 
 interface Friend {
     _id: string;
@@ -12,13 +13,22 @@ interface Friend {
 
 interface FriendRequest {
     _id: string;
-    sender: {
-        _id: string;
-        username: string;
-        email: string;
-        avatar?: string;
-    };
-    createdAt: Date;
+    sender: User;
+    recipient: User;
+    status: string;
+    createdAt: string;
+}
+
+interface User {
+    _id: string;
+    fullName: string;
+    username?: string;
+    avatar?: string;
+    profilePic?: string;
+    nativeLanguage: string;
+    learningLanguage: string;
+    location?: string;
+    email: string;
 }
 
 export function useFriend() {
@@ -26,6 +36,7 @@ export function useFriend() {
     const [friends, setFriends] = useState<Friend[]>([]);
     const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
     const [loading, setLoading] = useState(true);
+    const [sentRequests, setSentRequests] = useState<FriendRequest[]>([]); 
 
     const getValidToken = (): string | null => {
         // Try context first
@@ -40,6 +51,36 @@ export function useFriend() {
         }
 
         return null;
+    }
+
+    const fetchFriendData = async () => {
+        try {
+            setLoading(true);
+            console.log('🔄 Fetching friend data from /me/friends...');
+            
+            // ✅ Use new consolidated endpoint
+            const response = await makeAuthenticationRequest('/users/me/friends');
+            
+            if (response.ok) {
+                const data = await response.json();
+                
+                console.log('✅ Friend data received:', {
+                    friendsCount: data.friends?.length || 0,
+                    receivedRequestsCount: data.receivedFriendRequests?.length || 0,
+                    sentRequestsCount: data.sentFriendRequests?.length || 0
+                });
+                
+                setFriends(data.friends || []);
+                setFriendRequests(data.receivedFriendRequests || []);
+                setSentRequests(data.sentFriendRequests || []); // ✅ Set sent requests from FriendRequest collection
+            } else {
+                console.error('❌ Failed to fetch friend data:', response.status);
+            }
+        } catch (error) {
+            console.error('❌ Error fetching friend data:', error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     const fetchFriends = async () => {
@@ -112,27 +153,37 @@ export function useFriend() {
         }
     };
 
+    //sau này chuyển vào api.ts
     const sendFriendRequest = async (recipientId: string) => {
         try {
             const validToken = getValidToken();
-            if (!validToken) return false;
+            if (!validToken) {
+                throw new Error('No authentication token');
+            }
 
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/users/friend-request/${recipientId}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${validToken}`,
-                    },
-                }
+            const response = await makeAuthenticationRequest(
+                `/users/friend-request/${recipientId}`,
+                { method: 'POST' }
             );
-            return response.ok;
-        } catch (error) {
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to send friend request');
+            }            
+
+            await fetchFriendData();
+            return true;
+
+        } catch (error: any) {
             console.error("Error sending friend request:", error);
-            return false;
+            // ✅ Re-throw to let component handle the error
+            throw error;
         }
     };
+
+    useEffect(() => {
+        fetchFriendData();
+    }, []);
 
     const acceptFriendRequest = async (requestId: string) => {
         try {
@@ -207,12 +258,14 @@ export function useFriend() {
         friends,
         friendRequests,
         loading,
+        sentRequests,
         sendFriendRequest,
         acceptFriendRequest,
         declineFriendRequest,
         removeFriend,
         refreshFriends: fetchFriends,
-        refreshRequests: fetchFriendRequests
+        refreshRequests: fetchFriendRequests,
+        friendsLoading: loading
     };
 
 

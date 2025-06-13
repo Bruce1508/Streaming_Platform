@@ -10,6 +10,17 @@ interface ApiResponse<T = any> {
     token?: string;
 }
 
+interface User {
+    _id: string;
+    fullName: string;
+    username?: string;
+    avatar?: string;
+    nativeLanguage: string;
+    learningLanguage: string;
+    location?: string;
+    email: string;
+}
+
 interface SignupData {
     fullName: string;
     email: string;
@@ -210,7 +221,7 @@ export async function getOutgoingFriendReqs(): Promise<any[]> {
     }
 }
 
-
+//hàm bị trùng bên useFriend.ts
 export async function sendFriendRequest(userId: string): Promise<any> {
     try {
         const response = await makeAuthenticationRequest(`/users/friend-request/${userId}`, {
@@ -414,6 +425,46 @@ export async function updateProfilePicture(profilePic: string): Promise<any> {
         return data.user;
     } catch (error) {
         console.error('Error updating profile picture:', error);
+        throw error;
+    }
+}
+
+export async function searchUsers(query: string): Promise<User[]> {
+    try {
+        console.log('🔍 Starting user search for:', query);
+        
+        if (!query.trim()) {
+            console.log('⚠️ Empty search query');
+            return [];
+        }
+        
+        const response = await makeAuthenticationRequest(
+            `/users/search?q=${encodeURIComponent(query)}`
+        );
+        
+        console.log('📡 Search response status:', response.status);
+        
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('❌ Search error:', error);
+            
+            if (response.status === 401) {
+                console.log('🔄 Unauthorized - token may be expired');
+                // Let the auth wrapper handle redirect
+                throw new Error('Unauthorized');
+            }
+            
+            throw new Error(error.message || 'Search failed');
+        }
+        
+        const data = await response.json();
+        console.log('✅ Search successful:', data);
+        
+        // Return the users array, filtering will be done in component
+        return data.users || [];
+        
+    } catch (error) {
+        console.error('❌ Search request failed:', error);
         throw error;
     }
 }

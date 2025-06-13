@@ -14,7 +14,8 @@ import {
     updateMyProfile,
     updateProfilePicture,
     searchUsers,
-    removeFriend
+    removeFriend,
+    collectFriendData
 } from '../controllers/user.controllers';
 
 const router = express.Router();
@@ -39,5 +40,7 @@ router.delete("/friend-request/:id/cancel", cancelFriendRequest);
 router.get("/profile", getMyProfile);
 router.put("/profile", updateMyProfile);
 router.put("/profile/avatar", updateProfilePicture);
+
+router.get("/me/friends", collectFriendData)
 
 export default router;

@@ -277,7 +277,9 @@ __turbopack_context__.s({
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/contexts/AuthContext.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/api.ts [app-client] (ecmascript)");
 var _s = __turbopack_context__.k.signature();
+;
 ;
 ;
 function useFriend() {
@@ -286,6 +288,7 @@ function useFriend() {
     const [friends, setFriends] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [friendRequests, setFriendRequests] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [sentRequests, setSentRequests] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const getValidToken = ()=>{
         // Try context first
         if (token && typeof token === 'string' && token !== 'null') {
@@ -297,6 +300,31 @@ function useFriend() {
             return typeof storageToken === 'string' ? storageToken : String(storageToken);
         }
         return null;
+    };
+    const fetchFriendData = async ()=>{
+        try {
+            setLoading(true);
+            console.log('🔄 Fetching friend data from /me/friends...');
+            // ✅ Use new consolidated endpoint
+            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["makeAuthenticationRequest"])('/users/me/friends');
+            if (response.ok) {
+                const data = await response.json();
+                console.log('✅ Friend data received:', {
+                    friendsCount: data.friends?.length || 0,
+                    receivedRequestsCount: data.receivedFriendRequests?.length || 0,
+                    sentRequestsCount: data.sentFriendRequests?.length || 0
+                });
+                setFriends(data.friends || []);
+                setFriendRequests(data.receivedFriendRequests || []);
+                setSentRequests(data.sentFriendRequests || []); // ✅ Set sent requests from FriendRequest collection
+            } else {
+                console.error('❌ Failed to fetch friend data:', response.status);
+            }
+        } catch (error) {
+            console.error('❌ Error fetching friend data:', error);
+        } finally{
+            setLoading(false);
+        }
     };
     const fetchFriends = async ()=>{
         try {
@@ -352,23 +380,33 @@ function useFriend() {
             console.error("Error fetching friend requests:", error);
         }
     };
+    //sau này chuyển vào api.ts
     const sendFriendRequest = async (recipientId)=>{
         try {
             const validToken = getValidToken();
-            if (!validToken) return false;
-            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friend-request/${recipientId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${validToken}`
-                }
+            if (!validToken) {
+                throw new Error('No authentication token');
+            }
+            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["makeAuthenticationRequest"])(`/users/friend-request/${recipientId}`, {
+                method: 'POST'
             });
-            return response.ok;
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to send friend request');
+            }
+            await fetchFriendData();
+            return true;
         } catch (error) {
             console.error("Error sending friend request:", error);
-            return false;
+            // ✅ Re-throw to let component handle the error
+            throw error;
         }
     };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "useFriend.useEffect": ()=>{
+            fetchFriendData();
+        }
+    }["useFriend.useEffect"], []);
     const acceptFriendRequest = async (requestId)=>{
         try {
             const token = localStorage.getItem("auth_token");
@@ -434,15 +472,17 @@ function useFriend() {
         friends,
         friendRequests,
         loading,
+        sentRequests,
         sendFriendRequest,
         acceptFriendRequest,
         declineFriendRequest,
         removeFriend,
         refreshFriends: fetchFriends,
-        refreshRequests: fetchFriendRequests
+        refreshRequests: fetchFriendRequests,
+        friendsLoading: loading
     };
 } //end of useFriend()
-_s(useFriend, "R4CKLxFGnxwuvAr0DbEatD1qhsk=", false, function() {
+_s(useFriend, "DoQsQj7OHSrvZMmMBtJnzkagx0s=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"]
     ];

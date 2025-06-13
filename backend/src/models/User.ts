@@ -13,6 +13,11 @@ export interface IUser extends Document {
     location: string;
     isOnboarded: boolean;
     friends: mongoose.Types.ObjectId[] | IUser[];
+    receivedFriendRequests: Array<{
+        sender: mongoose.Types.ObjectId;
+        createdAt: Date;
+    }>;
+    sentFriendRequests: mongoose.Types.ObjectId[];
     createdAt: Date;
     updatedAt: Date;
     lastLogin?: Date;
@@ -84,7 +89,21 @@ const userSchema = new mongoose.Schema({
     },
     lastLogin: {
         type: Date
-    }
+    },
+    receivedFriendRequests: [{
+        sender: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
+    }],
+    sentFriendRequests: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 }, { timestamps: true });
 
 // Middleware trước khi lưu

@@ -52,43 +52,68 @@ export async function getMyFriends(req: Request, res: Response): Promise<Respons
 }
 
 export async function sendFriendRequest(req: Request, res: Response): Promise<Response | any> {
-    const myId = req.user._id;
+    const senderId = req.user._id;
     const { id: recipientId } = req.params;
-    if (myId === recipientId) {
-        return res.status(400).json({ message: "You can't send friend request to yourself" });
+
+    // ✅ Convert both to string for comparison
+    if (senderId.toString() === recipientId) {
+        return res.status(400).json({
+            success: false,
+            message: "You can't send friend request to yourself"
+        });
     }
 
     try {
         const recipient = await User.findById(recipientId);
         if (!recipient) {
-            return res.status(404).json({ message: "Recipient not found" });
+            return res.status(404).json({
+                success: false,
+                message: "Recipient not found"
+            });
         }
 
-        if (recipient.friends.some(friendId => friendId.toString() === myId)) {
-            return res.status(400).json({ message: "You are already friends with this user" });
+        // ✅ Convert both to string for comparison
+        if (recipient.friends.some(friendId => friendId.toString() === senderId.toString())) {
+            return res.status(400).json({
+                success: false,
+                message: "You are already friends with this user"
+            });
         }
 
         const existingRequest = await friendRequest.findOne({
             $or: [
-                { sender: myId, recipient: recipientId },
-                { sender: recipientId, recipient: myId },
+                { sender: senderId, recipient: recipientId },
+                { sender: recipientId, recipient: senderId },
             ],
         });
 
         if (existingRequest) {
-            return res.status(400).json({ message: "A friend request already exists between you and this user" });
+            return res.status(400).json({
+                success: false,
+                message: "A friend request already exists between you and this user"
+            });
         }
 
         const friend_request = await friendRequest.create({
-            sender: myId,
+            sender: senderId,
             recipient: recipientId,
-        })
+        });
 
-        res.status(201).json(friend_request);
+        console.log('✅ Friend request sent successfully:', friend_request);
+
+        res.status(201).json({
+            success: true,
+            message: "Friend request sent successfully",
+            sentTo: recipient.fullName,
+            friendRequest: friend_request
+        });
 
     } catch (error: any) {
-        console.error("Error in sendFriendRequest controller", error.message);
-        return res.status(500).json({ message: "Internal Server Error" });
+        console.error("❌ Error in sendFriendRequest controller:", error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
     }
 }
 
@@ -395,9 +420,9 @@ export async function updateProfilePicture(req: Request, res: Response): Promise
         const { profilePic } = req.body;
 
         if (!profilePic) {
-            return res.status(400).json({ 
-                success: false, 
-                message: "Profile picture URL is required" 
+            return res.status(400).json({
+                success: false,
+                message: "Profile picture URL is required"
             });
         }
 
@@ -415,9 +440,9 @@ export async function updateProfilePicture(req: Request, res: Response): Promise
 
     } catch (error: any) {
         console.log("Error in updateProfilePicture:", error.message);
-        return res.status(500).json({ 
-            success: false, 
-            message: "Internal Server Error" 
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
         });
     }
 }
@@ -438,8 +463,8 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
         // Trim và validate query length
         const trimmedQuery = q.trim();
         if (trimmedQuery.length < 2) {
-            return res.status(400).json({ 
-                message: "Search query must be at least 2 characters long" 
+            return res.status(400).json({
+                message: "Search query must be at least 2 characters long"
             });
         }
 
@@ -494,9 +519,9 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
             friendRequestStatus: pendingRequestsMap.get(user._id.toString()) || null
         }));
 
-        return res.status(200).json({ 
+        return res.status(200).json({
             users: enhancedUsers,
-            total: enhancedUsers.length 
+            total: enhancedUsers.length
         });
     } catch (error: any) {
         console.error("Error in searchUsers controller:", error.message);
@@ -529,5 +554,40 @@ export async function removeFriend(req: Request, res: Response): Promise<Respons
             success: false,
             message: "Internal Server Error"
         });
+    }
+}
+
+export async function collectFriendData(req: Request, res: Response): Promise<Response | any> {
+    try {
+        const userId = req.user.id;
+
+        // Get user with friends
+        const user = await User.findById(userId)
+            .populate('friends', 'username profilePicture email nativeLanguage learningLanguage location');
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // ✅ Get received friend requests from FriendRequest collection
+        const receivedRequests = await friendRequest.find({
+            recipient: userId,
+            status: 'pending'
+        }).populate('sender', 'username profilePicture email');
+
+        // ✅ Get sent friend requests from FriendRequest collection  
+        const sentRequests = await friendRequest.find({
+            sender: userId,
+            status: 'pending'
+        }).populate('recipient', 'username profilePicture email');
+
+        res.json({
+            friends: user.friends || [],
+            receivedFriendRequests: receivedRequests || [],
+            sentFriendRequests: sentRequests || [] // 
+        });
+    } catch (error) {
+        console.error("Get friends error:", error);
+        res.status(500).json({ message: "Server error" });
     }
 }
