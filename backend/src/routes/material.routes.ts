@@ -1,15 +1,27 @@
 import { Router } from 'express';
 import {
+    getStudyMaterials,
     getStudyMaterialById,
     getMaterialsByCategory,
+    createStudyMaterial,
+    updateStudyMaterial,
+    deleteStudyMaterial,
     saveMaterial,
-    removeSavedMaterial, 
+    removeSavedMaterial,
     rateMaterial,
     addComment,
     getUserSavedMaterials,
     getUserUploadedMaterials
 } from '../controllers/material.controller';
 import { protectRoute } from '../middleWare/auth.middleware';
+import { 
+    validateObjectId,
+    validateCreateMaterial,
+    validateUpdateMaterial,
+    validateRating,
+    validateComment,
+    validateQueryParams
+} from '../middleWare/material.middleware';
 
 const router = Router();
 
@@ -18,19 +30,44 @@ const router = Router();
 // =====================================================
 
 /**
+ * GET /api/materials
+ * Get all study materials with filtering, search, pagination
+ */
+router.get('/', validateQueryParams, getStudyMaterials);
+
+/**
  * GET /api/materials/category/:category
  * Get study materials by specific category
- * Params: category (string)
- * Query params: language, level, limit
  */
-router.get('/category/:category', getMaterialsByCategory);
+router.get('/category/:category', validateQueryParams, getMaterialsByCategory);
 
 /**
  * GET /api/materials/:id
  * Get single study material by ID
- * Params: id (MongoDB ObjectId)
  */
-router.get('/:id', getStudyMaterialById);
+router.get('/:id', validateObjectId('id'), getStudyMaterialById);
+
+// =====================================================
+// MATERIAL CRUD ROUTES - Authentication Required
+// =====================================================
+
+/**
+ * POST /api/materials
+ * Create new study material
+ */
+router.post('/', protectRoute, validateCreateMaterial, createStudyMaterial);
+
+/**
+ * PUT /api/materials/:id
+ * Update existing study material (author only)
+ */
+router.put('/:id', protectRoute, validateObjectId('id'), validateUpdateMaterial, updateStudyMaterial);
+
+/**
+ * DELETE /api/materials/:id
+ * Delete study material (author only)
+ */
+router.delete('/:id', protectRoute, validateObjectId('id'), deleteStudyMaterial);
 
 // =====================================================
 // MATERIAL INTERACTION ROUTES - Authentication Required
@@ -39,32 +76,26 @@ router.get('/:id', getStudyMaterialById);
 /**
  * POST /api/materials/:id/save
  * Save/bookmark a study material
- * Params: id (MongoDB ObjectId)
  */
-router.post('/:id/save', protectRoute, saveMaterial);
+router.post('/:id/save', protectRoute, validateObjectId('id'), saveMaterial);
 
 /**
  * DELETE /api/materials/:id/save
  * Remove bookmark from study material
- * Params: id (MongoDB ObjectId)
  */
-router.delete('/:id/save', protectRoute, removeSavedMaterial);  // ✅ Updated function name
+router.delete('/:id/save', protectRoute, validateObjectId('id'), removeSavedMaterial);
 
 /**
  * POST /api/materials/:id/rate
  * Rate a study material (1-5 stars)
- * Params: id (MongoDB ObjectId)
- * Body: rating (number 1-5)
  */
-router.post('/:id/rate', protectRoute, rateMaterial);
+router.post('/:id/rate', protectRoute, validateObjectId('id'), validateRating, rateMaterial);
 
 /**
  * POST /api/materials/:id/comments
  * Add comment to study material
- * Params: id (MongoDB ObjectId)
- * Body: content (string)
  */
-router.post('/:id/comments', protectRoute, addComment);
+router.post('/:id/comments', protectRoute, validateObjectId('id'), validateComment, addComment);
 
 // =====================================================
 // USER-SPECIFIC ROUTES - Authentication Required
@@ -73,15 +104,13 @@ router.post('/:id/comments', protectRoute, addComment);
 /**
  * GET /api/materials/user/saved
  * Get current user's saved/bookmarked materials
- * Query params: page, limit
  */
-router.get('/user/saved', protectRoute, getUserSavedMaterials);
+router.get('/user/saved', protectRoute, validateQueryParams, getUserSavedMaterials);
 
 /**
  * GET /api/materials/user/uploaded
  * Get current user's uploaded materials
- * Query params: page, limit, status
  */
-router.get('/user/uploaded', protectRoute, getUserUploadedMaterials);
+router.get('/user/uploaded', protectRoute, validateQueryParams, getUserUploadedMaterials);
 
 export default router;
