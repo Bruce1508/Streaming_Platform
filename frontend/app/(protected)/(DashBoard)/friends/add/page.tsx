@@ -11,33 +11,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useFriend } from '@/hooks/useFriend'; // Import useFriend hook\
 import Avatar from '@/components/ui/Avatar';
 import { cancelFriendRequest } from '@/lib/api';
-
-interface User {
-    _id: string;
-    fullName: string;
-    username?: string;
-    avatar?: string;
-    profilePic?: string;
-    nativeLanguage: string;
-    learningLanguage: string;
-    location?: string;
-    email: string;
-}
-
-interface FilterOptions {
-    nativeLanguage: string;
-    learningLanguage: string;
-    location: string;
-}
-
-interface FriendRequestStatus {
-    [userId: string]: 'none' | 'sent' | 'received' | 'friends';
-}
-
-const LANGUAGES = [
-    'English', 'Vietnamese', 'Japanese', 'Korean', 'Chinese',
-    'Spanish', 'French', 'German', 'Italian', 'Portuguese'
-];
+import UserCardSkeleton from '@/components/ui/UserCardSkeleton';
+import FilterDropdown from '@/components/ui/FilterDropDown';
+import UserCard from '@/components/ui/UserCard';
+import { User, FilterOptions, FriendRequestStatus } from "@/types/User";
+import { LANGUAGES } from '@/constants';
 
 const AddFriendsPage = () => {
     const { user: currentUser } = useAuth();
@@ -60,7 +38,6 @@ const AddFriendsPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [showFilters, setShowFilters] = useState(false);
     const [processingRequests, setProcessingRequests] = useState<Set<string>>(new Set());
-
     // Filter state
     const [filters, setFilters] = useState<FilterOptions>({
         nativeLanguage: '',
@@ -425,118 +402,6 @@ const AddFriendsPage = () => {
     );
 };
 
-// Filter Dropdown Component (unchanged)
-const FilterDropdown: React.FC<{
-    filters: FilterOptions;
-    setFilters: React.Dispatch<React.SetStateAction<FilterOptions>>;
-    showFilters: boolean;
-    setShowFilters: React.Dispatch<React.SetStateAction<boolean>>;
-    clearFilters: () => void;
-    languages: string[];
-}> = ({ filters, setFilters, showFilters, setShowFilters, clearFilters, languages }) => {
-    const hasActiveFilters = filters.nativeLanguage || filters.learningLanguage || filters.location;
-    const dropdownRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const handleOutsideClick = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setShowFilters(false);
-            }
-        };
-
-        if (showFilters) {
-            document.addEventListener('mousedown', handleOutsideClick);
-        } else {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        };
-    }, [showFilters, setShowFilters]);
-
-    return (
-        <div className="relative" ref={dropdownRef}>
-            <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-3 border border-base-300 rounded-lg hover:bg-base-200 transition-colors"
-            >
-                <Filter className="w-5 h-5" />
-                Filters
-                {hasActiveFilters && (
-                    <span className="bg-primary text-white text-xs rounded-full w-2 h-2"></span>
-                )}
-            </button>
-
-            <div className={`
-                absolute right-0 top-full mt-2 w-80 bg-base-100 border border-base-300 rounded-lg shadow-lg z-10 p-4
-                transition-all duration-300 ease-out transform origin-top-right
-                ${showFilters ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}
-            `}>
-                <div className="flex justify-between items-center mb-4">
-                    <h3 className="font-semibold text-base-content">Filters</h3>
-                    <button
-                        onClick={clearFilters}
-                        className="text-sm text-primary hover:text-primary-focus"
-                    >
-                        Clear all
-                    </button>
-                </div>
-
-                <div className="space-y-4">
-                    {/* Native Language Filter */}
-                    <div>
-                        <label className="block text-sm font-medium text-base-content/70 mb-2">
-                            Native Language
-                        </label>
-                        <select
-                            value={filters.nativeLanguage}
-                            onChange={(e) => setFilters(prev => ({ ...prev, nativeLanguage: e.target.value }))}
-                            className="w-full p-2 border border-base-300 rounded-md focus:ring-2 focus:ring-primary"
-                        >
-                            <option value="">All languages</option>
-                            {languages.map(lang => (
-                                <option key={lang} value={lang}>{lang}</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    {/* Learning Language Filter */}
-                    <div>
-                        <label className="block text-sm font-medium text-base-content/70 mb-2">
-                            Learning Language
-                        </label>
-                        <select
-                            value={filters.learningLanguage}
-                            onChange={(e) => setFilters(prev => ({ ...prev, learningLanguage: e.target.value }))}
-                            className="w-full p-2 border border-base-300 rounded-md focus:ring-2 focus:ring-primary"
-                        >
-                            <option value="">All languages</option>
-                            {languages.map(lang => (
-                                <option key={lang} value={lang}>{lang}</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    {/* Location Filter */}
-                    <div>
-                        <label className="block text-sm font-medium text-base-content/70 mb-2">
-                            Location
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="Enter city or country"
-                            value={filters.location}
-                            onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
-                            className="w-full p-2 border border-base-300 rounded-md focus:ring-2 focus:ring-primary"
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
 // Users List Component (unchanged)
 const UsersList: React.FC<{
     isLoading: boolean;
@@ -583,93 +448,6 @@ const UsersList: React.FC<{
                     buttonConfig={getButtonConfig(user._id)}
                 />
             ))}
-        </div>
-    );
-};
-
-// User Card Component (unchanged but handle different field names)
-const UserCard: React.FC<{
-    user: User;
-    buttonConfig: {
-        text: string;
-        icon: any;
-        className: string;
-        onClick: () => void;
-        disabled: boolean;
-    };
-}> = ({ user, buttonConfig }) => {
-    const IconComponent = buttonConfig.icon;
-
-    return (
-        <div className="bg-base-100 border border-base-300 rounded-lg p-6 
-                     transition-all duration-300 ease-in-out 
-                     hover:shadow-xl hover:border-primary hover:scale-[1.05] hover:bg-base-200">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                    {/* Avatar */}
-                    <Avatar user={user} size="md" />
-
-                    {/* User Info */}
-                    <div className="flex-1">
-                        <h3 className="font-semibold text-base-content">
-                            {user.fullName || user.username || 'Unknown User'}
-                        </h3>
-
-                        {/* Languages */}
-                        <div className="flex items-center gap-4 mt-1">
-                            <div className="flex items-center gap-1">
-                                <Languages className="w-4 h-4 text-primary" />
-                                <span className="text-base-content/60">
-                                    Native: <span className="font-medium">{user.nativeLanguage}</span>
-                                </span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                                <Languages className="w-4 h-4 text-accent" />
-                                <span className="text-base-content/60">
-                                    Learning: <span className="font-medium">{user.learningLanguage}</span>
-                                </span>
-                            </div>
-                        </div>
-
-                        {/* Location */}
-                        {user.location && (
-                            <div className="flex items-center gap-1 mt-1">
-                                <MapPin className="w-4 h-4 text-base-content/40" />
-                                <span className="text-base-content/60">{user.location}</span>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                {/* Dynamic Button */}
-                <button
-                    onClick={buttonConfig.onClick}
-                    disabled={buttonConfig.disabled}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${buttonConfig.className}`}
-                >
-                    <IconComponent className={`w-4 h-4 ${buttonConfig.icon === Loader2 ? 'animate-spin' : ''}`} />
-                    {buttonConfig.text}
-                </button>
-            </div>
-        </div>
-    );
-};
-
-// Skeleton Loading Component (unchanged)
-const UserCardSkeleton = () => {
-    return (
-        <div className="bg-base-100 border border-base-300 rounded-lg p-6 animate-pulse">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-base-200 rounded-full"></div>
-                    <div className="flex-1">
-                        <div className="h-4 bg-base-200 rounded w-32 mb-2"></div>
-                        <div className="h-3 bg-base-200 rounded w-48 mb-1"></div>
-                        <div className="h-3 bg-base-200 rounded w-24"></div>
-                    </div>
-                </div>
-                <div className="w-24 h-10 bg-base-200 rounded-lg"></div>
-            </div>
         </div>
     );
 };

@@ -36,7 +36,7 @@ export function useFriend() {
     const [friends, setFriends] = useState<Friend[]>([]);
     const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
     const [loading, setLoading] = useState(true);
-    const [sentRequests, setSentRequests] = useState<FriendRequest[]>([]); 
+    const [sentRequests, setSentRequests] = useState<FriendRequest[]>([]);
 
     const getValidToken = (): string | null => {
         // Try context first
@@ -53,23 +53,24 @@ export function useFriend() {
         return null;
     }
 
+    //fetch our friends
     const fetchFriendData = async () => {
         try {
             setLoading(true);
             console.log('🔄 Fetching friend data from /me/friends...');
-            
+
             // ✅ Use new consolidated endpoint
             const response = await makeAuthenticationRequest('/users/me/friends');
-            
+
             if (response.ok) {
                 const data = await response.json();
-                
+
                 console.log('✅ Friend data received:', {
                     friendsCount: data.friends?.length || 0,
                     receivedRequestsCount: data.receivedFriendRequests?.length || 0,
                     sentRequestsCount: data.sentFriendRequests?.length || 0
                 });
-                
+
                 setFriends(data.friends || []);
                 setFriendRequests(data.receivedFriendRequests || []);
                 setSentRequests(data.sentFriendRequests || []); // ✅ Set sent requests from FriendRequest collection
@@ -83,48 +84,49 @@ export function useFriend() {
         }
     }
 
-    const fetchFriends = async () => {
-        try {
-            const validToken = getValidToken();
+    //fetch friends
+    // const fetchFriends = async () => {
+    //     try {
+    //         const validToken = getValidToken();
 
-            console.log('🔍 fetchFriends token check:', {
-                hasContextToken: !!token,
-                hasStorageToken: !!localStorage.getItem("auth_token"),
-                finalToken: !!validToken,
-                tokenType: typeof validToken
-            });
+    //         console.log('🔍 fetchFriends token check:', {
+    //             hasContextToken: !!token,
+    //             hasStorageToken: !!localStorage.getItem("auth_token"),
+    //             finalToken: !!validToken,
+    //             tokenType: typeof validToken
+    //         });
 
-            if (!validToken) {
-                console.error('❌ No auth token found in fetchFriends');
-                setLoading(false);
-                return;
-            }
+    //         if (!validToken) {
+    //             console.error('❌ No auth token found in fetchFriends');
+    //             setLoading(false);
+    //             return;
+    //         }
 
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/users/friends`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${validToken}`,
-                    },
-                }
-            );
+    //         const response = await fetch(
+    //             `${process.env.NEXT_PUBLIC_API_URL}/users/friends`,
+    //             {
+    //                 headers: {
+    //                     Authorization: `Bearer ${validToken}`,
+    //                 },
+    //             }
+    //         );
 
-            console.log('📡 fetchFriends response:', response.status);
+    //         console.log('📡 fetchFriends response:', response.status);
 
-            if (response.ok) {
-                const data = await response.json();
-                console.log('✅ Friends data:', data);
-                setFriends(data || []);
-            } else {
-                const error = await response.json();
-                console.error('❌ fetchFriends error:', error);
-            }
-        } catch (error) {
-            console.error("❌ Error fetching friends:", error);
-        } finally {
-            setLoading(false);
-        }
-    }
+    //         if (response.ok) {
+    //             const data = await response.json();
+    //             console.log('✅ Friends data:', data);
+    //             setFriends(data || []);
+    //         } else {
+    //             const error = await response.json();
+    //             console.error('❌ fetchFriends error:', error);
+    //         }
+    //     } catch (error) {
+    //         console.error("❌ Error fetching friends:", error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }
 
     const fetchFriendRequests = async () => {
         try {
@@ -169,8 +171,7 @@ export function useFriend() {
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to send friend request');
-            }            
-
+            }
             await fetchFriendData();
             return true;
 
@@ -198,7 +199,7 @@ export function useFriend() {
                 }
             );
             if (response.ok) {
-                await fetchFriends();
+                // await fetchFriends();
                 await fetchFriendRequests();
             }
         } catch (error) {
@@ -228,29 +229,55 @@ export function useFriend() {
 
     const removeFriend = async (friendId: string) => {
         try {
-            const token = localStorage.getItem("auth_token");
-            // ✅ Tạo route DELETE friend mới trong backend
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/users/friends/${friendId}`,
-                {
-                    method: "DELETE",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
+            const response = await makeAuthenticationRequest(
+                `/users/friends/${friendId}`,
+                { method: 'DELETE' }
             );
-            if (response.ok) {
-                await fetchFriends();
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to remove friend');
             }
-        } catch (error) {
+
+            await fetchFriendData(); // ✅ Consistent refresh
+            return true;
+        } catch (error: any) {
             console.error("Error removing friend:", error);
+            throw error;
+        }
+    };
+
+    const cancelFriendRequest = async (recipientId: string) => {
+        try {
+            const validToken = getValidToken();
+            if (!validToken) {
+                throw new Error('No authentication token');
+            }
+
+            // ✅ Use consistent API pattern
+            const response = await makeAuthenticationRequest(
+                `/users/friend-request/${recipientId}/cancel`,
+                { method: 'DELETE' }
+            );
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to cancel friend request');
+            }
+
+            // ✅ Use consistent refresh pattern
+            await fetchFriendData();
+            return true;
+
+        } catch (error: any) {
+            console.error("Error canceling friend request:", error);
+            throw error;
         }
     };
 
     useEffect(() => {
         if (user?._id) {
-            fetchFriends();
-            fetchFriendRequests();
+            fetchFriendData();
         }
     }, [user?._id, token]);
 
@@ -260,11 +287,12 @@ export function useFriend() {
         loading,
         sentRequests,
         sendFriendRequest,
+        cancelFriendRequest,  
         acceptFriendRequest,
         declineFriendRequest,
         removeFriend,
-        refreshFriends: fetchFriends,
-        refreshRequests: fetchFriendRequests,
+        refreshFriends: fetchFriendData, // ✅ Use consolidated function
+        refreshRequests: fetchFriendData, // ✅ Use consolidated function
         friendsLoading: loading
     };
 
