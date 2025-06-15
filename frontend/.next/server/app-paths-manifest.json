@@ -1,7 +1,6 @@
 {
-  "/(auth)/sign-in/page": "app/(auth)/sign-in/page.js",
-  "/(protected)/(DashBoard)/friends/add/page": "app/(protected)/(DashBoard)/friends/add/page.js",
-  "/(protected)/(DashBoard)/page": "app/(protected)/(DashBoard)/page.js",
+  "/(protected)/(dashBoard)/materials/page": "app/(protected)/(dashBoard)/materials/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }

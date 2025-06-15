@@ -630,87 +630,205 @@ export const getStudyMaterials = async (req: Request, res: Response): Promise <R
     }
 }
 
-export const createStudyMaterial = async (req: Request, res: Response): Promise<Response | any> => {
+export const createStudyMaterial = async (req: Request, res: Response): Promise<any> => {
     try {
         const authReq = req as AuthenticatedRequest;
+        
+        // ✅ Destructure with validation
         const {
             title,
             description,
+            content,
             category,
             language,
             level,
-            tags,
-            fileUrl,
-            fileType,
-            fileSize,
-            isPublic = true
+            tags = [],
+            attachments = [],
+            isPublic = true,
+            status = 'published'
         } = req.body;
 
-        if (!authReq.user) {
-            return res.status(401).json({
-                success: false,
-                message: 'Authentication required'
-            });
-        }
-
-        // Validate required fields
-        if (!title || !description || !category || !language || !level) {
+        // ✅ Required fields validation
+        if (!title?.trim()) {
             return res.status(400).json({
                 success: false,
-                message: 'Title, description, category, language, and level are required'
+                message: "Title is required"
             });
         }
 
-        // Validate file if provided
-        if (fileUrl && (!fileType || !fileSize)) {
+        if (!description?.trim()) {
             return res.status(400).json({
                 success: false,
-                message: 'File type and size are required when file is provided'
+                message: "Description is required"
             });
         }
 
-        // Process tags
-        const processedTags = tags ? 
-            tags.split(',').map((tag: string) => tag.trim().toLowerCase()).filter((tag: string) => tag.length > 0) : 
-            [];
+        if (!category) {
+            return res.status(400).json({
+                success: false,
+                message: "Category is required"
+            });
+        }
 
-        // Create new study material
+        if (!language) {
+            return res.status(400).json({
+                success: false,
+                message: "Language is required"
+            });
+        }
+
+        if (!level) {
+            return res.status(400).json({
+                success: false,
+                message: "Level is required"
+            });
+        }
+
+        // ✅ Validate category enum
+        const validCategories = ['grammar', 'vocabulary', 'listening', 'speaking', 'reading', 'writing', 'practice', 'culture', 'pronunciation'];
+        if (!validCategories.includes(category.toLowerCase())) {
+            return res.status(400).json({
+                success: false,
+                message: `Invalid category. Must be one of: ${validCategories.join(', ')}`
+            });
+        }
+
+        // ✅ Validate level enum
+        const validLevels = ['beginner', 'intermediate', 'advanced'];
+        if (!validLevels.includes(level.toLowerCase())) {
+            return res.status(400).json({
+                success: false,
+                message: `Invalid level. Must be one of: ${validLevels.join(', ')}`
+            });
+        }
+
+        // ✅ Process tags - clean and deduplicate
+        const processedTags = Array.isArray(tags) 
+            ? [...new Set(tags.map((tag: string) => tag.trim().toLowerCase()).filter(Boolean))]
+            : [];
+
+        // ✅ Security: Validate attachments belong to this user
+        if (attachments.length > 0) {
+            const userId = authReq.user._id.toString();
+            const hasInvalidAttachment = attachments.some((attachment: any) => {
+                // Check if filename contains user ID (security check)
+                return !attachment.filename?.includes(userId);
+            });
+
+            if (hasInvalidAttachment) {
+                return res.status(403).json({
+                    success: false,
+                    message: "Unauthorized: Invalid file attachment"
+                });
+            }
+
+            // ✅ Validate attachment structure
+            for (const attachment of attachments) {
+                if (!attachment.filename || !attachment.url || !attachment.mimeType) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Invalid attachment structure. Required: filename, url, mimeType"
+                    });
+                }
+            }
+        }
+
+        // ✅ Create material with optimized structure
         const newMaterial = new StudyMaterial({
             title: title.trim(),
             description: description.trim(),
+            content: content?.trim() || null,
             category: category.toLowerCase(),
             language: language.toLowerCase(),
-            level,
+            level: level.toLowerCase(),
             tags: processedTags,
+            attachments: attachments.map((att: any) => ({
+                filename: att.filename,
+                originalName: att.originalName,
+                mimeType: att.mimeType,
+                size: att.size,
+                url: att.url,
+                uploadedAt: att.uploadedAt || new Date()
+            })),
             author: authReq.user._id,
-            fileUrl: fileUrl || null,
-            fileType: fileType || null,
-            fileSize: fileSize || null,
-            isPublic,
-            status: 'published', // or 'draft' based on your needs
-            createdAt: new Date(),
-            updatedAt: new Date()
+            isPublic: Boolean(isPublic),
+            status: status === 'draft' ? 'draft' : 'published',
+            views: 0,
+            saves: 0,
+            ratings: [],
+            comments: [],
+            isFeatured: false,
+            isReported: false,
+            reportCount: 0
         });
 
-        await newMaterial.save();
+        // ✅ Save with error handling
+        const savedMaterial = await newMaterial.save();
 
-        // Populate author info
-        const populatedMaterial = await StudyMaterial.findById(newMaterial._id)
-            .populate('author', 'username profilePicture')
-            .exec();
+        // ✅ Populate author info for response
+        await savedMaterial.populate('author', 'fullName username profilePicture email');
 
+        // ✅ Log success
+        console.log('✅ Study material created:', {
+            id: savedMaterial._id,
+            title: savedMaterial.title,
+            author: authReq.user.fullName,
+            attachments: savedMaterial.attachments.length,
+            category: savedMaterial.category
+        });
+
+        // ✅ Return success response
         return res.status(201).json({
             success: true,
-            message: 'Study material created successfully',
-            data: populatedMaterial
+            message: "Study material created successfully",
+            material: {
+                _id: savedMaterial._id,
+                title: savedMaterial.title,
+                description: savedMaterial.description,
+                content: savedMaterial.content,
+                category: savedMaterial.category,
+                language: savedMaterial.language,
+                level: savedMaterial.level,
+                tags: savedMaterial.tags,
+                attachments: savedMaterial.attachments,
+                author: savedMaterial.author,
+                isPublic: savedMaterial.isPublic,
+                status: savedMaterial.status,
+                views: savedMaterial.views,
+                saves: savedMaterial.saves,
+                averageRating: savedMaterial.averageRating,
+                totalRatings: savedMaterial.totalRatings,
+                commentCount: savedMaterial.commentCount,
+                createdAt: savedMaterial.createdAt,
+                updatedAt: savedMaterial.updatedAt
+            }
         });
 
     } catch (error: any) {
-        console.error('Error creating study material:', error);
+        console.error('❌ Create study material error:', error);
+
+        // ✅ Handle specific MongoDB errors
+        if (error.name === 'ValidationError') {
+            const validationErrors = Object.values(error.errors).map((err: any) => err.message);
+            return res.status(400).json({
+                success: false,
+                message: "Validation failed",
+                errors: validationErrors
+            });
+        }
+
+        if (error.code === 11000) {
+            return res.status(409).json({
+                success: false,
+                message: "Duplicate material detected"
+            });
+        }
+
+        // ✅ Generic error response
         return res.status(500).json({
             success: false,
-            message: 'Error creating study material',
-            error: error.message
+            message: "Failed to create study material",
+            error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
         });
     }
 };

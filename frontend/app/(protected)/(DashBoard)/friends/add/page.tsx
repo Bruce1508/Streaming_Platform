@@ -24,7 +24,7 @@ const AddFriendsPage = () => {
         friendRequests,
         sentRequests,
         friendsLoading,
-        refreshRequests, 
+        refreshRequests,
         sendFriendRequest
     } = useFriend();
 
@@ -176,7 +176,7 @@ const AddFriendsPage = () => {
 
             if (success) {
                 console.log('✅ Friend request sent successfully');
-                
+
                 // ✅ Update status immediately for better UX
                 setFriendRequestStatus(prev => ({
                     ...prev,
@@ -184,7 +184,7 @@ const AddFriendsPage = () => {
                 }));
 
                 toast.success('Friend request sent successfully!');
-                
+
                 // Data already refreshed in sendFriendRequest
             } else {
                 toast.error('Failed to send friend request');
@@ -192,7 +192,7 @@ const AddFriendsPage = () => {
 
         } catch (error: any) {
             console.error('❌ Send friend request error:', error);
-            
+
             if (error.message?.includes('already exists')) {
                 setFriendRequestStatus(prev => ({
                     ...prev,
@@ -208,7 +208,7 @@ const AddFriendsPage = () => {
             } else {
                 toast.error('Failed to send friend request');
             }
-            
+
         } finally {
             setProcessingRequests(prev => {
                 const newSet = new Set(prev);
@@ -224,17 +224,17 @@ const AddFriendsPage = () => {
             console.log('🚫 Cancelling friend request to:', userId);
 
             const result = await cancelFriendRequest(userId);
-            
+
             if (result.success) {
                 console.log('✅ Friend request cancelled successfully');
-                
+
                 setFriendRequestStatus(prev => ({
                     ...prev,
                     [userId]: 'none'
                 }));
-                
+
                 toast.success('Friend request cancelled!');
-                
+
                 // ✅ Refresh data to sync with backend
                 refreshRequests();
             } else {
@@ -244,7 +244,7 @@ const AddFriendsPage = () => {
         } catch (error: any) {
             console.error('❌ Cancel error:', error);
             toast.error('Failed to cancel request');
-            
+
         } finally {
             setProcessingRequests(prev => {
                 const newSet = new Set(prev);

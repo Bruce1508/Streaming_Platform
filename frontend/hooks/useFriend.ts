@@ -84,50 +84,6 @@ export function useFriend() {
         }
     }
 
-    //fetch friends
-    // const fetchFriends = async () => {
-    //     try {
-    //         const validToken = getValidToken();
-
-    //         console.log('🔍 fetchFriends token check:', {
-    //             hasContextToken: !!token,
-    //             hasStorageToken: !!localStorage.getItem("auth_token"),
-    //             finalToken: !!validToken,
-    //             tokenType: typeof validToken
-    //         });
-
-    //         if (!validToken) {
-    //             console.error('❌ No auth token found in fetchFriends');
-    //             setLoading(false);
-    //             return;
-    //         }
-
-    //         const response = await fetch(
-    //             `${process.env.NEXT_PUBLIC_API_URL}/users/friends`,
-    //             {
-    //                 headers: {
-    //                     Authorization: `Bearer ${validToken}`,
-    //                 },
-    //             }
-    //         );
-
-    //         console.log('📡 fetchFriends response:', response.status);
-
-    //         if (response.ok) {
-    //             const data = await response.json();
-    //             console.log('✅ Friends data:', data);
-    //             setFriends(data || []);
-    //         } else {
-    //             const error = await response.json();
-    //             console.error('❌ fetchFriends error:', error);
-    //         }
-    //     } catch (error) {
-    //         console.error("❌ Error fetching friends:", error);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // }
-
     const fetchFriendRequests = async () => {
         try {
             const validToken = getValidToken();

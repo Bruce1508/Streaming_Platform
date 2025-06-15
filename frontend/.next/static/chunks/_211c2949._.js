@@ -301,6 +301,7 @@ function useFriend() {
         }
         return null;
     };
+    //fetch our friends
     const fetchFriendData = async ()=>{
         try {
             setLoading(true);
@@ -322,40 +323,6 @@ function useFriend() {
             }
         } catch (error) {
             console.error('❌ Error fetching friend data:', error);
-        } finally{
-            setLoading(false);
-        }
-    };
-    const fetchFriends = async ()=>{
-        try {
-            const validToken = getValidToken();
-            console.log('🔍 fetchFriends token check:', {
-                hasContextToken: !!token,
-                hasStorageToken: !!localStorage.getItem("auth_token"),
-                finalToken: !!validToken,
-                tokenType: typeof validToken
-            });
-            if (!validToken) {
-                console.error('❌ No auth token found in fetchFriends');
-                setLoading(false);
-                return;
-            }
-            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friends`, {
-                headers: {
-                    Authorization: `Bearer ${validToken}`
-                }
-            });
-            console.log('📡 fetchFriends response:', response.status);
-            if (response.ok) {
-                const data = await response.json();
-                console.log('✅ Friends data:', data);
-                setFriends(data || []);
-            } else {
-                const error = await response.json();
-                console.error('❌ fetchFriends error:', error);
-            }
-        } catch (error) {
-            console.error("❌ Error fetching friends:", error);
         } finally{
             setLoading(false);
         }
@@ -417,7 +384,7 @@ function useFriend() {
                 }
             });
             if (response.ok) {
-                await fetchFriends();
+                // await fetchFriends();
                 await fetchFriendRequests();
             }
         } catch (error) {
@@ -442,26 +409,46 @@ function useFriend() {
     };
     const removeFriend = async (friendId)=>{
         try {
-            const token = localStorage.getItem("auth_token");
-            // ✅ Tạo route DELETE friend mới trong backend
-            const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/users/friends/${friendId}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["makeAuthenticationRequest"])(`/users/friends/${friendId}`, {
+                method: 'DELETE'
             });
-            if (response.ok) {
-                await fetchFriends();
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to remove friend');
             }
+            await fetchFriendData(); // ✅ Consistent refresh
+            return true;
         } catch (error) {
             console.error("Error removing friend:", error);
+            throw error;
+        }
+    };
+    const cancelFriendRequest = async (recipientId)=>{
+        try {
+            const validToken = getValidToken();
+            if (!validToken) {
+                throw new Error('No authentication token');
+            }
+            // ✅ Use consistent API pattern
+            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["makeAuthenticationRequest"])(`/users/friend-request/${recipientId}/cancel`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to cancel friend request');
+            }
+            // ✅ Use consistent refresh pattern
+            await fetchFriendData();
+            return true;
+        } catch (error) {
+            console.error("Error canceling friend request:", error);
+            throw error;
         }
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "useFriend.useEffect": ()=>{
             if (user?._id) {
-                fetchFriends();
-                fetchFriendRequests();
+                fetchFriendData();
             }
         }
     }["useFriend.useEffect"], [
@@ -474,11 +461,12 @@ function useFriend() {
         loading,
         sentRequests,
         sendFriendRequest,
+        cancelFriendRequest,
         acceptFriendRequest,
         declineFriendRequest,
         removeFriend,
-        refreshFriends: fetchFriends,
-        refreshRequests: fetchFriendRequests,
+        refreshFriends: fetchFriendData,
+        refreshRequests: fetchFriendData,
         friendsLoading: loading
     };
 } //end of useFriend()
