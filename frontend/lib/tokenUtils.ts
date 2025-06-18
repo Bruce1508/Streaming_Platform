@@ -1,13 +1,12 @@
-const TOKEN_KEY = 'auth_token';
+export const getValidToken = (): string | null => {
+    // Try localStorage first
+    const storageToken = localStorage.getItem("auth_token");
+    if (storageToken && storageToken !== 'null' && storageToken !== 'undefined') {
+        return typeof storageToken === 'string' ? storageToken : String(storageToken);
+    }
 
-export const getAuthToken = (): string | null => {
-    return localStorage.getItem(TOKEN_KEY);
-};
+    return null;
+}
 
-export const setAuthToken = (token: string): void => {
-    localStorage.setItem(TOKEN_KEY, token);
-};
 
-export const removeAuthToken = (): void => {
-    localStorage.removeItem(TOKEN_KEY);
-};
+

@@ -5,7 +5,6 @@ import { createContext, useContext, useEffect, useState, ReactNode, useCallback 
 import { useSession, signOut as nextAuthSignOut, signOut, getSession } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 import { getAuthUser } from "@/lib/api"; 
-import { setAuthToken, removeAuthToken, getAuthToken } from '@/lib/tokenUtils';
 
 interface User {
     _id: string;
@@ -147,7 +146,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.log("🔴 Logout started");
         try {
             // Clear local storage
-            removeAuthToken();
+            localStorage.removeItem('auth_token');
             localStorage.removeItem("user");
             console.log("🗑️ Local storage cleared");
             

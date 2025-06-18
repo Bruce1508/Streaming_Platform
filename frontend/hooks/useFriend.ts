@@ -1,35 +1,8 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { makeAuthenticationRequest } from "@/lib/api";
-
-interface Friend {
-    _id: string;
-    username: string;
-    email: string;
-    avatar?: string;
-    lastSeen?: Date;
-    isOnline?: boolean;
-}
-
-interface FriendRequest {
-    _id: string;
-    sender: User;
-    recipient: User;
-    status: string;
-    createdAt: string;
-}
-
-interface User {
-    _id: string;
-    fullName: string;
-    username?: string;
-    avatar?: string;
-    profilePic?: string;
-    nativeLanguage: string;
-    learningLanguage: string;
-    location?: string;
-    email: string;
-}
+import { getValidToken } from "@/lib/tokenUtils";
+import { FriendRequest, Friend } from "@/types/Friend";
 
 export function useFriend() {
     const { user, token } = useAuth();
@@ -37,21 +10,6 @@ export function useFriend() {
     const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
     const [loading, setLoading] = useState(true);
     const [sentRequests, setSentRequests] = useState<FriendRequest[]>([]);
-
-    const getValidToken = (): string | null => {
-        // Try context first
-        if (token && typeof token === 'string' && token !== 'null') {
-            return token;
-        }
-
-        // Try localStorage
-        const storageToken = localStorage.getItem("auth_token");
-        if (storageToken && storageToken !== 'null' && storageToken !== 'undefined') {
-            return typeof storageToken === 'string' ? storageToken : String(storageToken);
-        }
-
-        return null;
-    }
 
     //fetch our friends
     const fetchFriendData = async () => {

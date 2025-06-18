@@ -1,45 +1,7 @@
 import { getSession } from "next-auth/react";
-import { getAuthToken } from './tokenUtils';
+import { ApiResponse, User, SignupData, LoginData, OnboardingData } from "@/types/SignIn";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
-
-interface ApiResponse<T = any> {
-    success: boolean;
-    message?: string;
-    user?: T;
-    token?: string;
-}
-
-interface User {
-    _id: string;
-    fullName: string;
-    username?: string;
-    avatar?: string;
-    nativeLanguage: string;
-    learningLanguage: string;
-    location?: string;
-    email: string;
-}
-
-interface SignupData {
-    fullName: string;
-    email: string;
-    password: string;
-}
-
-interface LoginData {
-    email: string;
-    password: string;
-}
-
-interface OnboardingData {
-    fullName: string;
-    bio: string;
-    nativeLanguage: string;
-    learningLanguage: string;
-    location: string;
-    profilePic: string;
-}
 
 export const makeAuthenticationRequest = async (
     endpoint: string, 

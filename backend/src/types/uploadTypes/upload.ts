@@ -31,3 +31,16 @@ export interface UploadParams {
         format?: string;
     }>;
 }
+
+export interface UploadResponse {
+    success: boolean;
+    message: string;
+    fileUrl?: string;
+    fileInfo?: {
+        originalName: string;
+        size: number;
+        mimeType: string;
+        key: string;
+    };
+    error?: string;
+}

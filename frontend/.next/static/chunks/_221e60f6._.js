@@ -200,7 +200,6 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 
 var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
-// hooks/useMaterials.ts
 __turbopack_context__.s({
     "useMaterial": (()=>useMaterial),
     "useMaterials": (()=>useMaterials)
@@ -213,18 +212,29 @@ var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.sign
 ;
 ;
 ;
-const useMaterials = (initialFilters = {})=>{
+const useMaterials = ()=>{
     _s();
     const [materials, setMaterials] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    // ✅ Memoized fetchMaterials function
+    // ✅ Single source of truth - useRef only
+    const fetchStateRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])({
+        hasInitialFetch: false,
+        isLoading: false,
+        mounted: true
+    });
     const fetchMaterials = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useMaterials.useCallback[fetchMaterials]": async (filters = {})=>{
+            const { hasInitialFetch, isLoading, mounted } = fetchStateRef.current;
+            // ✅ Single guard logic
+            if (!mounted || isLoading) return;
+            if (hasInitialFetch && !filters.search && !filters.category) return;
+            fetchStateRef.current.isLoading = true;
+            setLoading(true);
+            setError(null);
             try {
-                setLoading(true);
-                setError(null);
-                const data = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$materialAPI$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getMaterials"])({
+                console.log('🚀 Fetching materials...');
+                const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$materialAPI$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getMaterials"])({
                     search: filters.search || undefined,
                     category: filters.category || undefined,
                     language: filters.language || undefined,
@@ -232,50 +242,49 @@ const useMaterials = (initialFilters = {})=>{
                     page: 1,
                     limit: 20
                 });
-                if (data.success) {
-                    setMaterials(data.data || []);
+                if (!fetchStateRef.current.mounted) return;
+                if (response.success) {
+                    const materialsArray = response.data?.materials || [];
+                    setMaterials(materialsArray);
+                    fetchStateRef.current.hasInitialFetch = true;
                 } else {
-                    const errorMsg = data.message || 'Failed to load materials';
-                    setError(errorMsg);
-                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].error(errorMsg);
+                    setError(response.message || 'Failed to load materials');
+                    setMaterials([]);
                 }
             } catch (error) {
-                console.error('Fetch materials error:', error);
-                const errorMsg = error.message || 'Failed to load materials';
-                setError(errorMsg);
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].error(errorMsg);
+                if (fetchStateRef.current.mounted) {
+                    setError(error.message || 'Failed to load materials');
+                    setMaterials([]);
+                }
             } finally{
+                fetchStateRef.current.isLoading = false;
                 setLoading(false);
             }
         }
     }["useMaterials.useCallback[fetchMaterials]"], []);
-    // ✅ Refetch with current filters
-    const refetch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
-        "useMaterials.useCallback[refetch]": async ()=>{
-            await fetchMaterials(initialFilters);
-        }
-    }["useMaterials.useCallback[refetch]"], [
-        fetchMaterials,
-        initialFilters
-    ]);
-    // ✅ Initial fetch
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "useMaterials.useEffect": ()=>{
-            fetchMaterials(initialFilters);
+            if (!fetchStateRef.current.hasInitialFetch) {
+                fetchMaterials();
+            }
+            return ({
+                "useMaterials.useEffect": ()=>{
+                    fetchStateRef.current.mounted = false;
+                }
+            })["useMaterials.useEffect"];
         }
     }["useMaterials.useEffect"], [
-        fetchMaterials,
-        initialFilters
+        fetchMaterials
     ]);
     return {
         materials,
         loading,
         error,
         fetchMaterials,
-        refetch
+        refetch: fetchMaterials
     };
 };
-_s(useMaterials, "VXKL1xshrf+P2B60/6utvv+CsMo=");
+_s(useMaterials, "bo1Pf/kXlKcsvPjKK/Vz+uYNRQw=");
 const useMaterial = (id)=>{
     _s1();
     const [material, setMaterial] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);

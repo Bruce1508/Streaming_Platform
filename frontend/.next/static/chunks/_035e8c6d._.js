@@ -18,6 +18,7 @@ __turbopack_context__.s({
     "getUserFriends": (()=>getUserFriends),
     "makeAuthenticationRequest": (()=>makeAuthenticationRequest),
     "rejectFriendRequest": (()=>rejectFriendRequest),
+    "searchUsers": (()=>searchUsers),
     "sendFriendRequest": (()=>sendFriendRequest),
     "signIn": (()=>signIn),
     "signUp": (()=>signUp),
@@ -29,21 +30,45 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth
 ;
 const BASE_URL = ("TURBOPACK compile-time value", "http://localhost:5001/api") || 'http://localhost:5001/api';
 const makeAuthenticationRequest = async (endpoint, options = {})=>{
-    // Lấy token từ localStorage hoặc session
-    let token = localStorage.getItem('auth_token');
-    // Nếu không có trong localStorage, có thể đang dùng OAuth
+    // ✅ Get token with proper type checking
+    let rawToken = localStorage.getItem('auth_token');
+    console.log('🔍 makeAuthenticationRequest debug:', {
+        rawToken,
+        tokenType: typeof rawToken,
+        tokenLength: rawToken?.length,
+        isNull: rawToken === null,
+        isStringNull: rawToken === 'null'
+    });
+    // ✅ Clean token
+    let token = null;
+    if (rawToken && rawToken !== 'null' && rawToken !== 'undefined') {
+        token = typeof rawToken === 'string' ? rawToken : String(rawToken);
+    }
+    // ✅ Fallback to session if no localStorage token
     if (!token) {
-        // Có thể lấy từ NextAuth session nếu cần
-        const session = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getSession"])();
-        token = session?.accessToken || null;
+        console.log('🔍 No localStorage token, trying session...');
+        try {
+            const session = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getSession"])();
+            token = session?.accessToken || null;
+            console.log('🔍 Session token:', !!token);
+        } catch (error) {
+            console.log('❌ Session token failed:', error);
+        }
+    }
+    if (!token) {
+        console.error('❌ No token available for request');
+        throw new Error('No authentication token available');
     }
     const headers = {
         'Content-Type': 'application/json',
-        ...token && {
-            Authorization: `Bearer ${token}`
-        },
+        'Authorization': `Bearer ${token}`,
         ...options.headers
     };
+    console.log('📡 Making request:', {
+        endpoint: `${BASE_URL}${endpoint}`,
+        hasAuth: !!headers.Authorization,
+        authPreview: headers.Authorization?.substring(0, 30) + '...'
+    });
     return fetch(`${BASE_URL}${endpoint}`, {
         ...options,
         headers
@@ -132,11 +157,12 @@ async function getUserFriends() {
 }
 async function getRecommendedUsers() {
     try {
-        const response = await makeAuthenticationRequest('/users/');
+        const response = await makeAuthenticationRequest('/users/recommended');
         if (!response.ok) {
             throw new Error('Failed to fetch recommended users');
         }
         const data = await response.json();
+        console.log('✅ Recommended users fetched:', data);
         return data;
     } catch (error) {
         console.error('Get recommended users error:', error);
@@ -323,6 +349,34 @@ async function updateProfilePicture(profilePic) {
         throw error;
     }
 }
+async function searchUsers(query) {
+    try {
+        console.log('🔍 Starting user search for:', query);
+        if (!query.trim()) {
+            console.log('⚠️ Empty search query');
+            return [];
+        }
+        const response = await makeAuthenticationRequest(`/users/search?q=${encodeURIComponent(query)}`);
+        console.log('📡 Search response status:', response.status);
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('❌ Search error:', error);
+            if (response.status === 401) {
+                console.log('🔄 Unauthorized - token may be expired');
+                // Let the auth wrapper handle redirect
+                throw new Error('Unauthorized');
+            }
+            throw new Error(error.message || 'Search failed');
+        }
+        const data = await response.json();
+        console.log('✅ Search successful:', data);
+        // Return the users array, filtering will be done in component
+        return data.users || [];
+    } catch (error) {
+        console.error('❌ Search request failed:', error);
+        throw error;
+    }
+}
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
@@ -341,7 +395,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next-auth/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/api.ts [app-client] (ecmascript)"); // ✅ Import function có sẵn
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/api.ts [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature();
 'use client';
@@ -426,12 +480,30 @@ function AuthProvider({ children }) {
     // Login function cho credentials
     const login = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "AuthProvider.useCallback[login]": (userData, token)=>{
-            console.log('🔐 Credentials login');
+            console.log('🔐 LOGIN DEBUG - Input token:', {
+                tokenExists: !!token,
+                tokenType: typeof token,
+                tokenLength: token?.length,
+                tokenValue: token // Log full token để debug
+            });
+            const cleanToken = typeof token === 'string' ? token : String(token);
+            if (!cleanToken || cleanToken === 'undefined' || cleanToken === 'null') {
+                console.error('❌ Invalid token provided to login function');
+                return;
+            }
             setUser(userData);
-            setToken(token);
+            setToken(cleanToken);
             setAuthMethod('credentials');
-            localStorage.setItem('auth_token', token);
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('auth_user');
+            localStorage.setItem('auth_token', cleanToken); // ✅ Save as string
             localStorage.setItem('auth_user', JSON.stringify(userData));
+            const savedToken = localStorage.getItem('auth_token');
+            console.log('🔐 Token verification after save:', {
+                saved: !!savedToken,
+                matches: savedToken === token,
+                savedLength: savedToken?.length
+            });
         }
     }["AuthProvider.useCallback[login]"], []);
     // Logout function
@@ -439,7 +511,7 @@ function AuthProvider({ children }) {
         console.log("🔴 Logout started");
         try {
             // Clear local storage
-            localStorage.removeItem("authToken");
+            localStorage.removeItem('auth_token');
             localStorage.removeItem("user");
             console.log("🗑️ Local storage cleared");
             // Clear state
@@ -515,7 +587,7 @@ function AuthProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/contexts/AuthContext.tsx",
-        lineNumber: 189,
+        lineNumber: 212,
         columnNumber: 9
     }, this);
 }
