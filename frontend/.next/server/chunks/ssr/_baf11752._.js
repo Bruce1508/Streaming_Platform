@@ -86,16 +86,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$hooks$2f$useAuthSession$2e$t
 function ProtectedLayout({ children }) {
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["usePathname"])();
-    // const { user, isLoading: authLoading } = useAuth();
-    // const { status: sessionStatus } = useSession();
-    // const { status: sessionStatus } = useSession({
-    //     required: false,
-    //     onUnauthenticated() {
-    //         // Handle unauthenticated state
-    //     }
-    // })
     const { user, isAuthenticated, isLoading } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$hooks$2f$useAuthSession$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuthSession"])();
-    // const isLoading = authLoading || sessionStatus === 'loading';
     console.log('🏠 Protected Layout:', {
         isAuthenticated,
         isLoading,
@@ -130,7 +121,7 @@ function ProtectedLayout({ children }) {
         console.log('⏳ Showing loader - auth loading');
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$PageLoader$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/app/(protected)/layout.tsx",
-            lineNumber: 59,
+            lineNumber: 47,
             columnNumber: 16
         }, this);
     }
@@ -139,7 +130,7 @@ function ProtectedLayout({ children }) {
         console.log('🔄 No user, showing loader while redirecting');
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$PageLoader$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/app/(protected)/layout.tsx",
-            lineNumber: 65,
+            lineNumber: 53,
             columnNumber: 16
         }, this);
     }

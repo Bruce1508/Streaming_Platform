@@ -32,7 +32,7 @@ const getMaterials = async (filters = {})=>{
     return await response.json();
 };
 const getMaterialById = async (id)=>{
-    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/api/materials/${id}`);
+    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/materials/${id}`);
     if (!response.ok) {
         throw new Error('Failed to fetch material');
     }
@@ -40,7 +40,7 @@ const getMaterialById = async (id)=>{
 };
 const createMaterial = async (data)=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/api/materials`, {
+    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/materials`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ const createMaterial = async (data)=>{
 };
 const updateMaterial = async (id, data)=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/api/materials/${id}`, {
+    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/materials/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ const updateMaterial = async (id, data)=>{
 };
 const deleteMaterial = async (id)=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/api/materials/${id}`, {
+    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/materials/${id}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${token}`
@@ -86,7 +86,7 @@ const deleteMaterial = async (id)=>{
 };
 const saveMaterial = async (id)=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/api/materials/${id}/save`, {
+    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/materials/${id}/save`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`
@@ -100,7 +100,7 @@ const saveMaterial = async (id)=>{
 };
 const removeSavedMaterial = async (id)=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/api/materials/${id}/save`, {
+    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/materials/${id}/save`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${token}`
@@ -114,7 +114,7 @@ const removeSavedMaterial = async (id)=>{
 };
 const rateMaterial = async (id, rating)=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/api/materials/${id}/rate`, {
+    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/materials/${id}/rate`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ const rateMaterial = async (id, rating)=>{
 };
 const addComment = async (id, content)=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/api/materials/${id}/comments`, {
+    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/materials/${id}/comments`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -154,7 +154,7 @@ const getUserSavedMaterials = async (filters = {})=>{
     Object.entries(filters).forEach(([key, value])=>{
         if (value) params.append(key, value.toString());
     });
-    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/api/materials/user/saved?${params.toString()}`, {
+    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/materials/user/saved?${params.toString()}`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -170,7 +170,7 @@ const getUserUploadedMaterials = async (filters = {})=>{
     Object.entries(filters).forEach(([key, value])=>{
         if (value) params.append(key, value.toString());
     });
-    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/api/materials/user/uploaded?${params.toString()}`, {
+    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/materials/user/uploaded?${params.toString()}`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -185,7 +185,7 @@ const getMaterialsByCategory = async (category, filters = {})=>{
     Object.entries(filters).forEach(([key, value])=>{
         if (value) params.append(key, value.toString());
     });
-    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/api/materials/category/${category}?${params.toString()}`);
+    const response = await fetch(`${("TURBOPACK compile-time value", "http://localhost:5001/api")}/materials/category/${category}?${params.toString()}`);
     if (!response.ok) {
         throw new Error('Failed to fetch materials by category');
     }
@@ -489,7 +489,7 @@ function MaterialsPage() {
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                        href: "/materials/create",
+                        href: "/materials/upload",
                         className: "btn btn-primary",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PlusIcon$3e$__["PlusIcon"], {
@@ -499,7 +499,7 @@ function MaterialsPage() {
                                 lineNumber: 78,
                                 columnNumber: 21
                             }, this),
-                            "Create Material"
+                            "Upload Material"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
@@ -745,29 +745,11 @@ function MaterialsPage() {
                             columnNumber: 25
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-base-content/60 text-lg mb-6",
+                            className: "text-base-content/60 text-lg",
                             children: searchQuery ? "Try adjusting your search or filters" : "Be the first to share a learning material"
                         }, void 0, false, {
                             fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
                             lineNumber: 147,
-                            columnNumber: 25
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                            href: "/materials/create",
-                            className: "btn btn-primary",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PlusIcon$3e$__["PlusIcon"], {
-                                    className: "w-5 h-5"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                    lineNumber: 154,
-                                    columnNumber: 29
-                                }, this),
-                                "Create First Material"
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                            lineNumber: 153,
                             columnNumber: 25
                         }, this)
                     ]
@@ -786,12 +768,12 @@ function MaterialsPage() {
                         material: material
                     }, material._id, false, {
                         fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                        lineNumber: 162,
+                        lineNumber: 158,
                         columnNumber: 25
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                lineNumber: 160,
+                lineNumber: 156,
                 columnNumber: 17
             }, this)
         ]
@@ -829,7 +811,7 @@ function MaterialCard({ material }) {
                 className: `w-4 h-4 ${i <= Math.round(rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`
             }, i, false, {
                 fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                lineNumber: 184,
+                lineNumber: 180,
                 columnNumber: 17
             }, this));
         }
@@ -850,7 +832,7 @@ function MaterialCard({ material }) {
                                 children: material.level.toUpperCase()
                             }, void 0, false, {
                                 fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                lineNumber: 199,
+                                lineNumber: 195,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -858,18 +840,18 @@ function MaterialCard({ material }) {
                                 children: material.category
                             }, void 0, false, {
                                 fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                lineNumber: 206,
+                                lineNumber: 202,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                        lineNumber: 198,
+                        lineNumber: 194,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                    lineNumber: 197,
+                    lineNumber: 193,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -877,7 +859,7 @@ function MaterialCard({ material }) {
                     children: material.title
                 }, void 0, false, {
                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                    lineNumber: 213,
+                    lineNumber: 209,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -885,7 +867,7 @@ function MaterialCard({ material }) {
                     children: material.description
                 }, void 0, false, {
                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                    lineNumber: 216,
+                    lineNumber: 212,
                     columnNumber: 17
                 }, this),
                 material.tags.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -899,7 +881,7 @@ function MaterialCard({ material }) {
                                 ]
                             }, index, true, {
                                 fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                lineNumber: 224,
+                                lineNumber: 220,
                                 columnNumber: 29
                             }, this)),
                         material.tags.length > 3 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -910,13 +892,13 @@ function MaterialCard({ material }) {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                            lineNumber: 229,
+                            lineNumber: 225,
                             columnNumber: 29
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                    lineNumber: 222,
+                    lineNumber: 218,
                     columnNumber: 21
                 }, this),
                 material.attachments.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -931,7 +913,7 @@ function MaterialCard({ material }) {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                            lineNumber: 239,
+                            lineNumber: 235,
                             columnNumber: 25
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -945,7 +927,7 @@ function MaterialCard({ material }) {
                                                 children: file.originalName
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                                lineNumber: 245,
+                                                lineNumber: 241,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -953,13 +935,13 @@ function MaterialCard({ material }) {
                                                 children: formatFileSize(file.size)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                                lineNumber: 248,
+                                                lineNumber: 244,
                                                 columnNumber: 37
                                             }, this)
                                         ]
                                     }, index, true, {
                                         fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                        lineNumber: 244,
+                                        lineNumber: 240,
                                         columnNumber: 33
                                     }, this)),
                                 material.attachments.length > 2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -971,19 +953,19 @@ function MaterialCard({ material }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                    lineNumber: 254,
+                                    lineNumber: 250,
                                     columnNumber: 33
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                            lineNumber: 242,
+                            lineNumber: 238,
                             columnNumber: 25
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                    lineNumber: 238,
+                    lineNumber: 234,
                     columnNumber: 21
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -999,7 +981,7 @@ function MaterialCard({ material }) {
                                     className: "w-8 h-8 rounded-full object-cover"
                                 }, void 0, false, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                    lineNumber: 267,
+                                    lineNumber: 263,
                                     columnNumber: 33
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center",
@@ -1008,22 +990,22 @@ function MaterialCard({ material }) {
                                         children: material.author.fullName.charAt(0).toUpperCase()
                                     }, void 0, false, {
                                         fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                        lineNumber: 274,
+                                        lineNumber: 270,
                                         columnNumber: 37
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                    lineNumber: 273,
+                                    lineNumber: 269,
                                     columnNumber: 33
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                lineNumber: 265,
+                                lineNumber: 261,
                                 columnNumber: 25
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                            lineNumber: 264,
+                            lineNumber: 260,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1033,7 +1015,7 @@ function MaterialCard({ material }) {
                                     children: material.author.fullName
                                 }, void 0, false, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                    lineNumber: 282,
+                                    lineNumber: 278,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1043,26 +1025,26 @@ function MaterialCard({ material }) {
                                             className: "w-3 h-3"
                                         }, void 0, false, {
                                             fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                            lineNumber: 284,
+                                            lineNumber: 280,
                                             columnNumber: 29
                                         }, this),
                                         new Date(material.createdAt).toLocaleDateString()
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                    lineNumber: 283,
+                                    lineNumber: 279,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                            lineNumber: 281,
+                            lineNumber: 277,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                    lineNumber: 263,
+                    lineNumber: 259,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1078,14 +1060,14 @@ function MaterialCard({ material }) {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                            lineNumber: 294,
+                                            lineNumber: 290,
                                             columnNumber: 29
                                         }, this),
                                         material.views
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                    lineNumber: 293,
+                                    lineNumber: 289,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1095,20 +1077,20 @@ function MaterialCard({ material }) {
                                             className: "w-4 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                            lineNumber: 298,
+                                            lineNumber: 294,
                                             columnNumber: 29
                                         }, this),
                                         material.saves
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                    lineNumber: 297,
+                                    lineNumber: 293,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                            lineNumber: 292,
+                            lineNumber: 288,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1124,19 +1106,19 @@ function MaterialCard({ material }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                                    lineNumber: 304,
+                                    lineNumber: 300,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                            lineNumber: 302,
+                            lineNumber: 298,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                    lineNumber: 291,
+                    lineNumber: 287,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1147,23 +1129,23 @@ function MaterialCard({ material }) {
                         children: "View Details"
                     }, void 0, false, {
                         fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                        lineNumber: 310,
+                        lineNumber: 306,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-                    lineNumber: 309,
+                    lineNumber: 305,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-            lineNumber: 195,
+            lineNumber: 191,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/(protected)/(dashBoard)/materials/page.tsx",
-        lineNumber: 194,
+        lineNumber: 190,
         columnNumber: 9
     }, this);
 }

@@ -1,158 +1,172 @@
-import { getValidToken } from './tokenUtils';
-import { UploadFileResponse, DeleteFileResponse, SUPPORTED_TYPES, MAX_FILE_SIZE } from '@/types/Upload';
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+// import { getValidToken } from './tokenUtils';
+// import { UploadFileResponse, DeleteFileResponse, SUPPORTED_TYPES, MAX_FILE_SIZE } from '@/types/Upload';
+// import { useAuth } from '@/contexts/AuthContext';
+// const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
-export const uploadFile = async (
-    file: File,
-    onProgress?: (progress: number) => void
-): Promise<UploadFileResponse> => {
-    try {
-        const formData = new FormData();
-        formData.append('file', file);
+// export const uploadFile = async (
+//     file: File,
+//     onProgress?: (progress: number) => void
+// ): Promise<UploadFileResponse> => {
 
-        const validToken = getValidToken();
+//     const { user, token } = useAuth();
 
-        if (!validToken) {
-            console.error('❌ No auth token for fetchFriendRequests');
-            throw new Error('Authentication required');
-        }
+//     const getValidToken = (): string | null => {
+//         // Try context first
+//         if (token && typeof token === 'string' && token !== 'null') {
+//             return token;
+//         }
 
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
+//         // Try localStorage
+//         const storageToken = localStorage.getItem("auth_token");
+//         if (storageToken && storageToken !== 'null' && storageToken !== 'undefined') {
+//             return typeof storageToken === 'string' ? storageToken : String(storageToken);
+//         }
 
-            // Track upload progress
-            xhr.upload.addEventListener('progress', (event) => {
-                if (event.lengthComputable && onProgress) {
-                    const progress = Math.round((event.loaded / event.total) * 100);
-                    onProgress(progress);
-                }
-            });
+//         return null;
+//     }
 
-            xhr.addEventListener('load', () => {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    try {
-                        const response = JSON.parse(xhr.responseText);
-                        resolve(response);
-                    } catch (error) {
-                        reject(new Error('Invalid response format'));
-                    }
-                } else {
-                    try {
-                        const errorResponse = JSON.parse(xhr.responseText);
-                        reject(new Error(errorResponse.message || 'Upload failed'));
-                    } catch {
-                        reject(new Error(`HTTP ${xhr.status}: Upload failed`));
-                    }
-                }
-            });
+//     try {
+//         const formData = new FormData();
+//         formData.append('file', file);
 
-            xhr.addEventListener('error', () => {
-                reject(new Error('Network error during upload'));
-            });
+        
 
-            xhr.addEventListener('timeout', () => {
-                reject(new Error('Upload timeout'));
-            });
+//         return new Promise((resolve, reject) => {
+//             const xhr = new XMLHttpRequest();
 
-            xhr.open('POST', `${BASE_URL}/upload/file`);
+//             // Track upload progress
+//             xhr.upload.addEventListener('progress', (event) => {
+//                 if (event.lengthComputable && onProgress) {
+//                     const progress = Math.round((event.loaded / event.total) * 100);
+//                     onProgress(progress);
+//                 }
+//             });
 
-            // Set headers
-            Object.entries(validToken).forEach(([key, value]) => {
-                xhr.setRequestHeader(key, value);
-            });
+//             xhr.addEventListener('load', () => {
+//                 if (xhr.status >= 200 && xhr.status < 300) {
+//                     try {
+//                         const response = JSON.parse(xhr.responseText);
+//                         resolve(response);
+//                     } catch (error) {
+//                         reject(new Error('Invalid response format'));
+//                     }
+//                 } else {
+//                     try {
+//                         const errorResponse = JSON.parse(xhr.responseText);
+//                         reject(new Error(errorResponse.message || 'Upload failed'));
+//                     } catch {
+//                         reject(new Error(`HTTP ${xhr.status}: Upload failed`));
+//                     }
+//                 }
+//             });
 
-            xhr.timeout = 300000; // 5 minutes timeout
-            xhr.send(formData);
-        })
-    } catch (error) {
-        console.error('❌ Upload file error in uploadFile in uploadAPI.ts:', error);
-        throw error;
-    }
-};
+//             xhr.addEventListener('error', () => {
+//                 reject(new Error('Network error during upload'));
+//             });
 
-// 📤 Upload multiple files
-export const uploadFiles = async (
-    files: File[],
-    onProgress?: (progress: number) => void
-): Promise<any> => {
-    try {
-        const formData = new FormData();
-        files.forEach(file => {
-            formData.append('files', file);
-        });
+//             xhr.addEventListener('timeout', () => {
+//                 reject(new Error('Upload timeout'));
+//             });
 
-        const validToken = getValidToken();
+//             xhr.open('POST', `${BASE_URL}/upload/file`);
 
-        if (!validToken) {
-            console.error('❌ No auth token for fetchFriendRequests');
-            return;
-        }
+//             // Set headers
+//             if (token) {
+//                 xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+//             }
 
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
+//             xhr.timeout = 300000; // 5 minutes timeout
+//             xhr.send(formData);
+//         })
+//     } catch (error) {
+//         console.error('❌ Upload file error in uploadFile in uploadAPI.ts:', error);
+//         throw error;
+//     }
+// };
 
-            xhr.upload.addEventListener('progress', (event) => {
-                if (event.lengthComputable && onProgress) {
-                    const progress = Math.round((event.loaded / event.total) * 100);
-                    onProgress(progress);
-                }
-            });
+// // 📤 Upload multiple files
+// export const uploadFiles = async (
+//     files: File[],
+//     onProgress?: (progress: number) => void
+// ): Promise<any> => {
+//     try {
+//         const formData = new FormData();
+//         files.forEach(file => {
+//             formData.append('files', file);
+//         });
 
-            xhr.addEventListener('load', () => {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    resolve(JSON.parse(xhr.responseText));
-                } else {
-                    const errorResponse = JSON.parse(xhr.responseText);
-                    reject(new Error(errorResponse.message || 'Upload failed'));
-                }
-            });
+//         const validToken = getValidToken();
 
-            xhr.addEventListener('error', () => {
-                reject(new Error('Network error'));
-            });
+//         if (!validToken) {
+//             console.error('❌ No auth token for fetchFriendRequests');
+//             return;
+//         }
 
-            xhr.open('POST', `${BASE_URL}/api/upload/files`);
-            Object.entries(validToken).forEach(([key, value]) => {
-                xhr.setRequestHeader(key, value);
-            });
+//         return new Promise((resolve, reject) => {
+//             const xhr = new XMLHttpRequest();
 
-            xhr.send(formData);
-        });
+//             xhr.upload.addEventListener('progress', (event) => {
+//                 if (event.lengthComputable && onProgress) {
+//                     const progress = Math.round((event.loaded / event.total) * 100);
+//                     onProgress(progress);
+//                 }
+//             });
 
-    } catch (error) {
-        console.error('❌ Upload files error:', error);
-        throw error;
-    }
-};
+//             xhr.addEventListener('load', () => {
+//                 if (xhr.status >= 200 && xhr.status < 300) {
+//                     resolve(JSON.parse(xhr.responseText));
+//                 } else {
+//                     const errorResponse = JSON.parse(xhr.responseText);
+//                     reject(new Error(errorResponse.message || 'Upload failed'));
+//                 }
+//             });
 
-// 🗑️ Delete file
-export const deleteFile = async (fileKey: string): Promise<DeleteFileResponse> => {
-    try {
-        const validToken = getValidToken();
+//             xhr.addEventListener('error', () => {
+//                 reject(new Error('Network error'));
+//             });
 
-        if (!validToken) {
-            console.error('❌ No auth token for fetchFriendRequests');
-            throw new Error('Authentication required');
-        }
+//             xhr.open('POST', `${BASE_URL}/upload/files`);
+//             Object.entries(validToken).forEach(([key, value]) => {
+//                 xhr.setRequestHeader(key, value);
+//             });
 
-        const response = await fetch(`${BASE_URL}/api/upload/${fileKey}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${validToken}`
-            }
-        });
+//             xhr.send(formData);
+//         });
 
-        const data = await response.json();
+//     } catch (error) {
+//         console.error('❌ Upload files error:', error);
+//         throw error;
+//     }
+// };
 
-        if (!response.ok) {
-            throw new Error(data.message || 'Delete failed');
-        }
+// // 🗑️ Delete file
+// export const deleteFile = async (fileKey: string): Promise<DeleteFileResponse> => {
+//     try {
+//         const validToken = getValidToken();
 
-        return data;
+//         if (!validToken) {
+//             console.error('❌ No auth token for fetchFriendRequests');
+//             throw new Error('Authentication required');
+//         }
 
-    } catch (error) {
-        console.error('❌ Delete file error:', error);
-        throw error;
-    }
-};
+//         const response = await fetch(`${BASE_URL}/upload/${fileKey}`, {
+//             method: 'DELETE',
+//             headers: {
+//                 'Authorization': `Bearer ${validToken}`
+//             }
+//         });
+
+//         const data = await response.json();
+
+//         if (!response.ok) {
+//             throw new Error(data.message || 'Delete failed');
+//         }
+
+//         return data;
+
+//     } catch (error) {
+//         console.error('❌ Delete file error:', error);
+//         throw error;
+//     }
+// };
 

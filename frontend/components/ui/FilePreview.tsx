@@ -1,150 +1,171 @@
 // components/ui/upload/FilePreview.tsx
 
-'use client';
-
-import { FileWithPreview } from '@/hooks/useUpload';
-import { cn } from '@/lib/utils';
-import { 
-    FileText, 
-    Image as ImageIcon, 
-    FileType, 
-    X, 
-    AlertCircle,
-    CheckCircle
-} from 'lucide-react';
-import Image from 'next/image';
+import React from 'react';
+import { X, FileText, Image, File, AlertCircle, CheckCircle } from 'lucide-react';
+import { FileWithStatus } from '@/hooks/useUpload';
 
 interface FilePreviewProps {
-    file: FileWithPreview;
+    file: FileWithStatus;
     onRemove: (fileId: string) => void;
-    className?: string;
-    showRemoveButton?: boolean;
 }
 
-export function FilePreview({ 
-    file, 
-    onRemove, 
-    className,
-    showRemoveButton = true 
-}: FilePreviewProps) {
-    const getFileIcon = () => {
-        switch (file.info.category) {
-            case 'image':
-                return <ImageIcon className="w-6 h-6 text-blue-500" />;
-            case 'pdf':
-                return <FileType className="w-6 h-6 text-red-500" />;
-            default:
-                return <FileText className="w-6 h-6 text-gray-500" />;
-        }
+// File validation function
+const validateFile = (file: File) => {
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    const allowedTypes = [
+        'application/pdf',
+        'image/jpeg',
+        'image/png', 
+        'image/gif',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'text/plain'
+    ];
+    
+    const isValidSize = file.size <= maxSize;
+    const isValidType = allowedTypes.includes(file.type);
+    
+    return {
+        isValid: isValidSize && isValidType,
+        errors: [
+            ...(!isValidSize ? [`File too large (max 10MB, current: ${(file.size / (1024 * 1024)).toFixed(1)}MB)`] : []),
+            ...(!isValidType ? [`File type not supported (${file.type})`] : [])
+        ]
     };
+};
 
-    const getStatusIcon = () => {
-        if (file.validation.isValid) {
-            return <CheckCircle className="w-4 h-4 text-green-500" />;
-        } else {
-            return <AlertCircle className="w-4 h-4 text-red-500" />;
-        }
-    };
+// Get file icon based on type
+const getFileIcon = (fileType: string) => {
+    if (fileType.startsWith('image/')) return Image;
+    if (fileType === 'application/pdf') return FileText;
+    return File;
+};
 
+// Format file size
+const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+};
+
+export function FilePreview({ file, onRemove }: FilePreviewProps) {
+    const validation = validateFile(file.file);
+    const FileIcon = getFileIcon(file.file.type);
+    
     return (
-        <div className={cn(
-            'relative group border rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-shadow',
-            file.validation.isValid ? 'border-gray-200' : 'border-red-200 bg-red-50',
-            className
-        )}>
-            {/* Remove Button */}
-            {showRemoveButton && (
-                <button
-                    onClick={() => onRemove(file.id)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 z-10"
-                    title="Remove file"
-                >
-                    <X className="w-3 h-3" />
-                </button>
-            )}
+        <div className={`
+            relative p-4 rounded-lg border-2 transition-all duration-200
+            ${validation.isValid 
+                ? 'border-gray-200 bg-gray-50 hover:border-gray-300' 
+                : 'border-red-200 bg-red-50'
+            }
+            ${file.status === 'uploading' ? 'border-blue-200 bg-blue-50' : ''}
+            ${file.status === 'completed' ? 'border-green-200 bg-green-50' : ''}
+            ${file.status === 'error' ? 'border-red-200 bg-red-50' : ''}
+        `}>
+            {/* Remove button */}
+            <button
+                onClick={() => onRemove(file.id)}
+                className="absolute top-2 right-2 p-1 rounded-full bg-white shadow-sm hover:bg-gray-100 transition-colors"
+                disabled={file.status === 'uploading'}
+            >
+                <X className="w-4 h-4 text-gray-500" />
+            </button>
 
+            {/* File info */}
             <div className="flex items-start space-x-3">
-                {/* File Preview/Icon */}
-                <div className="flex-shrink-0">
-                    {file.info.category === 'image' && file.preview ? (
-                        <div className="relative w-16 h-16 rounded-lg overflow-hidden border">
-                            <Image
-                                src={file.preview}
-                                alt={file.info.name}
-                                fill
-                                className="object-cover"
-                            />
-                        </div>
-                    ) : (
-                        <div className="w-16 h-16 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
-                            {getFileIcon()}
-                        </div>
-                    )}
+                {/* File icon */}
+                <div className={`
+                    flex-shrink-0 p-2 rounded-lg
+                    ${validation.isValid ? 'bg-blue-100' : 'bg-red-100'}
+                `}>
+                    <FileIcon className={`
+                        w-6 h-6 
+                        ${validation.isValid ? 'text-blue-600' : 'text-red-600'}
+                    `} />
                 </div>
 
-                {/* File Info */}
+                {/* File details */}
                 <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-2 mb-1">
-                        {getStatusIcon()}
-                        <h4 className="text-sm font-medium text-gray-900 truncate">
-                            {file.info.name}
-                        </h4>
-                    </div>
-                    
-                    <div className="text-xs text-gray-500 space-y-1">
-                        <div className="flex items-center space-x-4">
-                            <span>{file.info.sizeFormatted}</span>
-                            <span className="capitalize">{file.info.category}</span>
-                        </div>
+                    <div className="flex items-center space-x-2">
+                        <p className="text-sm font-medium text-gray-900 truncate">
+                            {file.file.name}
+                        </p>
                         
-                        {file.validation.error && (
-                            <div className="text-red-600 font-medium">
-                                {file.validation.error}
-                            </div>
+                        {/* Status icon */}
+                        {file.status === 'completed' && (
+                            <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                        )}
+                        {(file.status === 'error' || !validation.isValid) && (
+                            <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
                         )}
                     </div>
+                    
+                    <p className="text-xs text-gray-500 mt-1">
+                        {formatFileSize(file.file.size)} • {file.file.type}
+                    </p>
+
+                    {/* Validation errors */}
+                    {!validation.isValid && validation.errors.length > 0 && (
+                        <div className="mt-2">
+                            {validation.errors.map((error, index) => (
+                                <p key={index} className="text-xs text-red-600">
+                                    {error}
+                                </p>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Upload error */}
+                    {file.status === 'error' && file.error && (
+                        <p className="text-xs text-red-600 mt-1">
+                            {file.error}
+                        </p>
+                    )}
+
+                    {/* Upload progress */}
+                    {file.status === 'uploading' && (
+                        <div className="mt-2">
+                            <div className="flex items-center justify-between mb-1">
+                                <span className="text-xs text-blue-600">Uploading...</span>
+                                <span className="text-xs text-blue-600">{file.progress}%</span>
+                            </div>
+                            <div className="w-full bg-blue-100 rounded-full h-1">
+                                <div 
+                                    className="bg-blue-500 h-1 rounded-full transition-all duration-300"
+                                    style={{ width: `${file.progress}%` }}
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Completed status */}
+                    {file.status === 'completed' && (
+                        <p className="text-xs text-green-600 mt-1">
+                            ✅ Upload completed successfully
+                        </p>
+                    )}
                 </div>
             </div>
 
-            {/* File Type Badge */}
-            <div className="absolute top-2 right-2">
-                <span className={cn(
-                    'inline-flex items-center px-2 py-1 rounded-full text-xs font-medium',
-                    file.info.category === 'image' && 'bg-blue-100 text-blue-800',
-                    file.info.category === 'pdf' && 'bg-red-100 text-red-800',
-                    file.info.category === 'document' && 'bg-gray-100 text-gray-800'
-                )}>
-                    {file.info.type.split('/')[1]?.toUpperCase() || 'FILE'}
-                </span>
-            </div>
-        </div>
-    );
-}
-
-// Grid view for multiple files
-interface FilePreviewGridProps {
-    files: FileWithPreview[];
-    onRemove: (fileId: string) => void;
-    className?: string;
-}
-
-export function FilePreviewGrid({ files, onRemove, className }: FilePreviewGridProps) {
-    if (files.length === 0) {
-        return null;
-    }
-
-    return (
-        <div className={cn(
-            'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4',
-            className
-        )}>
-            {files.map((file) => (
-                <FilePreview
-                    key={file.id}
-                    file={file}
-                    onRemove={onRemove}
-                />
-            ))}
+            {/* Image preview for image files */}
+            {file.file.type.startsWith('image/') && validation.isValid && (
+                <div className="mt-3">
+                    <img
+                        src={URL.createObjectURL(file.file)}
+                        alt={file.file.name}
+                        className="w-full h-32 object-cover rounded-md border"
+                        onLoad={(e) => {
+                            // Clean up object URL to prevent memory leaks
+                            setTimeout(() => {
+                                URL.revokeObjectURL((e.target as HTMLImageElement).src);
+                            }, 1000);
+                        }}
+                    />
+                </div>
+            )}
         </div>
     );
 }

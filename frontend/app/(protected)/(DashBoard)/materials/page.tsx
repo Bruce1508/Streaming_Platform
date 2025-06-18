@@ -74,9 +74,9 @@ export default function MaterialsPage() {
                     </p>
                 </div>
                 
-                <Link href="/materials/create" className="btn btn-primary">
+                <Link href="/materials/upload" className="btn btn-primary">
                     <PlusIcon className="w-5 h-5" />
-                    Create Material
+                    Upload Material
                 </Link>
             </div>
 
@@ -144,16 +144,12 @@ export default function MaterialsPage() {
                     <div className="card-body text-center py-16">
                         <div className="text-6xl mb-4">📚</div>
                         <h3 className="text-2xl font-semibold mb-3">No materials found</h3>
-                        <p className="text-base-content/60 text-lg mb-6">
+                        <p className="text-base-content/60 text-lg">
                             {searchQuery 
                                 ? "Try adjusting your search or filters"
                                 : "Be the first to share a learning material"
                             }
                         </p>
-                        <Link href="/materials/create" className="btn btn-primary">
-                            <PlusIcon className="w-5 h-5" />
-                            Create First Material
-                        </Link>
                     </div>
                 </div>
             ) : (

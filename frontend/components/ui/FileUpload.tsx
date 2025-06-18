@@ -5,16 +5,18 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useUpload } from '@/hooks/useUpload';
-import { FilePreviewGrid } from './FilePreview';
+import { FilePreview } from './FilePreview';
 import { ProgressBar } from './ProgressBar';
 import { cn } from '@/lib/utils';
-import { 
-    Upload, 
-    File, 
-    AlertCircle, 
+import {
+    Upload,
+    File,
+    AlertCircle,
     CheckCircle2,
     Loader2,
-    X
+    X,
+    FileText,
+    Image
 } from 'lucide-react';
 import { Button } from './Button';
 import { Alert, AlertDescription } from './Alert';
@@ -25,10 +27,10 @@ interface FileUploadProps {
     className?: string;
 }
 
-export function FileUpload({ 
-    onUploadComplete, 
+export function FileUpload({
+    onUploadComplete,
     maxFiles = 10,
-    className 
+    className
 }: FileUploadProps) {
     const {
         files,
@@ -45,16 +47,77 @@ export function FileUpload({
 
     const [uploadStep, setUploadStep] = useState<'select' | 'preview' | 'uploading' | 'complete'>('select');
 
+    const isValidFile = (file: File): { isValid: boolean; errors: string[] } => {
+        const maxSize = 10 * 1024 * 1024; // 10MB
+        const allowedTypes = [
+            'application/pdf',
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'text/plain'
+        ];
+
+        const errors: string[] = [];
+
+        if (file.size > maxSize) {
+            errors.push(`File too large (max 10MB, current: ${(file.size / (1024 * 1024)).toFixed(1)}MB)`);
+        }
+
+        if (!allowedTypes.includes(file.type)) {
+            errors.push(`File type not supported (${file.type})`);
+        }
+
+        return {
+            isValid: errors.length === 0,
+            errors
+        };
+    };
+
     // Handle file drop/select
-    const onDrop = useCallback((acceptedFiles: File[]) => {
+    const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: any[]) => {
+        console.log('Accepted files:', acceptedFiles);
+        console.log('Rejected files:', rejectedFiles);
+
+        // Check total file limit
         if (files.length + acceptedFiles.length > maxFiles) {
-            alert(`Maximum ${maxFiles} files allowed`);
+            alert(`Maximum ${maxFiles} files allowed. Currently have ${files.length} files.`);
             return;
         }
 
-        addFiles(acceptedFiles);
-        if (acceptedFiles.length > 0) {
+        // Additional validation for accepted files (size check)
+        const validFiles: File[] = [];
+        const invalidFiles: { file: File; errors: string[] }[] = [];
+
+        acceptedFiles.forEach(file => {
+            const validation = isValidFile(file);
+            if (validation.isValid) {
+                validFiles.push(file);
+            } else {
+                invalidFiles.push({ file, errors: validation.errors });
+            }
+        });
+
+        // Show validation errors if any
+        if (invalidFiles.length > 0) {
+            console.warn('Invalid files detected:', invalidFiles);
+
+            // Optional: Show detailed error message
+            const errorMessage = invalidFiles.map(({ file, errors }) =>
+                `${file.name}: ${errors.join(', ')}`
+            ).join('\n');
+
+            alert(`Some files were rejected:\n${errorMessage}`);
+        }
+
+        // Add valid files
+        if (validFiles.length > 0) {
+            addFiles(validFiles);
             setUploadStep('preview');
+        } else if (acceptedFiles.length > 0) {
+            // All files were invalid
+            alert('No valid files to add. Please check file size and type requirements.');
         }
     }, [addFiles, files.length, maxFiles]);
 
@@ -62,6 +125,7 @@ export function FileUpload({
         onDrop,
         multiple: true,
         maxFiles,
+        maxSize: 10 * 1024 * 1024, // 10MB limit
         accept: {
             'application/pdf': ['.pdf'],
             'image/jpeg': ['.jpg', '.jpeg'],
@@ -70,6 +134,27 @@ export function FileUpload({
             'application/msword': ['.doc'],
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
             'text/plain': ['.txt']
+        },
+        onDropRejected: (rejectedFiles) => {
+            console.log('Rejected by dropzone:', rejectedFiles);
+
+            const rejectionReasons = rejectedFiles.map(({ file, errors }) => {
+                const reasons = errors.map(error => {
+                    switch (error.code) {
+                        case 'file-too-large':
+                            return 'File too large (max 10MB)';
+                        case 'file-invalid-type':
+                            return 'Invalid file type';
+                        case 'too-many-files':
+                            return 'Too many files';
+                        default:
+                            return error.message;
+                    }
+                });
+                return `${file.name}: ${reasons.join(', ')}`;
+            }).join('\n');
+
+            alert(`Files rejected:\n${rejectionReasons}`);
         }
     });
 
@@ -103,23 +188,23 @@ export function FileUpload({
                         {...getRootProps()}
                         className={cn(
                             'border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors',
-                            isDragActive 
-                                ? 'border-blue-500 bg-blue-50' 
+                            isDragActive
+                                ? 'border-blue-500 bg-blue-50'
                                 : 'border-gray-300 hover:border-gray-400'
                         )}
                     >
                         <input {...getInputProps()} />
-                        
+
                         <div className="flex flex-col items-center space-y-4">
                             <Upload className={cn(
                                 'w-12 h-12',
                                 isDragActive ? 'text-blue-500' : 'text-gray-400'
                             )} />
-                            
+
                             <div>
                                 <p className="text-lg font-medium text-gray-900">
-                                    {isDragActive 
-                                        ? 'Drop files here...' 
+                                    {isDragActive
+                                        ? 'Drop files here...'
                                         : 'Upload your study materials'
                                     }
                                 </p>
@@ -161,7 +246,7 @@ export function FileUpload({
                                 {stats.valid} valid • {stats.invalid} invalid • {stats.totalSizeFormatted}
                             </p>
                         </div>
-                        
+
                         <div className="flex space-x-2">
                             <Button
                                 variant="outline"
@@ -169,7 +254,7 @@ export function FileUpload({
                             >
                                 Add More
                             </Button>
-                            
+
                             <Button
                                 variant="outline"
                                 onClick={handleReset}
@@ -181,20 +266,25 @@ export function FileUpload({
                     </div>
 
                     {/* File Previews */}
-                    <FilePreviewGrid 
-                        files={files} 
-                        onRemove={removeFile}
-                    />
+                    <div className="space-y-4">
+                        {files.map((file) => (
+                            <FilePreview
+                                key={file.id}
+                                file={file}
+                                onRemove={removeFile}
+                            />
+                        ))}
+                    </div>
 
                     {/* Upload Actions */}
                     <div className="flex items-center justify-between pt-4 border-t">
                         <div className="text-sm text-gray-500">
-                            {stats.valid > 0 
+                            {stats.valid > 0
                                 ? `Ready to upload ${stats.valid} file${stats.valid > 1 ? 's' : ''}`
                                 : 'No valid files to upload'
                             }
                         </div>
-                        
+
                         <div className="flex space-x-3">
                             <Button
                                 variant="outline"
@@ -202,7 +292,7 @@ export function FileUpload({
                             >
                                 Back
                             </Button>
-                            
+
                             <Button
                                 onClick={handleUpload}
                                 disabled={stats.valid === 0}
@@ -221,7 +311,7 @@ export function FileUpload({
                 <div className="space-y-6">
                     <div className="text-center space-y-4">
                         <Loader2 className="w-12 h-12 animate-spin text-blue-500 mx-auto" />
-                        
+
                         <div>
                             <h3 className="text-lg font-semibold text-gray-900">
                                 Uploading Files...
@@ -233,7 +323,7 @@ export function FileUpload({
 
                         {/* Progress Bar */}
                         <div className="max-w-md mx-auto">
-                            <ProgressBar 
+                            <ProgressBar
                                 progress={progress}
                                 variant="default"
                                 size="md"
@@ -245,48 +335,10 @@ export function FileUpload({
 
             {/* Step 4: Complete */}
             {uploadStep === 'complete' && (
-                <div className="space-y-6">
-                    <div className="text-center space-y-4">
-                        <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto" />
-                        
-                        <div>
-                            <h3 className="text-lg font-semibold text-gray-900">
-                                Upload Complete!
-                            </h3>
-                            <p className="text-sm text-gray-500">
-                                {uploadedFiles.length} file{uploadedFiles.length > 1 ? 's' : ''} uploaded successfully
-                            </p>
-                        </div>
-
-                        <div className="flex justify-center space-x-3">
-                            <Button
-                                variant="outline"
-                                onClick={handleReset}
-                            >
-                                Upload More
-                            </Button>
-                            
-                            <Button onClick={() => window.location.reload()}>
-                                Continue
-                            </Button>
-                        </div>
-                    </div>
-
-                    {/* Show uploaded files */}
-                    {uploadedFiles.length > 0 && (
-                        <div className="border rounded-lg p-4 bg-green-50">
-                            <h4 className="font-medium text-green-900 mb-2">
-                                Uploaded Files:
-                            </h4>
-                            <div className="space-y-1">
-                                {uploadedFiles.map((file, index) => (
-                                    <div key={index} className="text-sm text-green-700">
-                                        • {file?.attachment.originalName}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
+                <div className="text-center py-4">
+                    <p className="text-green-600 font-medium">
+                        ✅ Files uploaded successfully! Scroll down to see details.
+                    </p>
                 </div>
             )}
 

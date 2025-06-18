@@ -1,259 +1,265 @@
 // hooks/useUpload.ts
 
-'use client';
-
 import { useState, useCallback } from 'react';
-import {
-    uploadFile as apiUploadFile,
-    deleteFile as apiDeleteFile
-} from '@/lib/UploadApi';
-import {
-    validateFile,
-    getFileInfo,
-    formatFileSize,
-} from '@/lib/utils'
-import { useAuth } from '@/contexts/AuthContext';
-import { UploadFileResponse } from '@/types/Upload';
+import { useAuth } from '@/contexts/AuthContext'; // Import useAuth vào hook
 
-export interface FileWithPreview {
+export interface UploadFileResponse {
+    success: boolean;
+    data?: {
+        attachment: {
+            id: string;
+            originalName: string;
+            size: number;
+            mimeType: string;
+            url: string;
+            uploadedAt: string;
+        }
+    };
+    error?: string;
+}
+
+export interface FileWithStatus {
     file: File;
     id: string;
-    preview?: string;
-    info: {
-        name: string;
-        size: number;
-        type: string;
-        category: 'image' | 'pdf' | 'document';
-        sizeFormatted: string;
-    };
-    validation: {
-        isValid: boolean;
-        error?: string;
-    };
+    status: 'pending' | 'uploading' | 'completed' | 'error';
+    progress: number;
+    error?: string;
+    result?: any;
 }
 
-export interface UploadState {
-    files: FileWithPreview[];
-    uploading: boolean;
-    progress: number;
-    uploadedFiles: UploadFileResponse['data'][];
-    error: string | null;
-}
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 export function useUpload() {
-    const { user } = useAuth();
+    const { user, token } = useAuth(); // Dùng useAuth trong hook
+    const [files, setFiles] = useState<FileWithStatus[]>([]);
+    const [uploading, setUploading] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
-    const [state, setState] = useState<UploadState>({
-        files: [],
-        uploading: false,
-        progress: 0,
-        uploadedFiles: [],
-        error: null
-    });
+    // Upload single file function - bây giờ có thể access token
+    const uploadSingleFile = useCallback(async (
+        file: File,
+        onProgress?: (progress: number) => void
+    ): Promise<UploadFileResponse> => {
+        const getValidToken = (): string | null => {
+            // Try context first
+            if (token && typeof token === 'string' && token !== 'null') {
+                return token;
+            }
+            // Try localStorage
+            const storageToken = localStorage.getItem("auth_token");
+            if (storageToken && storageToken !== 'null' && storageToken !== 'undefined') {
+                return typeof storageToken === 'string' ? storageToken : String(storageToken);
+            }
+            return null;
+        };
 
-    // 📁 Add files to preview
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+
+                // Track upload progress
+                xhr.upload.addEventListener('progress', (event) => {
+                    if (event.lengthComputable && onProgress) {
+                        const progress = Math.round((event.loaded / event.total) * 100);
+                        onProgress(progress);
+                    }
+                });
+
+                xhr.addEventListener('load', () => {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            resolve(response);
+                        } catch (error) {
+                            reject(new Error('Invalid response format'));
+                        }
+                    } else {
+                        try {
+                            const errorResponse = JSON.parse(xhr.responseText);
+                            reject(new Error(errorResponse.message || 'Upload failed'));
+                        } catch {
+                            reject(new Error(`HTTP ${xhr.status}: Upload failed`));
+                        }
+                    }
+                });
+
+                xhr.addEventListener('error', () => {
+                    reject(new Error('Network error during upload'));
+                });
+
+                xhr.addEventListener('timeout', () => {
+                    reject(new Error('Upload timeout'));
+                });
+
+                xhr.open('POST', `${BASE_URL}/upload/file`);
+
+                // Set headers
+                const validToken = getValidToken();
+                if (validToken) {
+                    xhr.setRequestHeader('Authorization', `Bearer ${validToken}`);
+                }
+
+                xhr.timeout = 300000; // 5 minutes timeout
+                xhr.send(formData);
+            });
+        } catch (error) {
+            console.error('❌ Upload file error:', error);
+            throw error;
+        }
+    }, [token]); // Dependency array
+
+    // Add files to upload queue
     const addFiles = useCallback((newFiles: File[]) => {
-        const filesWithPreview: FileWithPreview[] = newFiles.map(file => {
-            const info = getFileInfo(file);
-            const validation = validateFile(file);
-
-            // Create preview for images
-            let preview: string | undefined;
-            if (file.type.startsWith('image/')) {
-                preview = URL.createObjectURL(file);
-            }
-
-            return {
-                file,
-                id: `${file.name}-${file.lastModified}-${Math.random()}`,
-                preview,
-                info: {
-                    ...info,
-                    category: info.category as 'image' | 'pdf' | 'document'
-                },
-                validation: {
-                    isValid: validation === null,
-                    error: validation || undefined
-                }
-            };
-        });
-
-        setState(prev => ({
-            ...prev,
-            files: [...prev.files, ...filesWithPreview],
-            error: null
-        }));
-
-        return filesWithPreview;
-    }, []);
-
-    // 🗑️ Remove file from preview
-    const removeFile = useCallback((fileId: string) => {
-        setState(prev => {
-            const updatedFiles = prev.files.filter(f => f.id !== fileId);
-
-            // Clean up preview URLs
-            const removedFile = prev.files.find(f => f.id === fileId);
-            if (removedFile?.preview) {
-                URL.revokeObjectURL(removedFile.preview);
-            }
-
-            return {
-                ...prev,
-                files: updatedFiles
-            };
-        });
-    }, []);
-
-    // 📤 Upload single file
-    const uploadSingleFile = useCallback(async (fileWithPreview: FileWithPreview) => {
-        if (!user) {
-            throw new Error('Authentication required');
-        }
-
-        if (!fileWithPreview.validation.isValid) {
-            throw new Error(fileWithPreview.validation.error || 'Invalid file');
-        }
-
-        setState(prev => ({ ...prev, uploading: true, progress: 0, error: null }));
-
-        try {
-            const response = await apiUploadFile(
-                fileWithPreview.file,
-                (progress: any) => {
-                    setState(prev => ({ ...prev, progress }));
-                }
-            );
-
-            if (response.success && response.data) {
-                setState(prev => ({
-                    ...prev,
-                    uploadedFiles: [...prev.uploadedFiles, response.data!],
-                    uploading: false,
-                    progress: 100
-                }));
-
-                // Clean up preview
-                if (fileWithPreview.preview) {
-                    URL.revokeObjectURL(fileWithPreview.preview);
-                }
-
-                return response;
-            } else {
-                throw new Error(response.message || 'Upload failed');
-            }
-
-        } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Upload failed';
-            setState(prev => ({
-                ...prev,
-                uploading: false,
-                progress: 0,
-                error: errorMessage
-            }));
-            throw error;
-        }
-    }, [user]);
-
-    // 📤 Upload all valid files
-    const uploadAllFiles = useCallback(async () => {
-        const validFiles = state.files.filter(f => f.validation.isValid);
-
-        if (validFiles.length === 0) {
-            setState(prev => ({ ...prev, error: 'No valid files to upload' }));
-            return;
-        }
-
-        const results = [];
-
-        for (const fileWithPreview of validFiles) {
-            try {
-                const result = await uploadSingleFile(fileWithPreview);
-                results.push(result);
-            } catch (error) {
-                console.error(`Failed to upload ${fileWithPreview.info.name}:`, error);
-                // Continue with other files
-            }
-        }
-
-        // Clear uploaded files from preview
-        setState(prev => ({
-            ...prev,
-            files: prev.files.filter(f => !f.validation.isValid)
-        }));
-
-        return results;
-    }, [state.files, uploadSingleFile]);
-
-    // 🗑️ Delete uploaded file
-    const deleteUploadedFile = useCallback(async (filename: string) => {
-        try {
-            await apiDeleteFile(filename);
-
-            setState(prev => ({
-                ...prev,
-                uploadedFiles: prev.uploadedFiles.filter(
-                    file => file?.attachment.filename !== filename
-                )
-            }));
-
-        } catch (error) {
-            console.error('Delete error:', error);
-            throw error;
-        }
-    }, []);
-
-    // 🔄 Reset state
-    const reset = useCallback(() => {
-        // Clean up preview URLs
-        state.files.forEach(file => {
-            if (file.preview) {
-                URL.revokeObjectURL(file.preview);
-            }
-        });
-
-        setState({
-            files: [],
-            uploading: false,
+        const fileStatuses: FileWithStatus[] = newFiles.map(file => ({
+            file,
+            id: `${Date.now()}-${Math.random()}`,
+            status: 'pending' as const,
             progress: 0,
-            uploadedFiles: [],
-            error: null
-        });
-    }, [state.files]);
+        }));
 
-    // 📊 Get statistics
+        setFiles(prev => [...prev, ...fileStatuses]);
+        setError(null);
+    }, []);
+
+    // Remove file from queue
+    const removeFile = useCallback((fileId: string) => {
+        setFiles(prev => prev.filter(f => f.id !== fileId));
+    }, []);
+
+    // Upload all files
+    const uploadAllFiles = useCallback(async () => {
+        const pendingFiles = files.filter(f => f.status === 'pending');
+        if (pendingFiles.length === 0) return [];
+
+        setUploading(true);
+        setError(null);
+
+        const results: any[] = [];
+        let completedCount = 0;
+
+        try {
+            for (const fileStatus of pendingFiles) {
+                // Update file status to uploading
+                setFiles(prev => prev.map(f =>
+                    f.id === fileStatus.id
+                        ? { ...f, status: 'uploading' as const }
+                        : f
+                ));
+
+                try {
+                    const result = await uploadSingleFile(
+                        fileStatus.file,
+                        (progress) => {
+                            // Update individual file progress
+                            setFiles(prev => prev.map(f =>
+                                f.id === fileStatus.id
+                                    ? { ...f, progress }
+                                    : f
+                            ));
+                        }
+                    );
+
+                    // Mark file as completed
+                    setFiles(prev => prev.map(f =>
+                        f.id === fileStatus.id
+                            ? { ...f, status: 'completed' as const, progress: 100, result }
+                            : f
+                    ));
+
+                    results.push(result);
+                    completedCount++;
+
+                    // Update overall progress
+                    setProgress(Math.round((completedCount / pendingFiles.length) * 100));
+
+                } catch (error) {
+                    // Mark file as error
+                    setFiles(prev => prev.map(f =>
+                        f.id === fileStatus.id
+                            ? {
+                                ...f,
+                                status: 'error' as const,
+                                error: error instanceof Error ? error.message : 'Upload failed'
+                            }
+                            : f
+                    ));
+                }
+            }
+
+            setUploadedFiles(results);
+            return results;
+
+        } catch (error) {
+            setError(error instanceof Error ? error.message : 'Upload failed');
+            throw error;
+        } finally {
+            setUploading(false);
+        }
+    }, [files, uploadSingleFile]);
+
+    // Reset all state
+    const reset = useCallback(() => {
+        setFiles([]);
+        setUploading(false);
+        setProgress(0);
+        setUploadedFiles([]);
+        setError(null);
+    }, []);
+
+    // Get upload statistics
     const getStats = useCallback(() => {
-        const validFiles = state.files.filter(f => f.validation.isValid);
-        const invalidFiles = state.files.filter(f => !f.validation.isValid);
-        const totalSize = state.files.reduce((sum, f) => sum + f.info.size, 0);
+        const total = files.length;
+        const completed = files.filter(f => f.status === 'completed').length;
+        const errors = files.filter(f => f.status === 'error').length;
+        const pending = files.filter(f => f.status === 'pending').length;
+        const uploading = files.filter(f => f.status === 'uploading').length;
+
+        const valid = files.filter(f => {
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            const allowedTypes = [
+                'application/pdf',
+                'image/jpeg',
+                'image/png',
+                'image/gif',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'text/plain'
+            ];
+            return f.file.size <= maxSize && allowedTypes.includes(f.file.type);
+        }).length;
+
+        const invalid = total - valid;
+        const totalSize = files.reduce((sum, f) => sum + f.file.size, 0);
+        const totalSizeFormatted = `${(totalSize / (1024 * 1024)).toFixed(1)} MB`;
 
         return {
-            total: state.files.length,
-            valid: validFiles.length,
-            invalid: invalidFiles.length,
+            total,
+            completed,
+            errors,
+            pending,
+            uploading,
+            valid,
+            invalid,
             totalSize,
-            totalSizeFormatted: formatFileSize(totalSize),
-            uploaded: state.uploadedFiles.length
+            totalSizeFormatted
         };
-    }, [state.files, state.uploadedFiles]);
+    }, [files]);
 
     return {
-        // State
-        ...state,
-
-        // Actions
+        files,
+        uploading,
+        progress,
+        uploadedFiles,
+        error,
         addFiles,
         removeFile,
-        uploadFile: uploadSingleFile,
         uploadAllFiles,
-        deleteUploadedFile,
         reset,
-
-        // Utils
-        getStats,
-
-        // Validation
-        validateFile,
-        formatFileSize
+        getStats
     };
 }

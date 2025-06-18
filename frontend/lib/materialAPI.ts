@@ -19,7 +19,7 @@ export const getMaterials = async (filters: MaterialFilters = {}) => {
 
 // ✅ Get material by ID
 export const getMaterialById = async (id: string) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/${id}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/materials/${id}`);
     
     if (!response.ok) {
         throw new Error('Failed to fetch material');
@@ -32,7 +32,7 @@ export const getMaterialById = async (id: string) => {
 export const createMaterial = async (data: CreateMaterialData) => {
     const token = localStorage.getItem('token');
     
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/materials`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ export const createMaterial = async (data: CreateMaterialData) => {
 export const updateMaterial = async (id: string, data: Partial<CreateMaterialData>) => {
     const token = localStorage.getItem('token');
     
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/materials/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export const updateMaterial = async (id: string, data: Partial<CreateMaterialDat
 export const deleteMaterial = async (id: string) => {
     const token = localStorage.getItem('token');
     
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/materials/${id}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -93,7 +93,7 @@ export const deleteMaterial = async (id: string) => {
 export const saveMaterial = async (id: string) => {
     const token = localStorage.getItem('token');
     
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/${id}/save`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/materials/${id}/save`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -112,7 +112,7 @@ export const saveMaterial = async (id: string) => {
 export const removeSavedMaterial = async (id: string) => {
     const token = localStorage.getItem('token');
     
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/${id}/save`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/materials/${id}/save`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -131,7 +131,7 @@ export const removeSavedMaterial = async (id: string) => {
 export const rateMaterial = async (id: string, rating: number) => {
     const token = localStorage.getItem('token');
     
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/${id}/rate`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/materials/${id}/rate`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ export const rateMaterial = async (id: string, rating: number) => {
 export const addComment = async (id: string, content: string) => {
     const token = localStorage.getItem('token');
     
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/${id}/comments`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/materials/${id}/comments`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -178,7 +178,7 @@ export const getUserSavedMaterials = async (filters: MaterialFilters = {}) => {
         if (value) params.append(key, value.toString());
     });
     
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/user/saved?${params.toString()}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/materials/user/saved?${params.toString()}`, {
         headers: {
             'Authorization': `Bearer ${token}`,
         },
@@ -200,7 +200,7 @@ export const getUserUploadedMaterials = async (filters: MaterialFilters = {}) =>
         if (value) params.append(key, value.toString());
     });
     
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/user/uploaded?${params.toString()}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/materials/user/uploaded?${params.toString()}`, {
         headers: {
             'Authorization': `Bearer ${token}`,
         },
@@ -221,7 +221,7 @@ export const getMaterialsByCategory = async (category: string, filters: Material
         if (value) params.append(key, value.toString());
     });
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/materials/category/${category}?${params.toString()}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/materials/category/${category}?${params.toString()}`);
     
     if (!response.ok) {
         throw new Error('Failed to fetch materials by category');

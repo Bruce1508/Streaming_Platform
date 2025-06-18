@@ -10,20 +10,8 @@ import { useAuthSession } from "@/hooks/useAuthSession";
 export default function ProtectedLayout({ children }: { children: ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
-    // const { user, isLoading: authLoading } = useAuth();
-    // const { status: sessionStatus } = useSession();
-
-    // const { status: sessionStatus } = useSession({
-    //     required: false,
-    //     onUnauthenticated() {
-    //         // Handle unauthenticated state
-    //     }
-    // })
 
     const { user, isAuthenticated, isLoading } = useAuthSession();
-
-
-    // const isLoading = authLoading || sessionStatus === 'loading';
 
     console.log('🏠 Protected Layout:', {
         isAuthenticated,
