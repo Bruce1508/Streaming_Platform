@@ -1,30 +1,33 @@
+// backend/src/controllers/material.controller.ts
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
-import { StudyMaterial, IStudyMaterial } from '../models/Material';
+import StudyMaterial, { IStudyMaterial } from '../models/StudyMaterial';
 import User, { IUser } from '../models/User';
 
 type AuthenticatedRequest = Request & {
     user?: IUser;
 };
 
-// Interface for query parameters
 interface StudyMaterialQuery {
     category?: string;
     language?: string;
-    level?: string;
+    difficulty?: string;
     tags?: string;
     author?: string;
     sort?: string;
     page?: string;
     limit?: string;
     search?: string;
+    school?: string;
+    program?: string;
+    course?: string;
 }
 
-//get general material
+// ✅ Get study material by ID
 export const getStudyMaterialById = async (req: Request, res: Response): Promise<Response | any> => {
     try {
         const { id } = req.params;
-        const authReq = req as AuthenticatedRequest; 
+        const authReq = req as AuthenticatedRequest;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
@@ -34,8 +37,11 @@ export const getStudyMaterialById = async (req: Request, res: Response): Promise
         }
 
         const material = await StudyMaterial.findById(id)
-            .populate('author', 'username profilePicture')
-            .populate('comments.user', 'username profilePicture')
+            .populate('author', 'fullName profilePic email')
+            .populate('academic.school', 'name location')
+            .populate('academic.program', 'name code')
+            .populate('academic.course', 'code name')
+            .populate('comments.user', 'fullName profilePic')
             .exec();
 
         if (!material) {
@@ -45,7 +51,7 @@ export const getStudyMaterialById = async (req: Request, res: Response): Promise
             });
         }
 
-        // Check if material is public or user is the author
+        // ✅ Check access permissions
         if (!material.isPublic && (!authReq.user || !material.author.equals(authReq.user._id))) {
             return res.status(403).json({
                 success: false,
@@ -53,8 +59,8 @@ export const getStudyMaterialById = async (req: Request, res: Response): Promise
             });
         }
 
-        // Increment views (async, don't wait)
-        material.incrementViews().catch(console.error);
+        // ✅ Increment views using instance method
+        await material.incrementViews();
 
         return res.json({
             success: true,
@@ -71,41 +77,29 @@ export const getStudyMaterialById = async (req: Request, res: Response): Promise
     }
 };
 
-//get material by category
+// ✅ Get materials by category - using static method
 export const getMaterialsByCategory = async (req: Request, res: Response): Promise<Response | any> => {
     try {
         const { category } = req.params;
-        const { language, level, limit = '20' } = req.query as StudyMaterialQuery; //just language, limit, level
+        const { difficulty, limit = '20' } = req.query as StudyMaterialQuery;
 
-        const materials = await StudyMaterial.findByCategory(category, {
+        const options = {
             filter: {
-                ...(language && { language: language.toLowerCase() }),
-                ...(level && { level })
+                ...(difficulty && { 'metadata.difficulty': difficulty })
             },
             limit: parseInt(limit),
             sort: { averageRating: -1, views: -1 }
-        });
+        };
+
+        // ✅ Use static method from schema
+        const materials = await StudyMaterial.findByCategory(category, options);
 
         const totalCount = await StudyMaterial.countDocuments({
             category,
             status: 'published',
             isPublic: true,
-            ...(language && { language: language.toLowerCase() }),
-            ...(level && { level })
-        })
-
-        const avgRatingResult = await StudyMaterial.aggregate([
-            {
-                $match: {
-                    category,
-                    status: 'published',
-                    isPublic: true,
-                    ...(language && { language: language.toLowerCase() }),
-                    ...(level && { level })
-                }
-            },
-            { $group: { _id: null, avgRating: { $avg: '$averageRating' } } }
-        ]);
+            ...(difficulty && { 'metadata.difficulty': difficulty })
+        });
 
         return res.json({
             success: true,
@@ -113,8 +107,7 @@ export const getMaterialsByCategory = async (req: Request, res: Response): Promi
                 category,
                 materials,
                 stats: {
-                    totalMaterials: totalCount,
-                    averageRating: avgRatingResult[0]?.avgRating || 0
+                    totalMaterials: totalCount
                 }
             }
         });
@@ -129,7 +122,7 @@ export const getMaterialsByCategory = async (req: Request, res: Response): Promi
     }
 }
 
-//Save study material
+// ✅ Save material to user's collection
 export const saveMaterial = async (req: Request, res: Response): Promise<Response | any> => {
     try {
         const authReq = req as AuthenticatedRequest;
@@ -157,7 +150,7 @@ export const saveMaterial = async (req: Request, res: Response): Promise<Respons
             });
         }
 
-        // Check if already saved
+        // ✅ Check if already saved
         if (authReq.user.savedMaterials.includes(new mongoose.Types.ObjectId(id))) {
             return res.status(400).json({
                 success: false,
@@ -165,10 +158,10 @@ export const saveMaterial = async (req: Request, res: Response): Promise<Respons
             });
         }
 
-        // Save material
+        // ✅ Use User instance method to save material
         await authReq.user.saveMaterial(new mongoose.Types.ObjectId(id));
 
-        // Increment saves count
+        // ✅ Increment saves count in material
         material.saves += 1;
         await material.save();
 
@@ -187,7 +180,7 @@ export const saveMaterial = async (req: Request, res: Response): Promise<Respons
     }
 };
 
-//Remove saved study material
+// ✅ Remove saved material
 export const removeSavedMaterial = async (req: Request, res: Response): Promise<Response | any> => {
     try {
         const authReq = req as AuthenticatedRequest;
@@ -207,7 +200,7 @@ export const removeSavedMaterial = async (req: Request, res: Response): Promise<
             });
         }
 
-        //check if material is saved 
+        // ✅ Check if material is saved 
         if (!authReq.user.savedMaterials.includes(new mongoose.Types.ObjectId(id))) {
             return res.status(400).json({
                 success: false,
@@ -215,9 +208,10 @@ export const removeSavedMaterial = async (req: Request, res: Response): Promise<
             });
         }
 
+        // ✅ Use User instance method to unsave material
         await authReq.user.unsaveMaterial(new mongoose.Types.ObjectId(id));
 
-        // Decrement saves count
+        // ✅ Decrement saves count
         const material = await StudyMaterial.findById(id);
         if (material && material.saves > 0) {
             material.saves -= 1;
@@ -229,7 +223,7 @@ export const removeSavedMaterial = async (req: Request, res: Response): Promise<
             message: 'Study material removed from saved list'
         });
     } catch (error: any) {
-        console.error("Error in removing saved material: ", error);
+        console.error("Error removing saved material:", error);
         return res.status(500).json({
             success: false,
             message: 'Error removing saved materials',
@@ -238,6 +232,7 @@ export const removeSavedMaterial = async (req: Request, res: Response): Promise<
     }
 }
 
+// ✅ Rate material
 export const rateMaterial = async (req: Request, res: Response): Promise<Response | any> => {
     try {
         const authReq = req as AuthenticatedRequest;
@@ -273,7 +268,7 @@ export const rateMaterial = async (req: Request, res: Response): Promise<Respons
             });
         }
 
-        // Can't rate own material
+        // ✅ Can't rate own material
         if (material.author.equals(authReq.user._id)) {
             return res.status(400).json({
                 success: false,
@@ -281,15 +276,12 @@ export const rateMaterial = async (req: Request, res: Response): Promise<Respons
             });
         }
 
-        if (!authReq.user._id) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid user session'
-            });
-        }
-
-        // Add/update rating
+        // ✅ Use instance method to add rating
         await material.addRating(authReq.user._id, parseInt(rating));
+
+        // ✅ Update user stats
+        authReq.user.studyStats.ratingsGiven += 1;
+        await authReq.user.save();
 
         return res.json({
             success: true,
@@ -310,7 +302,8 @@ export const rateMaterial = async (req: Request, res: Response): Promise<Respons
     }
 };
 
-export const addComment = async (req: Request, res: Response): Promise<Response|any> => {
+// ✅ Add comment
+export const addComment = async (req: Request, res: Response): Promise<Response | any> => {
     try {
         const authReq = req as AuthenticatedRequest;
         const { id } = req.params;
@@ -331,9 +324,16 @@ export const addComment = async (req: Request, res: Response): Promise<Response|
         }
 
         if (!content || content.trim().length === 0) {
-            return res.status(404).json({
+            return res.status(400).json({
                 success: false,
                 message: "Comment content is required"
+            });
+        }
+
+        if (content.trim().length > 500) {
+            return res.status(400).json({
+                success: false,
+                message: "Comment cannot exceed 500 characters"
             });
         }
 
@@ -341,22 +341,23 @@ export const addComment = async (req: Request, res: Response): Promise<Response|
         if (!material) {
             return res.status(404).json({
                 success: false,
-                message: 'Study material is not found'
+                message: 'Study material not found'
             });
         }
 
+        // ✅ Add comment to material
         material.comments.push({
             user: authReq.user._id,
             content: content.trim(),
             createdAt: new Date(),
             updatedAt: new Date()
         });
-        
+
         await material.save();
 
-        // Populate the new comment
+        // ✅ Populate the new comment
         const updatedMaterial = await StudyMaterial.findById(id)
-            .populate('comments.user', 'username profilePicture')
+            .populate('comments.user', 'fullName profilePic')
             .exec();
 
         const newComment = updatedMaterial?.comments[updatedMaterial.comments.length - 1];
@@ -367,16 +368,17 @@ export const addComment = async (req: Request, res: Response): Promise<Response|
             data: newComment
         });
     } catch (error: any) {
-        console.error("Fail to add comment from backend server: ", error);
+        console.error("Error adding comment:", error);
         return res.status(500).json({
             success: false,
-            message: "Error adding comment from backend server",
+            message: "Error adding comment",
             error: error.message
         })
     }
 }
 
-export const getUserSavedMaterials = async (req: Request, res: Response): Promise <Response|any> => {
+// ✅ Get user's saved materials
+export const getUserSavedMaterials = async (req: Request, res: Response): Promise<Response | any> => {
     try {
         const authReq = req as AuthenticatedRequest;
         const { page = '1', limit = '12' } = req.query as { page?: string; limit?: string };
@@ -394,10 +396,16 @@ export const getUserSavedMaterials = async (req: Request, res: Response): Promis
         const user = await User.findById(authReq.user._id)
             .populate({
                 path: 'savedMaterials',
-                populate: {
-                    path: 'author',
-                    select: 'username profilePicture'
-                },
+                populate: [
+                    {
+                        path: 'author',
+                        select: 'fullName profilePic'
+                    },
+                    {
+                        path: 'academic.course',
+                        select: 'code name'
+                    }
+                ],
                 options: {
                     limit: limitNum,
                     skip: (pageNum - 1) * limitNum,
@@ -421,23 +429,23 @@ export const getUserSavedMaterials = async (req: Request, res: Response): Promis
             }
         })
     } catch (error: any) {
-        console.error("Fail to get user saved materials from backend server: ", error);
+        console.error("Error getting user saved materials:", error);
         return res.status(500).json({
             success: false,
-            message: "Error get saved materials from backend server",
+            message: "Error getting saved materials",
             error: error.message
         })
     }
 }
 
-//  Get user's uploaded materials
-export const getUserUploadedMaterials = async (req: Request, res: Response): Promise<Response|any> => {
+// ✅ Get user's uploaded materials
+export const getUserUploadedMaterials = async (req: Request, res: Response): Promise<Response | any> => {
     try {
         const authReq = req as AuthenticatedRequest;
-        const { page = '1', limit = '12', status } = req.query as { 
-            page?: string; 
-            limit?: string; 
-            status?: string; 
+        const { page = '1', limit = '12', status } = req.query as {
+            page?: string;
+            limit?: string;
+            status?: string;
         };
 
         if (!authReq.user) {
@@ -454,7 +462,9 @@ export const getUserUploadedMaterials = async (req: Request, res: Response): Pro
         if (status) filter.status = status;
 
         const materials = await StudyMaterial.find(filter)
-            .populate('author', 'username profilePicture')
+            .populate('author', 'fullName profilePic')
+            .populate('academic.course', 'code name')
+            .populate('academic.program', 'name')
             .sort({ createdAt: -1 })
             .limit(limitNum)
             .skip((pageNum - 1) * limitNum)
@@ -486,17 +496,20 @@ export const getUserUploadedMaterials = async (req: Request, res: Response): Pro
     }
 };
 
-export const getStudyMaterials = async (req: Request, res: Response): Promise <Response|any> => {
+// ✅ Get all study materials with comprehensive filtering
+export const getStudyMaterials = async (req: Request, res: Response): Promise<Response | any> => {
     try {
         const {
             page = '1',
             limit = '12',
             search,
             category,
-            language,
-            level,
+            difficulty,
             tags,
             author,
+            school,
+            program,
+            course,
             sort = 'createdAt'
         } = req.query as StudyMaterialQuery;
 
@@ -508,42 +521,26 @@ export const getStudyMaterials = async (req: Request, res: Response): Promise <R
             isPublic: true
         };
 
-        // Add search functionality
+        // ✅ Search functionality
         if (search) {
-            filter.$or = [
-                { title: { $regex: search, $options: 'i' } },
-                { description: { $regex: search, $options: 'i' } },
-                { tags: { $in: [new RegExp(search, 'i')] } }
-            ];
+            filter.$text = { $search: search };
         }
 
-        // Add category filter
-        if (category) {
-            filter.category = category;
-        }
+        // ✅ Academic filters
+        if (category) filter.category = category;
+        if (difficulty) filter['metadata.difficulty'] = difficulty;
+        if (school) filter['academic.school'] = school;
+        if (program) filter['academic.program'] = program;
+        if (course) filter['academic.course'] = course;
+        if (author) filter.author = author;
 
-        // Add language filter
-        if (language) {
-            filter.language = language.toLowerCase();
-        }
-
-        // Add level filter
-        if (level) {
-            filter.level = level;
-        }
-
-        // Add tags filter
+        // ✅ Tags filter
         if (tags) {
             const tagArray = tags.split(',').map(tag => tag.trim());
-            filter.tags = { $in: tagArray };
+            filter['metadata.tags'] = { $in: tagArray };
         }
 
-        // Add author filter
-        if (author) {
-            filter.author = author;
-        }
-
-        // Build sort object
+        // ✅ Build sort object
         let sortObj: any = {};
         switch (sort) {
             case 'newest':
@@ -561,22 +558,27 @@ export const getStudyMaterials = async (req: Request, res: Response): Promise <R
             case 'title':
                 sortObj = { title: 1 };
                 break;
+            case 'relevance':
+                sortObj = search ? { score: { $meta: 'textScore' } } : { createdAt: -1 };
+                break;
             default:
                 sortObj = { createdAt: -1 };
         }
 
-        // Execute query with pagination
+        // ✅ Execute query with comprehensive population
         const materials = await StudyMaterial.find(filter)
-            .populate('author', 'username profilePicture')
+            .populate('author', 'fullName profilePic')
+            .populate('academic.school', 'name location')
+            .populate('academic.program', 'name code')
+            .populate('academic.course', 'code name')
             .sort(sortObj)
             .limit(limitNum)
             .skip((pageNum - 1) * limitNum)
             .exec();
 
-        // Get total count for pagination
         const total = await StudyMaterial.countDocuments(filter);
 
-        // Get aggregated stats
+        // ✅ Get aggregated stats
         const stats = await StudyMaterial.aggregate([
             { $match: filter },
             {
@@ -608,20 +610,13 @@ export const getStudyMaterials = async (req: Request, res: Response): Promise <R
                     totalSaves: 0
                 },
                 filters: {
-                    search,
-                    category,
-                    language,
-                    level,
-                    tags,
-                    author,
-                    sort
+                    search, category, difficulty, tags, author, school, program, course, sort
                 }
             }
         });
 
-
     } catch (error: any) {
-        console.error("Error in getUserStudyMaterials from backend server: ", error);
+        console.error("Error fetching study materials:", error);
         return res.status(500).json({
             success: false,
             message: "Error fetching study materials",
@@ -630,22 +625,37 @@ export const getStudyMaterials = async (req: Request, res: Response): Promise <R
     }
 }
 
+// ✅ Create study material with full academic context
 export const createStudyMaterial = async (req: Request, res: Response): Promise<any> => {
     try {
         const authReq = req as AuthenticatedRequest;
-        
-        // ✅ Destructure with validation
+
+        if (!authReq.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Authentication required'
+            });
+        }
+
         const {
             title,
             description,
             content,
             category,
-            language,
-            level,
-            tags = [],
             attachments = [],
             isPublic = true,
-            status = 'published'
+            status = 'published',
+            // Academic context - all required
+            school,
+            program,
+            course,
+            semester,
+            week,
+            professor,
+            // Metadata
+            difficulty = 'beginner',
+            completionTime,
+            grade
         } = req.body;
 
         // ✅ Required fields validation
@@ -670,87 +680,62 @@ export const createStudyMaterial = async (req: Request, res: Response): Promise<
             });
         }
 
-        if (!language) {
+        // ✅ Academic context validation (required)
+        if (!school || !program || !course || !semester) {
             return res.status(400).json({
                 success: false,
-                message: "Language is required"
+                message: "Academic context (school, program, course, semester) is required"
             });
         }
 
-        if (!level) {
+        if (!semester.term || !semester.year) {
             return res.status(400).json({
                 success: false,
-                message: "Level is required"
+                message: "Semester term and year are required"
             });
         }
 
-        // ✅ Validate category enum
-        const validCategories = ['grammar', 'vocabulary', 'listening', 'speaking', 'reading', 'writing', 'practice', 'culture', 'pronunciation'];
-        if (!validCategories.includes(category.toLowerCase())) {
+        // ✅ Validate ObjectIds
+        if (!mongoose.Types.ObjectId.isValid(school) ||
+            !mongoose.Types.ObjectId.isValid(program) ||
+            !mongoose.Types.ObjectId.isValid(course)) {
             return res.status(400).json({
                 success: false,
-                message: `Invalid category. Must be one of: ${validCategories.join(', ')}`
+                message: "Invalid school, program, or course ID"
             });
         }
 
-        // ✅ Validate level enum
-        const validLevels = ['beginner', 'intermediate', 'advanced'];
-        if (!validLevels.includes(level.toLowerCase())) {
-            return res.status(400).json({
-                success: false,
-                message: `Invalid level. Must be one of: ${validLevels.join(', ')}`
-            });
-        }
-
-        // ✅ Process tags - clean and deduplicate
-        const processedTags = Array.isArray(tags) 
-            ? [...new Set(tags.map((tag: string) => tag.trim().toLowerCase()).filter(Boolean))]
-            : [];
-
-        // ✅ Security: Validate attachments belong to this user
-        if (attachments.length > 0) {
-            const userId = authReq.user._id.toString();
-            const hasInvalidAttachment = attachments.some((attachment: any) => {
-                // Check if filename contains user ID (security check)
-                return !attachment.filename?.includes(userId);
-            });
-
-            if (hasInvalidAttachment) {
-                return res.status(403).json({
-                    success: false,
-                    message: "Unauthorized: Invalid file attachment"
-                });
-            }
-
-            // ✅ Validate attachment structure
-            for (const attachment of attachments) {
-                if (!attachment.filename || !attachment.url || !attachment.mimeType) {
-                    return res.status(400).json({
-                        success: false,
-                        message: "Invalid attachment structure. Required: filename, url, mimeType"
-                    });
-                }
-            }
-        }
-
-        // ✅ Create material with optimized structure
+        // ✅ Create material with full academic structure
         const newMaterial = new StudyMaterial({
             title: title.trim(),
             description: description.trim(),
-            content: content?.trim() || null,
-            category: category.toLowerCase(),
-            language: language.toLowerCase(),
-            level: level.toLowerCase(),
-            tags: processedTags,
-            attachments: attachments.map((att: any) => ({
-                filename: att.filename,
-                originalName: att.originalName,
-                mimeType: att.mimeType,
-                size: att.size,
-                url: att.url,
-                uploadedAt: att.uploadedAt || new Date()
-            })),
+            content: content?.trim(),
             author: authReq.user._id,
+            category,
+
+            // ✅ Required academic context
+            academic: {
+                school: new mongoose.Types.ObjectId(school),
+                program: new mongoose.Types.ObjectId(program),
+                course: new mongoose.Types.ObjectId(course),
+                semester: {
+                    term: semester.term,
+                    year: parseInt(semester.year)
+                },
+                ...(week && { week: parseInt(week) }),
+                ...(professor && { professor: professor.trim() })
+            },
+
+            // ✅ Metadata
+            metadata: {
+                difficulty,
+                ...(completionTime && { completionTime: parseInt(completionTime) }),
+                ...(grade && { grade: grade.trim() }),
+                isVerified: false,
+                qualityScore: 0
+            },
+
+            attachments: attachments || [],
             isPublic: Boolean(isPublic),
             status: status === 'draft' ? 'draft' : 'published',
             views: 0,
@@ -762,52 +747,36 @@ export const createStudyMaterial = async (req: Request, res: Response): Promise<
             reportCount: 0
         });
 
-        // ✅ Save with error handling
         const savedMaterial = await newMaterial.save();
 
-        // ✅ Populate author info for response
-        await savedMaterial.populate('author', 'fullName username profilePicture email');
+        // ✅ Update user stats
+        await authReq.user.incrementUploadCount();
 
-        // ✅ Log success
+        // ✅ Populate for response
+        await savedMaterial.populate([
+            { path: 'author', select: 'fullName profilePic email' },
+            { path: 'academic.school', select: 'name location' },
+            { path: 'academic.program', select: 'name code' },
+            { path: 'academic.course', select: 'code name' }
+        ]);
+
         console.log('✅ Study material created:', {
             id: savedMaterial._id,
             title: savedMaterial.title,
             author: authReq.user.fullName,
-            attachments: savedMaterial.attachments.length,
-            category: savedMaterial.category
+            category: savedMaterial.category,
+            course: savedMaterial.academic.course
         });
 
-        // ✅ Return success response
         return res.status(201).json({
             success: true,
             message: "Study material created successfully",
-            material: {
-                _id: savedMaterial._id,
-                title: savedMaterial.title,
-                description: savedMaterial.description,
-                content: savedMaterial.content,
-                category: savedMaterial.category,
-                language: savedMaterial.language,
-                level: savedMaterial.level,
-                tags: savedMaterial.tags,
-                attachments: savedMaterial.attachments,
-                author: savedMaterial.author,
-                isPublic: savedMaterial.isPublic,
-                status: savedMaterial.status,
-                views: savedMaterial.views,
-                saves: savedMaterial.saves,
-                averageRating: savedMaterial.averageRating,
-                totalRatings: savedMaterial.totalRatings,
-                commentCount: savedMaterial.commentCount,
-                createdAt: savedMaterial.createdAt,
-                updatedAt: savedMaterial.updatedAt
-            }
+            data: savedMaterial
         });
 
     } catch (error: any) {
         console.error('❌ Create study material error:', error);
 
-        // ✅ Handle specific MongoDB errors
         if (error.name === 'ValidationError') {
             const validationErrors = Object.values(error.errors).map((err: any) => err.message);
             return res.status(400).json({
@@ -824,7 +793,6 @@ export const createStudyMaterial = async (req: Request, res: Response): Promise<
             });
         }
 
-        // ✅ Generic error response
         return res.status(500).json({
             success: false,
             message: "Failed to create study material",
@@ -833,22 +801,12 @@ export const createStudyMaterial = async (req: Request, res: Response): Promise<
     }
 };
 
+// ✅ Update study material
 export const updateStudyMaterial = async (req: Request, res: Response): Promise<Response | any> => {
     try {
         const authReq = req as AuthenticatedRequest;
         const { id } = req.params;
-        const {
-            title,
-            description,
-            category,
-            language,
-            level,
-            tags,
-            fileUrl,
-            fileType,
-            fileSize,
-            isPublic
-        } = req.body;
+        const updateData = req.body;
 
         if (!authReq.user) {
             return res.status(401).json({
@@ -872,7 +830,7 @@ export const updateStudyMaterial = async (req: Request, res: Response): Promise<
             });
         }
 
-        // Check if user is the author
+        // ✅ Check ownership
         if (!material.author.equals(authReq.user._id)) {
             return res.status(403).json({
                 success: false,
@@ -880,29 +838,20 @@ export const updateStudyMaterial = async (req: Request, res: Response): Promise<
             });
         }
 
-        // Update fields if provided
-        const updateData: any = {
-            updatedAt: new Date()
-        };
-
-        if (title) updateData.title = title.trim();
-        if (description) updateData.description = description.trim();
-        if (category) updateData.category = category.toLowerCase();
-        if (language) updateData.language = language.toLowerCase();
-        if (level) updateData.level = level;
-        if (tags) {
-            updateData.tags = tags.split(',').map((tag: string) => tag.trim().toLowerCase()).filter((tag: string) => tag.length > 0);
-        }
-        if (fileUrl !== undefined) updateData.fileUrl = fileUrl;
-        if (fileType !== undefined) updateData.fileType = fileType;
-        if (fileSize !== undefined) updateData.fileSize = fileSize;
-        if (isPublic !== undefined) updateData.isPublic = isPublic;
-
+        // ✅ Update with validation
         const updatedMaterial = await StudyMaterial.findByIdAndUpdate(
             id,
-            updateData,
+            {
+                ...updateData,
+                updatedAt: new Date()
+            },
             { new: true, runValidators: true }
-        ).populate('author', 'username profilePicture');
+        ).populate([
+            { path: 'author', select: 'fullName profilePic' },
+            { path: 'academic.school', select: 'name location' },
+            { path: 'academic.program', select: 'name code' },
+            { path: 'academic.course', select: 'code name' }
+        ]);
 
         return res.json({
             success: true,
@@ -948,7 +897,7 @@ export const deleteStudyMaterial = async (req: Request, res: Response): Promise<
             });
         }
 
-        // Check if user is the author
+        // ✅ Check ownership
         if (!material.author.equals(authReq.user._id)) {
             return res.status(403).json({
                 success: false,
@@ -956,13 +905,13 @@ export const deleteStudyMaterial = async (req: Request, res: Response): Promise<
             });
         }
 
-        // Remove material from all users' saved lists
+        // ✅ Remove from all users' saved lists
         await User.updateMany(
             { savedMaterials: id },
             { $pull: { savedMaterials: id } }
         );
 
-        // Delete the material
+        // ✅ Delete the material
         await StudyMaterial.findByIdAndDelete(id);
 
         return res.json({
@@ -980,7 +929,452 @@ export const deleteStudyMaterial = async (req: Request, res: Response): Promise<
     }
 };
 
+// ✅ Get materials by course (using static method)
+export const getMaterialsByCourse = async (req: Request, res: Response): Promise<Response | any> => {
+    try {
+        const { courseId } = req.params;
+        const { limit = '20', sort = 'newest' } = req.query as StudyMaterialQuery;
 
+        if (!mongoose.Types.ObjectId.isValid(courseId)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid course ID'
+            });
+        }
 
+        const sortOptions = {
+            newest: { createdAt: -1 },
+            oldest: { createdAt: 1 },
+            popular: { views: -1, averageRating: -1 },
+            rating: { averageRating: -1, totalRatings: -1 }
+        };
 
+        const options = {
+            limit: parseInt(limit),
+            sort: sortOptions[sort as keyof typeof sortOptions] || sortOptions.newest
+        };
 
+        // ✅ Use static method
+        const materials = await StudyMaterial.findByCourse(courseId, options);
+
+        return res.json({
+            success: true,
+            data: {
+                courseId,
+                materials,
+                count: materials.length
+            }
+        });
+
+    } catch (error: any) {
+        console.error('Error fetching materials by course:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error fetching materials by course',
+            error: error.message
+        });
+    }
+};
+
+// ✅ Get featured materials (using static method)
+export const getFeaturedMaterials = async (req: Request, res: Response): Promise<Response | any> => {
+    try {
+        const { limit = '10' } = req.query as { limit?: string };
+
+        // ✅ Use static method
+        const materials = await StudyMaterial.findFeatured(parseInt(limit));
+
+        return res.json({
+            success: true,
+            data: {
+                materials,
+                count: materials.length
+            }
+        });
+
+    } catch (error: any) {
+        console.error('Error fetching featured materials:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error fetching featured materials',
+            error: error.message
+        });
+    }
+};
+
+// ✅ Get popular materials (using static method)
+export const getPopularMaterials = async (req: Request, res: Response): Promise<Response | any> => {
+    try {
+        const { limit = '10' } = req.query as { limit?: string };
+
+        // ✅ Use static method
+        const materials = await StudyMaterial.getPopularMaterials(parseInt(limit));
+
+        return res.json({
+            success: true,
+            data: {
+                materials,
+                count: materials.length
+            }
+        });
+
+    } catch (error: any) {
+        console.error('Error fetching popular materials:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error fetching popular materials',
+            error: error.message
+        });
+    }
+};
+
+// ✅ Get materials by program (using static method)
+export const getMaterialsByProgram = async (req: Request, res: Response): Promise<Response | any> => {
+    try {
+        const { programId } = req.params;
+        const { limit = '20', category, difficulty } = req.query as StudyMaterialQuery;
+        if (!mongoose.Types.ObjectId.isValid(programId)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid program ID'
+            });
+        }
+
+        const options = {
+            filter: {
+                ...(category && { category }),
+                ...(difficulty && { 'metadata.difficulty': difficulty })
+            },
+            limit: parseInt(limit),
+            sort: { averageRating: -1, createdAt: -1 }
+        };
+
+        // ✅ Use static method
+        const materials = await StudyMaterial.findByProgram(programId, options);
+
+        return res.json({
+            success: true,
+            data: {
+                programId,
+                materials,
+                count: materials.length
+            }
+        });
+
+    } catch (error: any) {
+        console.error('Error fetching materials by program:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error fetching materials by program',
+            error: error.message
+        });
+    }
+};
+// ✅ Remove rating from material
+export const removeRating = async (req: Request, res: Response): Promise<Response | any> => {
+    try {
+        const authReq = req as AuthenticatedRequest;
+        const { id } = req.params;
+        if (!authReq.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Authentication required'
+            });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid study material ID'
+            });
+        }
+
+        const material = await StudyMaterial.findById(id);
+        if (!material) {
+            return res.status(404).json({
+                success: false,
+                message: 'Study material not found'
+            });
+        }
+
+        // ✅ Check if user has rated this material
+        const hasRated = material.ratings.some(rating => rating.user.equals(authReq.user!._id));
+        if (!hasRated) {
+            return res.status(400).json({
+                success: false,
+                message: 'You have not rated this material'
+            });
+        }
+
+        // ✅ Use instance method to remove rating
+        await material.removeRating(authReq.user!._id);
+
+        // ✅ Update user stats
+        if (authReq.user.studyStats.ratingsGiven > 0) {
+            authReq.user.studyStats.ratingsGiven -= 1;
+            await authReq.user.save();
+        }
+
+        return res.json({
+            success: true,
+            message: 'Rating removed successfully',
+            data: {
+                averageRating: material.averageRating,
+                totalRatings: material.totalRatings
+            }
+        });
+
+    } catch (error: any) {
+        console.error('Error removing rating:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error removing rating',
+            error: error.message
+        });
+    }
+};
+// ✅ Delete comment
+export const deleteComment = async (req: Request, res: Response): Promise<Response | any> => {
+    try {
+        const authReq = req as AuthenticatedRequest;
+        const { id, commentId } = req.params;
+        if (!authReq.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Authentication required'
+            });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(commentId)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid material or comment ID'
+            });
+        }
+
+        const material = await StudyMaterial.findById(id);
+        if (!material) {
+            return res.status(404).json({
+                success: false,
+                message: 'Study material not found'
+            });
+        }
+
+        // ✅ Check ownership (user can delete own comments, author can delete any comment on their material)
+        if (!material.author.equals(authReq.user._id)) {
+            return res.status(403).json({
+                success: false,
+                message: 'Access denied. You can only delete your own comments'
+            });
+        }
+
+        // ✅ Remove comment
+        const index = material.comments.findIndex((c: any) => c._id?.toString() === commentId);
+        if (index !== -1) {
+            material.comments.splice(index, 1);
+        }
+        await material.save();
+
+        return res.json({
+            success: true,
+            message: 'Comment deleted successfully'
+        });
+
+    } catch (error: any) {
+        console.error('Error deleting comment:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error deleting comment',
+            error: error.message
+        });
+    }
+};
+// ✅ Update comment
+export const updateComment = async (req: Request, res: Response): Promise<Response | any> => {
+    try {
+        const authReq = req as AuthenticatedRequest;
+        const { id, commentId } = req.params;
+        const { content } = req.body;
+        if (!authReq.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Authentication required'
+            });
+        }
+
+        if (!content || content.trim().length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Comment content is required'
+            });
+        }
+
+        if (content.trim().length > 500) {
+            return res.status(400).json({
+                success: false,
+                message: 'Comment cannot exceed 500 characters'
+            });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(commentId)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid material or comment ID'
+            });
+        }
+
+        const material = await StudyMaterial.findById(id);
+        if (!material) {
+            return res.status(404).json({
+                success: false,
+                message: 'Study material not found'
+            });
+        }
+
+        // ✅ Check ownership
+        if (!material.author.equals(authReq.user._id)) {
+            return res.status(403).json({
+                success: false,
+                message: 'Access denied. You can only edit your own comments'
+            });
+        }
+
+        // ✅ Update comment
+        const comment = material.comments.find((c: any) => c._id?.toString() === commentId);
+        if (!comment) {
+            return res.status(404).json({
+                success: false,
+                message: 'Comment not found'
+            });
+        }
+
+        comment.content = content.trim();
+        comment.updatedAt = new Date();
+        await material.save();
+
+        // ✅ Populate updated comment
+        await material.populate('comments.user', 'fullName profilePic');
+        const updatedComment = material.comments.find((c: any) => c._id?.toString() === commentId);
+
+        return res.json({
+            success: true,
+            message: 'Comment updated successfully',
+            data: updatedComment
+        });
+
+    } catch (error: any) {
+        console.error('Error updating comment:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error updating comment',
+            error: error.message
+        });
+    }
+};
+// ✅ Report material
+export const reportMaterial = async (req: Request, res: Response): Promise<Response | any> => {
+    try {
+        const authReq = req as AuthenticatedRequest;
+        const { id } = req.params;
+        const { reason } = req.body;
+        if (!authReq.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Authentication required'
+            });
+        }
+
+        if (!reason || reason.trim().length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Report reason is required'
+            });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid study material ID'
+            });
+        }
+
+        const material = await StudyMaterial.findById(id);
+        if (!material) {
+            return res.status(404).json({
+                success: false,
+                message: 'Study material not found'
+            });
+        }
+
+        // ✅ Can't report own material
+        if (material.author.equals(authReq.user._id)) {
+            return res.status(400).json({
+                success: false,
+                message: 'You cannot report your own study material'
+            });
+        }
+
+        // ✅ Update report status
+        material.isReported = true;
+        material.reportCount += 1;
+        await material.save();
+
+        // TODO: In a real app, you might want to create a separate Report model
+        // to track who reported what and for what reason
+
+        return res.json({
+            success: true,
+            message: 'Study material reported successfully. Thank you for helping maintain quality content.'
+        });
+
+    } catch (error: any) {
+        console.error('Error reporting material:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error reporting material',
+            error: error.message
+        });
+    }
+};
+// ✅ Get material statistics
+export const getMaterialStats = async (req: Request, res: Response): Promise<Response | any> => {
+    try {
+        const { id } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid study material ID'
+            });
+        }
+
+        const material = await StudyMaterial.findById(id)
+            .select('views saves averageRating totalRatings commentCount')
+            .exec();
+
+        if (!material) {
+            return res.status(404).json({
+                success: false,
+                message: 'Study material not found'
+            });
+        }
+
+        return res.json({
+            success: true,
+            data: {
+                views: material.views,
+                saves: material.saves,
+                averageRating: material.averageRating,
+                totalRatings: material.totalRatings,
+                commentCount: material.commentCount
+            }
+        });
+
+    } catch (error: any) {
+        console.error('Error fetching material stats:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error fetching material stats',
+            error: error.message
+        });
+    }
+};

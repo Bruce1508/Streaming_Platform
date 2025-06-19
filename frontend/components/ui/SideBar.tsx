@@ -4,10 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { 
-    HomeIcon, 
-    BellIcon, 
-    UsersIcon, 
+import {
+    HomeIcon,
+    BellIcon,
+    UsersIcon,
     FolderOpenIcon,
     BookOpenIcon,
     CalendarIcon,
@@ -16,7 +16,8 @@ import {
     SettingsIcon,
     ShipWheelIcon,
     PanelLeftCloseIcon,
-    PanelLeftOpenIcon
+    PanelLeftOpenIcon,
+    FileIcon
 } from "lucide-react";
 import { useState } from "react";
 
@@ -75,6 +76,15 @@ const Sidebar = () => {
                 >
                     <FolderOpenIcon className="size-5 text-base-content opacity-70" />
                     {!isCollapsed && <span className="animate-fade-in whitespace-nowrap overflow-hidden">Study Materials</span>}
+                </Link>
+
+                <Link
+                    href="/files"
+                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/files" ? "btn-active" : ""}`}
+                    title="My Files"
+                >
+                    <FileIcon className="size-5 text-base-content opacity-70" />
+                    {!isCollapsed && <span className="animate-fade-in whitespace-nowrap overflow-hidden">My Files</span>}
                 </Link>
 
                 <Link
@@ -151,7 +161,7 @@ const Sidebar = () => {
                                             Online
                                         </p>
                                     </div>
-                                    <button 
+                                    <button
                                         onClick={() => setIsCollapsed(!isCollapsed)}
                                         className="btn btn-ghost btn-sm p-2 hover:bg-base-300 transition-colors"
                                         title="Collapse sidebar"
@@ -164,7 +174,7 @@ const Sidebar = () => {
                     </div>
                 ) : (
                     <div className="flex justify-center">
-                        <button 
+                        <button
                             onClick={() => setIsCollapsed(!isCollapsed)}
                             className="btn btn-ghost btn-sm p-2 hover:bg-base-300 transition-colors"
                             title="Expand sidebar"

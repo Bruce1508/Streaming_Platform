@@ -37,11 +37,25 @@ export function useUpload() {
     const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
     const [error, setError] = useState<string | null>(null);
 
+    const getValidToken = (): string | null => {
+        // Try context first
+        if (token && typeof token === 'string' && token !== 'null') {
+            return token;
+        }
+        // Try localStorage
+        const storageToken = localStorage.getItem("auth_token");
+        if (storageToken && storageToken !== 'null' && storageToken !== 'undefined') {
+            return typeof storageToken === 'string' ? storageToken : String(storageToken);
+        }
+        return null;
+    };
+
     // Upload single file function - bây giờ có thể access token
     const uploadSingleFile = useCallback(async (
         file: File,
         onProgress?: (progress: number) => void
     ): Promise<UploadFileResponse> => {
+
         const getValidToken = (): string | null => {
             // Try context first
             if (token && typeof token === 'string' && token !== 'null') {
@@ -124,6 +138,40 @@ export function useUpload() {
 
         setFiles(prev => [...prev, ...fileStatuses]);
         setError(null);
+    }, []);
+
+    // Add method for multiple upload (>100) 
+    // USE FOR FUTURE SCALE
+    const uploadMultipleFiles = useCallback(async (files: File[]): Promise<any> => {
+        try {
+            const formData = new FormData();
+            files.forEach(file => {
+                formData.append('files', file); // ✅ Matches backend field name
+            });
+
+            const validToken = getValidToken();
+            if (!validToken) {
+                throw new Error('No authentication token');
+            }
+
+            const response = await fetch(`${BASE_URL}/upload/files/multiple`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${validToken}`
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Multiple upload failed');
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('❌ Multiple upload error:', error);
+            throw error;
+        }
     }, []);
 
     // Remove file from queue
@@ -259,6 +307,7 @@ export function useUpload() {
         addFiles,
         removeFile,
         uploadAllFiles,
+        uploadMultipleFiles,
         reset,
         getStats
     };

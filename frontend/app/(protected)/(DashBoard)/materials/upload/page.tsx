@@ -248,6 +248,15 @@ export default function UploadPage() {
                             </div>
                         </div>
 
+                        <div className="flex items-center space-x-4 p-4 bg-primary/5 rounded-lg border cursor-pointer hover:bg-primary/10 transition-colors"
+                            onClick={() => router.push('/files')}>
+                            <span className="text-2xl">📁</span>
+                            <div>
+                                <p className="font-medium text-foreground">View My Files</p>
+                                <p className="text-sm text-muted-foreground">Browse and manage uploaded files</p>
+                            </div>
+                        </div>
+
                         {/* Action Buttons */}
                         <div className="mt-10">
                             <div className="flex justify-end space-x-4">

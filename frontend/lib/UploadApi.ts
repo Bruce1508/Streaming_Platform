@@ -1,172 +1,48 @@
-// import { getValidToken } from './tokenUtils';
-// import { UploadFileResponse, DeleteFileResponse, SUPPORTED_TYPES, MAX_FILE_SIZE } from '@/types/Upload';
-// import { useAuth } from '@/contexts/AuthContext';
-// const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+import { makeAuthenticationRequest } from "./api";
 
-// export const uploadFile = async (
-//     file: File,
-//     onProgress?: (progress: number) => void
-// ): Promise<UploadFileResponse> => {
-
-//     const { user, token } = useAuth();
-
-//     const getValidToken = (): string | null => {
-//         // Try context first
-//         if (token && typeof token === 'string' && token !== 'null') {
-//             return token;
-//         }
-
-//         // Try localStorage
-//         const storageToken = localStorage.getItem("auth_token");
-//         if (storageToken && storageToken !== 'null' && storageToken !== 'undefined') {
-//             return typeof storageToken === 'string' ? storageToken : String(storageToken);
-//         }
-
-//         return null;
-//     }
-
-//     try {
-//         const formData = new FormData();
-//         formData.append('file', file);
-
+export async function getUserFiles(params: {
+    page?: number;
+    limit?: number;
+    category?: string;
+    search?: string;
+} = {}): Promise<any> {
+    try {
+        const searchParams = new URLSearchParams();
         
+        Object.entries(params).forEach(([key, value]) => {
+            if (value) searchParams.append(key, value.toString());
+        });
 
-//         return new Promise((resolve, reject) => {
-//             const xhr = new XMLHttpRequest();
+        const response = await makeAuthenticationRequest(
+            `/upload/files?${searchParams.toString()}`
+        );
 
-//             // Track upload progress
-//             xhr.upload.addEventListener('progress', (event) => {
-//                 if (event.lengthComputable && onProgress) {
-//                     const progress = Math.round((event.loaded / event.total) * 100);
-//                     onProgress(progress);
-//                 }
-//             });
+        if (!response.ok) {
+            throw new Error('Failed to fetch files');
+        }
 
-//             xhr.addEventListener('load', () => {
-//                 if (xhr.status >= 200 && xhr.status < 300) {
-//                     try {
-//                         const response = JSON.parse(xhr.responseText);
-//                         resolve(response);
-//                     } catch (error) {
-//                         reject(new Error('Invalid response format'));
-//                     }
-//                 } else {
-//                     try {
-//                         const errorResponse = JSON.parse(xhr.responseText);
-//                         reject(new Error(errorResponse.message || 'Upload failed'));
-//                     } catch {
-//                         reject(new Error(`HTTP ${xhr.status}: Upload failed`));
-//                     }
-//                 }
-//             });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching user files:', error);
+        throw error;
+    }
+}
 
-//             xhr.addEventListener('error', () => {
-//                 reject(new Error('Network error during upload'));
-//             });
+export async function deleteUserFile(fileId: string): Promise<any> {
+    try {
+        const response = await makeAuthenticationRequest(
+            `/upload/files/${fileId}`,
+            { method: 'DELETE' }
+        );
 
-//             xhr.addEventListener('timeout', () => {
-//                 reject(new Error('Upload timeout'));
-//             });
+        if (!response.ok) {
+            throw new Error('Failed to delete file');
+        }
 
-//             xhr.open('POST', `${BASE_URL}/upload/file`);
-
-//             // Set headers
-//             if (token) {
-//                 xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-//             }
-
-//             xhr.timeout = 300000; // 5 minutes timeout
-//             xhr.send(formData);
-//         })
-//     } catch (error) {
-//         console.error('❌ Upload file error in uploadFile in uploadAPI.ts:', error);
-//         throw error;
-//     }
-// };
-
-// // 📤 Upload multiple files
-// export const uploadFiles = async (
-//     files: File[],
-//     onProgress?: (progress: number) => void
-// ): Promise<any> => {
-//     try {
-//         const formData = new FormData();
-//         files.forEach(file => {
-//             formData.append('files', file);
-//         });
-
-//         const validToken = getValidToken();
-
-//         if (!validToken) {
-//             console.error('❌ No auth token for fetchFriendRequests');
-//             return;
-//         }
-
-//         return new Promise((resolve, reject) => {
-//             const xhr = new XMLHttpRequest();
-
-//             xhr.upload.addEventListener('progress', (event) => {
-//                 if (event.lengthComputable && onProgress) {
-//                     const progress = Math.round((event.loaded / event.total) * 100);
-//                     onProgress(progress);
-//                 }
-//             });
-
-//             xhr.addEventListener('load', () => {
-//                 if (xhr.status >= 200 && xhr.status < 300) {
-//                     resolve(JSON.parse(xhr.responseText));
-//                 } else {
-//                     const errorResponse = JSON.parse(xhr.responseText);
-//                     reject(new Error(errorResponse.message || 'Upload failed'));
-//                 }
-//             });
-
-//             xhr.addEventListener('error', () => {
-//                 reject(new Error('Network error'));
-//             });
-
-//             xhr.open('POST', `${BASE_URL}/upload/files`);
-//             Object.entries(validToken).forEach(([key, value]) => {
-//                 xhr.setRequestHeader(key, value);
-//             });
-
-//             xhr.send(formData);
-//         });
-
-//     } catch (error) {
-//         console.error('❌ Upload files error:', error);
-//         throw error;
-//     }
-// };
-
-// // 🗑️ Delete file
-// export const deleteFile = async (fileKey: string): Promise<DeleteFileResponse> => {
-//     try {
-//         const validToken = getValidToken();
-
-//         if (!validToken) {
-//             console.error('❌ No auth token for fetchFriendRequests');
-//             throw new Error('Authentication required');
-//         }
-
-//         const response = await fetch(`${BASE_URL}/upload/${fileKey}`, {
-//             method: 'DELETE',
-//             headers: {
-//                 'Authorization': `Bearer ${validToken}`
-//             }
-//         });
-
-//         const data = await response.json();
-
-//         if (!response.ok) {
-//             throw new Error(data.message || 'Delete failed');
-//         }
-
-//         return data;
-
-//     } catch (error) {
-//         console.error('❌ Delete file error:', error);
-//         throw error;
-//     }
-// };
-
+        return await response.json();
+    } catch (error) {
+        console.error('Error deleting file:', error);
+        throw error;
+    }
+}

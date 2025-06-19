@@ -25,6 +25,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ship$2d$wheel$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShipWheelIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/ship-wheel.js [app-ssr] (ecmascript) <export default as ShipWheelIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2d$close$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeftCloseIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/panel-left-close.js [app-ssr] (ecmascript) <export default as PanelLeftCloseIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panel$2d$left$2d$open$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PanelLeftOpenIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/panel-left-open.js [app-ssr] (ecmascript) <export default as PanelLeftOpenIcon>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/file.js [app-ssr] (ecmascript) <export default as FileIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 'use client';
 ;
@@ -52,7 +53,7 @@ const Sidebar = ()=>{
                             className: "size-9 text-primary"
                         }, void 0, false, {
                             fileName: "[project]/components/ui/SideBar.tsx",
-                            lineNumber: 33,
+                            lineNumber: 34,
                             columnNumber: 21
                         }, this),
                         !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -60,18 +61,18 @@ const Sidebar = ()=>{
                             children: "LINGUEX"
                         }, void 0, false, {
                             fileName: "[project]/components/ui/SideBar.tsx",
-                            lineNumber: 35,
+                            lineNumber: 36,
                             columnNumber: 25
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/ui/SideBar.tsx",
-                    lineNumber: 32,
+                    lineNumber: 33,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/ui/SideBar.tsx",
-                lineNumber: 31,
+                lineNumber: 32,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
@@ -86,7 +87,7 @@ const Sidebar = ()=>{
                                 className: "size-5 text-base-content opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 49,
+                                lineNumber: 50,
                                 columnNumber: 21
                             }, this),
                             !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -94,13 +95,13 @@ const Sidebar = ()=>{
                                 children: "Home"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 50,
+                                lineNumber: 51,
                                 columnNumber: 38
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/ui/SideBar.tsx",
-                        lineNumber: 44,
+                        lineNumber: 45,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -112,7 +113,7 @@ const Sidebar = ()=>{
                                 className: "size-5 text-base-content opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 58,
+                                lineNumber: 59,
                                 columnNumber: 21
                             }, this),
                             !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -120,13 +121,13 @@ const Sidebar = ()=>{
                                 children: "Notifications"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 59,
+                                lineNumber: 60,
                                 columnNumber: 38
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/ui/SideBar.tsx",
-                        lineNumber: 53,
+                        lineNumber: 54,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -138,7 +139,7 @@ const Sidebar = ()=>{
                                 className: "size-5 text-base-content opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 67,
+                                lineNumber: 68,
                                 columnNumber: 21
                             }, this),
                             !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -146,13 +147,13 @@ const Sidebar = ()=>{
                                 children: "Friends"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 68,
+                                lineNumber: 69,
                                 columnNumber: 38
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/ui/SideBar.tsx",
-                        lineNumber: 62,
+                        lineNumber: 63,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -164,7 +165,7 @@ const Sidebar = ()=>{
                                 className: "size-5 text-base-content opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 76,
+                                lineNumber: 77,
                                 columnNumber: 21
                             }, this),
                             !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -172,13 +173,39 @@ const Sidebar = ()=>{
                                 children: "Study Materials"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 77,
+                                lineNumber: 78,
                                 columnNumber: 38
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/ui/SideBar.tsx",
-                        lineNumber: 71,
+                        lineNumber: 72,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                        href: "/files",
+                        className: `btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/files" ? "btn-active" : ""}`,
+                        title: "My Files",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileIcon$3e$__["FileIcon"], {
+                                className: "size-5 text-base-content opacity-70"
+                            }, void 0, false, {
+                                fileName: "[project]/components/ui/SideBar.tsx",
+                                lineNumber: 86,
+                                columnNumber: 21
+                            }, this),
+                            !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "animate-fade-in whitespace-nowrap overflow-hidden",
+                                children: "My Files"
+                            }, void 0, false, {
+                                fileName: "[project]/components/ui/SideBar.tsx",
+                                lineNumber: 87,
+                                columnNumber: 38
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/components/ui/SideBar.tsx",
+                        lineNumber: 81,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -190,7 +217,7 @@ const Sidebar = ()=>{
                                 className: "size-5 text-base-content opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 85,
+                                lineNumber: 95,
                                 columnNumber: 21
                             }, this),
                             !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -198,13 +225,13 @@ const Sidebar = ()=>{
                                 children: "Study Groups"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 86,
+                                lineNumber: 96,
                                 columnNumber: 38
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/ui/SideBar.tsx",
-                        lineNumber: 80,
+                        lineNumber: 90,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -216,7 +243,7 @@ const Sidebar = ()=>{
                                 className: "size-5 text-base-content opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 94,
+                                lineNumber: 104,
                                 columnNumber: 21
                             }, this),
                             !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -224,13 +251,13 @@ const Sidebar = ()=>{
                                 children: "Study Schedule"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 95,
+                                lineNumber: 105,
                                 columnNumber: 38
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/ui/SideBar.tsx",
-                        lineNumber: 89,
+                        lineNumber: 99,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -242,7 +269,7 @@ const Sidebar = ()=>{
                                 className: "size-5 text-base-content opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 103,
+                                lineNumber: 113,
                                 columnNumber: 21
                             }, this),
                             !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -250,13 +277,13 @@ const Sidebar = ()=>{
                                 children: "Learning Goals"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 104,
+                                lineNumber: 114,
                                 columnNumber: 38
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/ui/SideBar.tsx",
-                        lineNumber: 98,
+                        lineNumber: 108,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -268,7 +295,7 @@ const Sidebar = ()=>{
                                 className: "size-5 text-base-content opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 112,
+                                lineNumber: 122,
                                 columnNumber: 21
                             }, this),
                             !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -276,13 +303,13 @@ const Sidebar = ()=>{
                                 children: "Saved Resources"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 113,
+                                lineNumber: 123,
                                 columnNumber: 38
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/ui/SideBar.tsx",
-                        lineNumber: 107,
+                        lineNumber: 117,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -294,7 +321,7 @@ const Sidebar = ()=>{
                                 className: "size-5 text-base-content opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 121,
+                                lineNumber: 131,
                                 columnNumber: 21
                             }, this),
                             !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -302,19 +329,19 @@ const Sidebar = ()=>{
                                 children: "Settings"
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 122,
+                                lineNumber: 132,
                                 columnNumber: 38
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/ui/SideBar.tsx",
-                        lineNumber: 116,
+                        lineNumber: 126,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/ui/SideBar.tsx",
-                lineNumber: 43,
+                lineNumber: 44,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -335,17 +362,17 @@ const Sidebar = ()=>{
                                     priority: true
                                 }, void 0, false, {
                                     fileName: "[project]/components/ui/SideBar.tsx",
-                                    lineNumber: 133,
+                                    lineNumber: 143,
                                     columnNumber: 37
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 131,
+                                lineNumber: 141,
                                 columnNumber: 29
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/ui/SideBar.tsx",
-                            lineNumber: 130,
+                            lineNumber: 140,
                             columnNumber: 25
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -362,7 +389,7 @@ const Sidebar = ()=>{
                                                     children: user?.fullName
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/ui/SideBar.tsx",
-                                                    lineNumber: 148,
+                                                    lineNumber: 158,
                                                     columnNumber: 41
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -372,20 +399,20 @@ const Sidebar = ()=>{
                                                             className: "size-2 rounded-full bg-success inline-block"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/ui/SideBar.tsx",
-                                                            lineNumber: 150,
+                                                            lineNumber: 160,
                                                             columnNumber: 45
                                                         }, this),
                                                         "Online"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/ui/SideBar.tsx",
-                                                    lineNumber: 149,
+                                                    lineNumber: 159,
                                                     columnNumber: 41
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/ui/SideBar.tsx",
-                                            lineNumber: 147,
+                                            lineNumber: 157,
                                             columnNumber: 37
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -396,34 +423,34 @@ const Sidebar = ()=>{
                                                 className: "size-6"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                                lineNumber: 159,
+                                                lineNumber: 169,
                                                 columnNumber: 41
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/ui/SideBar.tsx",
-                                            lineNumber: 154,
+                                            lineNumber: 164,
                                             columnNumber: 37
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/ui/SideBar.tsx",
-                                    lineNumber: 146,
+                                    lineNumber: 156,
                                     columnNumber: 33
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/ui/SideBar.tsx",
-                                lineNumber: 145,
+                                lineNumber: 155,
                                 columnNumber: 29
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/ui/SideBar.tsx",
-                            lineNumber: 144,
+                            lineNumber: 154,
                             columnNumber: 25
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/ui/SideBar.tsx",
-                    lineNumber: 129,
+                    lineNumber: 139,
                     columnNumber: 21
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex justify-center",
@@ -435,28 +462,28 @@ const Sidebar = ()=>{
                             className: "size-7"
                         }, void 0, false, {
                             fileName: "[project]/components/ui/SideBar.tsx",
-                            lineNumber: 172,
+                            lineNumber: 182,
                             columnNumber: 29
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/ui/SideBar.tsx",
-                        lineNumber: 167,
+                        lineNumber: 177,
                         columnNumber: 25
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/ui/SideBar.tsx",
-                    lineNumber: 166,
+                    lineNumber: 176,
                     columnNumber: 21
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/ui/SideBar.tsx",
-                lineNumber: 127,
+                lineNumber: 137,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/ui/SideBar.tsx",
-        lineNumber: 29,
+        lineNumber: 30,
         columnNumber: 9
     }, this);
 };

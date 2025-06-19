@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import { UploadResponse } from '../types/uploadTypes/upload';
 import { SUPPORTED_FILE_TYPES, MAX_FILE_SIZE } from '../utils/typeValidation';
+import File from '../models/File';
 
 // Helper function to generate unique file key
 const generateFileKey = (originalName: string, userId: string): string => {
@@ -87,6 +88,21 @@ export const uploadFile = async (req: Request, res: Response): Promise<Response 
 
         console.log('✅ File uploaded successfully:', fileUrl);
 
+        const fileDoc = new File({
+            originalName: file.originalname,
+            filename: fileKey,
+            mimeType: file.mimetype,
+            size: file.size,
+            url: fileUrl,
+            uploadedBy: user._id,
+            category: file.mimetype.startsWith('image/') ? 'image' :
+                file.mimetype === 'application/pdf' ? 'pdf' : 'document',
+            isPublic: false // Default to private
+        });
+
+        const savedFile = await fileDoc.save();
+        console.log('✅ File saved to database:', savedFile._id);
+
         // Return success response with file info
         return res.status(200).json({
             success: true,
@@ -130,8 +146,8 @@ export const uploadFiles = async (req: Request, res: Response): Promise<Response
             });
         }
 
+        // Check if files exist
         const files = req.files as Express.Multer.File[];
-
         if (!files || files.length === 0) {
             return res.status(400).json({
                 success: false,
@@ -139,44 +155,106 @@ export const uploadFiles = async (req: Request, res: Response): Promise<Response
             });
         }
 
-        // Upload all files to S3
-        const uploadPromises = files.map(async (file) => {
-            const fileKey = generateFileKey(file.originalname, user._id);
-            const fileUrl = await uploadToS3(file.buffer, fileKey, file.mimetype);
-
-            return {
-                originalName: file.originalname,
-                size: file.size,
-                mimeType: file.mimetype,
-                fileUrl,
-                key: fileKey
-            };
+        console.log('📤 Uploading multiple files:', {
+            count: files.length,
+            userId: user._id
         });
 
-        const uploadedFiles = await Promise.all(uploadPromises);
+        const uploadResults = [];
+        const errors = [];
+
+        // Process each file
+        for (const file of files) {
+            try {
+                // Validate file
+                const validationError = validateFile(file);
+                if (validationError) {
+                    errors.push(`${file.originalname}: ${validationError}`);
+                    continue;
+                }
+
+                // Generate unique file key
+                const fileKey = generateFileKey(file.originalname, user._id);
+
+                // Upload to S3
+                const fileUrl = await uploadToS3(
+                    file.buffer,
+                    fileKey,
+                    file.mimetype
+                );
+
+                // Save to database
+                const fileDoc = new File({
+                    originalName: file.originalname,
+                    filename: fileKey,
+                    mimeType: file.mimetype,
+                    size: file.size,
+                    url: fileUrl,
+                    uploadedBy: user._id,
+                    category: file.mimetype.startsWith('image/') ? 'image' :
+                             file.mimetype === 'application/pdf' ? 'pdf' : 'document',
+                    isPublic: false
+                });
+
+                const savedFile = await fileDoc.save();
+
+                uploadResults.push({
+                    success: true,
+                    file: {
+                        id: savedFile._id,
+                        filename: savedFile.filename,
+                        originalName: savedFile.originalName,
+                        size: savedFile.size,
+                        mimeType: savedFile.mimeType,
+                        url: savedFile.url,
+                        uploadedAt: savedFile.uploadedAt,
+                        category: savedFile.category
+                    }
+                });
+
+            } catch (error: any) {
+                console.error(`❌ Error uploading ${file.originalname}:`, error);
+                errors.push(`${file.originalname}: ${error.message}`);
+            }
+        }
+
+        const successCount = uploadResults.length;
+        const errorCount = errors.length;
+
+        console.log('✅ Multiple upload completed:', {
+            success: successCount,
+            errors: errorCount
+        });
 
         return res.status(200).json({
             success: true,
-            message: `${uploadedFiles.length} files uploaded successfully`,
-            files: uploadedFiles
+            message: `Uploaded ${successCount} files successfully`,
+            data: {
+                files: uploadResults,
+                stats: {
+                    successful: successCount,
+                    failed: errorCount,
+                    total: files.length
+                }
+            },
+            errors: errors.length > 0 ? errors : undefined
         });
 
     } catch (error: any) {
         console.error('❌ Multiple files upload error:', error);
-
         return res.status(500).json({
             success: false,
-            message: 'Files upload failed',
+            message: 'Multiple files upload failed',
             error: error.message
         });
     }
 };
 
-// File deletion endpoint (for cleanup)
-export const deleteFile = async (req: Request, res: Response): Promise<Response | any> => {
+// 🆕 Get user's files
+export const getUserFiles = async (req: Request, res: Response): Promise<Response | any> => {
     try {
         const user = (req as any).user;
-        const { fileKey } = req.params;
+        const { page = 1, limit = 20, category, search } = req.query;
 
         if (!user) {
             return res.status(401).json({
@@ -185,29 +263,94 @@ export const deleteFile = async (req: Request, res: Response): Promise<Response 
             });
         }
 
-        // Verify user owns this file (security check)
-        if (!fileKey.includes(user._id)) {
-            return res.status(403).json({
-                success: false,
-                message: 'Access denied'
-            });
+        // Build filter
+        const filter: any = { uploadedBy: user._id };
+        if (category) filter.category = category;
+        if (search) {
+            filter.$or = [
+                { originalName: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } },
+                { tags: { $in: [new RegExp(search as string, 'i')] } }
+            ];
         }
 
-        // TODO: Implement S3 file deletion
-        // For now, just return success (files will be cleaned up later)
-        console.log('🗑️ File deletion requested:', fileKey);
+        // Pagination
+        const skip = (Number(page) - 1) * Number(limit);
+        
+        const files = await File.find(filter)
+            .sort({ uploadedAt: -1 })
+            .skip(skip)
+            .limit(Number(limit))
+            .populate('uploadedBy', 'fullName profilePic');
+
+        const total = await File.countDocuments(filter);
 
         return res.status(200).json({
             success: true,
-            message: 'File deletion scheduled'
+            data: {
+                files,
+                pagination: {
+                    currentPage: Number(page),
+                    totalPages: Math.ceil(total / Number(limit)),
+                    totalItems: total,
+                    hasNext: skip + files.length < total,
+                    hasPrev: Number(page) > 1
+                }
+            }
         });
 
     } catch (error: any) {
-        console.error('❌ File deletion error:', error);
-
+        console.error('❌ Get files error:', error);
         return res.status(500).json({
             success: false,
-            message: 'File deletion failed',
+            message: 'Failed to get files',
+            error: error.message
+        });
+    }
+};
+
+// 🆕 Delete file
+export const deleteFile = async (req: Request, res: Response): Promise<Response | any> => {
+    try {
+        const user = (req as any).user;
+        const { fileId } = req.params;
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Authentication required'
+            });
+        }
+
+        // Find file and check ownership
+        const file = await File.findOne({
+            _id: fileId,
+            uploadedBy: user._id
+        });
+
+        if (!file) {
+            return res.status(404).json({
+                success: false,
+                message: 'File not found or access denied'
+            });
+        }
+
+        // Delete from database
+        await File.findByIdAndDelete(fileId);
+
+        // TODO: Optionally delete from S3
+        // await deleteFromS3(file.filename);
+
+        return res.status(200).json({
+            success: true,
+            message: 'File deleted successfully'
+        });
+
+    } catch (error: any) {
+        console.error('❌ Delete file error:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to delete file',
             error: error.message
         });
     }

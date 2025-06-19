@@ -1,10 +1,7 @@
 {
-  "/(protected)/(dashBoard)/friends/page": "app/(protected)/(dashBoard)/friends/page.js",
-  "/(protected)/(dashBoard)/materials/page": "app/(protected)/(dashBoard)/materials/page.js",
-  "/(protected)/(dashBoard)/materials/upload/page": "app/(protected)/(dashBoard)/materials/upload/page.js",
-  "/(protected)/(dashBoard)/notifications/page": "app/(protected)/(dashBoard)/notifications/page.js",
+  "/(auth)/sign-in/page": "app/(auth)/sign-in/page.js",
+  "/(auth)/sign-up/page": "app/(auth)/sign-up/page.js",
   "/(protected)/(dashBoard)/page": "app/(protected)/(dashBoard)/page.js",
-  "/(protected)/page": "app/(protected)/page.js",
   "/_not-found/page": "app/_not-found/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"

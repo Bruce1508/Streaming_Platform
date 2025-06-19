@@ -9,10 +9,12 @@ const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilt
         'application/pdf',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
         'application/msword', // .doc
-        // Can add more types later for scalability
         'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
         'application/vnd.ms-powerpoint', // .ppt
         'text/plain', // .txt
+        'image/jpeg',
+        'image/png', 
+        'image/gif'
     ];
 
     if (allowedTypes.includes(file.mimetype)) {
@@ -33,4 +35,4 @@ export const upload = multer({
 
 // Export upload middleware for routes
 export const uploadSingle = upload.single('file');
-export const uploadMultiple = upload.array('files', 5); // Max 5 files
+export const uploadMultiple = upload.array('files', 10); // Max 5 files

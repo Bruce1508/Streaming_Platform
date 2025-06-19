@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { uploadFile, uploadFiles, deleteFile } from '../controllers/upload.controllers';
+import { uploadFile, uploadFiles, deleteFile, getUserFiles} from '../controllers/upload.controllers';
 import { protectRoute } from '../middleWare/auth.middleware';
 import { uploadSingle, uploadMultiple } from '../middleWare/upload.middleware';
 
@@ -20,12 +20,14 @@ router.post('/file', uploadSingle, uploadFile);
  * Upload multiple files (for future use)
  * Body: form-data with 'files' field (array)
  */
-router.post('/files', uploadMultiple, uploadFiles);
+router.post('/files/multiple', uploadMultiple, uploadFiles);
 
 /**
  * DELETE /api/upload/:fileKey
  * Delete uploaded file (cleanup)
  */
-router.delete('/:fileKey', deleteFile);
+router.get('/files', getUserFiles);
+
+router.delete('/files/:fileId', deleteFile);
 
 export default router;

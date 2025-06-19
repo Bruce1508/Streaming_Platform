@@ -24,6 +24,18 @@ function useUpload() {
     const [progress, setProgress] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
     const [uploadedFiles, setUploadedFiles] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const getValidToken = ()=>{
+        // Try context first
+        if (token && typeof token === 'string' && token !== 'null') {
+            return token;
+        }
+        // Try localStorage
+        const storageToken = localStorage.getItem("auth_token");
+        if (storageToken && storageToken !== 'null' && storageToken !== 'undefined') {
+            return typeof storageToken === 'string' ? storageToken : String(storageToken);
+        }
+        return null;
+    };
     // Upload single file function - bây giờ có thể access token
     const uploadSingleFile = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useUpload.useCallback[uploadSingleFile]": async (file, onProgress)=>{
@@ -123,6 +135,39 @@ function useUpload() {
             setError(null);
         }
     }["useUpload.useCallback[addFiles]"], []);
+    // Add method for multiple upload (>100) 
+    // USE FOR FUTURE SCALE
+    const uploadMultipleFiles = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
+        "useUpload.useCallback[uploadMultipleFiles]": async (files)=>{
+            try {
+                const formData = new FormData();
+                files.forEach({
+                    "useUpload.useCallback[uploadMultipleFiles]": (file)=>{
+                        formData.append('files', file); // ✅ Matches backend field name
+                    }
+                }["useUpload.useCallback[uploadMultipleFiles]"]);
+                const validToken = getValidToken();
+                if (!validToken) {
+                    throw new Error('No authentication token');
+                }
+                const response = await fetch(`${BASE_URL}/upload/files/multiple`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${validToken}`
+                    },
+                    body: formData
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Multiple upload failed');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('❌ Multiple upload error:', error);
+                throw error;
+            }
+        }
+    }["useUpload.useCallback[uploadMultipleFiles]"], []);
     // Remove file from queue
     const removeFile = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useUpload.useCallback[removeFile]": (fileId)=>{
@@ -280,11 +325,12 @@ function useUpload() {
         addFiles,
         removeFile,
         uploadAllFiles,
+        uploadMultipleFiles,
         reset,
         getStats
     };
 }
-_s(useUpload, "TmT/J5AhHhTWOk/tehMRFjZ3kSQ=", false, function() {
+_s(useUpload, "1eHM8OrGDSUybJsZj4fD5mCbixY=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$contexts$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"]
     ];
@@ -2209,6 +2255,48 @@ function UploadPage() {
                             columnNumber: 25
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex items-center space-x-4 p-4 bg-primary/5 rounded-lg border cursor-pointer hover:bg-primary/10 transition-colors",
+                            onClick: ()=>router.push('/files'),
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    className: "text-2xl",
+                                    children: "📁"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/(protected)/(dashBoard)/materials/upload/page.tsx",
+                                    lineNumber: 253,
+                                    columnNumber: 29
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "font-medium text-foreground",
+                                            children: "View My Files"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/(protected)/(dashBoard)/materials/upload/page.tsx",
+                                            lineNumber: 255,
+                                            columnNumber: 33
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-sm text-muted-foreground",
+                                            children: "Browse and manage uploaded files"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/(protected)/(dashBoard)/materials/upload/page.tsx",
+                                            lineNumber: 256,
+                                            columnNumber: 33
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/(protected)/(dashBoard)/materials/upload/page.tsx",
+                                    lineNumber: 254,
+                                    columnNumber: 29
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/(protected)/(dashBoard)/materials/upload/page.tsx",
+                            lineNumber: 251,
+                            columnNumber: 25
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "mt-10",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex justify-end space-x-4",
@@ -2220,7 +2308,7 @@ function UploadPage() {
                                         children: "Upload More Files"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(protected)/(dashBoard)/materials/upload/page.tsx",
-                                        lineNumber: 254,
+                                        lineNumber: 263,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2229,18 +2317,18 @@ function UploadPage() {
                                         children: "Start Studying"
                                     }, void 0, false, {
                                         fileName: "[project]/app/(protected)/(dashBoard)/materials/upload/page.tsx",
-                                        lineNumber: 261,
+                                        lineNumber: 270,
                                         columnNumber: 33
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/(protected)/(dashBoard)/materials/upload/page.tsx",
-                                lineNumber: 253,
+                                lineNumber: 262,
                                 columnNumber: 29
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/(protected)/(dashBoard)/materials/upload/page.tsx",
-                            lineNumber: 252,
+                            lineNumber: 261,
                             columnNumber: 25
                         }, this)
                     ]
