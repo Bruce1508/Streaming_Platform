@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ValidationUtils, ValidationError, ValidationResult } from '../utils/validation';
+import { ValidationUtils, ValidationError, ValidationResult } from './course.middleware;
 
 // ✅ Allowed file types for study materials
 const ALLOWED_FILE_TYPES = [

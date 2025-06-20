@@ -12,7 +12,7 @@ import {
     addComment,
     getUserSavedMaterials,
     getUserUploadedMaterials
-} from '../controllers/material.controller';
+} from '../controllers/material.controllers';
 import { protectRoute } from '../middleWare/auth.middleware';
 import { 
     validateObjectId,

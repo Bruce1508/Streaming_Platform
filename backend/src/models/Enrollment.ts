@@ -36,6 +36,9 @@ export interface IEnrollment extends Document {
     
     createdAt: Date;
     updatedAt: Date;
+
+    // Virtual property
+    completionPercentage: number;
 }
 
 export interface IEnrollmentModel extends Model<IEnrollment> {
@@ -198,7 +201,8 @@ const enrollmentSchema = new Schema<IEnrollment>({
     
     notes: {
         type: String,
-        maxlength: [1000, 'Notes cannot exceed 1000 characters']
+        trim: true,
+        maxlength: [500, 'Notes cannot exceed 500 characters']
     }
     
 }, {
@@ -218,7 +222,9 @@ enrollmentSchema.index({ currentSemester: 1, status: 1 });
 // Virtual for completion percentage
 enrollmentSchema.virtual('completionPercentage').get(function(this: IEnrollment) {
     if (this.totalCredits === 0) return 0;
-    return Math.round((this.completedCredits / this.totalCredits) * 100);
+    // Round to 2 decimal places
+    const percentage = (this.completedCredits / this.totalCredits) * 100;
+    return Math.round(percentage * 100) / 100;
 });
 
 // Virtual for active courses
