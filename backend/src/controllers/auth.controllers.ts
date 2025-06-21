@@ -558,23 +558,43 @@ export const oauth = async (req: Request, res: Response): Promise<void> => {
             await user.updateLastLogin();
         }
 
-        // ✅ Generate token
-        const token = user.generateAuthToken();
-
-        // ✅ Create session for OAuth
+        // 🆕 NEW: Create session for OAuth
         const sessionId = await createUserSession(
             user._id.toString(),
             req,
-            'oauth'
+            'oauth' // ← OAuth login method
         );
 
-        res.cookie("token", token, {
+        // 🆕 NEW: Generate token pair instead of single token
+        const { accessToken, refreshToken } = generateTokenPair(
+            user._id.toString(), 
+            sessionId
+        );
+
+        console.log('✅ OAuth successful:', {
+            userId: user._id,
+            email: user.email,
+            provider: provider,
+            sessionId,
+            tokenType: 'token_pair'
+        });
+
+        // 🆕 NEW: Set both tokens in separate cookies
+        res.cookie("accessToken", accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000
+            maxAge: 15 * 60 * 1000 // 15 minutes
         });
 
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        });
+
+        // 🆕 NEW: Updated response with token pair
         res.status(200).json({
             success: true,
             message: "OAuth authentication successful",
@@ -591,15 +611,20 @@ export const oauth = async (req: Request, res: Response): Promise<void> => {
                     bio: user.bio,
                     location: user.location,
                     website: user.website,
-                    lastLogin: user.lastLogin
+                    lastLogin: user.lastLogin,
+                    authProvider: user.authProvider
                 },
-                token,
-                sessionId
+                // 🆕 Return both tokens for mobile apps
+                accessToken,
+                refreshToken,
+                sessionId,
+                expiresIn: 15 * 60, // Access token expires in 15 minutes
+                loginMethod: 'oauth'
             }
         });
 
     } catch (error: any) {
-        console.error("OAuth error:", error);
+        console.error("❌ OAuth error:", error);
         res.status(500).json({
             success: false,
             message: "OAuth authentication failed",

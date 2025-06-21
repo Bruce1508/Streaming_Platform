@@ -11,13 +11,13 @@ import { optionalSessionValidation } from "../middleware/session.middleware";
 const router = express.Router();
 
 // ✅ Simplified middleware chains
-router.post("/sign-up", [
+router.post("/signUp", [
     authRateLimiters.register,           // Rate limiting
     securityMiddleware.sanitizeInput,    // XSS prevention
     authValidators.validateSignUp       // Validation
 ], signUp);
 
-router.post("/sign-in", [
+router.post("/signIn", [
     authRateLimiters.login,              // Progressive rate limiting
     securityMiddleware.sanitizeInput,    // XSS prevention
     authValidators.validateSignIn       // Validation

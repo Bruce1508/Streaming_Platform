@@ -17,7 +17,7 @@ router.use([
 
 // Session management endpoints
 router.get('/sessions', getActiveSessions);
-router.delete('/sessions/:sessionId', logoutSession);  
 router.delete('/sessions', logoutAllDevices);
+router.delete('/sessions/:sessionId', logoutSession);
 
 export default router;

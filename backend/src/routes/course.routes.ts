@@ -203,6 +203,95 @@ router.get('/',
 );
 
 /**
+ * @route   GET /api/courses/searchAdvanced
+ * @desc    Advanced search with multiple filters
+ * @access  Public
+ * @query   programs[], schools[], levels[], delivery[], difficulty, credits_min, credits_max, has_prerequisites
+ * @example GET /api/courses/searchAdvanced?programs[]=60f0123456789abc12345678&schools[]=60f0123456789abc12345679&levels[]=2,3
+ */
+router.get('/searchAdvanced', 
+    generalLimit,
+    optionalAuth,
+    validateQueryParams,
+    getCourses // Reuse same controller with different route
+);
+
+/**
+ * @route   GET /api/courses/byProgram/:programId
+ * @desc    Get all courses for a specific program
+ * @access  Public
+ * @query   semester?, page?, limit?
+ */
+router.get('/byProgram/:programId',
+    generalLimit,
+    (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        if (!mongoose.Types.ObjectId.isValid(req.params.programId)) {
+            res.status(400).json({
+                success: false,
+                message: 'Invalid program ID format'
+            });
+            return;
+        }
+        next();
+    },
+    validateQueryParams,
+    getCourses
+);
+
+/**
+ * @route   GET /api/courses/bySchool/:schoolId
+ * @desc    Get all courses for a specific school
+ * @access  Public
+ * @query   level?, difficulty?, page?, limit?
+ */
+router.get('/bySchool/:schoolId',
+    generalLimit,
+    (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        if (!mongoose.Types.ObjectId.isValid(req.params.schoolId)) {
+            res.status(400).json({
+                success: false,
+                message: 'Invalid school ID format'
+            });
+            return;
+        }
+        next();
+    },
+    validateQueryParams,
+    getCourses
+);
+
+/**
+ * @route   GET /api/courses/recommendations
+ * @desc    Get course recommendations for current user
+ * @access  Students only
+ */
+router.get('/recommendations',
+    generalLimit,
+    ...requireStudent,
+    (req: express.Request, res: express.Response) => {
+        // TODO: Implement course recommendations logic
+        res.status(200).json({
+            success: true,
+            data: {
+                recommendations: [],
+                message: 'Course recommendations not implemented yet'
+            }
+        });
+    }
+);
+
+/**
+ * @route   GET /api/courses/myCourses
+ * @desc    Get current user's enrolled courses
+ * @access  Students only
+ */
+router.get('/myCourses', 
+    generalLimit,
+    ...requireStudent,
+    getMyCourses
+);
+
+/**
  * @route   GET /api/courses/:id
  * @desc    Get single course by ID with detailed information
  * @access  Public
@@ -231,17 +320,6 @@ router.get('/:id/materials',
 // =====================================================
 // STUDENT ROUTES - Authentication Required
 // =====================================================
-
-/**
- * @route   GET /api/courses/my/courses
- * @desc    Get current user's enrolled courses
- * @access  Students only
- */
-router.get('/my/courses', 
-    generalLimit,
-    ...requireStudent,
-    getMyCourses
-);
 
 /**
  * @route   POST /api/courses/:id/enroll
@@ -343,77 +421,15 @@ router.delete('/:id',
 );
 
 // =====================================================
-// ADVANCED SEARCH ROUTES
-// =====================================================
-
-/**
- * @route   GET /api/courses/search/advanced
- * @desc    Advanced search with multiple filters
- * @access  Public
- * @query   programs[], schools[], levels[], delivery[], difficulty, credits_min, credits_max, has_prerequisites
- * @example GET /api/courses/search/advanced?programs[]=60f0123456789abc12345678&schools[]=60f0123456789abc12345679&levels[]=2,3
- */
-router.get('/search/advanced', 
-    generalLimit,
-    optionalAuth,
-    validateQueryParams,
-    getCourses // Reuse same controller with different route
-);
-
-/**
- * @route   GET /api/courses/by-program/:programId
- * @desc    Get all courses for a specific program
- * @access  Public
- * @query   semester?, page?, limit?
- */
-router.get('/by-program/:programId',
-    generalLimit,
-    (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        if (!mongoose.Types.ObjectId.isValid(req.params.programId)) {
-            res.status(400).json({
-                success: false,
-                message: 'Invalid program ID format'
-            });
-            return;
-        }
-        next();
-    },
-    validateQueryParams,
-    getCourses
-);
-
-/**
- * @route   GET /api/courses/by-school/:schoolId
- * @desc    Get all courses for a specific school
- * @access  Public
- * @query   level?, difficulty?, page?, limit?
- */
-router.get('/by-school/:schoolId',
-    generalLimit,
-    (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        if (!mongoose.Types.ObjectId.isValid(req.params.schoolId)) {
-            res.status(400).json({
-                success: false,
-                message: 'Invalid school ID format'
-            });
-            return;
-        }
-        next();
-    },
-    validateQueryParams,
-    getCourses
-);
-
-// =====================================================
 // UTILITY ROUTES
 // =====================================================
 
 /**
- * @route   GET /api/courses/:id/prerequisites-check
+ * @route   GET /api/courses/:id/prerequisitesCheck
  * @desc    Check if current user meets course prerequisites
  * @access  Students only
  */
-router.get('/:id/prerequisites-check',
+router.get('/:id/prerequisitesCheck',
     generalLimit,
     validateCourseId,
     ...requireStudent,
@@ -425,26 +441,6 @@ router.get('/:id/prerequisites-check',
                 meetsPrerequisites: true,
                 missingPrerequisites: [],
                 message: 'Prerequisites check not implemented yet'
-            }
-        });
-    }
-);
-
-/**
- * @route   GET /api/courses/recommendations
- * @desc    Get course recommendations for current user
- * @access  Students only
- */
-router.get('/recommendations',
-    generalLimit,
-    ...requireStudent,
-    (req: express.Request, res: express.Response) => {
-        // TODO: Implement course recommendations logic
-        res.status(200).json({
-            success: true,
-            data: {
-                recommendations: [],
-                message: 'Course recommendations not implemented yet'
             }
         });
     }

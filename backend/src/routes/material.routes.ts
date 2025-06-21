@@ -1,3 +1,4 @@
+// routes/material.routes.ts - ADD MISSING ROUTES
 import { Router } from 'express';
 import {
     getStudyMaterials,
@@ -9,9 +10,18 @@ import {
     saveMaterial,
     removeSavedMaterial,
     rateMaterial,
+    removeRating,        // ← IMPORT MISSING
     addComment,
+    deleteComment,       // ← IMPORT MISSING
+    updateComment,       // ← IMPORT MISSING
+    reportMaterial,      // ← IMPORT MISSING
+    getMaterialStats,    // ← IMPORT MISSING
     getUserSavedMaterials,
-    getUserUploadedMaterials
+    getUserUploadedMaterials,
+    getMaterialsByCourse,    // ← IMPORT MISSING
+    getFeaturedMaterials,    // ← IMPORT MISSING
+    getPopularMaterials,     // ← IMPORT MISSING
+    getMaterialsByProgram    // ← IMPORT MISSING
 } from '../controllers/material.controllers';
 import { protectRoute } from '../middleware/auth.middleware';
 import { 
@@ -29,88 +39,56 @@ const router = Router();
 // PUBLIC ROUTES - No Authentication Required
 // =====================================================
 
-/**
- * GET /api/materials
- * Get all study materials with filtering, search, pagination
- */
 router.get('/', validateQueryParams, getStudyMaterials);
-
-/**
- * GET /api/materials/category/:category
- * Get study materials by specific category
- */
 router.get('/category/:category', validateQueryParams, getMaterialsByCategory);
-
-/**
- * GET /api/materials/:id
- * Get single study material by ID
- */
+router.get('/featured', getFeaturedMaterials);              // ← ADDED
+router.get('/popular', getPopularMaterials);                // ← ADDED
+router.get('/course/:courseId', validateObjectId('courseId'), getMaterialsByCourse);     // ← ADDED
+router.get('/program/:programId', validateObjectId('programId'), getMaterialsByProgram); // ← ADDED
 router.get('/:id', validateObjectId('id'), getStudyMaterialById);
+router.get('/:id/stats', validateObjectId('id'), getMaterialStats);  // ← ADDED
 
 // =====================================================
 // MATERIAL CRUD ROUTES - Authentication Required
 // =====================================================
 
-/**
- * POST /api/materials
- * Create new study material
- */
 router.post('/', protectRoute, validateCreateMaterial, createStudyMaterial);
-
-/**
- * PUT /api/materials/:id
- * Update existing study material (author only)
- */
 router.put('/:id', protectRoute, validateObjectId('id'), validateUpdateMaterial, updateStudyMaterial);
-
-/**
- * DELETE /api/materials/:id
- * Delete study material (author only)
- */
 router.delete('/:id', protectRoute, validateObjectId('id'), deleteStudyMaterial);
 
 // =====================================================
 // MATERIAL INTERACTION ROUTES - Authentication Required
 // =====================================================
 
-/**
- * POST /api/materials/:id/save
- * Save/bookmark a study material
- */
 router.post('/:id/save', protectRoute, validateObjectId('id'), saveMaterial);
-
-/**
- * DELETE /api/materials/:id/save
- * Remove bookmark from study material
- */
 router.delete('/:id/save', protectRoute, validateObjectId('id'), removeSavedMaterial);
 
-/**
- * POST /api/materials/:id/rate
- * Rate a study material (1-5 stars)
- */
+// Rating routes
 router.post('/:id/rate', protectRoute, validateObjectId('id'), validateRating, rateMaterial);
+router.delete('/:id/rate', protectRoute, validateObjectId('id'), removeRating);     // ← ADDED
 
-/**
- * POST /api/materials/:id/comments
- * Add comment to study material
- */
+// Comment routes
 router.post('/:id/comments', protectRoute, validateObjectId('id'), validateComment, addComment);
+router.put('/:id/comments/:commentId', protectRoute, validateObjectId('id'), validateComment, updateComment);
+router.delete('/:id/comments/:commentId', protectRoute, validateObjectId('id'), deleteComment);
+
+// Report route
+router.post('/:id/report', protectRoute, validateObjectId('id'), reportMaterial);  // ← ADDED
 
 // =====================================================
 // USER-SPECIFIC ROUTES - Authentication Required
 // =====================================================
 
 /**
- * GET /api/materials/user/saved
+ * GET /api/materials/userSaved
  * Get current user's saved/bookmarked materials
  */
-router.get('/user/saved', protectRoute, validateQueryParams, getUserSavedMaterials);
+router.get('/userSaved', protectRoute, validateQueryParams, getUserSavedMaterials);
 
 /**
- * GET /api/materials/user/uploaded
+ * GET /api/materials/userUploaded
  * Get current user's uploaded materials
  */
-router.get('/user/uploaded', protectRoute, validateQueryParams, getUserUploadedMaterials);
+router.get('/userUploaded', protectRoute, validateQueryParams, getUserUploadedMaterials);
 
 export default router;

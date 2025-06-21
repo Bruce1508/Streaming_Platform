@@ -1,6 +1,6 @@
 // middleware/session.middleware.ts - Enhanced version
 import { Request, Response, NextFunction } from 'express';
-import { validateUserSession, createUserSession } from '../utils/session.utils';
+import { createUserSession } from '../utils/session.utils';
 import { UserSession } from '../models/UserSession';
 
 // Add session creation to login flow

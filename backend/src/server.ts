@@ -11,6 +11,9 @@ import { connectDB } from "./lib/db";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { ApiError } from "./utils/ApiError";
+import courseRoutes from "./routes/course.routes";
+import { errorHandler, notFound } from "./middleware/error.middleware";
+import { logger } from "./utils/logger.utils";
 
 dotenv.config();
 
@@ -42,29 +45,13 @@ app.use("/api/users", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/materials", materialRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/courses", courseRoutes);
 
 // Handle undefined routes
-app.all('*', (req, res, next) => {
-    next(new ApiError(404, `Route ${req.originalUrl} not found`));
-});
+app.all('/{*any}', notFound);
 
 // ✅ Global error handler
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    if (err instanceof ApiError) {
-        res.status(err.statusCode).json({
-            success: false,
-            message: err.message,
-            ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-        });
-    } else {
-        // Generic error
-        res.status(500).json({
-            success: false,
-            message: 'Internal server error',
-            ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-        });
-    }
-});
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

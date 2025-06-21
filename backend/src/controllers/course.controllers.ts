@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { Course } from '../models/Course';
 import { Enrollment } from '../models/Enrollment';
 import { StudyMaterial } from '../models/StudyMaterial';
-import User from '../models/User';
 import { ApiError } from '../utils/ApiError';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';

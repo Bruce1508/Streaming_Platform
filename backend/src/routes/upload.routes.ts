@@ -16,18 +16,22 @@ router.use(protectRoute);
 router.post('/file', uploadSingle, uploadFile);
 
 /**
- * POST /api/upload/files
+ * POST /api/upload/filesMultiple
  * Upload multiple files (for future use)
  * Body: form-data with 'files' field (array)
  */
-router.post('/files/multiple', uploadMultiple, uploadFiles);
+router.post('/filesMultiple', uploadMultiple, uploadFiles);
 
 /**
- * DELETE /api/upload/:fileKey
- * Delete uploaded file (cleanup)
+ * GET /api/upload/files
+ * Get user's uploaded files
  */
 router.get('/files', getUserFiles);
 
+/**
+ * DELETE /api/upload/files/:fileId
+ * Delete uploaded file (cleanup)
+ */
 router.delete('/files/:fileId', deleteFile);
 
 export default router;

@@ -11,6 +11,12 @@ import {
     getTokenMetadata 
 } from "../utils/jwt.enhanced";
 
+const JWT_SECRET_VALUE = process.env.JWT_SECRET_KEY || process.env.JWT_SECRET;
+if (!JWT_SECRET_VALUE) {
+    console.error("❌ JWT Secret not configured");
+    throw new ApiError(500, "Server configuration error");
+}
+
 // Extend Request interface
 export interface AuthRequest extends Request {
     user?: IUser;
@@ -73,17 +79,12 @@ export const protectRoute = asyncHandler(async (req: AuthRequest, res: Response,
         else {
             console.log("🔄 Using legacy token validation");
             
-            if (!process.env.JWT_SECRET_KEY) {
-                console.error("❌ JWT_SECRET_KEY not configured");
-                throw new ApiError(500, "Server configuration error");
-            }
-
             // Check blacklist for legacy tokens too
             if (await isTokenBlacklisted(token)) {
                 throw new ApiError(401, "Token has been revoked");
             }
 
-            const jwtDecoded = jwt.verify(token, process.env.JWT_SECRET_KEY) as { 
+            const jwtDecoded = jwt.verify(token, JWT_SECRET_VALUE) as { 
                 userId?: string;
                 id?: string;
                 sessionId?: string;
@@ -183,7 +184,7 @@ export const optionalAuth = asyncHandler(async (req: AuthRequest, res: Response,
             decoded = await validateAccessToken(token);
         } else {
             // Legacy token validation
-            const jwtDecoded = jwt.verify(token, process.env.JWT_SECRET_KEY!) as { userId?: string; id?: string };
+            const jwtDecoded = jwt.verify(token, JWT_SECRET_VALUE) as { userId?: string; id?: string };
             decoded = { userId: jwtDecoded.userId || jwtDecoded.id };
         }
 
