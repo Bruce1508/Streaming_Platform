@@ -1,7 +1,21 @@
+// backend/src/middleware/material.middleware.ts
 import { Request, Response, NextFunction } from 'express';
-import { ValidationUtils, ValidationError, ValidationResult } from './course.middleware;
+import mongoose from 'mongoose';
 
-// ✅ Allowed file types for study materials
+// ✅ Academic-focused categories only
+const VALID_CATEGORIES = [
+    'lecture-notes', 'assignment', 'lab-report', 'project',
+    'midterm-exam', 'final-exam', 'quiz', 'presentation',
+    'tutorial', 'reference', 'textbook', 'cheat-sheet', 'solution', 'other'
+];
+
+// ✅ Academic difficulty levels
+const VALID_DIFFICULTY_LEVELS = ['beginner', 'intermediate', 'advanced'];
+
+// ✅ Valid sort options
+const VALID_SORT_OPTIONS = ['newest', 'oldest', 'popular', 'rating', 'title', 'relevance'];
+
+// ✅ Allowed file types for academic materials
 const ALLOWED_FILE_TYPES = [
     'application/pdf',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
@@ -11,52 +25,48 @@ const ALLOWED_FILE_TYPES = [
     'text/plain', // .txt
     'image/jpeg',
     'image/png',
-    'image/gif',
-    'video/mp4',
-    'video/quicktime' // .mov
+    'image/gif'
 ];
 
-// ✅ Valid categories
-const VALID_CATEGORIES = [
-    'mathematics',
-    'science',
-    'technology',
-    'engineering',
-    'language',
-    'history',
-    'geography',
-    'arts',
-    'music',
-    'literature',
-    'philosophy',
-    'psychology',
-    'business',
-    'economics',
-    'health',
-    'sports',
-    'other'
-];
+// ===== VALIDATION HELPERS =====
+const isValidObjectId = (id: string): boolean => {
+    return mongoose.Types.ObjectId.isValid(id);
+};
 
-// ✅ Valid languages
-const VALID_LANGUAGES = [
-    'english',
-    'vietnamese',
-    'chinese',
-    'japanese',
-    'korean',
-    'french',
-    'german',
-    'spanish',
-    'other'
-];
+const isValidRating = (rating: number): boolean => {
+    return Number.isInteger(rating) && rating >= 1 && rating <= 5;
+};
 
-// ✅ Valid levels
-const VALID_LEVELS = [
-    'beginner',
-    'intermediate',
-    'advanced',
-    'expert'
-];
+const sanitizeString = (str: string): string => {
+    return str
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        .replace(/javascript:/gi, '')
+        .replace(/on\w+\s*=/gi, '')
+        .trim();
+};
+
+const processTags = (tags: any): string[] => {
+    if (!tags) return [];
+    if (typeof tags === 'string') {
+        return tags.split(',').map(tag => tag.trim().toLowerCase()).filter(tag => tag.length > 0);
+    }
+    if (Array.isArray(tags)) {
+        return tags.map(tag => String(tag).trim().toLowerCase()).filter(tag => tag.length > 0);
+    }
+    return [];
+};
+
+const validatePagination = (page?: string, limit?: string) => {
+    const pageNum = parseInt(page || '1');
+    const limitNum = parseInt(limit || '12');
+    
+    return {
+        page: Math.max(1, isNaN(pageNum) ? 1 : pageNum),
+        limit: Math.max(1, Math.min(50, isNaN(limitNum) ? 12 : limitNum))
+    };
+};
+
+// ===== MIDDLEWARE FUNCTIONS =====
 
 // ✅ Validate ObjectId parameter
 export const validateObjectId = (paramName: string = 'id') => {
@@ -71,7 +81,7 @@ export const validateObjectId = (paramName: string = 'id') => {
             return;
         }
 
-        if (!ValidationUtils.isValidObjectId(id)) {
+        if (!isValidObjectId(id)) {
             res.status(400).json({
                 success: false,
                 message: `Invalid ${paramName} format`
@@ -85,7 +95,14 @@ export const validateObjectId = (paramName: string = 'id') => {
 
 // ✅ Validate study material creation
 export const validateCreateMaterial = (req: Request, res: Response, next: NextFunction): void => {
-    const { title, description, category, language, level, tags, fileUrl, fileType, fileSize } = req.body;
+    const { 
+        title, 
+        description, 
+        category, 
+        academic,
+        metadata,
+        attachments 
+    } = req.body;
     
     const errors: Array<{ field: string; message: string }> = [];
 
@@ -98,47 +115,64 @@ export const validateCreateMaterial = (req: Request, res: Response, next: NextFu
 
     if (!description || typeof description !== 'string' || description.trim().length === 0) {
         errors.push({ field: 'description', message: 'Description is required and must be a non-empty string' });
-    } else if (description.trim().length > 2000) {
-        errors.push({ field: 'description', message: 'Description must not exceed 2000 characters' });
+    } else if (description.trim().length > 1000) {
+        errors.push({ field: 'description', message: 'Description must not exceed 1000 characters' });
     }
 
-    if (!category || !VALID_CATEGORIES.includes(category.toLowerCase())) {
+    if (!category || !VALID_CATEGORIES.includes(category)) {
         errors.push({ 
             field: 'category', 
             message: `Category must be one of: ${VALID_CATEGORIES.join(', ')}` 
         });
     }
 
-    if (!language || !VALID_LANGUAGES.includes(language.toLowerCase())) {
-        errors.push({ 
-            field: 'language', 
-            message: `Language must be one of: ${VALID_LANGUAGES.join(', ')}` 
-        });
+    // Validate academic context (required)
+    if (!academic || typeof academic !== 'object') {
+        errors.push({ field: 'academic', message: 'Academic context is required' });
+    } else {
+        if (!academic.school || !isValidObjectId(academic.school)) {
+            errors.push({ field: 'academic.school', message: 'Valid school ID is required' });
+        }
+        if (!academic.program || !isValidObjectId(academic.program)) {
+            errors.push({ field: 'academic.program', message: 'Valid program ID is required' });
+        }
+        if (!academic.course || !isValidObjectId(academic.course)) {
+            errors.push({ field: 'academic.course', message: 'Valid course ID is required' });
+        }
+        if (!academic.semester || !academic.semester.term || !academic.semester.year) {
+            errors.push({ field: 'academic.semester', message: 'Semester term and year are required' });
+        }
     }
 
-    if (!level || !VALID_LEVELS.includes(level.toLowerCase())) {
-        errors.push({ 
-            field: 'level', 
-            message: `Level must be one of: ${VALID_LEVELS.join(', ')}` 
-        });
-    }
-
-    // Validate file if provided
-    if (fileUrl) {
-        if (!fileType) {
-            errors.push({ field: 'fileType', message: 'File type is required when file URL is provided' });
-        } else if (!ValidationUtils.isValidFileType(fileType, ALLOWED_FILE_TYPES)) {
+    // Validate metadata
+    if (metadata) {
+        if (metadata.difficulty && !VALID_DIFFICULTY_LEVELS.includes(metadata.difficulty)) {
             errors.push({ 
-                field: 'fileType', 
-                message: 'Invalid file type. Allowed types: PDF, Word, PowerPoint, Images, Videos, Text files' 
+                field: 'metadata.difficulty', 
+                message: `Difficulty must be one of: ${VALID_DIFFICULTY_LEVELS.join(', ')}` 
             });
         }
-
-        if (!fileSize || typeof fileSize !== 'number') {
-            errors.push({ field: 'fileSize', message: 'File size is required when file URL is provided' });
-        } else if (!ValidationUtils.isValidFileSize(fileSize)) {
-            errors.push({ field: 'fileSize', message: 'File size must not exceed 10MB' });
+        if (metadata.completionTime && (typeof metadata.completionTime !== 'number' || metadata.completionTime < 1 || metadata.completionTime > 480)) {
+            errors.push({ field: 'metadata.completionTime', message: 'Completion time must be between 1 and 480 minutes' });
         }
+    }
+
+    // Validate attachments if provided
+    if (attachments && Array.isArray(attachments)) {
+        attachments.forEach((attachment: any, index: number) => {
+            if (!attachment.filename) {
+                errors.push({ field: `attachments[${index}].filename`, message: 'Filename is required' });
+            }
+            if (!attachment.mimeType || !ALLOWED_FILE_TYPES.includes(attachment.mimeType)) {
+                errors.push({ 
+                    field: `attachments[${index}].mimeType`, 
+                    message: 'Invalid file type. Allowed types: PDF, Word, PowerPoint, Images, Text files' 
+                });
+            }
+            if (!attachment.size || attachment.size > 50 * 1024 * 1024) { // 50MB
+                errors.push({ field: `attachments[${index}].size`, message: 'File size must not exceed 50MB' });
+            }
+        });
     }
 
     // Return errors if any
@@ -152,19 +186,20 @@ export const validateCreateMaterial = (req: Request, res: Response, next: NextFu
     }
 
     // Sanitize and process data
-    req.body.title = ValidationUtils.sanitizeString(title);
-    req.body.description = ValidationUtils.sanitizeString(description);
+    req.body.title = sanitizeString(title);
+    req.body.description = sanitizeString(description);
     req.body.category = category.toLowerCase();
-    req.body.language = language.toLowerCase();
-    req.body.level = level.toLowerCase();
-    req.body.tags = ValidationUtils.processTags(tags);
+    
+    if (metadata && metadata.difficulty) {
+        req.body.metadata.difficulty = metadata.difficulty.toLowerCase();
+    }
 
     next();
 };
 
 // ✅ Validate study material update
 export const validateUpdateMaterial = (req: Request, res: Response, next: NextFunction): void => {
-    const { title, description, category, language, level, tags, fileType, fileSize } = req.body;
+    const { title, description, category, metadata } = req.body;
     
     const errors: Array<{ field: string; message: string }> = [];
 
@@ -180,47 +215,23 @@ export const validateUpdateMaterial = (req: Request, res: Response, next: NextFu
     if (description !== undefined) {
         if (typeof description !== 'string' || description.trim().length === 0) {
             errors.push({ field: 'description', message: 'Description must be a non-empty string' });
-        } else if (description.trim().length > 2000) {
-            errors.push({ field: 'description', message: 'Description must not exceed 2000 characters' });
+        } else if (description.trim().length > 1000) {
+            errors.push({ field: 'description', message: 'Description must not exceed 1000 characters' });
         }
     }
 
-    if (category !== undefined && !VALID_CATEGORIES.includes(category.toLowerCase())) {
+    if (category !== undefined && !VALID_CATEGORIES.includes(category)) {
         errors.push({ 
             field: 'category', 
             message: `Category must be one of: ${VALID_CATEGORIES.join(', ')}` 
         });
     }
 
-    if (language !== undefined && !VALID_LANGUAGES.includes(language.toLowerCase())) {
+    if (metadata && metadata.difficulty !== undefined && !VALID_DIFFICULTY_LEVELS.includes(metadata.difficulty)) {
         errors.push({ 
-            field: 'language', 
-            message: `Language must be one of: ${VALID_LANGUAGES.join(', ')}` 
+            field: 'metadata.difficulty', 
+            message: `Difficulty must be one of: ${VALID_DIFFICULTY_LEVELS.join(', ')}` 
         });
-    }
-
-    if (level !== undefined && !VALID_LEVELS.includes(level.toLowerCase())) {
-        errors.push({ 
-            field: 'level', 
-            message: `Level must be one of: ${VALID_LEVELS.join(', ')}` 
-        });
-    }
-
-    // Validate file type if provided
-    if (fileType !== undefined && fileType !== null) {
-        if (!ValidationUtils.isValidFileType(fileType, ALLOWED_FILE_TYPES)) {
-            errors.push({ 
-                field: 'fileType', 
-                message: 'Invalid file type. Allowed types: PDF, Word, PowerPoint, Images, Videos, Text files' 
-            });
-        }
-    }
-
-    // Validate file size if provided
-    if (fileSize !== undefined && fileSize !== null) {
-        if (typeof fileSize !== 'number' || !ValidationUtils.isValidFileSize(fileSize)) {
-            errors.push({ field: 'fileSize', message: 'File size must be a valid number not exceeding 10MB' });
-        }
     }
 
     // Return errors if any
@@ -234,12 +245,10 @@ export const validateUpdateMaterial = (req: Request, res: Response, next: NextFu
     }
 
     // Sanitize data if provided
-    if (title) req.body.title = ValidationUtils.sanitizeString(title);
-    if (description) req.body.description = ValidationUtils.sanitizeString(description);
+    if (title) req.body.title = sanitizeString(title);
+    if (description) req.body.description = sanitizeString(description);
     if (category) req.body.category = category.toLowerCase();
-    if (language) req.body.language = language.toLowerCase();
-    if (level) req.body.level = level.toLowerCase();
-    if (tags) req.body.tags = ValidationUtils.processTags(tags);
+    if (metadata && metadata.difficulty) req.body.metadata.difficulty = metadata.difficulty.toLowerCase();
 
     next();
 };
@@ -257,7 +266,7 @@ export const validateRating = (req: Request, res: Response, next: NextFunction):
     }
 
     const ratingNum = parseInt(rating);
-    if (!ValidationUtils.isValidRating(ratingNum)) {
+    if (!isValidRating(ratingNum)) {
         res.status(400).json({
             success: false,
             message: 'Rating must be an integer between 1 and 5'
@@ -281,29 +290,29 @@ export const validateComment = (req: Request, res: Response, next: NextFunction)
         return;
     }
 
-    if (content.trim().length > 1000) {
+    if (content.trim().length > 500) {
         res.status(400).json({
             success: false,
-            message: 'Comment must not exceed 1000 characters'
+            message: 'Comment must not exceed 500 characters'
         });
         return;
     }
 
-    req.body.content = ValidationUtils.sanitizeString(content);
+    req.body.content = sanitizeString(content);
     next();
 };
 
 // ✅ Validate query parameters
 export const validateQueryParams = (req: Request, res: Response, next: NextFunction): void => {
-    const { page, limit, category, language, level, sort } = req.query;
+    const { page, limit, category, difficulty, sort, school, program, course } = req.query;
 
     // Validate pagination
-    const pagination = ValidationUtils.validatePagination(page as string, limit as string);
+    const pagination = validatePagination(page as string, limit as string);
     req.query.page = pagination.page.toString();
     req.query.limit = pagination.limit.toString();
 
     // Validate category if provided
-    if (category && !VALID_CATEGORIES.includes((category as string).toLowerCase())) {
+    if (category && !VALID_CATEGORIES.includes(category as string)) {
         res.status(400).json({
             success: false,
             message: `Invalid category. Must be one of: ${VALID_CATEGORIES.join(', ')}`
@@ -311,30 +320,45 @@ export const validateQueryParams = (req: Request, res: Response, next: NextFunct
         return;
     }
 
-    // Validate language if provided
-    if (language && !VALID_LANGUAGES.includes((language as string).toLowerCase())) {
+    // Validate difficulty if provided
+    if (difficulty && !VALID_DIFFICULTY_LEVELS.includes(difficulty as string)) {
         res.status(400).json({
             success: false,
-            message: `Invalid language. Must be one of: ${VALID_LANGUAGES.join(', ')}`
-        });
-        return;
-    }
-
-    // Validate level if provided
-    if (level && !VALID_LEVELS.includes((level as string).toLowerCase())) {
-        res.status(400).json({
-            success: false,
-            message: `Invalid level. Must be one of: ${VALID_LEVELS.join(', ')}`
+            message: `Invalid difficulty. Must be one of: ${VALID_DIFFICULTY_LEVELS.join(', ')}`
         });
         return;
     }
 
     // Validate sort parameter
-    const validSorts = ['newest', 'oldest', 'popular', 'rating', 'title'];
-    if (sort && !validSorts.includes(sort as string)) {
+    if (sort && !VALID_SORT_OPTIONS.includes(sort as string)) {
         res.status(400).json({
             success: false,
-            message: `Invalid sort parameter. Must be one of: ${validSorts.join(', ')}`
+            message: `Invalid sort parameter. Must be one of: ${VALID_SORT_OPTIONS.join(', ')}`
+        });
+        return;
+    }
+
+    // Validate ObjectIds if provided
+    if (school && !isValidObjectId(school as string)) {
+        res.status(400).json({
+            success: false,
+            message: 'Invalid school ID format'
+        });
+        return;
+    }
+
+    if (program && !isValidObjectId(program as string)) {
+        res.status(400).json({
+            success: false,
+            message: 'Invalid program ID format'
+        });
+        return;
+    }
+
+    if (course && !isValidObjectId(course as string)) {
+        res.status(400).json({
+            success: false,
+            message: 'Invalid course ID format'
         });
         return;
     }

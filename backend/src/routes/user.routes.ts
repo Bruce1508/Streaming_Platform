@@ -1,6 +1,6 @@
 // backend/src/routes/user.routes.ts
 import express from 'express';
-import { protectRoute } from '../middleWare/auth.middleware';
+import { protectRoute } from '../middleware/auth.middleware';
 import { 
     getRecommendedUsers, 
     getMyFriends, 

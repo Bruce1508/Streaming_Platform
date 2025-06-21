@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { protectRoute } from '../middleWare/auth.middleware';
-import { optionalSessionValidation } from '../middleWare/session.middleware';
+import { protectRoute } from '../middleware/auth.middleware';
+import { optionalSessionValidation } from '../middleware/session.middleware';
 import { 
     getActiveSessions, 
     logoutSession, 

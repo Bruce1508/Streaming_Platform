@@ -1,12 +1,12 @@
 // src/routes/auth.routes.ts - Version đơn giản
 import express from "express";
 import { signIn, signUp, onBoarding, getMe, oauth, logout, updateProfile } from "../controllers/auth.controllers";
-import { protectRoute } from "../middleWare/auth.middleware";
+import { protectRoute } from "../middleware/auth.middleware";
 
 // Import rate limiters và validators
-import { authRateLimiters } from "../middleWare/rateLimiter";
-import { authValidators, securityMiddleware } from "../middleWare/validation/auth.validation";
-import { optionalSessionValidation } from "../middleWare/session.middleware";
+import { authRateLimiters } from "../middleware/rateLimiter";
+import { authValidators, securityMiddleware } from "../middleware/validation/auth.validation";
+import { optionalSessionValidation } from "../middleware/session.middleware";
 
 const router = express.Router();
 

@@ -13,7 +13,7 @@ import {
     getUserSavedMaterials,
     getUserUploadedMaterials
 } from '../controllers/material.controllers';
-import { protectRoute } from '../middleWare/auth.middleware';
+import { protectRoute } from '../middleware/auth.middleware';
 import { 
     validateObjectId,
     validateCreateMaterial,
@@ -21,7 +21,7 @@ import {
     validateRating,
     validateComment,
     validateQueryParams
-} from '../middleWare/material.middleware';
+} from '../middleware/material.middleware';
 
 const router = Router();
 
