@@ -8,7 +8,20 @@ export * from './upload.middleware';
 export * from './material.middleware';
 
 // Export validation middleware
-export * from './validation';
+export { 
+    validatePagination,
+    validateSearch,
+    validateSort,
+    validateObjectId as validateCommonObjectId,
+    validateObjectIds,
+    validateDateRange,
+    validateStatus,
+    validateCategory,
+    validateNumericRange,
+    validateFileType,
+    validateArrayLength,
+    handleValidationErrors
+} from './validation';
 
 // Re-export commonly used middleware
 export { 
