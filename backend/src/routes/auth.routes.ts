@@ -1,14 +1,57 @@
+// src/routes/auth.routes.ts - Version đơn giản
 import express from "express";
-import { signIn, signUp, onBoarding, getMe, oauth} from "../controllers/auth.controllers";
+import { signIn, signUp, onBoarding, getMe, oauth, logout, updateProfile } from "../controllers/auth.controllers";
 import { protectRoute } from "../middleWare/auth.middleware";
+
+// Import rate limiters và validators
+import { authRateLimiters } from "../middleWare/rateLimiter";
+import { authValidators, securityMiddleware } from "../middleWare/validation/auth.validation";
+import { optionalSessionValidation } from "../middleWare/session.middleware";
 
 const router = express.Router();
 
-router.post("/sign-up", signUp);
-router.post("/sign-in", signIn);
-router.post("/onBoarding", protectRoute, onBoarding);
-router.post("/oauth", oauth);
+// ✅ Simplified middleware chains
+router.post("/sign-up", [
+    authRateLimiters.register,           // Rate limiting
+    securityMiddleware.sanitizeInput,    // XSS prevention
+    authValidators.validateSignUp       // Validation
+], signUp);
 
-router.get("/me", protectRoute, getMe);
+router.post("/sign-in", [
+    authRateLimiters.login,              // Progressive rate limiting
+    securityMiddleware.sanitizeInput,    // XSS prevention
+    authValidators.validateSignIn       // Validation
+], signIn);
+
+router.put("/onBoarding", [
+    authRateLimiters.general,
+    securityMiddleware.sanitizeInput,
+    authValidators.validateOnBoarding,
+    optionalSessionValidation,           // ← Before auth
+    protectRoute                         // ← Auth last
+], onBoarding);
+
+router.put("/profile", [         // ← Update existing profile  
+    authRateLimiters.general,
+    securityMiddleware.sanitizeInput,
+    authValidators.validateOnBoarding,
+    protectRoute
+], updateProfile);
+
+router.post("/oauth", [
+    authRateLimiters.oauth,             // OAuth rate limiting
+    securityMiddleware.sanitizeInput,    // XSS prevention
+], oauth);
+
+router.post("/logout", [
+    authRateLimiters.general,
+    optionalSessionValidation,           // ← Get session to deactivate
+    protectRoute                         // ← Must be authenticated to logout
+], logout);
+
+router.get('/me', [
+    protectRoute,                        // ← Auth first
+    optionalSessionValidation            // ← Session enhancement after
+], getMe);
 
 export default router;

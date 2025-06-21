@@ -3,6 +3,7 @@ import { Response, Request } from "express";
 import User, { IUser } from "../models/User";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { createUserSession, deactivateSession } from "../utils/session.utils";
 
 dotenv.config();
 
@@ -16,10 +17,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
             email, 
             password, 
             fullName,
-            role = 'student',
-            studentId,
-            school,
-            program
+            role = 'student'
         } = req.body;
 
         if (!email || !password || !fullName) {
@@ -47,8 +45,8 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        // ✅ Create user data với all required fields
-        const userData: any = {
+        // ✅ Clean user data - only essential fields
+        const userData = {
             email: email.toLowerCase().trim(),
             password,
             fullName: fullName.trim(),
@@ -57,40 +55,27 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
             isOnboarded: false,
             isActive: true,
             isVerified: false,
-            
-            // ✅ Initialize academic fields
-            ...(role === 'student' && {
-                academic: {
-                    ...(studentId && { studentId: studentId.toUpperCase().trim() }),
-                    ...(school && { school }),
-                    ...(program && { program }),
-                    status: 'active',
-                    completedCourses: []
-                }
-            }),
-
-            // ✅ Initialize all required collections
-            savedMaterials: [],
-            uploadedMaterials: [],
-            friends: [],
-            preferredLanguages: [],
-            
-            // ✅ Initialize currentLevel Map
-            currentLevel: new Map(),
-            
-            // ✅ StudyStats will be initialized by schema defaults
-            // ✅ Preferences will be initialized by schema defaults
-            // ✅ Activity will be initialized by schema defaults
+            bio: "",
+            location: "",
+            website: "",
+            profilePic: ""
         };
 
         const user = new User(userData);
         await user.save();
 
-        // ✅ Use instance method from model
+        // ✅ Generate JWT token
         const token = user.generateAuthToken();
 
-        // ✅ Use instance method from model
+        // ✅ Update last login
         await user.updateLastLogin();
+
+        // ✅ Create user session
+        const sessionId = await createUserSession(
+            user._id.toString(),
+            req,
+            'password'
+        );
 
         res.cookie("token", token, {
             httpOnly: true,
@@ -102,20 +87,25 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
         res.status(201).json({
             success: true,
             message: "Account created successfully",
-            user: {
-                _id: user._id,
-                email: user.email,
-                fullName: user.fullName,
-                role: user.role,
-                isOnboarded: user.isOnboarded,
-                isVerified: user.isVerified,
-                profilePic: user.profilePic,
-                bio: user.bio,
-                academic: user.academic,
-                contributionLevel: user.contributionLevel, // ✅ Virtual field
-                academicInfo: user.academicInfo, // ✅ Virtual field
-            },
-            token
+            data: {
+                user: {
+                    _id: user._id,
+                    email: user.email,
+                    fullName: user.fullName,
+                    role: user.role,
+                    isOnboarded: user.isOnboarded,
+                    isVerified: user.isVerified,
+                    isActive: user.isActive,
+                    profilePic: user.profilePic,
+                    bio: user.bio,
+                    location: user.location,
+                    website: user.website,
+                    lastLogin: user.lastLogin,
+                    createdAt: user.createdAt
+                },
+                token,
+                sessionId
+            }
         });
 
     } catch (error: any) {
@@ -158,11 +148,9 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        // ✅ Find user với proper population
+        // ✅ Simple user lookup - no complex population
         const user = await User.findOne({ email: email.toLowerCase().trim() })
-            .select('+password')
-            .populate('academic.school', 'name location')
-            .populate('academic.program', 'name code');
+            .select('+password');
 
         if (!user) {
             res.status(401).json({
@@ -189,7 +177,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        // ✅ Use instance method from model
+        // ✅ Validate password
         const isPasswordValid = await user.matchPassword(password);
         if (!isPasswordValid) {
             res.status(401).json({
@@ -199,11 +187,27 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        // ✅ Use instance method from model
+        // ✅ Update last login
         await user.updateLastLogin();
 
-        // ✅ Use instance method from model
+        // ✅ Generate JWT token
         const token = user.generateAuthToken();
+
+        // ✅ Create user session
+        const sessionId = await createUserSession(
+            user._id.toString(),
+            req,
+            'password'
+        );
+
+        console.log('✅ Successful login:', {
+            userId: user._id,
+            email: user.email,
+            sessionId,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            timestamp: new Date()
+        });
 
         res.cookie("token", token, {
             httpOnly: true,
@@ -215,30 +219,25 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
         res.status(200).json({
             success: true,
             message: "Login successful",
-            user: {
-                _id: user._id,
-                email: user.email,
-                fullName: user.fullName,
-                role: user.role,
-                profilePic: user.profilePic,
-                isOnboarded: user.isOnboarded,
-                isVerified: user.isVerified,
-                isActive: user.isActive,
-                bio: user.bio,
-                location: user.location,
-                website: user.website,
-                nativeLanguage: user.nativeLanguage, // ✅ Existing field from model
-                learningLanguage: user.learningLanguage, // ✅ Existing field from model
-                academic: user.academic,
-                academicInfo: user.academicInfo, // ✅ Virtual field
-                contributionLevel: user.contributionLevel, // ✅ Virtual field
-                preferences: user.preferences,
-                activity: user.activity,
-                studyStats: user.studyStats,
-                preferredLanguages: user.preferredLanguages, // ✅ Existing field
-                lastLogin: user.lastLogin
-            },
-            token
+            data: {
+                user: {
+                    _id: user._id,
+                    email: user.email,
+                    fullName: user.fullName,
+                    role: user.role,
+                    profilePic: user.profilePic,
+                    isOnboarded: user.isOnboarded,
+                    isVerified: user.isVerified,
+                    isActive: user.isActive,
+                    bio: user.bio,
+                    location: user.location,
+                    website: user.website,
+                    lastLogin: user.lastLogin,
+                    createdAt: user.createdAt
+                },
+                token,
+                sessionId
+            }
         });
 
     } catch (error: any) {
@@ -262,13 +261,7 @@ export async function getMe(req: Request, res: Response): Promise<Response | voi
             });
         }
 
-        // ✅ Populate với proper paths
-        await user.populate([
-            { path: 'academic.school', select: 'name location' },
-            { path: 'academic.program', select: 'name code' },
-            { path: 'savedMaterials', select: 'title category createdAt', options: { limit: 10 } }
-        ]);
-
+        // ✅ Base user response
         const userResponse = {
             _id: user._id,
             fullName: user.fullName,
@@ -281,25 +274,28 @@ export async function getMe(req: Request, res: Response): Promise<Response | voi
             bio: user.bio,
             location: user.location,
             website: user.website,
-            nativeLanguage: user.nativeLanguage,
-            learningLanguage: user.learningLanguage,
-            academic: user.academic,
-            academicInfo: user.academicInfo, // ✅ Virtual field
-            contributionLevel: user.contributionLevel, // ✅ Virtual field
-            preferences: user.preferences,
-            activity: user.activity,
-            studyStats: user.studyStats,
-            preferredLanguages: user.preferredLanguages,
-            savedMaterialsCount: user.savedMaterials.length,
-            uploadedMaterialsCount: user.uploadedMaterials.length,
-            friendsCount: user.friends.length,
             lastLogin: user.lastLogin,
-            createdAt: user.createdAt
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt
         };
+
+        // ✅ Build response data conditionally
+        const responseData: any = {
+            user: userResponse
+        };
+
+        // ✅ Add session info separately if available
+        if (req.sessionInfo) {
+            responseData.session = {
+                sessionId: req.sessionInfo.sessionId,
+                lastActivity: req.sessionInfo.lastActivity,
+                ipAddress: req.sessionInfo.ipAddress
+            };
+        }
 
         return res.status(200).json({ 
             success: true, 
-            user: userResponse 
+            data: responseData
         });
 
     } catch (error: any) {
@@ -328,24 +324,7 @@ export async function onBoarding(req: Request, res: Response): Promise<Response 
             bio, 
             location, 
             website,
-            profilePic,
-            nativeLanguage, // ✅ Keep existing language fields
-            learningLanguage, // ✅ Keep existing language fields
-            preferredLanguages,
-            // Academic onboarding fields
-            studentId,
-            school,
-            program,
-            currentSemester,
-            enrollmentYear,
-            // Preferences
-            theme = 'system',
-            notifications = {
-                email: true,
-                push: true,
-                newMaterials: true,
-                courseUpdates: true
-            }
+            profilePic
         } = req.body;
 
         if (!fullName?.trim()) {
@@ -355,60 +334,21 @@ export async function onBoarding(req: Request, res: Response): Promise<Response 
             });
         }
 
-        // ✅ Academic validation for students
-        if (user.role === 'student' && (!school || !program)) {
-            return res.status(400).json({
-                success: false,
-                message: "School and program are required for students"
-            });
-        }
-
-        const updateData: any = {
+        // ✅ Simple update data - clean and focused
+        const updateData = {
             fullName: fullName.trim(),
             bio: bio?.trim() || "",
             location: location?.trim() || "",
             website: website?.trim() || "",
             profilePic: profilePic || user.profilePic,
-            isOnboarded: true,
-            
-            // ✅ Keep existing language fields
-            nativeLanguage: nativeLanguage || user.nativeLanguage,
-            learningLanguage: learningLanguage || user.learningLanguage,
-            preferredLanguages: preferredLanguages || user.preferredLanguages,
-            
-            // ✅ Update preferences
-            preferences: {
-                theme,
-                notifications,
-                privacy: user.preferences?.privacy || {
-                    showProfile: true,
-                    showActivity: false
-                }
-            }
+            isOnboarded: true
         };
-
-        // ✅ Update academic info for students
-        if (user.role === 'student') {
-            updateData.academic = {
-                ...(user.academic || {}),
-                ...(studentId && { studentId: studentId.toUpperCase().trim() }),
-                school,
-                program,
-                ...(currentSemester && { currentSemester: parseInt(currentSemester) }),
-                ...(enrollmentYear && { enrollmentYear: parseInt(enrollmentYear) }),
-                status: 'active',
-                completedCourses: user.academic?.completedCourses || []
-            };
-        }
 
         const updatedUser = await User.findByIdAndUpdate(
             user._id,
             updateData,
             { new: true, runValidators: true }
-        ).populate([
-            { path: 'academic.school', select: 'name location' },
-            { path: 'academic.program', select: 'name code' }
-        ]);
+        );
 
         if (!updatedUser) {
             return res.status(404).json({ 
@@ -424,21 +364,21 @@ export async function onBoarding(req: Request, res: Response): Promise<Response 
             role: updatedUser.role,
             profilePic: updatedUser.profilePic,
             isOnboarded: updatedUser.isOnboarded,
+            isVerified: updatedUser.isVerified,
+            isActive: updatedUser.isActive,
             bio: updatedUser.bio,
             location: updatedUser.location,
             website: updatedUser.website,
-            nativeLanguage: updatedUser.nativeLanguage,
-            learningLanguage: updatedUser.learningLanguage,
-            academic: updatedUser.academic,
-            academicInfo: updatedUser.academicInfo, // ✅ Virtual field
-            contributionLevel: updatedUser.contributionLevel, // ✅ Virtual field
-            preferences: updatedUser.preferences
+            lastLogin: updatedUser.lastLogin,
+            createdAt: updatedUser.createdAt
         };
 
         return res.status(200).json({
             success: true,
             message: "Onboarding completed successfully",
-            user: userResponse
+            data: {
+                user: userResponse
+            }
         });
 
     } catch (error: any) {
@@ -460,15 +400,7 @@ export async function onBoarding(req: Request, res: Response): Promise<Response 
     }
 }
 
-interface OAuthRequest {
-    provider: string;
-    email: string;
-    fullName?: string;
-    profilePic?: string;
-    providerId: string;
-}
-
-export const oauth = async (req: Request<{}, {}, OAuthRequest>, res: Response): Promise<void> => {
+export const oauth = async (req: Request, res: Response): Promise<void> => {
     try {
         const { provider, email, fullName, profilePic, providerId } = req.body;
 
@@ -483,6 +415,7 @@ export const oauth = async (req: Request<{}, {}, OAuthRequest>, res: Response): 
         let user = await User.findOne({ email: email.toLowerCase().trim() });
 
         if (user) {
+            // ✅ Update existing user
             if (!user.profilePic && profilePic) {
                 user.profilePic = profilePic;
             }
@@ -492,11 +425,10 @@ export const oauth = async (req: Request<{}, {}, OAuthRequest>, res: Response): 
                 user.providerId = providerId;
             }
             
-            // ✅ Use instance method
             await user.updateLastLogin();
             
         } else {
-            // ✅ Create new user với all required fields
+            // ✅ Create new user - clean data
             user = new User({
                 email: email.toLowerCase().trim(),
                 fullName: fullName || email.split('@')[0],
@@ -509,24 +441,22 @@ export const oauth = async (req: Request<{}, {}, OAuthRequest>, res: Response): 
                 isVerified: false,
                 bio: "",
                 location: "",
-                website: "",
-                nativeLanguage: "",
-                learningLanguage: "",
-                
-                // ✅ Initialize collections
-                savedMaterials: [],
-                uploadedMaterials: [],
-                friends: [],
-                preferredLanguages: [],
-                currentLevel: new Map()
+                website: ""
             });
 
             await user.save();
             await user.updateLastLogin();
         }
 
-        // ✅ Use instance method
+        // ✅ Generate token
         const token = user.generateAuthToken();
+
+        // ✅ Create session for OAuth
+        const sessionId = await createUserSession(
+            user._id.toString(),
+            req,
+            'oauth'
+        );
 
         res.cookie("token", token, {
             httpOnly: true,
@@ -538,25 +468,24 @@ export const oauth = async (req: Request<{}, {}, OAuthRequest>, res: Response): 
         res.status(200).json({
             success: true,
             message: "OAuth authentication successful",
-            user: {
-                _id: user._id,
-                email: user.email,
-                fullName: user.fullName,
-                role: user.role,
-                profilePic: user.profilePic,
-                isOnboarded: user.isOnboarded,
-                isVerified: user.isVerified,
-                bio: user.bio,
-                location: user.location,
-                website: user.website,
-                nativeLanguage: user.nativeLanguage,
-                learningLanguage: user.learningLanguage,
-                academic: user.academic,
-                academicInfo: user.academicInfo, // ✅ Virtual field
-                contributionLevel: user.contributionLevel, // ✅ Virtual field
-                preferences: user.preferences
-            },
-            token
+            data: {
+                user: {
+                    _id: user._id,
+                    email: user.email,
+                    fullName: user.fullName,
+                    role: user.role,
+                    profilePic: user.profilePic,
+                    isOnboarded: user.isOnboarded,
+                    isVerified: user.isVerified,
+                    isActive: user.isActive,
+                    bio: user.bio,
+                    location: user.location,
+                    website: user.website,
+                    lastLogin: user.lastLogin
+                },
+                token,
+                sessionId
+            }
         });
 
     } catch (error: any) {
@@ -571,6 +500,16 @@ export const oauth = async (req: Request<{}, {}, OAuthRequest>, res: Response): 
 
 export const logout = async (req: Request, res: Response): Promise<void> => {
     try {
+        // ✅ Deactivate session if session info is available
+        if (req.sessionInfo?.sessionId) {
+            await deactivateSession(req.sessionInfo.sessionId);
+            console.log('✅ Session deactivated:', {
+                sessionId: req.sessionInfo.sessionId,
+                userId: req.sessionInfo.userId,
+                timestamp: new Date()
+            });
+        }
+
         res.clearCookie("token");
         res.status(200).json({
             success: true,
@@ -602,13 +541,10 @@ export const updateProfile = async (req: Request, res: Response): Promise<Respon
             bio, 
             location, 
             website, 
-            profilePic,
-            nativeLanguage,
-            learningLanguage,
-            preferredLanguages,
-            preferences 
+            profilePic
         } = req.body;
 
+        // ✅ Clean update data - only essential fields
         const updateData: any = {};
         
         if (fullName?.trim()) updateData.fullName = fullName.trim();
@@ -616,19 +552,12 @@ export const updateProfile = async (req: Request, res: Response): Promise<Respon
         if (location !== undefined) updateData.location = location?.trim() || "";
         if (website !== undefined) updateData.website = website?.trim() || "";
         if (profilePic !== undefined) updateData.profilePic = profilePic || "";
-        if (nativeLanguage !== undefined) updateData.nativeLanguage = nativeLanguage;
-        if (learningLanguage !== undefined) updateData.learningLanguage = learningLanguage;
-        if (preferredLanguages !== undefined) updateData.preferredLanguages = preferredLanguages;
-        if (preferences) updateData.preferences = { ...user.preferences, ...preferences };
 
         const updatedUser = await User.findByIdAndUpdate(
             user._id,
             updateData,
             { new: true, runValidators: true }
-        ).populate([
-            { path: 'academic.school', select: 'name location' },
-            { path: 'academic.program', select: 'name code' }
-        ]);
+        );
 
         if (!updatedUser) {
             return res.status(404).json({
@@ -640,21 +569,22 @@ export const updateProfile = async (req: Request, res: Response): Promise<Respon
         return res.status(200).json({
             success: true,
             message: "Profile updated successfully",
-            user: {
-                _id: updatedUser._id,
-                fullName: updatedUser.fullName,
-                email: updatedUser.email,
-                role: updatedUser.role,
-                profilePic: updatedUser.profilePic,
-                bio: updatedUser.bio,
-                location: updatedUser.location,
-                website: updatedUser.website,
-                nativeLanguage: updatedUser.nativeLanguage,
-                learningLanguage: updatedUser.learningLanguage,
-                academic: updatedUser.academic,
-                academicInfo: updatedUser.academicInfo, // ✅ Virtual field
-                contributionLevel: updatedUser.contributionLevel, // ✅ Virtual field
-                preferences: updatedUser.preferences
+            data: {
+                user: {
+                    _id: updatedUser._id,
+                    fullName: updatedUser.fullName,
+                    email: updatedUser.email,
+                    role: updatedUser.role,
+                    profilePic: updatedUser.profilePic,
+                    isOnboarded: updatedUser.isOnboarded,
+                    isVerified: updatedUser.isVerified,
+                    isActive: updatedUser.isActive,
+                    bio: updatedUser.bio,
+                    location: updatedUser.location,
+                    website: updatedUser.website,
+                    lastLogin: updatedUser.lastLogin,
+                    updatedAt: updatedUser.updatedAt
+                }
             }
         });
 

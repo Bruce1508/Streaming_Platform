@@ -1,16 +1,24 @@
-// import express from 'express';
+declare global {
+    namespace Express {
+        interface Request {
+            authAttempts?: {
+                ip: string;
+                email?: string;
+                attempts: number;
+                lastAttempt: Date;
+                blocked: boolean;
+                blockUntil?: Date;
+            };
+            sessionInfo?: {
+                userId: string;
+                sessionId: string;
+                ipAddress: string;
+                userAgent: string;
+                isActive: boolean;
+                lastActivity: Date;
+            };
+        }
+    }
+}
 
-// declare global {
-//     namespace Express {
-//         // Mở rộng interface Request
-//         interface Request {
-//             user: {
-//                 _id: string;
-//                 fullName?: string;
-//                 email?: string;
-//                 profilePic?: string;
-//                 [key: string]: any; // Cho phép các thuộc tính khác
-//             };
-//         }
-//     }
-// }
+export {};
