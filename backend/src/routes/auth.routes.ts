@@ -1,6 +1,6 @@
 // src/routes/auth.routes.ts - Version đơn giản
 import express from "express";
-import { signIn, signUp, onBoarding, getMe, oauth, logout, updateProfile } from "../controllers/auth.controllers";
+import { signIn, signUp, onBoarding, getMe, oauth, logout, updateProfile, refreshToken } from "../controllers/auth.controllers";
 import { protectRoute } from "../middleware/auth.middleware";
 
 // Import rate limiters và validators
@@ -42,6 +42,11 @@ router.post("/oauth", [
     authRateLimiters.oauth,             // OAuth rate limiting
     securityMiddleware.sanitizeInput,    // XSS prevention
 ], oauth);
+
+router.post("/refresh", [
+    authRateLimiters.general,
+    securityMiddleware.sanitizeInput
+], refreshToken);
 
 router.post("/logout", [
     authRateLimiters.general,

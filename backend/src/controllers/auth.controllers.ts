@@ -1,14 +1,88 @@
 // backend/src/controllers/auth.controller.ts
 import { Response, Request } from "express";
 import User, { IUser } from "../models/User";
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { createUserSession, deactivateSession } from "../utils/session.utils";
+import { 
+    generateTokenPair, 
+    refreshAccessToken, 
+    revokeAllTokensForSession,
+    blacklistToken 
+} from "../utils/jwt.enhanced";
 
 dotenv.config();
 
 type AuthenticatedRequest = Request & {
     user?: IUser;
+};
+
+export const refreshToken = async (req: Request, res: Response): Promise<void> => {
+    try {
+        let refreshTokenValue;
+
+        // Get refresh token from body or cookie
+        if (req.body.refreshToken) {
+            refreshTokenValue = req.body.refreshToken;
+        } else if (req.cookies?.refreshToken) {
+            refreshTokenValue = req.cookies.refreshToken;
+        }
+        
+        if (!refreshTokenValue) {
+            res.status(400).json({
+                success: false,
+                message: "Refresh token is required"
+            });
+            return;
+        }
+
+        console.log('🔄 Processing token refresh request');
+
+        // Use enhanced refresh function
+        const newTokenPair = await refreshAccessToken(refreshTokenValue);
+        
+        if (!newTokenPair) {
+            res.status(401).json({
+                success: false,
+                message: "Invalid or expired refresh token. Please login again.",
+                requireReauth: true
+            });
+            return;
+        }
+
+        // Set new tokens in cookies
+        res.cookie("accessToken", newTokenPair.accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 15 * 60 * 1000
+        });
+
+        res.cookie("refreshToken", newTokenPair.refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        console.log('✅ Token refresh successful');
+
+        res.status(200).json({
+            success: true,
+            message: "Tokens refreshed successfully",
+            data: {
+                accessToken: newTokenPair.accessToken,
+                refreshToken: newTokenPair.refreshToken,
+                expiresIn: 15 * 60
+            }
+        });
+
+    } catch (error: any) {
+        console.error("❌ Token refresh error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Token refresh failed"
+        });
+    }
 };
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
@@ -20,6 +94,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
             role = 'student'
         } = req.body;
 
+        // ✅ EXISTING VALIDATION (keep as is)
         if (!email || !password || !fullName) {
             res.status(400).json({
                 success: false,
@@ -45,7 +120,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        // ✅ Clean user data - only essential fields
+        // ✅ EXISTING USER DATA (keep as is)
         const userData = {
             email: email.toLowerCase().trim(),
             password,
@@ -64,26 +139,38 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
         const user = new User(userData);
         await user.save();
 
-        // ✅ Generate JWT token
-        const token = user.generateAuthToken();
-
-        // ✅ Update last login
+        // ✅ UPDATE LAST LOGIN (keep as is)
         await user.updateLastLogin();
 
-        // ✅ Create user session
+        // ✅ CREATE SESSION (keep as is)
         const sessionId = await createUserSession(
             user._id.toString(),
             req,
             'password'
         );
 
-        res.cookie("token", token, {
+        // 🆕 CHANGE: Generate token pair instead of single token
+        const { accessToken, refreshToken } = generateTokenPair(
+            user._id.toString(), 
+            sessionId
+        );
+
+        // 🆕 CHANGE: Set both tokens in separate cookies
+        res.cookie("accessToken", accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000
+            maxAge: 15 * 60 * 1000 // 15 minutes
         });
 
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        });
+
+        // 🆕 CHANGE: Updated response data
         res.status(201).json({
             success: true,
             message: "Account created successfully",
@@ -103,12 +190,16 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
                     lastLogin: user.lastLogin,
                     createdAt: user.createdAt
                 },
-                token,
-                sessionId
+                // 🆕 Return both tokens for mobile apps
+                accessToken,
+                refreshToken,
+                sessionId,
+                expiresIn: 15 * 60 // Access token expires in 15 minutes
             }
         });
 
     } catch (error: any) {
+        // ✅ EXISTING ERROR HANDLING (keep as is)
         console.error("Signup error:", error);
         
         if (error.name === 'ValidationError') {
@@ -136,10 +227,12 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
+// controllers/auth.controllers.ts - UPDATED signIn
 export const signIn = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password } = req.body;
 
+        // ✅ EXISTING VALIDATION (keep as is)
         if (!email || !password) {
             res.status(400).json({
                 success: false,
@@ -148,7 +241,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        // ✅ Simple user lookup - no complex population
+        // ✅ EXISTING USER LOOKUP (keep as is)
         const user = await User.findOne({ email: email.toLowerCase().trim() })
             .select('+password');
 
@@ -160,7 +253,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        // ✅ Check if account is active
+        // ✅ EXISTING VALIDATIONS (keep as is)
         if (!user.isActive) {
             res.status(403).json({
                 success: false,
@@ -177,7 +270,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        // ✅ Validate password
+        // ✅ EXISTING PASSWORD VALIDATION (keep as is)
         const isPasswordValid = await user.matchPassword(password);
         if (!isPasswordValid) {
             res.status(401).json({
@@ -187,19 +280,23 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        // ✅ Update last login
+        // ✅ UPDATE LAST LOGIN (keep as is)
         await user.updateLastLogin();
 
-        // ✅ Generate JWT token
-        const token = user.generateAuthToken();
-
-        // ✅ Create user session
+        // ✅ CREATE SESSION (keep as is)
         const sessionId = await createUserSession(
             user._id.toString(),
             req,
             'password'
         );
 
+        // 🆕 CHANGE: Generate token pair instead of single token
+        const { accessToken, refreshToken } = generateTokenPair(
+            user._id.toString(), 
+            sessionId
+        );
+
+        // ✅ EXISTING LOGIN LOG (keep as is)
         console.log('✅ Successful login:', {
             userId: user._id,
             email: user.email,
@@ -209,13 +306,22 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
             timestamp: new Date()
         });
 
-        res.cookie("token", token, {
+        // 🆕 CHANGE: Set both tokens in separate cookies
+        res.cookie("accessToken", accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000
+            maxAge: 15 * 60 * 1000 // 15 minutes
         });
 
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        });
+
+        // 🆕 CHANGE: Updated response data
         res.status(200).json({
             success: true,
             message: "Login successful",
@@ -235,12 +341,16 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
                     lastLogin: user.lastLogin,
                     createdAt: user.createdAt
                 },
-                token,
-                sessionId
+                // 🆕 Return both tokens for mobile apps
+                accessToken,
+                refreshToken,
+                sessionId,
+                expiresIn: 15 * 60 // Access token expires in 15 minutes
             }
         });
 
     } catch (error: any) {
+        // ✅ EXISTING ERROR HANDLING (keep as is)
         console.error("Signin error:", error);
         res.status(500).json({
             success: false,
@@ -498,9 +608,10 @@ export const oauth = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
+// controllers/auth.controllers.ts - ENHANCED logout
 export const logout = async (req: Request, res: Response): Promise<void> => {
     try {
-        // ✅ Deactivate session if session info is available
+        // ✅ EXISTING SESSION DEACTIVATION (keep as is)
         if (req.sessionInfo?.sessionId) {
             await deactivateSession(req.sessionInfo.sessionId);
             console.log('✅ Session deactivated:', {
@@ -510,12 +621,38 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
             });
         }
 
-        res.clearCookie("token");
+        // 🆕 ENHANCED: Revoke all tokens for session
+        if (req.sessionInfo?.sessionId) {
+            await revokeAllTokensForSession(req.sessionInfo.sessionId);
+            console.log('✅ All tokens revoked for session:', req.sessionInfo.sessionId);
+        }
+        
+        // 🆕 ENHANCED: Blacklist current tokens if available
+        const accessToken = req.cookies?.accessToken || req.cookies?.token; // Support legacy
+        const refreshTokenValue = req.cookies?.refreshToken;
+        
+        if (accessToken) {
+            await blacklistToken(accessToken);
+            console.log('✅ Access token blacklisted');
+        }
+        
+        if (refreshTokenValue) {
+            await blacklistToken(refreshTokenValue);
+            console.log('✅ Refresh token blacklisted');
+        }
+
+        // 🆕 CHANGE: Clear all possible cookies (new + legacy)
+        res.clearCookie("accessToken");
+        res.clearCookie("refreshToken");
+        res.clearCookie("token"); // Clean up legacy token
+        
         res.status(200).json({
             success: true,
             message: "Logged out successfully"
         });
+
     } catch (error: any) {
+        // ✅ EXISTING ERROR HANDLING (keep as is)
         console.error("Logout error:", error);
         res.status(500).json({
             success: false,

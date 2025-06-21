@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { getUserActiveSessions, deactivateSession, deactivateAllUserSessions } from '../utils/session.utils';
 import { AuthRequest } from '../middleware/auth.middleware';
-import { Document } from 'mongoose';
 
 // Get user's active sessions
 export const getActiveSessions = async (req: AuthRequest, res: Response): Promise <any> => {

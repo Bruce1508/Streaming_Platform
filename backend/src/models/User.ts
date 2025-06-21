@@ -10,8 +10,6 @@ export interface IUser extends Document {
     password?: string;
     bio: string;
     profilePic: string;
-    nativeLanguage: string;
-    learningLanguage: string;
     location: string;
     website: string;
     isOnboarded: boolean;
@@ -22,14 +20,12 @@ export interface IUser extends Document {
     authProvider: "local" | "google" | "github" | "facebook";
     providerId?: string;
     
-    // ===== EXISTING STUDY MATERIAL FIELDS =====
+    // ===== STUDY MATERIAL FIELDS =====
     savedMaterials: mongoose.Types.ObjectId[];
     uploadedMaterials: mongoose.Types.ObjectId[];
-    preferredLanguages: string[];
-    currentLevel: Map<string, 'beginner' | 'intermediate' | 'advanced'>;
     studyStats: IStudyStats;
     
-    // ===== NEW ACADEMIC FIELDS =====
+    // ===== ACADEMIC FIELDS =====
     role: 'student' | 'professor' | 'admin' | 'guest';
     academic?: {
         studentId?: string;
@@ -41,7 +37,7 @@ export interface IUser extends Document {
         status: 'active' | 'graduated' | 'suspended';
     };
     
-    // ===== NEW PREFERENCES =====
+    // ===== PREFERENCES =====
     preferences: {
         theme: 'light' | 'dark' | 'system';
         notifications: {
@@ -56,7 +52,7 @@ export interface IUser extends Document {
         };
     };
     
-    // ===== ENHANCED ACTIVITY TRACKING =====
+    // ===== ACTIVITY TRACKING =====
     activity: {
         loginCount: number;
         uploadCount: number;
@@ -67,12 +63,10 @@ export interface IUser extends Document {
     isActive: boolean;
     isVerified: boolean;
     
-    // ===== EXISTING METHODS =====
+    // ===== METHODS =====
     matchPassword(enteredPassword: string): Promise<boolean>;
     saveMaterial(materialId: mongoose.Types.ObjectId): Promise<IUser>;
     unsaveMaterial(materialId: mongoose.Types.ObjectId): Promise<IUser>;
-    
-    // ===== NEW METHODS =====
     generateAuthToken(): string;
     updateLastLogin(): Promise<IUser>;
     incrementUploadCount(): Promise<IUser>;
@@ -90,9 +84,9 @@ export interface IStudyStats {
     ratingsGiven: number;
 }
 
-// Enhanced schema - merge with existing
+// ✅ CLEANED Academic-focused schema
 const userSchema = new mongoose.Schema({
-    // ===== EXISTING FIELDS =====
+    // ===== CORE USER FIELDS =====
     fullName: {
         type: String,
         required: true,
@@ -135,17 +129,10 @@ const userSchema = new mongoose.Schema({
             message: 'Profile picture must be a valid image URL'
         }
     },
-    nativeLanguage: {
-        type: String,
-        default: "",
-    },
-    learningLanguage: {
-        type: String,
-        default: "",
-    },
     location: {
         type: String,
         default: "",
+        maxlength: [100, 'Location cannot exceed 100 characters']
     },
     website: {
         type: String,
@@ -178,7 +165,7 @@ const userSchema = new mongoose.Schema({
         type: Date
     },
     
-    // ===== EXISTING STUDY MATERIAL FIELDS =====
+    // ===== STUDY MATERIAL FIELDS =====
     savedMaterials: [{
         type: Schema.Types.ObjectId,
         ref: 'StudyMaterial'
@@ -187,37 +174,30 @@ const userSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'StudyMaterial'
     }],
-    preferredLanguages: [{
-        type: String,
-        lowercase: true
-    }],
-    currentLevel: {
-        type: Map,
-        of: {
-            type: String,
-            enum: ['beginner', 'intermediate', 'advanced']
-        }
-    },
     studyStats: {
         materialsViewed: {
             type: Number,
-            default: 0
+            default: 0,
+            min: [0, 'Materials viewed cannot be negative']
         },
         materialsSaved: {
             type: Number,
-            default: 0
+            default: 0,
+            min: [0, 'Materials saved cannot be negative']
         },
         materialsCreated: {
             type: Number,
-            default: 0
+            default: 0,
+            min: [0, 'Materials created cannot be negative']
         },
         ratingsGiven: {
             type: Number,
-            default: 0
+            default: 0,
+            min: [0, 'Ratings given cannot be negative']
         }
     },
     
-    // ===== NEW ACADEMIC FIELDS =====
+    // ===== ACADEMIC FIELDS =====
     role: {
         type: String,
         enum: {
@@ -231,7 +211,13 @@ const userSchema = new mongoose.Schema({
             type: String,
             trim: true,
             uppercase: true,
-            maxlength: [20, 'Student ID cannot exceed 20 characters']
+            maxlength: [20, 'Student ID cannot exceed 20 characters'],
+            validate: {
+                validator: function(v: string) {
+                    return !v || /^[A-Z0-9]+$/.test(v);
+                },
+                message: 'Student ID can only contain letters and numbers'
+            }
         },
         school: {
             type: Schema.Types.ObjectId,
@@ -258,7 +244,7 @@ const userSchema = new mongoose.Schema({
                 validator: function(v: string) {
                     return /^[A-Z]{3}[0-9]{3}$/.test(v);
                 },
-                message: 'Course code must follow format: 3 letters + 3 numbers'
+                message: 'Course code must follow format: 3 letters + 3 numbers (e.g., IPC144)'
             }
         }],
         status: {
@@ -271,7 +257,7 @@ const userSchema = new mongoose.Schema({
         }
     },
     
-    // ===== NEW PREFERENCES =====
+    // ===== USER PREFERENCES =====
     preferences: {
         theme: {
             type: String,
@@ -311,7 +297,7 @@ const userSchema = new mongoose.Schema({
         }
     },
     
-    // ===== ENHANCED ACTIVITY TRACKING =====
+    // ===== ACTIVITY TRACKING =====
     activity: {
         loginCount: {
             type: Number,
@@ -335,6 +321,7 @@ const userSchema = new mongoose.Schema({
         }
     },
     
+    // ===== STATUS FIELDS =====
     isActive: {
         type: Boolean,
         default: true
@@ -344,7 +331,7 @@ const userSchema = new mongoose.Schema({
         default: false
     },
     
-    // Password reset fields
+    // ===== SECURITY FIELDS =====
     passwordResetToken: {
         type: String,
         select: false
@@ -353,8 +340,6 @@ const userSchema = new mongoose.Schema({
         type: Date,
         select: false
     },
-    
-    // Email verification
     emailVerificationToken: {
         type: String,
         select: false
@@ -374,23 +359,30 @@ const userSchema = new mongoose.Schema({
     toObject: { virtuals: true }
 });
 
-// ===== INDEXES =====
-// userSchema.index({ email: 1 });
+// ===== INDEXES FOR PERFORMANCE =====
+userSchema.index({ email: 1 });
 userSchema.index({ 'academic.studentId': 1 });
 userSchema.index({ 'academic.program': 1 });
 userSchema.index({ 'academic.school': 1 });
 userSchema.index({ role: 1 });
 userSchema.index({ isActive: 1, isVerified: 1 });
-userSchema.index({ fullName: 'text', email: 'text' });
+userSchema.index({ fullName: 'text', email: 'text', bio: 'text' });
 
-// ===== VIRTUALS =====
+// Compound indexes for common queries
+userSchema.index({ 'academic.school': 1, 'academic.program': 1 });
+userSchema.index({ role: 1, isActive: 1 });
+userSchema.index({ 'activity.contributionScore': -1, lastLogin: -1 });
+
+// ===== VIRTUAL FIELDS =====
 userSchema.virtual('academicInfo').get(function(this: IUser) {
     if (!this.academic?.program) return null;
     return {
         program: this.academic.program,
+        school: this.academic.school,
         semester: this.academic.currentSemester,
         year: this.academic.enrollmentYear,
-        status: this.academic.status
+        status: this.academic.status,
+        studentId: this.academic.studentId
     };
 });
 
@@ -403,21 +395,50 @@ userSchema.virtual('contributionLevel').get(function(this: IUser) {
     return 'Newcomer';
 });
 
-// ===== EXISTING MIDDLEWARE =====
+userSchema.virtual('isStudent').get(function(this: IUser) {
+    return this.role === 'student';
+});
+
+userSchema.virtual('isProfessor').get(function(this: IUser) {
+    return this.role === 'professor';
+});
+
+userSchema.virtual('isAdmin').get(function(this: IUser) {
+    return this.role === 'admin';
+});
+
+// ===== MIDDLEWARE =====
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password") || !this.password) return next();
 
     try {
-        const salt = await bcrypt.genSalt(12); // Increased from 10 to 12
+        const salt = await bcrypt.genSalt(12);
         this.password = await bcrypt.hash(this.password, salt);
         next();
     } catch (error: any) {
-        console.error("Error: ", error);
+        console.error("Password hashing error:", error);
         next(error);
     }
 });
 
-// ===== EXISTING METHODS =====
+// Update contribution score when materials are created
+userSchema.pre("save", function (next) {
+    if (
+        this.isModified('studyStats.materialsCreated') &&
+        this.studyStats &&
+        this.activity
+    ) {
+        // Award points for material creation
+        const materialsCreated = this.studyStats.materialsCreated || 0;
+        this.activity.contributionScore = Math.max(
+            this.activity.contributionScore || 0,
+            materialsCreated * 10 // 10 points per material
+        );
+    }
+    next();
+});
+
+// ===== INSTANCE METHODS =====
 userSchema.methods.matchPassword = async function (enteredPassword: string): Promise<boolean> {
     if (!this.password) return false;
     return await bcrypt.compare(enteredPassword, this.password);
@@ -445,7 +466,6 @@ userSchema.methods.unsaveMaterial = function(
     return this.save();
 };
 
-// ===== NEW METHODS =====
 userSchema.methods.generateAuthToken = function(this: IUser): string {
     const payload: jwt.JwtPayload = {
         id: this._id,
@@ -468,12 +488,43 @@ userSchema.methods.updateLastLogin = function(this: IUser): Promise<IUser> {
 userSchema.methods.incrementUploadCount = function(this: IUser): Promise<IUser> {
     this.activity.uploadCount += 1;
     this.activity.contributionScore += 10; // 10 points per upload
-    this.studyStats.materialsCreated += 1; // Sync with existing studyStats
+    this.studyStats.materialsCreated += 1;
     return this.save();
 };
 
 userSchema.methods.incrementDownloadCount = function(this: IUser): Promise<IUser> {
     this.activity.downloadCount += 1;
+    this.activity.contributionScore += 1; // 1 point per download
+    return this.save();
+};
+
+// Academic-specific methods
+userSchema.methods.addCompletedCourse = function(this: IUser, courseCode: string): Promise<IUser> {
+    if (!this.academic) {
+        this.academic = {
+            completedCourses: [],
+            status: 'active'
+        };
+    }
+    
+    if (!this.academic.completedCourses.includes(courseCode.toUpperCase())) {
+        this.academic.completedCourses.push(courseCode.toUpperCase());
+        this.activity.contributionScore += 5; // 5 points per completed course
+    }
+    return this.save();
+};
+
+userSchema.methods.updateAcademicStatus = function(
+    this: IUser, 
+    status: 'active' | 'graduated' | 'suspended'
+): Promise<IUser> {
+    if (!this.academic) {
+        this.academic = {
+            completedCourses: [],
+            status: 'active'
+        };
+    }
+    this.academic.status = status;
     return this.save();
 };
 
@@ -483,7 +534,15 @@ userSchema.statics.findByProgram = function(programId: string) {
         'academic.program': programId,
         isActive: true,
         isVerified: true
-    }).select('fullName email academic.currentSemester academic.status');
+    }).select('fullName email academic.currentSemester academic.status profilePic activity.contributionScore');
+};
+
+userSchema.statics.findBySchool = function(schoolId: string) {
+    return this.find({ 
+        'academic.school': schoolId,
+        isActive: true,
+        isVerified: true
+    }).select('fullName email academic activity.contributionScore role');
 };
 
 userSchema.statics.getTopContributors = function(limit: number = 10) {
@@ -492,10 +551,27 @@ userSchema.statics.getTopContributors = function(limit: number = 10) {
         'activity.contributionScore': { $gt: 0 }
     }).sort({ 'activity.contributionScore': -1 })
         .limit(limit)
-        .select('fullName profilePic activity.contributionScore activity.uploadCount');
+        .select('fullName profilePic activity.contributionScore activity.uploadCount role academic');
 };
 
-// Create model with enhanced interface
+userSchema.statics.findStudentsInSemester = function(semester: number, programId?: string) {
+    const query: any = {
+        role: 'student',
+        'academic.currentSemester': semester,
+        isActive: true
+    };
+    
+    if (programId) {
+        query['academic.program'] = programId;
+    }
+    
+    return this.find(query)
+        .populate('academic.program', 'name code')
+        .populate('academic.school', 'name')
+        .select('fullName email academic profilePic activity.contributionScore');
+};
+
+// Create model with clean interface
 const User = mongoose.model<IUser>("User", userSchema);
 
 export default User;

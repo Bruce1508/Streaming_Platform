@@ -9,7 +9,7 @@ export interface SessionData {
     ipAddress: string;
     userAgent: string;
     deviceType?: 'mobile' | 'tablet' | 'desktop' | 'unknown';
-    loginMethod?: 'password' | 'oauth';
+    loginMethod?: 'password' | 'oauth' | 'migration';
 }
 
 // Generate unique session ID
@@ -36,7 +36,7 @@ export const detectDeviceType = (userAgent: string): 'mobile' | 'tablet' | 'desk
 export const createUserSession = async (
     userId: string, 
     req: Request, 
-    loginMethod: 'password' | 'oauth' = 'password'
+    loginMethod: 'password' | 'oauth' | 'migration' = 'password'
 ): Promise<string> => {
     const sessionId = generateSessionId();
     const userAgent = req.headers['user-agent'] || 'Unknown';

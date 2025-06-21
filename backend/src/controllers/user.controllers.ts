@@ -32,7 +32,7 @@ export async function getRecommendedUsers(req: Request, res: Response): Promise<
         const currentUserId = authReq.user._id;
         const currentUser = authReq.user;
 
-        // ✅ Enhanced recommendation based on academic similarity
+        // ✅ Academic-focused recommendation base query
         const baseQuery = {
             $and: [
                 { _id: { $ne: currentUserId } },
@@ -43,16 +43,16 @@ export async function getRecommendedUsers(req: Request, res: Response): Promise<
             ],
         };
 
-        // ✅ Get users from same school/program first (if current user is student)
         let recommendedUsers = [];
 
+        // 🎯 Strategy 1: Same School, Different Programs (Academic Diversity)
         if (currentUser.role === 'student' && currentUser.academic?.school) {
             const sameSchoolUsers = await User.find({
                 ...baseQuery,
                 'academic.school': currentUser.academic.school,
-                'academic.program': { $ne: currentUser.academic?.program } // Different programs in same school
+                'academic.program': { $ne: currentUser.academic?.program } // Different programs
             })
-                .select('fullName email profilePic role bio location nativeLanguage learningLanguage academic activity')
+                .select('fullName email profilePic role bio location academic activity')
                 .populate('academic.school', 'name location')
                 .populate('academic.program', 'name code')
                 .limit(8);
@@ -60,37 +60,54 @@ export async function getRecommendedUsers(req: Request, res: Response): Promise<
             recommendedUsers.push(...sameSchoolUsers);
         }
 
-        // ✅ Get users with similar learning interests
-        if (currentUser.preferredLanguages?.length > 0) {
-            const similarInterestUsers = await User.find({
+        // 🎯 Strategy 2: Same Program, Different Semesters (Study Buddies)
+        if (currentUser.role === 'student' && currentUser.academic?.program) {
+            const sameProgramUsers = await User.find({
                 ...baseQuery,
-                preferredLanguages: { $in: currentUser.preferredLanguages },
+                'academic.program': currentUser.academic.program,
+                'academic.currentSemester': { $ne: currentUser.academic?.currentSemester },
                 _id: { $nin: recommendedUsers.map(u => u._id) }
             })
-                .select('fullName email profilePic role bio location nativeLanguage learningLanguage academic activity')
+                .select('fullName email profilePic role bio location academic activity')
                 .populate('academic.school', 'name location')
                 .populate('academic.program', 'name code')
                 .limit(6);
 
-            recommendedUsers.push(...similarInterestUsers);
+            recommendedUsers.push(...sameProgramUsers);
         }
 
-        // ✅ Fill remaining with random active users
+        // 🎯 Strategy 3: High Contributors (Academic Excellence)
+        if (recommendedUsers.length < 12) {
+            const topContributors = await User.find({
+                ...baseQuery,
+                'activity.contributionScore': { $gte: 50 }, // Active contributors
+                _id: { $nin: recommendedUsers.map(u => u._id) }
+            })
+                .select('fullName email profilePic role bio location academic activity')
+                .populate('academic.school', 'name location')
+                .populate('academic.program', 'name code')
+                .sort({ 'activity.contributionScore': -1 })
+                .limit(6);
+
+            recommendedUsers.push(...topContributors);
+        }
+
+        // 🎯 Strategy 4: Fill with Active Academic Users
         if (recommendedUsers.length < 15) {
             const remainingUsers = await User.find({
                 ...baseQuery,
                 _id: { $nin: recommendedUsers.map(u => u._id) }
             })
-                .select('fullName email profilePic role bio location nativeLanguage learningLanguage academic activity')
+                .select('fullName email profilePic role bio location academic activity')
                 .populate('academic.school', 'name location')
                 .populate('academic.program', 'name code')
-                .sort({ 'activity.contributionScore': -1 }) // Sort by contribution
+                .sort({ 'activity.contributionScore': -1, lastLogin: -1 })
                 .limit(15 - recommendedUsers.length);
 
             recommendedUsers.push(...remainingUsers);
         }
 
-        // ✅ Add computed fields
+        // ✅ Clean academic-focused response
         const enhancedUsers = recommendedUsers.map(user => ({
             _id: user._id,
             fullName: user.fullName,
@@ -99,21 +116,30 @@ export async function getRecommendedUsers(req: Request, res: Response): Promise<
             role: user.role,
             bio: user.bio,
             location: user.location,
-            nativeLanguage: user.nativeLanguage,
-            learningLanguage: user.learningLanguage,
             academic: user.academic,
             contributionLevel: user.contributionLevel, // Virtual field
             academicInfo: user.academicInfo, // Virtual field
             activity: {
                 contributionScore: user.activity?.contributionScore || 0,
                 uploadCount: user.activity?.uploadCount || 0
+            },
+            // ✅ Academic similarity indicators
+            academicMatch: {
+                sameSchool: user.academic?.school?.toString() === currentUser.academic?.school?.toString(),
+                sameProgram: user.academic?.program?.toString() === currentUser.academic?.program?.toString(),
+                isContributor: (user.activity?.contributionScore || 0) >= 50
             }
         }));
 
         return res.status(200).json({
             success: true,
             users: enhancedUsers,
-            total: enhancedUsers.length
+            total: enhancedUsers.length,
+            recommendationStrategies: {
+                sameSchool: enhancedUsers.filter(u => u.academicMatch.sameSchool).length,
+                sameProgram: enhancedUsers.filter(u => u.academicMatch.sameProgram).length,
+                contributors: enhancedUsers.filter(u => u.academicMatch.isContributor).length
+            }
         });
 
     } catch (error: any) {
@@ -140,7 +166,7 @@ export async function getMyFriends(req: Request, res: Response): Promise<Respons
             .select("friends")
             .populate({
                 path: "friends",
-                select: "fullName profilePic nativeLanguage learningLanguage role bio location academic activity",
+                select: "fullName profilePic role bio location academic activity",
                 populate: [
                     { path: 'academic.school', select: 'name location' },
                     { path: 'academic.program', select: 'name code' }
@@ -162,8 +188,6 @@ export async function getMyFriends(req: Request, res: Response): Promise<Respons
             role: friend.role,
             bio: friend.bio,
             location: friend.location,
-            nativeLanguage: friend.nativeLanguage,
-            learningLanguage: friend.learningLanguage,
             academic: friend.academic,
             academicInfo: friend.academicInfo, // Virtual field
             contributionLevel: friend.contributionLevel, // Virtual field
@@ -382,7 +406,7 @@ export async function getFriendRequests(req: Request, res: Response): Promise<Re
         })
             .populate({
                 path: "sender",
-                select: "fullName profilePic nativeLanguage learningLanguage role bio location academic activity",
+                select: "fullName profilePic role bio location academic activity",
                 populate: [
                     { path: 'academic.school', select: 'name location' },
                     { path: 'academic.program', select: 'name code' }
@@ -410,8 +434,6 @@ export async function getFriendRequests(req: Request, res: Response): Promise<Re
                     role: (request.sender as any)?.role,
                     bio: (request.sender as any)?.bio,
                     location: (request.sender as any)?.location,
-                    nativeLanguage: (request.sender as any)?.nativeLanguage,
-                    learningLanguage: (request.sender as any)?.learningLanguage,
                     academic: (request.sender as any)?.academic,
                     academicInfo: (request.sender as any)?.academicInfo, // Virtual field
                     contributionLevel: (request.sender as any)?.contributionLevel, // Virtual field
@@ -458,7 +480,7 @@ export async function getOutgoingFriendReqs(req: Request, res: Response): Promis
         })
             .populate({
                 path: "recipient",
-                select: "fullName profilePic nativeLanguage learningLanguage role academic",
+                select: "fullName profilePic learning role academic",
                 populate: [
                     { path: 'academic.school', select: 'name' },
                     { path: 'academic.program', select: 'name' }
@@ -474,8 +496,6 @@ export async function getOutgoingFriendReqs(req: Request, res: Response): Promis
                     fullName: (request.recipient as any)?.fullName,
                     profilePic: (request.recipient as any)?.profilePic,
                     role: (request.recipient as any)?.role,
-                    nativeLanguage: (request.recipient as any)?.nativeLanguage,
-                    learningLanguage: (request.recipient as any)?.learningLanguage,
                     academic: (request.recipient as any)?.academic,
                     academicInfo: (request.recipient as any)?.academicInfo, // Virtual field
                 }
@@ -643,7 +663,6 @@ export async function getMyProfile(req: Request, res: Response): Promise<Respons
             });
         }
 
-        // ✅ Enhanced profile response
         const profileResponse = {
             _id: user._id,
             fullName: user.fullName,
@@ -653,9 +672,6 @@ export async function getMyProfile(req: Request, res: Response): Promise<Respons
             bio: user.bio,
             location: user.location,
             website: user.website,
-            nativeLanguage: user.nativeLanguage,
-            learningLanguage: user.learningLanguage,
-            preferredLanguages: user.preferredLanguages,
             isOnboarded: user.isOnboarded,
             isVerified: user.isVerified,
             isActive: user.isActive,
@@ -714,15 +730,13 @@ export async function updateMyProfile(req: Request, res: Response): Promise<Resp
             bio,
             location,
             website,
-            nativeLanguage,
-            learningLanguage,
-            preferredLanguages,
-            preferences
+            preferences,
+            academic // ✅ Added academic updates
         } = req.body;
 
         const updates: any = {};
 
-        // ✅ Validate and update fields
+        // ✅ Validate and update basic fields
         if (fullName !== undefined) {
             if (fullName.trim().length < 2) {
                 return res.status(400).json({
@@ -740,10 +754,16 @@ export async function updateMyProfile(req: Request, res: Response): Promise<Resp
                     message: "Bio must be less than 500 characters"
                 });
             }
-            updates.bio = bio;
+            updates.bio = bio.trim();
         }
 
         if (location !== undefined) {
+            if (location.length > 100) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Location must be less than 100 characters"
+                });
+            }
             updates.location = location.trim();
         }
 
@@ -757,17 +777,35 @@ export async function updateMyProfile(req: Request, res: Response): Promise<Resp
             updates.website = website;
         }
 
-        // ✅ Language updates
-        if (nativeLanguage !== undefined) {
-            updates.nativeLanguage = nativeLanguage;
-        }
+        // ✅ Academic updates (new feature)
+        if (academic && typeof academic === 'object') {
+            const currentUser = await User.findById(userId).select('academic');
+            const currentAcademic = currentUser?.academic || {};
+            
+            // Validate academic updates
+            if (academic.studentId !== undefined) {
+                if (academic.studentId && !/^[A-Z0-9]+$/.test(academic.studentId)) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Student ID can only contain letters and numbers"
+                    });
+                }
+            }
+            
+            if (academic.currentSemester !== undefined) {
+                const semester = parseInt(academic.currentSemester);
+                if (isNaN(semester) || semester < 1 || semester > 8) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Current semester must be between 1 and 8"
+                    });
+                }
+            }
 
-        if (learningLanguage !== undefined) {
-            updates.learningLanguage = learningLanguage;
-        }
-
-        if (preferredLanguages !== undefined && Array.isArray(preferredLanguages)) {
-            updates.preferredLanguages = preferredLanguages;
+            updates.academic = {
+                ...currentAcademic,
+                ...academic
+            };
         }
 
         // ✅ Preferences update
@@ -802,9 +840,6 @@ export async function updateMyProfile(req: Request, res: Response): Promise<Resp
                 bio: updatedUser?.bio,
                 location: updatedUser?.location,
                 website: updatedUser?.website,
-                nativeLanguage: updatedUser?.nativeLanguage,
-                learningLanguage: updatedUser?.learningLanguage,
-                preferredLanguages: updatedUser?.preferredLanguages,
                 academic: updatedUser?.academic,
                 academicInfo: updatedUser?.academicInfo, // Virtual field
                 contributionLevel: updatedUser?.contributionLevel, // Virtual field
@@ -886,7 +921,7 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
     }
 
     try {
-        const { q, role, school, program } = req.query;
+        const { q, role, school, program, semester } = req.query;
         const currentUserId = authReq.user._id;
 
         if (!q || typeof q !== 'string') {
@@ -911,7 +946,7 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
         const currentUser = await User.findById(currentUserId).select('friends');
         const friendIds = currentUser?.friends || [];
 
-        // ✅ Build dynamic search query
+        // ✅ Academic-focused search query
         const searchQuery: any = {
             $and: [
                 { _id: { $ne: currentUserId } },
@@ -922,13 +957,14 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
                     $or: [
                         { fullName: { $regex: escapedQuery, $options: 'i' } },
                         { email: { $regex: escapedQuery, $options: 'i' } },
-                        { bio: { $regex: escapedQuery, $options: 'i' } }
+                        { bio: { $regex: escapedQuery, $options: 'i' } },
+                        { 'academic.studentId': { $regex: escapedQuery, $options: 'i' } } // Search by student ID
                     ]
                 }
             ]
         };
 
-        // ✅ Add filters
+        // ✅ Academic filters
         if (role && typeof role === 'string') {
             searchQuery.$and.push({ role: role });
         }
@@ -941,13 +977,20 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
             searchQuery.$and.push({ 'academic.program': program });
         }
 
+        if (semester && typeof semester === 'string') {
+            const semesterNum = parseInt(semester);
+            if (!isNaN(semesterNum)) {
+                searchQuery.$and.push({ 'academic.currentSemester': semesterNum });
+            }
+        }
+
         const users = await User.find(searchQuery)
-            .select('fullName email profilePic nativeLanguage learningLanguage bio location role academic activity')
+            .select('fullName email profilePic bio location role academic activity')
             .populate([
                 { path: 'academic.school', select: 'name location' },
                 { path: 'academic.program', select: 'name code' }
             ])
-            .sort({ 'activity.contributionScore': -1 }) // Sort by contribution
+            .sort({ 'activity.contributionScore': -1, lastLogin: -1 }) // Academic contributors first
             .limit(25)
             .lean();
 
@@ -968,7 +1011,7 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
             }
         });
 
-        // ✅ Enhanced users with request status
+        // ✅ Clean academic-focused response
         const enhancedUsers = users.map(user => ({
             _id: user._id,
             fullName: user.fullName,
@@ -977,8 +1020,6 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
             role: user.role,
             bio: user.bio,
             location: user.location,
-            nativeLanguage: user.nativeLanguage,
-            learningLanguage: user.learningLanguage,
             academic: user.academic,
             academicInfo: user.academicInfo, // Virtual field
             contributionLevel: user.contributionLevel, // Virtual field
@@ -986,7 +1027,13 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
                 contributionScore: user.activity?.contributionScore || 0,
                 uploadCount: user.activity?.uploadCount || 0
             },
-            friendRequestStatus: pendingRequestsMap.get(user._id.toString()) || null
+            friendRequestStatus: pendingRequestsMap.get(user._id.toString()) || null,
+            // ✅ Academic relevance scores
+            relevanceScore: {
+                isContributor: (user.activity?.contributionScore || 0) >= 10,
+                isActive: user.lastLogin && new Date(user.lastLogin) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // Active in last 30 days
+                hasProfile: !!(user.bio && user.academic?.program)
+            }
         }));
 
         return res.status(200).json({
@@ -997,7 +1044,13 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
                 query: trimmedQuery,
                 role: role || null,
                 school: school || null,
-                program: program || null
+                program: program || null,
+                semester: semester || null
+            },
+            stats: {
+                contributors: enhancedUsers.filter(u => u.relevanceScore.isContributor).length,
+                activeUsers: enhancedUsers.filter(u => u.relevanceScore.isActive).length,
+                completeProfiles: enhancedUsers.filter(u => u.relevanceScore.hasProfile).length
             }
         });
 
@@ -1203,7 +1256,7 @@ export async function collectFriendData(req: Request, res: Response): Promise<Re
         const user = await User.findById(userId)
             .populate({
                 path: 'friends',
-                select: 'fullName profilePic email nativeLanguage learningLanguage location role academic activity',
+                select: 'fullName profilePic email location role academic activity',
                 populate: [
                     { path: 'academic.school', select: 'name location' },
                     { path: 'academic.program', select: 'name code' }
@@ -1255,8 +1308,6 @@ export async function collectFriendData(req: Request, res: Response): Promise<Re
             email: friend.email,
             role: friend.role,
             location: friend.location,
-            nativeLanguage: friend.nativeLanguage,
-            learningLanguage: friend.learningLanguage,
             academic: friend.academic,
             academicInfo: friend.academicInfo, // Virtual field
             contributionLevel: friend.contributionLevel, // Virtual field
@@ -1337,9 +1388,11 @@ export async function getUserStats(req: Request, res: Response): Promise<Respons
         }
 
         const user = await User.findById(userId)
-            .select('activity studyStats friends savedMaterials uploadedMaterials preferredLanguages')
+            .select('activity studyStats friends savedMaterials uploadedMaterials academic role') // 
             .populate('savedMaterials', 'title category createdAt')
-            .populate('uploadedMaterials', 'title category createdAt');
+            .populate('uploadedMaterials', 'title category createdAt')
+            .populate('academic.school', 'name')
+            .populate('academic.program', 'name code');
 
         if (!user) {
             return res.status(404).json({
@@ -1356,6 +1409,12 @@ export async function getUserStats(req: Request, res: Response): Promise<Respons
         const recentSaves = user.savedMaterials.filter((material: any) =>
             new Date(material.createdAt) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
         ).length;
+
+        // ✅ Academic progress calculations
+        const completedCoursesCount = user.academic?.completedCourses?.length || 0;
+        const currentSemester = user.academic?.currentSemester || 0;
+        const enrollmentYear = user.academic?.enrollmentYear || new Date().getFullYear();
+        const academicYearsActive = new Date().getFullYear() - enrollmentYear + 1;
 
         const stats = {
             // ✅ Activity stats
@@ -1374,18 +1433,37 @@ export async function getUserStats(req: Request, res: Response): Promise<Respons
             recentUploads: recentUploads,
             recentSaves: recentSaves,
 
-            // ✅ Language stats
-            languagesCount: user.preferredLanguages.length,
+            academicStats: {
+                completedCourses: completedCoursesCount,
+                currentSemester: currentSemester,
+                enrollmentYear: enrollmentYear,
+                academicYearsActive: academicYearsActive,
+                academicStatus: user.academic?.status || 'active',
+                hasProgram: !!(user.academic?.program),
+                hasSchool: !!(user.academic?.school)
+            },
 
-            // ✅ Computed metrics
-            engagementScore: user.activity.contributionScore + (user.friends.length * 5),
+            // ✅ Enhanced computed metrics (academic-focused)
+            engagementScore: user.activity.contributionScore + (user.friends.length * 5) + (completedCoursesCount * 2),
+            
+            // ✅ Academic performance indicators
+            academicPerformance: {
+                coursesPerYear: academicYearsActive > 0 ? Math.round((completedCoursesCount / academicYearsActive) * 10) / 10 : 0,
+                contributionsPerSemester: currentSemester > 0 ? Math.round((user.activity.uploadCount / currentSemester) * 10) / 10 : 0,
+                studyEfficiency: user.studyStats.materialsViewed > 0 ? Math.round((user.studyStats.materialsSaved / user.studyStats.materialsViewed) * 100) : 0
+            },
 
-            // ✅ Recent activity summary
+            // ✅ Updated activity summary (academic-focused)
             summary: {
                 isActiveContributor: user.activity.contributionScore > 100,
                 isActiveLearner: user.studyStats.materialsViewed > 50,
                 isSocialUser: user.friends.length > 10,
-                hasRecentActivity: recentUploads > 0 || recentSaves > 0
+                hasRecentActivity: recentUploads > 0 || recentSaves > 0,
+                // ✅ NEW academic indicators
+                isAcademicUser: !!(user.academic?.program && user.academic?.school),
+                isActiveStudent: user.role === 'student' && user.academic?.status === 'active',
+                hasAcademicProgress: completedCoursesCount > 0,
+                isContributingStudent: user.role === 'student' && user.activity.contributionScore > 50
             }
         };
 

@@ -1,32 +1,42 @@
-// middleware/auth.middleware.ts
+// middleware/auth.middleware.ts - ENHANCED VERSION
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import User, { IUser } from "../models/User";
 import { ApiError } from "../utils/ApiError";
 import { asyncHandler } from "../utils/asyncHandler";
+import { 
+    validateAccessToken, 
+    shouldRefreshToken, 
+    isTokenBlacklisted,
+    getTokenMetadata 
+} from "../utils/jwt.enhanced";
 
 // Extend Request interface
 export interface AuthRequest extends Request {
     user?: IUser;
+    tokenMetadata?: any; // For debugging/monitoring
 }
 
 /**
- * @desc    Authenticate user and attach to request
+ * @desc    Enhanced authentication with token pair support
  * @access  Protected routes
  */
 export const protectRoute = asyncHandler(async (req: AuthRequest, res: Response, next: NextFunction) => {
     let token;
 
-    // Check for token in Authorization header
+    // 🔍 EXTRACT TOKEN - Support both new and legacy formats
     const authHeader = req.headers.authorization;
-    console.log("🔐 Auth header:", authHeader);
+    console.log("🔐 Auth header:", authHeader ? `Bearer ${authHeader.substring(7, 27)}...` : 'None');
 
     if (authHeader && authHeader.startsWith('Bearer ')) {
-        token = authHeader.substring(7); // Remove "Bearer " prefix
+        token = authHeader.substring(7);
     } 
-    // Alternative: Check for token in cookies
+    // Check new cookie names first, then fallback to legacy
+    else if (req.cookies?.accessToken) {
+        token = req.cookies.accessToken; // New token pair system
+    }
     else if (req.cookies?.token) {
-        token = req.cookies.token;
+        token = req.cookies.token; // Legacy single token support
     }
 
     if (!token) {
@@ -37,58 +47,101 @@ export const protectRoute = asyncHandler(async (req: AuthRequest, res: Response,
     console.log("🔑 Token length:", token.length);
     console.log("🔑 Token preview:", token.substring(0, 20) + "...");
 
-    if (!process.env.JWT_SECRET_KEY) {
-        console.error("❌ JWT_SECRET_KEY not configured");
-        throw new ApiError(500, "Server configuration error");
-    }
+    // 🔍 GET TOKEN METADATA for monitoring
+    const tokenMetadata = getTokenMetadata(token);
+    req.tokenMetadata = tokenMetadata;
 
     try {
-        // Verify token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY) as { 
-            userId: string;
-            id?: string; // Support both formats
-        };
-        
-        console.log("✅ Token decoded:", decoded);
+        let decoded;
 
-        // Get user ID (support both userId and id)
-        const userId = decoded.userId || decoded.id;
-        if (!userId) {
+        // 🆕 NEW: Try enhanced token validation first
+        if (tokenMetadata?.type === 'access') {
+            console.log("🔄 Using enhanced access token validation");
+            decoded = await validateAccessToken(token);
+            
+            if (!decoded) {
+                throw new ApiError(401, "Invalid or blacklisted access token");
+            }
+
+            // ✅ NEW: Check if token needs refresh notification
+            if (shouldRefreshToken(token)) {
+                res.setHeader('X-Token-Refresh-Needed', 'true');
+                console.log("⚠️ Token refresh recommended");
+            }
+        } 
+        // 🔄 FALLBACK: Legacy token validation for backward compatibility
+        else {
+            console.log("🔄 Using legacy token validation");
+            
+            if (!process.env.JWT_SECRET_KEY) {
+                console.error("❌ JWT_SECRET_KEY not configured");
+                throw new ApiError(500, "Server configuration error");
+            }
+
+            // Check blacklist for legacy tokens too
+            if (await isTokenBlacklisted(token)) {
+                throw new ApiError(401, "Token has been revoked");
+            }
+
+            const jwtDecoded = jwt.verify(token, process.env.JWT_SECRET_KEY) as { 
+                userId?: string;
+                id?: string;
+                sessionId?: string;
+            };
+            
+            // Convert to standard format
+            decoded = {
+                userId: jwtDecoded.userId || jwtDecoded.id,
+                sessionId: jwtDecoded.sessionId,
+                type: 'legacy'
+            };
+        }
+
+        console.log("✅ Token decoded:", {
+            userId: decoded.userId,
+            sessionId: decoded.sessionId,
+            type: decoded.type || 'legacy'
+        });
+
+        // Validate user ID
+        if (!decoded.userId) {
             throw new ApiError(401, "Invalid token format");
         }
 
-        // Find user and exclude password
-        const user = await User.findById(userId).select("-password");
+        // 🔍 FIND USER
+        const user = await User.findById(decoded.userId).select("-password");
         if (!user) {
-            console.log("❌ User not found for ID:", userId);
+            console.log("❌ User not found for ID:", decoded.userId);
             throw new ApiError(401, "Invalid token - user not found");
         }
 
-        // Check if user account is active
+        // ✅ CHECK USER STATUS
         if (!user.isActive) {
-            console.log("❌ User account deactivated:", userId);
+            console.log("❌ User account deactivated:", decoded.userId);
             throw new ApiError(401, "Account has been deactivated");
         }
 
         console.log("✅ User authenticated:", {
             id: user._id,
             email: user.email,
-            role: user.role
+            role: user.role,
+            tokenType: decoded.type || 'legacy'
         });
 
-        // Attach user to request
+        // 📝 ATTACH TO REQUEST
         req.user = user;
         next();
 
     } catch (error: any) {
         console.log("❌ Token verification failed:", error.message);
         
+        // Enhanced error handling
         if (error.name === 'JsonWebTokenError') {
-            throw new ApiError(401, "Invalid token");
+            throw new ApiError(401, "Invalid token format");
         } else if (error.name === 'TokenExpiredError') {
-            throw new ApiError(401, "Token has expired");
+            throw new ApiError(401, "Token has expired. Please refresh or login again.");
         } else if (error instanceof ApiError) {
-            throw error; // Re-throw ApiError
+            throw error;
         } else {
             throw new ApiError(401, "Token authentication failed");
         }
@@ -96,7 +149,61 @@ export const protectRoute = asyncHandler(async (req: AuthRequest, res: Response,
 });
 
 /**
- * @desc    Authorize user roles
+ * @desc    Enhanced optional authentication with token pair support
+ * @access  Public routes that can benefit from user context
+ */
+export const optionalAuth = asyncHandler(async (req: AuthRequest, res: Response, next: NextFunction) => {
+    let token;
+    
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        token = authHeader.substring(7);
+    } else if (req.cookies?.accessToken) {
+        token = req.cookies.accessToken;
+    } else if (req.cookies?.token) {
+        token = req.cookies.token;
+    }
+    
+    if (!token) {
+        return next(); // Continue without authentication
+    }
+
+    try {
+        // Check if token is blacklisted
+        if (await isTokenBlacklisted(token)) {
+            console.log("Optional auth: Token is blacklisted");
+            return next();
+        }
+
+        const tokenMetadata = getTokenMetadata(token);
+        let decoded;
+
+        // Try enhanced validation first
+        if (tokenMetadata?.type === 'access') {
+            decoded = await validateAccessToken(token);
+        } else {
+            // Legacy token validation
+            const jwtDecoded = jwt.verify(token, process.env.JWT_SECRET_KEY!) as { userId?: string; id?: string };
+            decoded = { userId: jwtDecoded.userId || jwtDecoded.id };
+        }
+
+        if (decoded?.userId) {
+            const user = await User.findById(decoded.userId).select("-password");
+            if (user && user.isActive) {
+                req.user = user;
+                req.tokenMetadata = tokenMetadata;
+            }
+        }
+    } catch (error) {
+        console.log("Optional auth failed:", error);
+        // Continue without user - don't throw error
+    }
+
+    next();
+});
+
+/**
+ * @desc    Authorize user roles (unchanged)
  * @param   roles - Array of allowed roles
  * @access  Protected routes with role restriction
  */
@@ -117,7 +224,7 @@ export const authorize = (roles: string[]) => {
 };
 
 /**
- * @desc    Check if user owns resource or is admin
+ * @desc    Check if user owns resource or is admin (unchanged)
  * @param   getUserId - Function to extract user ID from request
  * @access  Protected routes with ownership check
  */
@@ -139,28 +246,20 @@ export const authorizeOwnerOrAdmin = (getUserId: (req: Request) => string) => {
     };
 };
 
-/**
- * @desc    Optional authentication - doesn't throw error if no token
- * @access  Public routes that can benefit from user context
- */
-export const optionalAuth = asyncHandler(async (req: AuthRequest, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
+// 🆕 NEW: Require fresh token (for sensitive operations)
+export const requireFreshToken = asyncHandler(async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const tokenMetadata = req.tokenMetadata;
     
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return next(); // Continue without authentication
+    if (!tokenMetadata) {
+        throw new ApiError(401, "Token metadata required");
     }
 
-    try {
-        const token = authHeader.substring(7);
-        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY!) as { userId: string };
-        const user = await User.findById(decoded.userId).select("-password");
-        
-        if (user && user.isActive) {
-            req.user = user;
-        }
-    } catch (error) {
-        console.log("Optional auth failed:", error);
-        // Don't throw error, just continue without user
+    // Check if token was issued in last 5 minutes
+    const tokenAge = Date.now() - (tokenMetadata.issuedAt?.getTime() || 0);
+    const fiveMinutes = 5 * 60 * 1000;
+
+    if (tokenAge > fiveMinutes) {
+        throw new ApiError(401, "Fresh token required for this operation. Please refresh your token.");
     }
 
     next();
@@ -173,3 +272,4 @@ export const authenticate = protectRoute;
 export const requireStudent = [protectRoute, authorize(['student'])];
 export const requireProfessor = [protectRoute, authorize(['professor', 'admin'])];
 export const requireAdmin = [protectRoute, authorize(['admin'])];
+export const requireFreshAdmin = [protectRoute, authorize(['admin']), requireFreshToken];
