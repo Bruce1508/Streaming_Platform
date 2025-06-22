@@ -1,104 +1,555 @@
-// backend/src/controllers/auth.controller.ts
-import { Response, Request } from "express";
+// src/controllers/auth.controllers.ts - ENHANCED VERSION WITH UTILS
+import { Request, Response } from "express";
+import { AuthRequest } from "../middleware/auth.middleware";
 import User, { IUser } from "../models/User";
-import dotenv from "dotenv";
-import { createUserSession, deactivateSession } from "../utils/session.utils";
 import { 
     generateTokenPair, 
-    refreshAccessToken, 
-    revokeAllTokensForSession,
-    blacklistToken 
+    validateAccessToken, 
+    validateRefreshToken,
+    blacklistToken,
+    refreshAccessToken,
+    revokeAllTokensForSession 
 } from "../utils/jwt.enhanced";
+import crypto from 'crypto';
+import { 
+    logApiRequest, 
+    createPaginatedResponse, 
+    extractPagination 
+} from "../utils/Api.utils";
+import { 
+    cacheUser, 
+    getCachedUser, 
+    generateCacheKey, 
+    cache
+} from "../utils/Cache.utils";
+import { 
+    maskEmail, 
+    formatPhoneNumber, 
+    truncate, 
+    capitalize
+} from "../utils/Format.utils";
+import { logger } from "../utils/logger.utils";
+import { generateSecureToken, generateStudentId } from "../utils/Random.utils";
 
-dotenv.config();
-
-type AuthenticatedRequest = Request & {
-    user?: IUser;
+// ✅ Helper function to generate secure session ID
+const generateSessionId = (): string => {
+    return crypto.randomBytes(32).toString('hex');
 };
 
-export const refreshToken = async (req: Request, res: Response): Promise<void> => {
-    try {
-        let refreshTokenValue;
+// ✅ Store session in Redis
+const redis = require('ioredis');
+const redisClient = new redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
-        // Get refresh token from body or cookie
-        if (req.body.refreshToken) {
-            refreshTokenValue = req.body.refreshToken;
-        } else if (req.cookies?.refreshToken) {
-            refreshTokenValue = req.cookies.refreshToken;
-        }
+// ✅ ENHANCED signUp with utils integration
+export const signUp = async (req: Request, res: Response): Promise<void> => {
+    try {
+        logApiRequest(req as AuthRequest);
         
-        if (!refreshTokenValue) {
+        const { email, password, fullName, role = 'student', academic } = req.body;
+
+        // Check if user exists
+        const existingUser = await User.findOne({ email: email.toLowerCase() });
+        if (existingUser) {
             res.status(400).json({
                 success: false,
-                message: "Refresh token is required"
+                message: "User already exists with this email"
             });
             return;
         }
 
-        console.log('🔄 Processing token refresh request');
+        // ✅ Enhanced user data with utils
+        const userData: Partial<IUser> = {
+            fullName: capitalize(fullName),
+            email: email.toLowerCase(),
+            password,
+            role,
+            bio: "",
+            profilePic: "",
+            location: "",
+            website: "",
+            isOnboarded: false,
+            authProvider: "local",
+            isActive: true,
+            isVerified: false,
+            savedMaterials: [],
+            uploadedMaterials: [],
+            studyStats: {
+                materialsViewed: 0,
+                materialsSaved: 0,
+                materialsCreated: 0,
+                ratingsGiven: 0
+            },
+            preferences: {
+                theme: 'system',
+                notifications: {
+                    email: true,
+                    push: true,
+                    newMaterials: true,
+                    courseUpdates: true
+                },
+                privacy: {
+                    showProfile: true,
+                    showActivity: true
+                }
+            },
+            activity: {
+                loginCount: 0,
+                uploadCount: 0,
+                downloadCount: 0,
+                contributionScore: 0
+            },
+            friends: []
+        };
 
-        // Use enhanced refresh function
-        const newTokenPair = await refreshAccessToken(refreshTokenValue);
-        
-        if (!newTokenPair) {
-            res.status(401).json({
-                success: false,
-                message: "Invalid or expired refresh token. Please login again.",
-                requireReauth: true
-            });
-            return;
+        // ✅ Enhanced academic info with utils
+        if (academic) {
+            userData.academic = {
+                studentId: academic.studentId || (role === 'student' ? generateStudentId() : undefined),
+                school: academic.school,
+                program: academic.program,
+                currentSemester: academic.currentSemester,
+                enrollmentYear: academic.enrollmentYear,
+                completedCourses: [],
+                status: 'active'
+            };
         }
 
-        // Set new tokens in cookies
-        res.cookie("accessToken", newTokenPair.accessToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 15 * 60 * 1000
+        const newUser = new User(userData);
+        await newUser.save();
+
+        // ✅ Generate secure session and enhanced tokens
+        const sessionId = generateSessionId();
+        const tokens = generateTokenPair(newUser._id.toString(), sessionId);
+
+        // ✅ Store session in Redis with user info
+        await redisClient.setex(`session:${sessionId}`, 7 * 24 * 60 * 60, JSON.stringify({
+            userId: newUser._id.toString(),
+            email: newUser.email,
+            role: newUser.role,
+            createdAt: new Date().toISOString()
+        }));
+
+        // ✅ Cache user with utils
+        await cacheUser(newUser._id.toString(), {
+            _id: newUser._id,
+            fullName: newUser.fullName,
+            email: newUser.email,
+            role: newUser.role,
+            isOnboarded: newUser.isOnboarded,
+            isVerified: newUser.isVerified
         });
 
-        res.cookie("refreshToken", newTokenPair.refreshToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000
+        // ✅ Enhanced logging with masked email
+        logger.info('User registered successfully', {
+            userId: newUser._id,
+            email: maskEmail(newUser.email),
+            role: newUser.role
         });
 
-        console.log('✅ Token refresh successful');
-
-        res.status(200).json({
+        res.status(201).json({
             success: true,
-            message: "Tokens refreshed successfully",
+            message: "Account created successfully",
             data: {
-                accessToken: newTokenPair.accessToken,
-                refreshToken: newTokenPair.refreshToken,
-                expiresIn: 15 * 60
+                user: {
+                    _id: newUser._id,
+                    fullName: newUser.fullName,
+                    email: newUser.email,
+                    role: newUser.role,
+                    isOnboarded: newUser.isOnboarded,
+                    isVerified: newUser.isVerified
+                },
+                tokens
             }
         });
 
     } catch (error: any) {
-        console.error("❌ Token refresh error:", error);
+        logger.error("Signup error:", error);
         res.status(500).json({
             success: false,
-            message: "Token refresh failed"
+            message: "Registration failed",
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
 };
 
-export const signUp = async (req: Request, res: Response): Promise<void> => {
+// ✅ ENHANCED signIn with utils integration
+export const signIn = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { 
-            email, 
-            password, 
-            fullName,
-            role = 'student'
-        } = req.body;
+        logApiRequest(req as AuthRequest);
+        
+        const { email, password, rememberMe = false } = req.body;
 
-        // ✅ EXISTING VALIDATION (keep as is)
-        if (!email || !password || !fullName) {
+        const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
+        
+        if (!user || !(await user.matchPassword(password))) {
+            res.status(401).json({
+                success: false,
+                message: "Invalid credentials"
+            });
+            return;
+        }
+
+        if (!user.isActive) {
+            res.status(403).json({
+                success: false,
+                message: "Account is deactivated. Please contact support."
+            });
+            return;
+        }
+
+        // Update last login and activity
+        await user.updateLastLogin();
+        user.activity.loginCount += 1;
+        await user.save();
+
+        // ✅ Generate secure session and enhanced tokens  
+        const sessionId = generateSessionId();
+        const tokens = generateTokenPair(user._id.toString(), sessionId);
+
+        // ✅ Store session in Redis with user info
+        await redisClient.setex(`session:${sessionId}`, 7 * 24 * 60 * 60, JSON.stringify({
+            userId: user._id.toString(),
+            email: user.email,
+            role: user.role,
+            lastLogin: new Date().toISOString()
+        }));
+
+        // ✅ Cache user after successful login
+        await cacheUser(user._id.toString(), {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            role: user.role,
+            profilePic: user.profilePic,
+            isOnboarded: user.isOnboarded,
+            isVerified: user.isVerified,
+            isActive: user.isActive
+        });
+
+        // ✅ Enhanced logging with masked email
+        logger.info('User signed in successfully', {
+            userId: user._id,
+            email: maskEmail(user.email)
+        });
+
+        res.json({
+            success: true,
+            message: "Login successful",
+            data: {
+                user: {
+                    _id: user._id,
+                    fullName: user.fullName,
+                    email: user.email,
+                    role: user.role,
+                    profilePic: user.profilePic,
+                    isOnboarded: user.isOnboarded,
+                    isVerified: user.isVerified,
+                    isActive: user.isActive
+                },
+                tokens
+            }
+        });
+
+    } catch (error: any) {
+        logger.error("Login error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Login failed"
+        });
+    }
+};
+
+// ✅ ENHANCED getMe with cache integration
+export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        logApiRequest(req);
+        
+        const userId = req.user!._id.toString();
+
+        // ✅ Try cache first
+        let user = await getCachedUser(userId);
+        
+        if (!user) {
+            user = await User.findById(userId)
+                .select('-password')
+                .populate('academic.school', 'name')
+                .populate('academic.program', 'name')
+                .lean();
+
+            if (user) {
+                await cacheUser(userId, user);
+            }
+        }
+
+        if (!user) {
+            res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+            return;
+        }
+
+        const userResponse = {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            role: user.role,
+            profilePic: user.profilePic,
+            bio: user.bio,
+            location: user.location,
+            website: user.website,
+            isOnboarded: user.isOnboarded,
+            isVerified: user.isVerified,
+            isActive: user.isActive,
+            lastLogin: user.lastLogin,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+            authProvider: user.authProvider,
+            academic: user.academic,
+            preferences: user.preferences,
+            activity: user.activity,
+            studyStats: user.studyStats
+        };
+
+        res.json({
+            success: true,
+            data: { user: userResponse }
+        });
+
+    } catch (error: any) {
+        logger.error("Error in getMe:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch user data"
+        });
+    }
+};
+
+// ✅ ENHANCED updateProfile with cache clearing
+export const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        logApiRequest(req);
+        
+        const userId = req.user!._id.toString();
+        const updateData = req.body;
+
+        // Remove sensitive fields
+        delete updateData.password;
+        delete updateData.email;
+        delete updateData.role;
+        delete updateData.isActive;
+        delete updateData.isVerified;
+
+        // ✅ Format data with utils
+        if (updateData.fullName) {
+            updateData.fullName = capitalize(updateData.fullName);
+        }
+        if (updateData.phone) {
+            updateData.phone = formatPhoneNumber(updateData.phone);
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { 
+                ...updateData,
+                updatedAt: new Date()
+            },
+            { 
+                new: true, 
+                runValidators: true,
+                select: '-password'
+            }
+        );
+
+        if (!updatedUser) {
+            res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+            return;
+        }
+
+        // ✅ Clear cache with utils
+        const userCacheKey = generateCacheKey('user', userId);
+        cache.delete(userCacheKey);
+
+        logger.info('Profile updated', {
+            userId,
+            updatedFields: Object.keys(updateData)
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            data: {
+                user: {
+                    _id: updatedUser._id,
+                    fullName: updatedUser.fullName,
+                    email: updatedUser.email,
+                    role: updatedUser.role,
+                    profilePic: updatedUser.profilePic,
+                    bio: updatedUser.bio,
+                    location: updatedUser.location,
+                    website: updatedUser.website,
+                    isOnboarded: updatedUser.isOnboarded,
+                    isVerified: updatedUser.isVerified,
+                    isActive: updatedUser.isActive,
+                    lastLogin: updatedUser.lastLogin,
+                    updatedAt: updatedUser.updatedAt,
+                    academic: updatedUser.academic,
+                    preferences: updatedUser.preferences
+                }
+            }
+        });
+
+    } catch (error: any) {
+        logger.error("Error updating profile:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to update profile"
+        });
+    }
+};
+
+// ✅ ENHANCED getAllUsers with pagination utils
+export const getAllUsers = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        logApiRequest(req);
+        
+        const { page, limit, skip } = extractPagination(req);
+        const { role, isActive, search } = req.query;
+
+        let query: any = {};
+        
+        if (role) query.role = role;
+        if (typeof isActive === 'boolean') query.isActive = isActive;
+        
+        if (search) {
+            query.$or = [
+                { fullName: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } },
+                { 'academic.studentId': { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        // ✅ Check cache first
+        const cacheKey = generateCacheKey('admin_users_list', JSON.stringify(req.query));
+        const cached = cache.get(cacheKey);
+        
+        if (cached) {
+            res.json(cached);
+            return;
+        }
+
+        const [users, total] = await Promise.all([
+            User.find(query)
+                .select('-password')
+                .skip(skip)
+                .limit(limit)
+                .sort({ createdAt: -1 })
+                .lean(),
+            User.countDocuments(query)
+        ]);
+
+        // ✅ Enhanced users data with formatting
+        const enhancedUsers = users.map((user: any) => ({
+            ...user,
+            maskedEmail: maskEmail(user.email),
+            truncatedBio: user.bio ? truncate(user.bio, 100) : "",
+            studentId: user.academic?.studentId || null
+        }));
+
+        // ✅ Create paginated response with utils
+        const response = createPaginatedResponse(
+            enhancedUsers,
+            total,
+            page,
+            limit,
+            'Users retrieved successfully'
+        );
+
+        // ✅ Cache the response
+        cache.set(cacheKey, response, 180); // 3 minutes
+
+        logger.info('Admin users list retrieved', {
+            adminId: req.user?._id,
+            totalUsers: total,
+            page,
+            limit
+        });
+
+        res.json(response);
+
+    } catch (error: any) {
+        logger.error("Error getting all users:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to retrieve users"
+        });
+    }
+};
+
+// ✅ ENHANCED forgotPassword with secure token generation
+export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
+    try {
+        logApiRequest(req as AuthRequest);
+        
+        const { email } = req.body;
+        const normalizedEmail = email.toLowerCase().trim();
+
+        const user = await User.findOne({ email: normalizedEmail });
+        
+        if (!user) {
+            logger.warn('Password reset requested for non-existent user', {
+                email: maskEmail(normalizedEmail),
+                ip: req.ip
+            });
+            
+            res.status(200).json({
+                success: true,
+                message: "If an account with that email exists, we have sent a password reset link."
+            });
+            return;
+        }
+
+        // ✅ Generate secure token with utils
+        const resetToken = generateSecureToken(32);
+        const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
+
+        (user as any).resetPasswordToken = resetToken;
+        (user as any).resetPasswordExpires = resetTokenExpiry;
+        await user.save();
+
+        logger.info('Password reset token generated', {
+            userId: user._id,
+            email: maskEmail(user.email)
+        });
+
+        res.json({
+            success: true,
+            message: "Password reset link sent to your email"
+        });
+
+    } catch (error: any) {
+        logger.error("Forgot password error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to process password reset request"
+        });
+    }
+};
+
+// ✅ Continue with other functions...
+export const resetPassword = async (req: Request, res: Response): Promise<void> => {
+    try {
+        logApiRequest(req as AuthRequest);
+        
+        const { token, password } = req.body;
+
+        if (!token || !password) {
             res.status(400).json({
                 success: false,
-                message: "Email, password, and full name are required"
+                message: "Token and new password are required"
             });
             return;
         }
@@ -111,574 +562,162 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        } as any);
+
+        if (!user) {
             res.status(400).json({
                 success: false,
-                message: "User already exists with this email"
+                message: "Invalid or expired reset token"
             });
             return;
         }
 
-        // ✅ EXISTING USER DATA (keep as is)
-        const userData = {
-            email: email.toLowerCase().trim(),
-            password,
-            fullName: fullName.trim(),
-            authProvider: "local",
-            role: role || 'student',
-            isOnboarded: false,
-            isActive: true,
-            isVerified: false,
-            bio: "",
-            location: "",
-            website: "",
-            profilePic: ""
-        };
-
-        const user = new User(userData);
+        user.password = password;
+        (user as any).resetPasswordToken = undefined;
+        (user as any).resetPasswordExpires = undefined;
+        
         await user.save();
 
-        // ✅ UPDATE LAST LOGIN (keep as is)
-        await user.updateLastLogin();
-
-        // ✅ CREATE SESSION (keep as is)
-        const sessionId = await createUserSession(
-            user._id.toString(),
-            req,
-            'password'
-        );
-
-        // 🆕 CHANGE: Generate token pair instead of single token
-        const { accessToken, refreshToken } = generateTokenPair(
-            user._id.toString(), 
-            sessionId
-        );
-
-        // 🆕 CHANGE: Set both tokens in separate cookies
-        res.cookie("accessToken", accessToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 15 * 60 * 1000 // 15 minutes
-        });
-
-        res.cookie("refreshToken", refreshToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-        });
-
-        // 🆕 CHANGE: Updated response data
-        res.status(201).json({
-            success: true,
-            message: "Account created successfully",
-            data: {
-                user: {
-                    _id: user._id,
-                    email: user.email,
-                    fullName: user.fullName,
-                    role: user.role,
-                    isOnboarded: user.isOnboarded,
-                    isVerified: user.isVerified,
-                    isActive: user.isActive,
-                    profilePic: user.profilePic,
-                    bio: user.bio,
-                    location: user.location,
-                    website: user.website,
-                    lastLogin: user.lastLogin,
-                    createdAt: user.createdAt
-                },
-                // 🆕 Return both tokens for mobile apps
-                accessToken,
-                refreshToken,
-                sessionId,
-                expiresIn: 15 * 60 // Access token expires in 15 minutes
-            }
-        });
-
-    } catch (error: any) {
-        // ✅ EXISTING ERROR HANDLING (keep as is)
-        console.error("Signup error:", error);
-        
-        if (error.name === 'ValidationError') {
-            const validationErrors = Object.values(error.errors).map((err: any) => err.message);
-            res.status(400).json({
-                success: false,
-                message: "Validation failed",
-                errors: validationErrors
-            });
-            return;
-        }
-
-        if (error.code === 11000) {
-            res.status(409).json({
-                success: false,
-                message: "An account with this email already exists"
-            });
-            return;
-        }
-
-        res.status(500).json({
-            success: false,
-            message: "Failed to create account. Please try again."
-        });
-    }
-};
-
-// controllers/auth.controllers.ts - UPDATED signIn
-export const signIn = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { email, password } = req.body;
-
-        // ✅ EXISTING VALIDATION (keep as is)
-        if (!email || !password) {
-            res.status(400).json({
-                success: false,
-                message: "Email and password are required"
-            });
-            return;
-        }
-
-        // ✅ EXISTING USER LOOKUP (keep as is)
-        const user = await User.findOne({ email: email.toLowerCase().trim() })
-            .select('+password');
-
-        if (!user) {
-            res.status(401).json({
-                success: false,
-                message: "Invalid email or password"
-            });
-            return;
-        }
-
-        // ✅ EXISTING VALIDATIONS (keep as is)
-        if (!user.isActive) {
-            res.status(403).json({
-                success: false,
-                message: "Account has been deactivated. Please contact support."
-            });
-            return;
-        }
-
-        if (user.authProvider !== "local") {
-            res.status(400).json({
-                success: false,
-                message: `Please sign in with ${user.authProvider.charAt(0).toUpperCase() + user.authProvider.slice(1)}`
-            });
-            return;
-        }
-
-        // ✅ EXISTING PASSWORD VALIDATION (keep as is)
-        const isPasswordValid = await user.matchPassword(password);
-        if (!isPasswordValid) {
-            res.status(401).json({
-                success: false,
-                message: "Invalid email or password"
-            });
-            return;
-        }
-
-        // ✅ UPDATE LAST LOGIN (keep as is)
-        await user.updateLastLogin();
-
-        // ✅ CREATE SESSION (keep as is)
-        const sessionId = await createUserSession(
-            user._id.toString(),
-            req,
-            'password'
-        );
-
-        // 🆕 CHANGE: Generate token pair instead of single token
-        const { accessToken, refreshToken } = generateTokenPair(
-            user._id.toString(), 
-            sessionId
-        );
-
-        // ✅ EXISTING LOGIN LOG (keep as is)
-        console.log('✅ Successful login:', {
+        logger.info('Password reset successful', {
             userId: user._id,
-            email: user.email,
-            sessionId,
-            ip: req.ip,
-            userAgent: req.headers['user-agent'],
-            timestamp: new Date()
+            email: maskEmail(user.email)
         });
 
-        // 🆕 CHANGE: Set both tokens in separate cookies
-        res.cookie("accessToken", accessToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 15 * 60 * 1000 // 15 minutes
-        });
-
-        res.cookie("refreshToken", refreshToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-        });
-
-        // 🆕 CHANGE: Updated response data
-        res.status(200).json({
+        res.json({
             success: true,
-            message: "Login successful",
-            data: {
-                user: {
-                    _id: user._id,
-                    email: user.email,
-                    fullName: user.fullName,
-                    role: user.role,
-                    profilePic: user.profilePic,
-                    isOnboarded: user.isOnboarded,
-                    isVerified: user.isVerified,
-                    isActive: user.isActive,
-                    bio: user.bio,
-                    location: user.location,
-                    website: user.website,
-                    lastLogin: user.lastLogin,
-                    createdAt: user.createdAt
-                },
-                // 🆕 Return both tokens for mobile apps
-                accessToken,
-                refreshToken,
-                sessionId,
-                expiresIn: 15 * 60 // Access token expires in 15 minutes
-            }
+            message: "Password reset successful. Please login with your new password."
         });
 
     } catch (error: any) {
-        // ✅ EXISTING ERROR HANDLING (keep as is)
-        console.error("Signin error:", error);
+        logger.error("Reset password error:", error);
         res.status(500).json({
             success: false,
-            message: "Login failed. Please try again."
+            message: "Failed to reset password"
         });
     }
 };
 
-export async function getMe(req: Request, res: Response): Promise<Response | void | any> {
+export const refreshToken = async (req: Request, res: Response): Promise<void> => {
     try {
-        const authReq = req as AuthenticatedRequest;
-        const user = authReq.user;
-
-        if (!user) {
-            return res.status(401).json({ 
-                success: false, 
-                message: "Authentication required" 
-            });
-        }
-
-        // ✅ Base user response
-        const userResponse = {
-            _id: user._id,
-            fullName: user.fullName,
-            email: user.email,
-            role: user.role,
-            profilePic: user.profilePic,
-            isOnboarded: user.isOnboarded,
-            isVerified: user.isVerified,
-            isActive: user.isActive,
-            bio: user.bio,
-            location: user.location,
-            website: user.website,
-            lastLogin: user.lastLogin,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt
-        };
-
-        // ✅ Build response data conditionally
-        const responseData: any = {
-            user: userResponse
-        };
-
-        // ✅ Add session info separately if available
-        if (req.sessionInfo) {
-            responseData.session = {
-                sessionId: req.sessionInfo.sessionId,
-                lastActivity: req.sessionInfo.lastActivity,
-                ipAddress: req.sessionInfo.ipAddress
-            };
-        }
-
-        return res.status(200).json({ 
-            success: true, 
-            data: responseData
-        });
-
-    } catch (error: any) {
-        console.error("Error in getMe:", error);
-        return res.status(500).json({ 
-            success: false, 
-            message: "Failed to fetch user profile" 
-        });
-    }
-}
-
-export async function onBoarding(req: Request, res: Response): Promise<Response | void | any> {
-    try {
-        const authReq = req as AuthenticatedRequest;
-        const user = authReq.user;
-
-        if (!user) {
-            return res.status(401).json({ 
-                success: false, 
-                message: "Authentication required" 
-            });
-        }
-
-        const { 
-            fullName, 
-            bio, 
-            location, 
-            website,
-            profilePic
-        } = req.body;
-
-        if (!fullName?.trim()) {
-            return res.status(400).json({
-                success: false,
-                message: "Full name is required"
-            });
-        }
-
-        // ✅ Simple update data - clean and focused
-        const updateData = {
-            fullName: fullName.trim(),
-            bio: bio?.trim() || "",
-            location: location?.trim() || "",
-            website: website?.trim() || "",
-            profilePic: profilePic || user.profilePic,
-            isOnboarded: true
-        };
-
-        const updatedUser = await User.findByIdAndUpdate(
-            user._id,
-            updateData,
-            { new: true, runValidators: true }
-        );
-
-        if (!updatedUser) {
-            return res.status(404).json({ 
-                success: false, 
-                message: "User not found" 
-            });
-        }
-
-        const userResponse = {
-            _id: updatedUser._id,
-            fullName: updatedUser.fullName,
-            email: updatedUser.email,
-            role: updatedUser.role,
-            profilePic: updatedUser.profilePic,
-            isOnboarded: updatedUser.isOnboarded,
-            isVerified: updatedUser.isVerified,
-            isActive: updatedUser.isActive,
-            bio: updatedUser.bio,
-            location: updatedUser.location,
-            website: updatedUser.website,
-            lastLogin: updatedUser.lastLogin,
-            createdAt: updatedUser.createdAt
-        };
-
-        return res.status(200).json({
-            success: true,
-            message: "Onboarding completed successfully",
-            data: {
-                user: userResponse
-            }
-        });
-
-    } catch (error: any) {
-        console.error("Error in onBoarding:", error);
+        logApiRequest(req as AuthRequest);
         
-        if (error.name === 'ValidationError') {
-            const validationErrors = Object.values(error.errors).map((err: any) => err.message);
-            return res.status(400).json({
+        const { refreshToken } = req.body;
+
+        if (!refreshToken) {
+            res.status(401).json({
                 success: false,
-                message: "Validation failed",
-                errors: validationErrors
-            });
-        }
-
-        return res.status(500).json({ 
-            success: false, 
-            message: "Failed to complete onboarding" 
-        });
-    }
-}
-
-export const oauth = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { provider, email, fullName, profilePic, providerId } = req.body;
-
-        if (!email || !provider) {
-            res.status(400).json({
-                success: false,
-                message: "Email and provider are required"
+                message: "Refresh token is required"
             });
             return;
         }
 
-        let user = await User.findOne({ email: email.toLowerCase().trim() });
+        // ✅ Use enhanced JWT refresh with token rotation
+        const newTokens = await refreshAccessToken(refreshToken);
+        
+        if (!newTokens) {
+            res.status(401).json({
+                success: false,
+                message: "Invalid or expired refresh token"
+            });
+            return;
+        }
 
-        if (user) {
-            // ✅ Update existing user
-            if (!user.profilePic && profilePic) {
-                user.profilePic = profilePic;
-            }
+        // ✅ Verify user still exists and is active
+        const decoded = await validateRefreshToken(refreshToken);
+        if (!decoded) {
+            res.status(401).json({
+                success: false,
+                message: "Invalid refresh token"
+            });
+            return;
+        }
+
+        const user = await User.findById(decoded.userId).select('-password');
+        
+        if (!user || !user.isActive) {
+            // ✅ Revoke session if user is inactive
+            await revokeAllTokensForSession(decoded.sessionId);
+            res.status(401).json({
+                success: false,
+                message: "User not found or inactive"
+            });
+            return;
+        }
+
+        logger.info('Tokens refreshed', {
+            userId: user._id,
+            email: maskEmail(user.email)
+        });
+
+        res.json({
+            success: true,
+            message: "Tokens refreshed successfully",
+            data: { tokens: newTokens }
+        });
+
+    } catch (error: any) {
+        logger.error("Token refresh error:", error);
+        res.status(401).json({
+            success: false,
+            message: "Token refresh failed"
+        });
+    }
+};
+
+// ✅ NEW ENHANCED LOGOUT with token blacklisting
+export const logout = async (req: AuthRequest, res: Response): Promise<void> => {
+    try {
+        logApiRequest(req);
+        
+        const authHeader = req.headers.authorization;
+        const accessToken = authHeader?.split(' ')[1]; // Bearer <token>
+        const { refreshToken } = req.body;
+        
+        if (!accessToken) {
+            res.status(400).json({
+                success: false,
+                message: "Access token is required"
+            });
+            return;
+        }
+
+        // ✅ Validate access token to get session info
+        const decoded = await validateAccessToken(accessToken);
+        
+        if (decoded) {
+            // ✅ Revoke all tokens for this session (most secure)
+            await revokeAllTokensForSession(decoded.sessionId);
             
-            if (user.authProvider === "local" && provider !== "local") {
-                user.authProvider = provider as any;
-                user.providerId = providerId;
-            }
-            
-            await user.updateLastLogin();
-            
+            logger.info('User logged out successfully', {
+                userId: decoded.userId,
+                sessionId: decoded.sessionId
+            });
         } else {
-            // ✅ Create new user - clean data
-            user = new User({
-                email: email.toLowerCase().trim(),
-                fullName: fullName || email.split('@')[0],
-                profilePic: profilePic || "",
-                authProvider: provider,
-                providerId,
-                role: 'student',
-                isOnboarded: false,
-                isActive: true,
-                isVerified: false,
-                bio: "",
-                location: "",
-                website: ""
-            });
-
-            await user.save();
-            await user.updateLastLogin();
-        }
-
-        // 🆕 NEW: Create session for OAuth
-        const sessionId = await createUserSession(
-            user._id.toString(),
-            req,
-            'oauth' // ← OAuth login method
-        );
-
-        // 🆕 NEW: Generate token pair instead of single token
-        const { accessToken, refreshToken } = generateTokenPair(
-            user._id.toString(), 
-            sessionId
-        );
-
-        console.log('✅ OAuth successful:', {
-            userId: user._id,
-            email: user.email,
-            provider: provider,
-            sessionId,
-            tokenType: 'token_pair'
-        });
-
-        // 🆕 NEW: Set both tokens in separate cookies
-        res.cookie("accessToken", accessToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 15 * 60 * 1000 // 15 minutes
-        });
-
-        res.cookie("refreshToken", refreshToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-        });
-
-        // 🆕 NEW: Updated response with token pair
-        res.status(200).json({
-            success: true,
-            message: "OAuth authentication successful",
-            data: {
-                user: {
-                    _id: user._id,
-                    email: user.email,
-                    fullName: user.fullName,
-                    role: user.role,
-                    profilePic: user.profilePic,
-                    isOnboarded: user.isOnboarded,
-                    isVerified: user.isVerified,
-                    isActive: user.isActive,
-                    bio: user.bio,
-                    location: user.location,
-                    website: user.website,
-                    lastLogin: user.lastLogin,
-                    authProvider: user.authProvider
-                },
-                // 🆕 Return both tokens for mobile apps
-                accessToken,
-                refreshToken,
-                sessionId,
-                expiresIn: 15 * 60, // Access token expires in 15 minutes
-                loginMethod: 'oauth'
-            }
-        });
-
-    } catch (error: any) {
-        console.error("❌ OAuth error:", error);
-        res.status(500).json({
-            success: false,
-            message: "OAuth authentication failed",
-            error: process.env.NODE_ENV === 'development' ? error.message : "Authentication failed"
-        });
-    }
-};
-
-// controllers/auth.controllers.ts - ENHANCED logout
-export const logout = async (req: Request, res: Response): Promise<void> => {
-    try {
-        // ✅ EXISTING SESSION DEACTIVATION (keep as is)
-        if (req.sessionInfo?.sessionId) {
-            await deactivateSession(req.sessionInfo.sessionId);
-            console.log('✅ Session deactivated:', {
-                sessionId: req.sessionInfo.sessionId,
-                userId: req.sessionInfo.userId,
-                timestamp: new Date()
-            });
-        }
-
-        // 🆕 ENHANCED: Revoke all tokens for session
-        if (req.sessionInfo?.sessionId) {
-            await revokeAllTokensForSession(req.sessionInfo.sessionId);
-            console.log('✅ All tokens revoked for session:', req.sessionInfo.sessionId);
-        }
-        
-        // 🆕 ENHANCED: Blacklist current tokens if available
-        const accessToken = req.cookies?.accessToken || req.cookies?.token; // Support legacy
-        const refreshTokenValue = req.cookies?.refreshToken;
-        
-        if (accessToken) {
+            // ✅ If token is invalid, still try to blacklist it
             await blacklistToken(accessToken);
-            console.log('✅ Access token blacklisted');
-        }
-        
-        if (refreshTokenValue) {
-            await blacklistToken(refreshTokenValue);
-            console.log('✅ Refresh token blacklisted');
         }
 
-        // 🆕 CHANGE: Clear all possible cookies (new + legacy)
-        res.clearCookie("accessToken");
-        res.clearCookie("refreshToken");
-        res.clearCookie("token"); // Clean up legacy token
-        
-        res.status(200).json({
+        // ✅ Also blacklist refresh token if provided
+        if (refreshToken) {
+            await blacklistToken(refreshToken);
+        }
+
+        // ✅ Clear user cache
+        if (req.user?._id) {
+            const userCacheKey = generateCacheKey('user', req.user._id.toString());
+            cache.delete(userCacheKey);
+        }
+
+        res.json({
             success: true,
             message: "Logged out successfully"
         });
 
     } catch (error: any) {
-        // ✅ EXISTING ERROR HANDLING (keep as is)
-        console.error("Logout error:", error);
+        logger.error("Logout error:", error);
         res.status(500).json({
             success: false,
             message: "Logout failed"
@@ -686,85 +725,58 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
-export const updateProfile = async (req: Request, res: Response): Promise<Response | void | any> => {
+// ✅ NEW FUNCTION: Logout from all devices
+export const logoutAllDevices = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const authReq = req as AuthenticatedRequest;
-        const user = authReq.user;
-
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                message: "Authentication required"
-            });
-        }
-
-        const { 
-            fullName, 
-            bio, 
-            location, 
-            website, 
-            profilePic
-        } = req.body;
-
-        // ✅ Clean update data - only essential fields
-        const updateData: any = {};
+        logApiRequest(req);
         
-        if (fullName?.trim()) updateData.fullName = fullName.trim();
-        if (bio !== undefined) updateData.bio = bio?.trim() || "";
-        if (location !== undefined) updateData.location = location?.trim() || "";
-        if (website !== undefined) updateData.website = website?.trim() || "";
-        if (profilePic !== undefined) updateData.profilePic = profilePic || "";
+        const userId = req.user!._id.toString();
 
-        const updatedUser = await User.findByIdAndUpdate(
-            user._id,
-            updateData,
-            { new: true, runValidators: true }
-        );
+        // ✅ Get all active sessions for user
+        const sessionKeys = await redisClient.keys(`session:*`);
+        const userSessions: string[] = [];
 
-        if (!updatedUser) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found"
-            });
-        }
-
-        return res.status(200).json({
-            success: true,
-            message: "Profile updated successfully",
-            data: {
-                user: {
-                    _id: updatedUser._id,
-                    fullName: updatedUser.fullName,
-                    email: updatedUser.email,
-                    role: updatedUser.role,
-                    profilePic: updatedUser.profilePic,
-                    isOnboarded: updatedUser.isOnboarded,
-                    isVerified: updatedUser.isVerified,
-                    isActive: updatedUser.isActive,
-                    bio: updatedUser.bio,
-                    location: updatedUser.location,
-                    website: updatedUser.website,
-                    lastLogin: updatedUser.lastLogin,
-                    updatedAt: updatedUser.updatedAt
+        for (const sessionKey of sessionKeys) {
+            const sessionData = await redisClient.get(sessionKey);
+            if (sessionData) {
+                try {
+                    const session = JSON.parse(sessionData);
+                    if (session.userId === userId) {
+                        const sessionId = sessionKey.split(':')[1];
+                        userSessions.push(sessionId);
+                    }
+                } catch (e) {
+                    // Skip invalid session data
+                    continue;
                 }
             }
+        }
+
+        // ✅ Revoke all sessions for this user
+        const revokePromises = userSessions.map(sessionId => 
+            revokeAllTokensForSession(sessionId)
+        );
+        await Promise.all(revokePromises);
+
+        // ✅ Clear user cache
+        const userCacheKey = generateCacheKey('user', userId);
+        cache.delete(userCacheKey);
+
+        logger.info('User logged out from all devices', {
+            userId,
+            sessionsRevoked: userSessions.length
+        });
+
+        res.json({
+            success: true,
+            message: `Logged out from ${userSessions.length} devices successfully`
         });
 
     } catch (error: any) {
-        console.error("Error updating profile:", error);
-        
-        if (error.name === 'ValidationError') {
-            const validationErrors = Object.values(error.errors).map((err: any) => err.message);
-            return res.status(400).json({
-                success: false,
-                message: "Validation failed",
-                errors: validationErrors
-            });
-        }
-
-        return res.status(500).json({
+        logger.error("Logout all devices error:", error);
+        res.status(500).json({
             success: false,
-            message: "Failed to update profile"
+            message: "Failed to logout from all devices"
         });
     }
 };

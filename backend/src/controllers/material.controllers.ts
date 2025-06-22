@@ -1,8 +1,31 @@
-// backend/src/controllers/material.controller.ts
+// backend/src/controllers/material.controller.ts - ENHANCED WITH UTILS
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import StudyMaterial, { IStudyMaterial } from '../models/StudyMaterial';
 import User, { IUser } from '../models/User';
+import { 
+    extractPagination, 
+    buildMongoQuery, 
+    createPaginatedResponse,
+    logApiRequest 
+} from '../utils/Api.utils';
+import { 
+    formatFileSize, 
+    truncate,
+    generateSlug,
+    capitalize 
+} from '../utils/Format.utils';
+import { 
+    cacheStats, 
+    getCachedStats,
+    generateCacheKey,
+    cache 
+} from '../utils/Cache.utils';
+import { 
+    searchMaterials as searchMaterialsUtil,
+    buildAdvancedSearchQuery 
+} from '../utils/Search.utils';
+import { generateRandomFileName } from '../utils/Random.utils';
 
 type AuthenticatedRequest = Request & {
     user?: IUser;
@@ -23,7 +46,7 @@ interface StudyMaterialQuery {
     course?: string;
 }
 
-// ✅ Get study material by ID
+// ✅ Enhanced getStudyMaterialById with caching
 export const getStudyMaterialById = async (req: Request, res: Response): Promise<Response | any> => {
     try {
         const { id } = req.params;
@@ -33,6 +56,17 @@ export const getStudyMaterialById = async (req: Request, res: Response): Promise
             return res.status(400).json({
                 success: false,
                 message: 'Invalid study material ID'
+            });
+        }
+
+        // ✅ Try cache first
+        const cacheKey = generateCacheKey('material', id);
+        const cachedMaterial = cache.get(cacheKey);
+        
+        if (cachedMaterial) {
+            return res.json({
+                success: true,
+                data: cachedMaterial
             });
         }
 
@@ -51,7 +85,7 @@ export const getStudyMaterialById = async (req: Request, res: Response): Promise
             });
         }
 
-        // ✅ Check access permissions
+        // Check access permissions
         if (!material.isPublic && (!authReq.user || !material.author.equals(authReq.user._id))) {
             return res.status(403).json({
                 success: false,
@@ -59,8 +93,11 @@ export const getStudyMaterialById = async (req: Request, res: Response): Promise
             });
         }
 
-        // ✅ Increment views using instance method
+        // Increment views using instance method
         await material.incrementViews();
+
+        // ✅ Cache the material
+        cache.set(cacheKey, material, 600); // 10 minutes
 
         return res.json({
             success: true,
@@ -73,6 +110,381 @@ export const getStudyMaterialById = async (req: Request, res: Response): Promise
             success: false,
             message: 'Error fetching study material',
             error: error.message
+        });
+    }
+};
+
+// ✅ Enhanced getAllMaterials with comprehensive utils integration
+export const getStudyMaterials = async (req: Request, res: Response): Promise<Response | any> => {
+    try {
+        const authReq = req as AuthenticatedRequest;
+        // ✅ Log API request
+        logApiRequest(authReq);
+
+        const {
+            page = '1',
+            limit = '12',
+            search,
+            category,
+            difficulty,
+            tags,
+            author,
+            school,
+            program,
+            course,
+            sort = 'createdAt'
+        } = req.query as StudyMaterialQuery;
+
+        // ✅ Extract pagination with utils
+        const { page: pageNum, limit: limitNum, skip } = extractPagination(req);
+
+        // ✅ Check cache first
+        const cacheKey = generateCacheKey('materials_list', JSON.stringify(req.query));
+        const cached = getCachedStats(cacheKey);
+        
+        if (cached) {
+            return res.json(cached);
+        }
+
+        // ✅ Build query with utils
+        const baseQuery = buildMongoQuery(req, ['category', 'difficulty', 'school', 'program', 'course']);
+        
+        const filter: any = {
+            status: 'published',
+            isPublic: true,
+            ...baseQuery
+        };
+
+        // ✅ Enhanced search functionality
+        if (search) {
+            filter.$text = { $search: search };
+        }
+
+        // Academic filters
+        if (author) filter.author = author;
+
+        // Tags filter
+        if (tags) {
+            const tagArray = tags.split(',').map(tag => tag.trim());
+            filter['metadata.tags'] = { $in: tagArray };
+        }
+
+        // ✅ Build sort object with utils
+        let sortObj: any = {};
+        switch (sort) {
+            case 'newest':
+                sortObj = { createdAt: -1 };
+                break;
+            case 'oldest':
+                sortObj = { createdAt: 1 };
+                break;
+            case 'popular':
+                sortObj = { views: -1, averageRating: -1 };
+                break;
+            case 'rating':
+                sortObj = { averageRating: -1, totalRatings: -1 };
+                break;
+            case 'title':
+                sortObj = { title: 1 };
+                break;
+            case 'relevance':
+                sortObj = search ? { score: { $meta: 'textScore' } } : { createdAt: -1 };
+                break;
+            default:
+                sortObj = { createdAt: -1 };
+        }
+
+        // Execute query with comprehensive population
+        const [materials, total] = await Promise.all([
+            StudyMaterial.find(filter)
+                .populate('author', 'fullName profilePic')
+                .populate('academic.school', 'name location')
+                .populate('academic.program', 'name code')
+                .populate('academic.course', 'code name')
+                .sort(sortObj)
+                .limit(limitNum)
+                .skip(skip)
+                .exec(),
+            StudyMaterial.countDocuments(filter)
+        ]);
+
+        // ✅ Enhanced materials with formatting
+        const enhancedMaterials = materials.map((material: any) => ({
+            ...material.toObject(),
+            // Add formatted fields
+            truncatedDescription: material.description ? truncate(material.description, 150) : "",
+            slug: generateSlug(material.title),
+            // Format any file sizes if they exist
+            formattedFileSize: material.fileSize ? formatFileSize(material.fileSize) : null
+        }));
+
+        // Get aggregated stats
+        const stats = await StudyMaterial.aggregate([
+            { $match: filter },
+            {
+                $group: {
+                    _id: null,
+                    totalMaterials: { $sum: 1 },
+                    avgRating: { $avg: '$averageRating' },
+                    totalViews: { $sum: '$views' },
+                    totalSaves: { $sum: '$saves' }
+                }
+            }
+        ]);
+
+        // ✅ Create paginated response with utils
+        const response = createPaginatedResponse(
+            enhancedMaterials,
+            total,
+            pageNum,
+            limitNum,
+            'Study materials retrieved successfully'
+        );
+
+        // Add stats to response
+        response.data.stats = stats[0] || {
+            totalMaterials: 0,
+            avgRating: 0,
+            totalViews: 0,
+            totalSaves: 0
+        };
+
+        response.data.filters = {
+            search, category, difficulty, tags, author, school, program, course, sort
+        };
+
+        // ✅ Cache the response
+        cacheStats(cacheKey, response, 300); // 5 minutes
+
+        return res.json(response);
+
+    } catch (error: any) {
+        console.error("Error fetching study materials:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error fetching study materials",
+            error: error.message
+        });
+    }
+};
+
+// ✅ NEW: Enhanced search materials endpoint
+export const searchMaterials = async (req: Request, res: Response): Promise<Response | any> => {
+    try {
+        const authReq = req as AuthenticatedRequest;
+        logApiRequest(authReq);
+
+        // ✅ Use search utils
+        const results = await searchMaterialsUtil(StudyMaterial, req.query);
+        
+        // ✅ Format results
+        const enhancedResults = results.map((material: any) => ({
+            ...material,
+            truncatedDescription: material.description ? truncate(material.description, 150) : "",
+            formattedFileSize: material.fileSize ? formatFileSize(material.fileSize) : null
+        }));
+
+        return res.json({
+            success: true,
+            data: {
+                materials: enhancedResults,
+                total: enhancedResults.length
+            },
+            message: 'Search completed successfully'
+        });
+
+    } catch (error: any) {
+        console.error('Error in search materials:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Search failed',
+            error: error.message
+        });
+    }
+};
+
+// ✅ Enhanced createStudyMaterial with formatting and random filename
+export const createStudyMaterial = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const authReq = req as AuthenticatedRequest;
+        logApiRequest(authReq);
+
+        if (!authReq.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Authentication required'
+            });
+        }
+
+        const {
+            title,
+            description,
+            content,
+            category,
+            attachments = [],
+            isPublic = true,
+            status = 'published',
+            // Academic context - all required
+            school,
+            program,
+            course,
+            semester,
+            week,
+            professor,
+            // Metadata
+            difficulty = 'beginner',
+            completionTime,
+            grade
+        } = req.body;
+
+        // Required fields validation
+        if (!title?.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Title is required"
+            });
+        }
+
+        if (!description?.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Description is required"
+            });
+        }
+
+        if (!category) {
+            return res.status(400).json({
+                success: false,
+                message: "Category is required"
+            });
+        }
+
+        // Academic context validation (required)
+        if (!school || !program || !course || !semester) {
+            return res.status(400).json({
+                success: false,
+                message: "Academic context (school, program, course, semester) is required"
+            });
+        }
+
+        if (!semester.term || !semester.year) {
+            return res.status(400).json({
+                success: false,
+                message: "Semester term and year are required"
+            });
+        }
+
+        // Validate ObjectIds
+        if (!mongoose.Types.ObjectId.isValid(school) ||
+            !mongoose.Types.ObjectId.isValid(program) ||
+            !mongoose.Types.ObjectId.isValid(course)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid school, program, or course ID"
+            });
+        }
+
+        // ✅ Enhanced attachments with utils
+        const processedAttachments = attachments.map((attachment: any) => ({
+            ...attachment,
+            // Generate random filename if not provided
+            filename: attachment.filename || generateRandomFileName(attachment.originalName?.split('.').pop() || 'txt'),
+            // Format file size
+            formattedSize: attachment.size ? formatFileSize(attachment.size) : null
+        }));
+
+        // ✅ Create material with enhanced data
+        const newMaterial = new StudyMaterial({
+            title: capitalize(title.trim()),
+            description: description.trim(),
+            content: content?.trim(),
+            author: authReq.user._id,
+            category,
+
+            // Required academic context
+            academic: {
+                school: new mongoose.Types.ObjectId(school),
+                program: new mongoose.Types.ObjectId(program),
+                course: new mongoose.Types.ObjectId(course),
+                semester: {
+                    term: semester.term,
+                    year: parseInt(semester.year)
+                },
+                ...(week && { week: parseInt(week) }),
+                ...(professor && { professor: professor.trim() })
+            },
+
+            // Metadata
+            metadata: {
+                difficulty,
+                ...(completionTime && { completionTime: parseInt(completionTime) }),
+                ...(grade && { grade: grade.trim() }),
+                isVerified: false,
+                qualityScore: 0
+            },
+
+            attachments: processedAttachments,
+            isPublic: Boolean(isPublic),
+            status: status === 'draft' ? 'draft' : 'published',
+            views: 0,
+            saves: 0,
+            ratings: [],
+            comments: [],
+            isFeatured: false,
+            isReported: false,
+            reportCount: 0
+        });
+
+        const savedMaterial = await newMaterial.save();
+
+        // Update user stats
+        await authReq.user.incrementUploadCount();
+
+        // Populate for response
+        await savedMaterial.populate([
+            { path: 'author', select: 'fullName profilePic email' },
+            { path: 'academic.school', select: 'name location' },
+            { path: 'academic.program', select: 'name code' },
+            { path: 'academic.course', select: 'code name' }
+        ]);
+
+        console.log('✅ Study material created:', {
+            id: savedMaterial._id,
+            title: savedMaterial.title,
+            author: authReq.user.fullName,
+            category: savedMaterial.category,
+            course: savedMaterial.academic.course
+        });
+
+        return res.status(201).json({
+            success: true,
+            message: "Study material created successfully",
+            data: savedMaterial
+        });
+
+    } catch (error: any) {
+        console.error('❌ Create study material error:', error);
+
+        if (error.name === 'ValidationError') {
+            const validationErrors = Object.values(error.errors).map((err: any) => err.message);
+            return res.status(400).json({
+                success: false,
+                message: "Validation failed",
+                errors: validationErrors
+            });
+        }
+
+        if (error.code === 11000) {
+            return res.status(409).json({
+                success: false,
+                message: "Duplicate material detected"
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to create study material",
+            error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
         });
     }
 };
@@ -164,6 +576,10 @@ export const saveMaterial = async (req: Request, res: Response): Promise<Respons
         // ✅ Increment saves count in material
         material.saves += 1;
         await material.save();
+
+        // ✅ Clear relevant caches
+        const userCacheKey = generateCacheKey('user', authReq.user._id.toString());
+        cache.delete(userCacheKey);
 
         return res.json({
             success: true,
@@ -496,311 +912,6 @@ export const getUserUploadedMaterials = async (req: Request, res: Response): Pro
     }
 };
 
-// ✅ Get all study materials with comprehensive filtering
-export const getStudyMaterials = async (req: Request, res: Response): Promise<Response | any> => {
-    try {
-        const {
-            page = '1',
-            limit = '12',
-            search,
-            category,
-            difficulty,
-            tags,
-            author,
-            school,
-            program,
-            course,
-            sort = 'createdAt'
-        } = req.query as StudyMaterialQuery;
-
-        const pageNum = parseInt(page);
-        const limitNum = parseInt(limit);
-
-        const filter: any = {
-            status: 'published',
-            isPublic: true
-        };
-
-        // ✅ Search functionality
-        if (search) {
-            filter.$text = { $search: search };
-        }
-
-        // ✅ Academic filters
-        if (category) filter.category = category;
-        if (difficulty) filter['metadata.difficulty'] = difficulty;
-        if (school) filter['academic.school'] = school;
-        if (program) filter['academic.program'] = program;
-        if (course) filter['academic.course'] = course;
-        if (author) filter.author = author;
-
-        // ✅ Tags filter
-        if (tags) {
-            const tagArray = tags.split(',').map(tag => tag.trim());
-            filter['metadata.tags'] = { $in: tagArray };
-        }
-
-        // ✅ Build sort object
-        let sortObj: any = {};
-        switch (sort) {
-            case 'newest':
-                sortObj = { createdAt: -1 };
-                break;
-            case 'oldest':
-                sortObj = { createdAt: 1 };
-                break;
-            case 'popular':
-                sortObj = { views: -1, averageRating: -1 };
-                break;
-            case 'rating':
-                sortObj = { averageRating: -1, totalRatings: -1 };
-                break;
-            case 'title':
-                sortObj = { title: 1 };
-                break;
-            case 'relevance':
-                sortObj = search ? { score: { $meta: 'textScore' } } : { createdAt: -1 };
-                break;
-            default:
-                sortObj = { createdAt: -1 };
-        }
-
-        // ✅ Execute query with comprehensive population
-        const materials = await StudyMaterial.find(filter)
-            .populate('author', 'fullName profilePic')
-            .populate('academic.school', 'name location')
-            .populate('academic.program', 'name code')
-            .populate('academic.course', 'code name')
-            .sort(sortObj)
-            .limit(limitNum)
-            .skip((pageNum - 1) * limitNum)
-            .exec();
-
-        const total = await StudyMaterial.countDocuments(filter);
-
-        // ✅ Get aggregated stats
-        const stats = await StudyMaterial.aggregate([
-            { $match: filter },
-            {
-                $group: {
-                    _id: null,
-                    totalMaterials: { $sum: 1 },
-                    avgRating: { $avg: '$averageRating' },
-                    totalViews: { $sum: '$views' },
-                    totalSaves: { $sum: '$saves' }
-                }
-            }
-        ]);
-
-        return res.json({
-            success: true,
-            data: {
-                materials,
-                pagination: {
-                    currentPage: pageNum,
-                    totalPages: Math.ceil(total / limitNum),
-                    totalItems: total,
-                    hasNext: pageNum * limitNum < total,
-                    hasPrev: pageNum > 1
-                },
-                stats: stats[0] || {
-                    totalMaterials: 0,
-                    avgRating: 0,
-                    totalViews: 0,
-                    totalSaves: 0
-                },
-                filters: {
-                    search, category, difficulty, tags, author, school, program, course, sort
-                }
-            }
-        });
-
-    } catch (error: any) {
-        console.error("Error fetching study materials:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Error fetching study materials",
-            error: error.message
-        });
-    }
-}
-
-// ✅ Create study material with full academic context
-export const createStudyMaterial = async (req: Request, res: Response): Promise<any> => {
-    try {
-        const authReq = req as AuthenticatedRequest;
-
-        if (!authReq.user) {
-            return res.status(401).json({
-                success: false,
-                message: 'Authentication required'
-            });
-        }
-
-        const {
-            title,
-            description,
-            content,
-            category,
-            attachments = [],
-            isPublic = true,
-            status = 'published',
-            // Academic context - all required
-            school,
-            program,
-            course,
-            semester,
-            week,
-            professor,
-            // Metadata
-            difficulty = 'beginner',
-            completionTime,
-            grade
-        } = req.body;
-
-        // ✅ Required fields validation
-        if (!title?.trim()) {
-            return res.status(400).json({
-                success: false,
-                message: "Title is required"
-            });
-        }
-
-        if (!description?.trim()) {
-            return res.status(400).json({
-                success: false,
-                message: "Description is required"
-            });
-        }
-
-        if (!category) {
-            return res.status(400).json({
-                success: false,
-                message: "Category is required"
-            });
-        }
-
-        // ✅ Academic context validation (required)
-        if (!school || !program || !course || !semester) {
-            return res.status(400).json({
-                success: false,
-                message: "Academic context (school, program, course, semester) is required"
-            });
-        }
-
-        if (!semester.term || !semester.year) {
-            return res.status(400).json({
-                success: false,
-                message: "Semester term and year are required"
-            });
-        }
-
-        // ✅ Validate ObjectIds
-        if (!mongoose.Types.ObjectId.isValid(school) ||
-            !mongoose.Types.ObjectId.isValid(program) ||
-            !mongoose.Types.ObjectId.isValid(course)) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid school, program, or course ID"
-            });
-        }
-
-        // ✅ Create material with full academic structure
-        const newMaterial = new StudyMaterial({
-            title: title.trim(),
-            description: description.trim(),
-            content: content?.trim(),
-            author: authReq.user._id,
-            category,
-
-            // ✅ Required academic context
-            academic: {
-                school: new mongoose.Types.ObjectId(school),
-                program: new mongoose.Types.ObjectId(program),
-                course: new mongoose.Types.ObjectId(course),
-                semester: {
-                    term: semester.term,
-                    year: parseInt(semester.year)
-                },
-                ...(week && { week: parseInt(week) }),
-                ...(professor && { professor: professor.trim() })
-            },
-
-            // ✅ Metadata
-            metadata: {
-                difficulty,
-                ...(completionTime && { completionTime: parseInt(completionTime) }),
-                ...(grade && { grade: grade.trim() }),
-                isVerified: false,
-                qualityScore: 0
-            },
-
-            attachments: attachments || [],
-            isPublic: Boolean(isPublic),
-            status: status === 'draft' ? 'draft' : 'published',
-            views: 0,
-            saves: 0,
-            ratings: [],
-            comments: [],
-            isFeatured: false,
-            isReported: false,
-            reportCount: 0
-        });
-
-        const savedMaterial = await newMaterial.save();
-
-        // ✅ Update user stats
-        await authReq.user.incrementUploadCount();
-
-        // ✅ Populate for response
-        await savedMaterial.populate([
-            { path: 'author', select: 'fullName profilePic email' },
-            { path: 'academic.school', select: 'name location' },
-            { path: 'academic.program', select: 'name code' },
-            { path: 'academic.course', select: 'code name' }
-        ]);
-
-        console.log('✅ Study material created:', {
-            id: savedMaterial._id,
-            title: savedMaterial.title,
-            author: authReq.user.fullName,
-            category: savedMaterial.category,
-            course: savedMaterial.academic.course
-        });
-
-        return res.status(201).json({
-            success: true,
-            message: "Study material created successfully",
-            data: savedMaterial
-        });
-
-    } catch (error: any) {
-        console.error('❌ Create study material error:', error);
-
-        if (error.name === 'ValidationError') {
-            const validationErrors = Object.values(error.errors).map((err: any) => err.message);
-            return res.status(400).json({
-                success: false,
-                message: "Validation failed",
-                errors: validationErrors
-            });
-        }
-
-        if (error.code === 11000) {
-            return res.status(409).json({
-                success: false,
-                message: "Duplicate material detected"
-            });
-        }
-
-        return res.status(500).json({
-            success: false,
-            message: "Failed to create study material",
-            error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
-        });
-    }
-};
-
 // ✅ Update study material
 export const updateStudyMaterial = async (req: Request, res: Response): Promise<Response | any> => {
     try {
@@ -1070,6 +1181,7 @@ export const getMaterialsByProgram = async (req: Request, res: Response): Promis
         });
     }
 };
+
 // ✅ Remove rating from material
 export const removeRating = async (req: Request, res: Response): Promise<Response | any> => {
     try {
@@ -1133,6 +1245,7 @@ export const removeRating = async (req: Request, res: Response): Promise<Respons
         });
     }
 };
+
 // ✅ Delete comment
 export const deleteComment = async (req: Request, res: Response): Promise<Response | any> => {
     try {
@@ -1189,6 +1302,7 @@ export const deleteComment = async (req: Request, res: Response): Promise<Respon
         });
     }
 };
+
 // ✅ Update comment
 export const updateComment = async (req: Request, res: Response): Promise<Response | any> => {
     try {
@@ -1271,6 +1385,7 @@ export const updateComment = async (req: Request, res: Response): Promise<Respon
         });
     }
 };
+
 // ✅ Report material
 export const reportMaterial = async (req: Request, res: Response): Promise<Response | any> => {
     try {
@@ -1336,6 +1451,7 @@ export const reportMaterial = async (req: Request, res: Response): Promise<Respo
         });
     }
 };
+
 // ✅ Get material statistics
 export const getMaterialStats = async (req: Request, res: Response): Promise<Response | any> => {
     try {

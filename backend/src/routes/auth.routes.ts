@@ -1,62 +1,101 @@
-// src/routes/auth.routes.ts - Version đơn giản
+// src/routes/auth.routes.ts - ENHANCED VERSION
 import express from "express";
-import { signIn, signUp, onBoarding, getMe, oauth, logout, updateProfile, refreshToken } from "../controllers/auth.controllers";
+import { 
+    signIn, 
+    signUp, 
+    getMe, 
+    logout, 
+    logoutAllDevices, // ✅ NEW ENHANCED
+    updateProfile, 
+    refreshToken,
+    getAllUsers,      // ✅ NEW
+    forgotPassword,   // ✅ NEW  
+    resetPassword     // ✅ NEW
+} from "../controllers/auth.controllers";
 import { protectRoute } from "../middleware/auth.middleware";
 
-// Import rate limiters và validators
+// Import rate limiters và validators  
 import { authRateLimiters } from "../middleware/rateLimiter";
 import { authValidators, securityMiddleware } from "../middleware/validation/auth.validation";
-import { optionalSessionValidation } from "../middleware/session.middleware";
 
 const router = express.Router();
 
-// ✅ Simplified middleware chains
+// ===== PUBLIC ROUTES =====
+
+// ✅ ENHANCED SIGNUP với additional validation
 router.post("/signUp", [
     authRateLimiters.register,           // Rate limiting
     securityMiddleware.sanitizeInput,    // XSS prevention
     authValidators.validateSignUp       // Validation
 ], signUp);
 
+// ✅ ENHANCED SIGNIN với progressive rate limiting
 router.post("/signIn", [
     authRateLimiters.login,              // Progressive rate limiting
     securityMiddleware.sanitizeInput,    // XSS prevention
     authValidators.validateSignIn       // Validation
 ], signIn);
 
-router.put("/onBoarding", [
-    authRateLimiters.general,
-    securityMiddleware.sanitizeInput,
-    authValidators.validateOnBoarding,
-    optionalSessionValidation,           // ← Before auth
-    protectRoute                         // ← Auth last
-], onBoarding);
-
-router.put("/profile", [         // ← Update existing profile  
-    authRateLimiters.general,
-    securityMiddleware.sanitizeInput,
-    authValidators.validateOnBoarding,
-    protectRoute
-], updateProfile);
-
-router.post("/oauth", [
-    authRateLimiters.oauth,             // OAuth rate limiting
-    securityMiddleware.sanitizeInput,    // XSS prevention
-], oauth);
-
+// ✅ ENHANCED REFRESH TOKEN với rate limiting
 router.post("/refresh", [
     authRateLimiters.general,
     securityMiddleware.sanitizeInput
 ], refreshToken);
 
+// ✅ NEW - FORGOT PASSWORD
+router.post("/forgot-password", [
+    authRateLimiters.passwordReset,      // Use existing rate limiter
+    securityMiddleware.sanitizeInput,
+    authValidators.validateForgotPassword
+], forgotPassword);
+
+// ✅ NEW - RESET PASSWORD
+router.post("/reset-password", [
+    authRateLimiters.general,
+    securityMiddleware.sanitizeInput,
+    authValidators.validateResetPassword
+], resetPassword);
+
+// ===== PROTECTED ROUTES =====
+
+// ✅ ENHANCED PROFILE UPDATE
+router.put("/profile", [
+    authRateLimiters.general,
+    securityMiddleware.sanitizeInput,
+    protectRoute
+], updateProfile);
+
+// ✅ ENHANCED GET ME
+router.get('/me', [
+    protectRoute                        // ← Auth required
+], getMe);
+
+// ✅ ENHANCED LOGOUT với token blacklisting
 router.post("/logout", [
     authRateLimiters.general,
-    optionalSessionValidation,           // ← Get session to deactivate
     protectRoute                         // ← Must be authenticated to logout
 ], logout);
 
-router.get('/me', [
-    protectRoute,                        // ← Auth first
-    optionalSessionValidation            // ← Session enhancement after
-], getMe);
+// ✅ NEW - LOGOUT FROM ALL DEVICES
+router.post("/logout-all-devices", [
+    authRateLimiters.general,
+    protectRoute                         // ← Must be authenticated
+], logoutAllDevices);
+
+// ===== ADMIN ROUTES =====
+
+// ✅ NEW - GET ALL USERS (Admin only)
+router.get("/users", [
+    protectRoute
+], getAllUsers);
+
+// ✅ NEW - HEALTH CHECK
+router.get("/health", (req: express.Request, res: express.Response) => {
+    res.json({
+        success: true,
+        message: "Auth service is healthy",
+        timestamp: new Date().toISOString()
+    });
+});
 
 export default router;

@@ -1,6 +1,12 @@
 import mongoose, { Document, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
+import { 
+    capitalize, 
+    truncate,
+    maskEmail 
+} from '../utils/Format.utils';
+import { generateStudentId } from '../utils/Random.utils';
 
 export interface IUser extends Document {
     _id: mongoose.Types.ObjectId; 
@@ -360,7 +366,6 @@ const userSchema = new mongoose.Schema({
 });
 
 // ===== INDEXES FOR PERFORMANCE =====
-userSchema.index({ email: 1 });
 userSchema.index({ 'academic.studentId': 1 });
 userSchema.index({ 'academic.program': 1 });
 userSchema.index({ 'academic.school': 1 });
@@ -435,6 +440,76 @@ userSchema.pre("save", function (next) {
             materialsCreated * 10 // 10 points per material
         );
     }
+    next();
+});
+
+// ✅ Enhanced pre-save hooks for data formatting
+userSchema.pre("save", function (next) {
+    // ✅ Format full name with proper capitalization
+    if (this.isModified('fullName') && this.fullName) {
+        this.fullName = this.fullName
+            .split(' ')
+            .map(name => capitalize(name.trim()))
+            .filter(name => name.length > 0)
+            .join(' ');
+    }
+    
+    // ✅ Format location with proper capitalization
+    if (this.isModified('location') && this.location) {
+        this.location = capitalize(this.location.trim());
+    }
+    
+    // ✅ Clean and validate bio content
+    if (this.isModified('bio') && this.bio) {
+        this.bio = this.bio.trim();
+        // Remove excessive whitespace
+        this.bio = this.bio.replace(/\s+/g, ' ');
+    }
+    
+    // ✅ Generate student ID if student role and no ID exists
+    if (this.role === 'student' && this.academic && !this.academic.studentId) {
+        this.academic.studentId = generateStudentId();
+    }
+    
+    // ✅ Uppercase student ID if provided
+    if (this.isModified('academic.studentId') && this.academic?.studentId) {
+        this.academic.studentId = this.academic.studentId.toUpperCase().trim();
+    }
+    
+    // ✅ Validate and format website URL
+    if (this.isModified('website') && this.website) {
+        this.website = this.website.trim();
+        if (this.website && !this.website.startsWith('http://') && !this.website.startsWith('https://')) {
+            this.website = 'https://' + this.website;
+        }
+    }
+    
+    next();
+});
+
+// ✅ Pre-save hook for academic data validation
+userSchema.pre("save", function (next) {
+    // Validate academic consistency
+    if (this.role === 'student') {
+        // Ensure students have academic information
+        if (!this.academic) {
+            this.academic = {
+                completedCourses: [],
+                status: 'active'
+            };
+        }
+        
+        // Set default enrollment year if not provided
+        if (!this.academic.enrollmentYear) {
+            this.academic.enrollmentYear = new Date().getFullYear();
+        }
+        
+        // Set default current semester if not provided
+        if (!this.academic.currentSemester) {
+            this.academic.currentSemester = 1;
+        }
+    }
+    
     next();
 });
 

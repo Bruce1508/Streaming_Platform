@@ -3,6 +3,18 @@ import { Request, Response } from "express";
 import User, { IUser } from "../models/User";
 import friendRequest from "../models/friendRequest";
 import mongoose from "mongoose";
+import { 
+    capitalize, 
+    maskEmail,
+    formatFileSize,
+    truncate 
+} from '../utils/Format.utils';
+import { 
+    searchUsers as searchUtilsFunction,
+    buildSearchQuery,
+    calculateRelevanceScore 
+} from '../utils/Search.utils';
+import { logApiRequest } from '../utils/Api.utils';
 
 // ===== EXTENDED REQUEST INTERFACE =====
 interface AuthenticatedRequest extends Request {
@@ -20,6 +32,9 @@ const safeObjectId = (id: string): mongoose.Types.ObjectId | null => {
 
 // ===== RECOMMENDATION SYSTEM =====
 export async function getRecommendedUsers(req: Request, res: Response): Promise<Response | any> {
+    // ✅ Log API request
+    logApiRequest(req as any);
+
     const authReq = req as AuthenticatedRequest;
     if (!authReq.user) {
         return res.status(401).json({
@@ -107,14 +122,14 @@ export async function getRecommendedUsers(req: Request, res: Response): Promise<
             recommendedUsers.push(...remainingUsers);
         }
 
-        // ✅ Clean academic-focused response
+        // ✅ Clean academic-focused response with formatting
         const enhancedUsers = recommendedUsers.map(user => ({
             _id: user._id,
-            fullName: user.fullName,
-            email: user.email,
+            fullName: capitalize(user.fullName), // ✅ Format name
+            email: maskEmail(user.email), // ✅ Mask email for privacy
             profilePic: user.profilePic,
             role: user.role,
-            bio: user.bio,
+            bio: user.bio ? truncate(user.bio, 100) : null, // ✅ Truncate bio
             location: user.location,
             academic: user.academic,
             contributionLevel: user.contributionLevel, // Virtual field
@@ -912,6 +927,9 @@ export async function updateProfilePicture(req: Request, res: Response): Promise
 
 // ===== SEARCH & DISCOVERY =====
 export async function searchUsers(req: Request, res: Response): Promise<Response | any> {
+    // ✅ Log API request
+    logApiRequest(req as any);
+
     const authReq = req as AuthenticatedRequest;
     if (!authReq.user) {
         return res.status(401).json({
@@ -921,7 +939,7 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
     }
 
     try {
-        const { q, role, school, program, semester } = req.query;
+        const { q, role, school, program, semester, sortBy = 'relevance' } = req.query;
         const currentUserId = authReq.user._id;
 
         if (!q || typeof q !== 'string') {
@@ -939,28 +957,21 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
             });
         }
 
-        // ✅ Escape special regex characters
-        const escapedQuery = trimmedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-        // ✅ Get current user's friends
+        // ✅ Get current user's friends to exclude
         const currentUser = await User.findById(currentUserId).select('friends');
         const friendIds = currentUser?.friends || [];
 
-        // ✅ Academic-focused search query
+        // ✅ Build search query with simple approach
+        const searchFields = ['fullName', 'email', 'bio', 'academic.studentId'];
+        const searchOrConditions = buildSearchQuery(trimmedQuery, searchFields);
+
         const searchQuery: any = {
             $and: [
                 { _id: { $ne: currentUserId } },
                 { _id: { $nin: friendIds } },
                 { isOnboarded: true },
                 { isActive: true },
-                {
-                    $or: [
-                        { fullName: { $regex: escapedQuery, $options: 'i' } },
-                        { email: { $regex: escapedQuery, $options: 'i' } },
-                        { bio: { $regex: escapedQuery, $options: 'i' } },
-                        { 'academic.studentId': { $regex: escapedQuery, $options: 'i' } } // Search by student ID
-                    ]
-                }
+                searchOrConditions
             ]
         };
 
@@ -985,12 +996,12 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
         }
 
         const users = await User.find(searchQuery)
-            .select('fullName email profilePic bio location role academic activity')
+            .select('fullName email profilePic bio location role academic activity lastLogin')
             .populate([
                 { path: 'academic.school', select: 'name location' },
                 { path: 'academic.program', select: 'name code' }
             ])
-            .sort({ 'activity.contributionScore': -1, lastLogin: -1 }) // Academic contributors first
+            .sort({ 'activity.contributionScore': -1, lastLogin: -1 })
             .limit(25)
             .lean();
 
@@ -1011,14 +1022,14 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
             }
         });
 
-        // ✅ Clean academic-focused response
-        const enhancedUsers = users.map(user => ({
+        // ✅ Enhanced response with formatting
+        const enhancedUsers = users.map((user: any) => ({
             _id: user._id,
-            fullName: user.fullName,
-            email: user.email,
+            fullName: capitalize(user.fullName), // ✅ Format name
+            email: maskEmail(user.email), // ✅ Mask email for privacy
             profilePic: user.profilePic,
             role: user.role,
-            bio: user.bio,
+            bio: user.bio ? truncate(user.bio, 100) : null, // ✅ Truncate bio
             location: user.location,
             academic: user.academic,
             academicInfo: user.academicInfo, // Virtual field
@@ -1030,8 +1041,14 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
             friendRequestStatus: pendingRequestsMap.get(user._id.toString()) || null,
             // ✅ Academic relevance scores
             relevanceScore: {
+                searchScore: calculateRelevanceScore(user, trimmedQuery, {
+                    fullName: 3,
+                    email: 2,
+                    bio: 1,
+                    'academic.studentId': 2
+                }),
                 isContributor: (user.activity?.contributionScore || 0) >= 10,
-                isActive: user.lastLogin && new Date(user.lastLogin) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // Active in last 30 days
+                isActive: user.lastLogin && new Date(user.lastLogin) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
                 hasProfile: !!(user.bio && user.academic?.program)
             }
         }));
@@ -1045,12 +1062,13 @@ export async function searchUsers(req: Request, res: Response): Promise<Response
                 role: role || null,
                 school: school || null,
                 program: program || null,
-                semester: semester || null
+                semester: semester || null,
+                sortBy
             },
             stats: {
-                contributors: enhancedUsers.filter(u => u.relevanceScore.isContributor).length,
-                activeUsers: enhancedUsers.filter(u => u.relevanceScore.isActive).length,
-                completeProfiles: enhancedUsers.filter(u => u.relevanceScore.hasProfile).length
+                contributors: enhancedUsers.filter((u: any) => u.relevanceScore.isContributor).length,
+                activeUsers: enhancedUsers.filter((u: any) => u.relevanceScore.isActive).length,
+                completeProfiles: enhancedUsers.filter((u: any) => u.relevanceScore.hasProfile).length
             }
         });
 

@@ -5,20 +5,21 @@ import { StudyMaterial } from '../models/StudyMaterial';
 import { ApiError } from '../utils/ApiError';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
+import { 
+    extractPagination, 
+    extractSortOptions,
+    createPaginatedResponse,
+    logApiRequest 
+} from '../utils/Api.utils';
+import { 
+    cacheCourse, 
+    getCachedCourse
+} from '../utils/Cache.utils';
+import { generateCourseCode } from '../utils/Random.utils';
 import mongoose from 'mongoose';
+import { AuthRequest } from '../middleware/auth.middleware';
 
 // ===== INTERFACE DEFINITIONS =====
-interface AuthRequest extends Request {
-    user?: {
-        _id: string;
-        role: 'student' | 'professor' | 'admin' | 'guest';
-        academic?: {
-            program?: string;
-            school?: string;
-        };
-    };
-}
-
 interface CourseQuery {
     page?: number;
     limit?: number;
@@ -41,9 +42,10 @@ interface CourseQuery {
  * @access  Public
  */
 export const getCourses = asyncHandler(async (req: Request, res: Response) => {
+    // ✅ Log API request
+    logApiRequest(req as any);
+
     const {
-        page = 1,
-        limit = 20,
         search,
         program,
         school,
@@ -54,6 +56,12 @@ export const getCourses = asyncHandler(async (req: Request, res: Response) => {
         sortBy = 'createdAt',
         sortOrder = 'desc'
     }: CourseQuery = req.query;
+
+    // ✅ Use pagination utils
+    const { page, limit, skip } = extractPagination(req);
+    
+    // ✅ Use sort utils
+    const sortOptions = extractSortOptions(req, { [sortBy]: sortOrder === 'asc' ? 1 : -1 });
 
     // Build filter object
     const filter: any = { isActive: true };
@@ -74,41 +82,28 @@ export const getCourses = asyncHandler(async (req: Request, res: Response) => {
     if (language) filter.language = language;
     if (delivery) filter.delivery = { $in: [delivery] };
 
-    // Pagination
-    const pageNum = Math.max(1, Number(page));
-    const limitNum = Math.min(50, Math.max(1, Number(limit)));
-    const skip = (pageNum - 1) * limitNum;
-
-    // Sort object
-    const sort: any = {};
-    sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
-
     // Execute query with population
     const [courses, total] = await Promise.all([
         Course.find(filter)
             .populate('school', 'name shortName')
             .populate('programs.program', 'name code')
-            .sort(sort)
+            .sort(sortOptions)
             .skip(skip)
-            .limit(limitNum)
+            .limit(limit)
             .lean(),
         Course.countDocuments(filter)
     ]);
 
-    const pagination = {
-        currentPage: pageNum,
-        totalPages: Math.ceil(total / limitNum),
-        totalCourses: total,
-        hasNext: pageNum < Math.ceil(total / limitNum),
-        hasPrev: pageNum > 1
-    };
-
-    res.status(200).json(
-        new ApiResponse(200, {
-            courses,
-            pagination
-        }, 'Courses retrieved successfully')
+    // ✅ Use createPaginatedResponse utility
+    const response = createPaginatedResponse(
+        courses,
+        total,
+        page,
+        limit,
+        'Courses retrieved successfully'
     );
+
+    res.status(200).json(response);
 });
 
 /**
@@ -117,10 +112,21 @@ export const getCourses = asyncHandler(async (req: Request, res: Response) => {
  * @access  Public
  */
 export const getCourseById = asyncHandler(async (req: Request, res: Response) => {
+    // ✅ Log API request
+    logApiRequest(req as any);
+
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ApiError(400, 'Invalid course ID');
+    }
+
+    // ✅ Try cache first
+    const cachedCourse = getCachedCourse(id);
+    if (cachedCourse) {
+        return res.status(200).json(
+            new ApiResponse(200, cachedCourse, 'Course retrieved successfully')
+        );
     }
 
     const course = await Course.findById(id)
@@ -159,6 +165,9 @@ export const getCourseById = asyncHandler(async (req: Request, res: Response) =>
         }
     };
 
+    // ✅ Cache the course
+    cacheCourse(id, courseWithStats);
+
     res.status(200).json(
         new ApiResponse(200, courseWithStats, 'Course retrieved successfully')
     );
@@ -170,6 +179,9 @@ export const getCourseById = asyncHandler(async (req: Request, res: Response) =>
  * @access  Admin only
  */
 export const createCourse = asyncHandler(async (req: AuthRequest, res: Response) => {
+    // ✅ Log API request
+    logApiRequest(req);
+
     // Check permission
     if (req.user?.role !== 'admin') {
         throw new ApiError(403, 'Only admins can create courses');
@@ -178,15 +190,20 @@ export const createCourse = asyncHandler(async (req: AuthRequest, res: Response)
     const courseData = req.body;
 
     // Validate required fields
-    const requiredFields = ['code', 'name', 'description', 'credits', 'school', 'level', 'programs'];
+    const requiredFields = ['name', 'description', 'credits', 'school', 'level', 'programs'];
     for (const field of requiredFields) {
         if (!courseData[field]) {
             throw new ApiError(400, `${field} is required`);
         }
     }
 
+    // ✅ Generate course code if not provided
+    const courseCode = courseData.code ? 
+        courseData.code.toUpperCase() : 
+        generateCourseCode(courseData.school);
+
     // Check if course code already exists
-    const existingCourse = await Course.findOne({ code: courseData.code.toUpperCase() });
+    const existingCourse = await Course.findOne({ code: courseCode });
     if (existingCourse) {
         throw new ApiError(400, 'Course code already exists');
     }
@@ -206,7 +223,7 @@ export const createCourse = asyncHandler(async (req: AuthRequest, res: Response)
     // Create course
     const course = await Course.create({
         ...courseData,
-        code: courseData.code.toUpperCase()
+        code: courseCode
     });
 
     const populatedCourse = await Course.findById(course._id)

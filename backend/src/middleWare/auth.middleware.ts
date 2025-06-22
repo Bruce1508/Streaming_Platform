@@ -10,6 +10,9 @@ import {
     isTokenBlacklisted,
     getTokenMetadata 
 } from "../utils/jwt.enhanced";
+import { getCachedUser } from "../utils/Cache.utils";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const JWT_SECRET_VALUE = process.env.JWT_SECRET_KEY || process.env.JWT_SECRET;
 if (!JWT_SECRET_VALUE) {
@@ -109,11 +112,15 @@ export const protectRoute = asyncHandler(async (req: AuthRequest, res: Response,
             throw new ApiError(401, "Invalid token format");
         }
 
-        // 🔍 FIND USER
-        const user = await User.findById(decoded.userId).select("-password");
+        // 🔍 FIND USER - Try cache first
+        let user = await getCachedUser(decoded.userId);
+        
         if (!user) {
-            console.log("❌ User not found for ID:", decoded.userId);
-            throw new ApiError(401, "Invalid token - user not found");
+            user = await User.findById(decoded.userId).select("-password");
+            if (!user) {
+                console.log("❌ User not found for ID:", decoded.userId);
+                throw new ApiError(401, "Invalid token - user not found");
+            }
         }
 
         // ✅ CHECK USER STATUS
@@ -189,7 +196,13 @@ export const optionalAuth = asyncHandler(async (req: AuthRequest, res: Response,
         }
 
         if (decoded?.userId) {
-            const user = await User.findById(decoded.userId).select("-password");
+            // ✅ Try cache first
+            let user = await getCachedUser(decoded.userId);
+            
+            if (!user) {
+                user = await User.findById(decoded.userId).select("-password");
+            }
+            
             if (user && user.isActive) {
                 req.user = user;
                 req.tokenMetadata = tokenMetadata;

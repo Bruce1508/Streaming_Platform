@@ -10,18 +10,19 @@ import {
     saveMaterial,
     removeSavedMaterial,
     rateMaterial,
-    removeRating,        // ← IMPORT MISSING
+    removeRating,
     addComment,
-    deleteComment,       // ← IMPORT MISSING
-    updateComment,       // ← IMPORT MISSING
-    reportMaterial,      // ← IMPORT MISSING
-    getMaterialStats,    // ← IMPORT MISSING
+    deleteComment,
+    updateComment,
+    reportMaterial,
+    getMaterialStats,
     getUserSavedMaterials,
     getUserUploadedMaterials,
-    getMaterialsByCourse,    // ← IMPORT MISSING
-    getFeaturedMaterials,    // ← IMPORT MISSING
-    getPopularMaterials,     // ← IMPORT MISSING
-    getMaterialsByProgram    // ← IMPORT MISSING
+    getMaterialsByCourse,
+    getFeaturedMaterials,
+    getPopularMaterials,
+    getMaterialsByProgram,
+    searchMaterials       // ← NEW: Enhanced search endpoint
 } from '../controllers/material.controllers';
 import { protectRoute } from '../middleware/auth.middleware';
 import { 
@@ -40,13 +41,14 @@ const router = Router();
 // =====================================================
 
 router.get('/', validateQueryParams, getStudyMaterials);
+router.get('/search', validateQueryParams, searchMaterials);         // ← NEW: Enhanced search endpoint
 router.get('/category/:category', validateQueryParams, getMaterialsByCategory);
-router.get('/featured', getFeaturedMaterials);              // ← ADDED
-router.get('/popular', getPopularMaterials);                // ← ADDED
-router.get('/course/:courseId', validateObjectId('courseId'), getMaterialsByCourse);     // ← ADDED
-router.get('/program/:programId', validateObjectId('programId'), getMaterialsByProgram); // ← ADDED
+router.get('/featured', getFeaturedMaterials);
+router.get('/popular', getPopularMaterials);
+router.get('/course/:courseId', validateObjectId('courseId'), getMaterialsByCourse);
+router.get('/program/:programId', validateObjectId('programId'), getMaterialsByProgram);
 router.get('/:id', validateObjectId('id'), getStudyMaterialById);
-router.get('/:id/stats', validateObjectId('id'), getMaterialStats);  // ← ADDED
+router.get('/:id/stats', validateObjectId('id'), getMaterialStats);
 
 // =====================================================
 // MATERIAL CRUD ROUTES - Authentication Required

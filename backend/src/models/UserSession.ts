@@ -52,8 +52,7 @@ const userSessionSchema = new Schema<IUserSession>({
     },
     lastActivity: {
         type: Date,
-        default: Date.now,
-        index: true
+        default: Date.now
     },
     location: {
         country: String,

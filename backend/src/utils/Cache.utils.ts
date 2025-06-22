@@ -1,133 +1,324 @@
-// utils/cache.utils.ts
+import Redis from 'ioredis';
 import { logger } from './logger.utils';
 
-// In-memory cache (simple implementation)
-class SimpleCache {
-    private cache: Map<string, { data: any; expires: number }> = new Map();
-    private cleanupInterval: NodeJS.Timeout;
+// ===== REDIS CONFIGURATION =====
+let redis: Redis | null = null;
+let isRedisConnected = false;
+let connectionAttempts = 0;
+const MAX_CONNECTION_ATTEMPTS = 3;
 
-    constructor() {
-        // Clean expired entries every 5 minutes
-        this.cleanupInterval = setInterval(() => {
-            this.cleanup();
-        }, 5 * 60 * 1000);
+// ✅ Initialize Redis with proper configuration
+const initializeRedis = async (): Promise<void> => {
+    try {
+        const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
+        
+        redis = new Redis(redisUrl, {
+            lazyConnect: true,
+            maxRetriesPerRequest: 3,
+            connectTimeout: 5000,
+            commandTimeout: 5000,
+            enableOfflineQueue: false
+        });
+
+        // ✅ Event handlers
+        redis.on('connect', () => {
+            isRedisConnected = true;
+            connectionAttempts = 0;
+            logger.info('✅ Redis connected successfully');
+        });
+
+        redis.on('error', (error) => {
+            isRedisConnected = false;
+            connectionAttempts++;
+            
+            if (connectionAttempts <= MAX_CONNECTION_ATTEMPTS) {
+                logger.warn(`⚠️ Redis connection error (attempt ${connectionAttempts}/${MAX_CONNECTION_ATTEMPTS}):`, error.message);
+            } else {
+                logger.error('❌ Redis connection failed after maximum attempts. Using memory cache fallback.');
+            }
+        });
+
+        redis.on('close', () => {
+            isRedisConnected = false;
+            logger.warn('🔌 Redis connection closed');
+        });
+
+        redis.on('reconnecting', () => {
+            logger.info('🔄 Redis reconnecting...');
+        });
+
+        // ✅ Try to connect
+        await redis.connect();
+        
+    } catch (error: any) {
+        isRedisConnected = false;
+        logger.warn('⚠️ Redis initialization failed, using memory cache:', error.message);
+        redis = null;
     }
+};
 
-    set(key: string, data: any, ttlSeconds: number = 300): void {
-        const expires = Date.now() + (ttlSeconds * 1000);
-        this.cache.set(key, { data, expires });
-    }
+// ===== MEMORY CACHE FALLBACK =====
+interface MemoryCacheItem {
+    data: any;
+    expiry: number;
+    size: number;
+}
 
+class MemoryCache {
+    private cache = new Map<string, MemoryCacheItem>();
+    private maxSize = 1000; // Maximum number of items
+    private maxMemory = 50 * 1024 * 1024; // 50MB max memory
+    private currentMemory = 0;
+
+    // ✅ Get item with expiry check
     get(key: string): any | null {
         const item = this.cache.get(key);
         
         if (!item) return null;
         
-        if (Date.now() > item.expires) {
-            this.cache.delete(key);
+        // Check expiry
+        if (Date.now() > item.expiry) {
+            this.delete(key);
             return null;
         }
         
         return item.data;
     }
 
-    delete(key: string): boolean {
-        return this.cache.delete(key);
+    // ✅ Set item with TTL and memory management
+    set(key: string, data: any, ttlSeconds: number): void {
+        const dataString = JSON.stringify(data);
+        const size = Buffer.byteLength(dataString, 'utf8');
+        
+        // Remove existing item if it exists
+        if (this.cache.has(key)) {
+            this.delete(key);
+        }
+        
+        // Check memory limits
+        if (this.currentMemory + size > this.maxMemory) {
+            this.evictLRU();
+        }
+        
+        // Check size limits
+        if (this.cache.size >= this.maxSize) {
+            this.evictLRU();
+        }
+        
+        const item: MemoryCacheItem = {
+            data,
+            expiry: Date.now() + (ttlSeconds * 1000),
+            size
+        };
+        
+        this.cache.set(key, item);
+        this.currentMemory += size;
     }
 
+    // ✅ Delete item
+    delete(key: string): boolean {
+        const item = this.cache.get(key);
+        if (item) {
+            this.currentMemory -= item.size;
+            return this.cache.delete(key);
+        }
+        return false;
+    }
+
+    // ✅ Evict least recently used items
+    private evictLRU(): void {
+        const entries = Array.from(this.cache.entries());
+        // Sort by expiry time (oldest first)
+        entries.sort((a, b) => a[1].expiry - b[1].expiry);
+        
+        // Remove oldest 10% of items
+        const toRemove = Math.max(1, Math.floor(entries.length * 0.1));
+        for (let i = 0; i < toRemove && entries.length > 0; i++) {
+            const [key] = entries[i];
+            this.delete(key);
+        }
+    }
+
+    // ✅ Clear all items
     clear(): void {
         this.cache.clear();
+        this.currentMemory = 0;
     }
 
-    private cleanup(): void {
-        const now = Date.now();
-        let deletedCount = 0;
-
-        for (const [key, item] of this.cache.entries()) {
-            if (now > item.expires) {
-                this.cache.delete(key);
-                deletedCount++;
-            }
-        }
-
-        if (deletedCount > 0) {
-            logger.info(`Cache cleanup: ${deletedCount} expired entries removed`);
-        }
-    }
-
+    // ✅ Get cache stats
     getStats() {
         return {
-            size: this.cache.size,
-            keys: Array.from(this.cache.keys())
+            itemCount: this.cache.size,
+            memoryUsage: this.currentMemory,
+            maxMemory: this.maxMemory,
+            maxSize: this.maxSize
         };
     }
 }
 
-// Create cache instance
-export const cache = new SimpleCache();
+const memoryCache = new MemoryCache();
 
-// Cache decorator for functions
-export const withCache = (key: string, ttlSeconds: number = 300) => {
-    return (target: any, propertyName: string, descriptor: PropertyDescriptor) => {
-        const method = descriptor.value;
-
-        descriptor.value = async function (...args: any[]) {
-            const cacheKey = `${key}_${JSON.stringify(args)}`;
-            
-            // Try to get from cache
-            const cached = cache.get(cacheKey);
-            if (cached) {
-                logger.debug(`Cache hit for key: ${cacheKey}`);
-                return cached;
+// ===== UNIFIED CACHE INTERFACE =====
+export const cache = {
+    // ✅ Enhanced get with fallback
+    async get(key: string): Promise<any | null> {
+        // Try Redis first
+        if (isRedisConnected && redis) {
+            try {
+                const result = await redis.get(key);
+                if (result) {
+                    return JSON.parse(result);
+                }
+            } catch (error) {
+                logger.warn('Redis get error, using memory cache:', error);
+                isRedisConnected = false;
             }
+        }
+        
+        // Fallback to memory cache
+        return memoryCache.get(key);
+    },
 
-            // Execute method and cache result
-            const result = await method.apply(this, args);
-            cache.set(cacheKey, result, ttlSeconds);
-            
-            logger.debug(`Cache set for key: ${cacheKey}`);
-            return result;
+    // ✅ Enhanced set with fallback
+    async set(key: string, value: any, ttlSeconds: number = 300): Promise<boolean> {
+        const serialized = JSON.stringify(value);
+        
+        // Try Redis first
+        if (isRedisConnected && redis) {
+            try {
+                await redis.setex(key, ttlSeconds, serialized);
+                // Also cache in memory for faster access
+                memoryCache.set(key, value, Math.min(ttlSeconds, 300));
+                return true;
+            } catch (error) {
+                logger.warn('Redis set error, using memory cache:', error);
+                isRedisConnected = false;
+            }
+        }
+        
+        // Fallback to memory cache
+        memoryCache.set(key, value, ttlSeconds);
+        return true;
+    },
+
+    // ✅ Enhanced delete with fallback
+    async del(key: string): Promise<boolean> {
+        let redisDeleted = false;
+        
+        // Try Redis first
+        if (isRedisConnected && redis) {
+            try {
+                await redis.del(key);
+                redisDeleted = true;
+            } catch (error) {
+                logger.warn('Redis delete error:', error);
+                isRedisConnected = false;
+            }
+        }
+        
+        // Always delete from memory cache
+        const memoryDeleted = memoryCache.delete(key);
+        
+        return redisDeleted || memoryDeleted;
+    },
+
+    // ✅ Clear all cache
+    async clear(): Promise<void> {
+        if (isRedisConnected && redis) {
+            try {
+                await redis.flushdb();
+            } catch (error) {
+                logger.warn('Redis clear error:', error);
+            }
+        }
+        memoryCache.clear();
+    },
+
+    // ✅ Cache statistics
+    async getStats() {
+        const memStats = memoryCache.getStats();
+        let redisStats = null;
+        
+        if (isRedisConnected && redis) {
+            try {
+                const info = await redis.info('memory');
+                redisStats = { connected: true, info };
+            } catch {
+                redisStats = { connected: false };
+            }
+        }
+        
+        return {
+            memory: memStats,
+            redis: redisStats,
+            isRedisConnected
         };
-    };
+    }
 };
 
-// Generate cache key
-export const generateCacheKey = (prefix: string, ...parts: any[]): string => {
-    return `${prefix}:${parts.join(':')}`;
+// ===== UTILITY FUNCTIONS =====
+export const generateCacheKey = (...parts: string[]): string => {
+    return parts.join(':');
 };
 
-// Cache user data
-export const cacheUser = (userId: string, userData: any, ttl: number = 900) => {
-    const key = generateCacheKey('user', userId);
-    cache.set(key, userData, ttl);
+// ✅ High-level cache functions with consistent interface
+export const cacheUser = async (userId: string, userData: any, ttl: number = 3600): Promise<void> => {
+    await cache.set(generateCacheKey('user', userId), userData, ttl);
 };
 
-// Get cached user
-export const getCachedUser = (userId: string): any | null => {
-    const key = generateCacheKey('user', userId);
-    return cache.get(key);
+export const getCachedUser = async (userId: string): Promise<any | null> => {
+    return await cache.get(generateCacheKey('user', userId));
 };
 
-// Cache course data
-export const cacheCourse = (courseId: string, courseData: any, ttl: number = 600) => {
-    const key = generateCacheKey('course', courseId);
-    cache.set(key, courseData, ttl);
+export const clearUserCache = async (userId: string): Promise<void> => {
+    await cache.del(generateCacheKey('user', userId));
 };
 
-// Get cached course
-export const getCachedCourse = (courseId: string): any | null => {
-    const key = generateCacheKey('course', courseId);
-    return cache.get(key);
+export const cacheCourse = async (courseId: string, courseData: any, ttl: number = 1800): Promise<void> => {
+    await cache.set(generateCacheKey('course', courseId), courseData, ttl);
 };
 
-// Cache statistics
-export const cacheStats = (statsType: string, data: any, ttl: number = 300) => {
-    const key = generateCacheKey('stats', statsType);
-    cache.set(key, data, ttl);
+export const getCachedCourse = async (courseId: string): Promise<any | null> => {
+    return await cache.get(generateCacheKey('course', courseId));
 };
 
-// Get cached statistics
-export const getCachedStats = (statsType: string): any | null => {
-    const key = generateCacheKey('stats', statsType);
-    return cache.get(key);
+export const cacheStats = async (key: string, statsData: any, ttl: number = 300): Promise<void> => {
+    await cache.set(generateCacheKey('stats', key), statsData, ttl);
 };
+
+export const getCachedStats = async (key: string): Promise<any | null> => {
+    return await cache.get(generateCacheKey('stats', key));
+};
+
+// ✅ Generic cache wrapper for functions
+export const withCache = async <T>(
+    key: string, 
+    fn: () => Promise<T>, 
+    ttl: number = 300
+): Promise<T> => {
+    // Try to get cached result
+    const cached = await cache.get(key);
+    if (cached !== null) {
+        return cached as T;
+    }
+    
+    // Execute function and cache result
+    const result = await fn();
+    await cache.set(key, result, ttl);
+    return result;
+};
+
+// ===== INITIALIZATION =====
+// Initialize Redis connection (non-blocking)
+initializeRedis().catch(() => {
+    logger.info('🔄 Cache system started with memory fallback');
+});
+
+// ===== EXPORT STATUS =====
+export const getCacheStatus = () => ({
+    redis: isRedisConnected,
+    memory: true,
+    type: isRedisConnected ? 'Redis + Memory' : 'Memory Only'
+});
+
+logger.info('🚀 Cache system initialized');

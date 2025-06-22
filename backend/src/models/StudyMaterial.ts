@@ -1,4 +1,10 @@
 import mongoose, { Document, Schema, Model } from 'mongoose';
+import { 
+    formatFileSize, 
+    capitalize,
+    truncate,
+    formatPercentage 
+} from '../utils/Format.utils';
 
 // ✅ Keep essential interfaces only
 export interface IAttachment {
@@ -385,9 +391,59 @@ studyMaterialSchema.index({
     'academic.professor': 'text'
 });
 
-// Virtual for comment count
+// ✅ Enhanced virtual fields with format utils
 studyMaterialSchema.virtual('commentCount').get(function (this: IStudyMaterial) {
     return this.comments ? this.comments.length : 0;
+});
+
+// ✅ Formatted title virtual field
+studyMaterialSchema.virtual('formattedTitle').get(function (this: IStudyMaterial) {
+    return capitalize(this.title);
+});
+
+// ✅ Truncated description virtual field
+studyMaterialSchema.virtual('shortDescription').get(function (this: IStudyMaterial) {
+    return truncate(this.description, 100);
+});
+
+// ✅ Total file size virtual field
+studyMaterialSchema.virtual('totalFileSize').get(function (this: IStudyMaterial) {
+    if (!this.attachments || this.attachments.length === 0) return '0 B';
+    const totalBytes = this.attachments.reduce((sum, attachment) => sum + attachment.size, 0);
+    return formatFileSize(totalBytes);
+});
+
+// ✅ File count virtual field
+studyMaterialSchema.virtual('fileCount').get(function (this: IStudyMaterial) {
+    return this.attachments ? this.attachments.length : 0;
+});
+
+// ✅ Rating percentage virtual field
+studyMaterialSchema.virtual('ratingPercentage').get(function (this: IStudyMaterial) {
+    if (this.averageRating === 0) return '0%';
+    return formatPercentage(this.averageRating, 5);
+});
+
+// ✅ Academic info virtual field  
+studyMaterialSchema.virtual('academicInfo').get(function (this: IStudyMaterial) {
+    const semester = this.academic?.semester;
+    const semesterText = semester ? `${capitalize(semester.term)} ${semester.year}` : 'Unknown Semester';
+    return {
+        semesterText,
+        difficulty: capitalize(this.metadata?.difficulty || 'unknown'),
+        category: this.category?.replace('-', ' ').split(' ').map(word => capitalize(word)).join(' ') || 'Other'
+    };
+});
+
+// ✅ Engagement stats virtual field
+studyMaterialSchema.virtual('engagementStats').get(function (this: IStudyMaterial) {
+    const total = this.views + this.saves + this.totalRatings;
+    return {
+        total,
+        viewsPercentage: total > 0 ? formatPercentage(this.views, total) : '0%',
+        savesPercentage: total > 0 ? formatPercentage(this.saves, total) : '0%',
+        ratingsPercentage: total > 0 ? formatPercentage(this.totalRatings, total) : '0%'
+    };
 });
 
 // Pre-save middleware for rating calculation
