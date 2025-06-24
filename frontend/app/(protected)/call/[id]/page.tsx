@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { useAuth } from "@/contexts/AuthContext";
+import { useSession } from "next-auth/react";
 import { getStreamToken } from "@/lib/api";
 import {
     StreamVideo,
@@ -32,7 +32,8 @@ export default function CallPage() {
     const [isConnecting, setIsConnecting] = useState(true);
     const [tokenData, setTokenData] = useState<any>(null);
 
-    const { user: authUser, isLoading: authLoading } = useAuth();
+    const { data: session, status } = useSession();
+    const authUser = session?.user;
 
     // Fetch Stream token
     useEffect(() => {
@@ -71,9 +72,9 @@ export default function CallPage() {
                 console.log("🎥 Initializing Stream video client...");
 
                 const user = {
-                    id: authUser._id,
-                    name: authUser.fullName,
-                    image: authUser.profilePic,
+                    id: authUser.id,
+                    name: authUser.name ?? 'Anonymous User',
+                    image: authUser.image ?? undefined,
                 };
 
                 const videoClient = new StreamVideoClient({
@@ -122,7 +123,7 @@ export default function CallPage() {
     }, [tokenData, authUser, callId, router]);
 
     // Loading states
-    if (authLoading || isConnecting) {
+    if (status === 'loading' || isConnecting) {
         return <PageLoader />;
     }
 

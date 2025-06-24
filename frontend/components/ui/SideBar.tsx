@@ -1,190 +1,98 @@
 'use client';
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useAuth } from "@/contexts/AuthContext";
-import {
-    HomeIcon,
-    BellIcon,
-    UsersIcon,
-    FolderOpenIcon,
-    BookOpenIcon,
-    CalendarIcon,
-    TargetIcon,
-    BookmarkIcon,
-    SettingsIcon,
-    ShipWheelIcon,
-    PanelLeftCloseIcon,
-    PanelLeftOpenIcon,
-    FileIcon
+import { useSession } from "next-auth/react";
+import { 
+    ShipWheelIcon, 
+    HomeIcon, 
+    BookOpenIcon, 
+    UsersIcon, 
+    BellIcon, 
+    UserIcon, 
+    FolderIcon 
 } from "lucide-react";
-import { useState } from "react";
+import ProfileDropDown from "./ProfileDropDown";
 
 const Sidebar = () => {
-    const { user } = useAuth();
+    const { data: session } = useSession();
+    const user = session?.user;
     const pathname = usePathname();
-    const [isCollapsed, setIsCollapsed] = useState(false);
+
+    const isActive = (path: string) => pathname === path;
+
+    const sidebarItems = [
+        { icon: HomeIcon, label: "Dashboard", href: "/" },
+        { icon: BookOpenIcon, label: "Materials", href: "/materials" },
+        { icon: FolderIcon, label: "My Files", href: "/files" },
+        { icon: UsersIcon, label: "Friends", href: "/friends" },
+        { icon: BellIcon, label: "Notifications", href: "/notifications" },
+        { icon: UserIcon, label: "Profile", href: "/profile" },
+    ];
 
     return (
-        <aside className={`${isCollapsed ? 'w-20' : 'w-64'} bg-base-200 border-r border-base-300 hidden lg:flex flex-col h-screen sticky top-0 transition-[width] duration-500 ease-out`}>
-            {/* LOGO SECTION */}
-            <div className="p-5 border-base-300">
-                <Link href="/" className="flex items-center gap-2.5" title="Home">
-                    <ShipWheelIcon className="size-9 text-primary" />
-                    {!isCollapsed && (
-                        <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider animate-fade-in">
-                            LINGUEX
-                        </span>
-                    )}
+        <div className="w-64 bg-base-200 h-screen fixed left-0 top-0 z-20 border-r border-base-300 flex flex-col">
+            {/* Logo */}
+            <div className="p-6 border-b border-base-300">
+                <Link href="/" className="flex items-center gap-2.5">
+                    <ShipWheelIcon className="size-8 text-primary" />
+                    <span className="text-2xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
+                        StudyBuddy
+                    </span>
                 </Link>
             </div>
 
-            {/* NAVIGATION SECTION */}
-            <nav className="flex-1 p-4 space-y-3">
-                <Link
-                    href="/"
-                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/" ? "btn-active" : ""}`}
-                    title="Home"
-                >
-                    <HomeIcon className="size-5 text-base-content opacity-70" />
-                    {!isCollapsed && <span className="animate-fade-in whitespace-nowrap overflow-hidden">Home</span>}
-                </Link>
-
-                <Link
-                    href="/notifications"
-                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/notifications" ? "btn-active" : ""}`}
-                    title="Notifications"
-                >
-                    <BellIcon className="size-5 text-base-content opacity-70" />
-                    {!isCollapsed && <span className="animate-fade-in whitespace-nowrap overflow-hidden">Notifications</span>}
-                </Link>
-
-                <Link
-                    href="/friends"
-                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/learning-resources" ? "btn-active" : ""}`}
-                    title="Friends"
-                >
-                    <UsersIcon className="size-5 text-base-content opacity-70" />
-                    {!isCollapsed && <span className="animate-fade-in whitespace-nowrap overflow-hidden">Friends</span>}
-                </Link>
-
-                <Link
-                    href="/materials"
-                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/materials" ? "btn-active" : ""}`}
-                    title="Study Materials"
-                >
-                    <FolderOpenIcon className="size-5 text-base-content opacity-70" />
-                    {!isCollapsed && <span className="animate-fade-in whitespace-nowrap overflow-hidden">Study Materials</span>}
-                </Link>
-
-                <Link
-                    href="/files"
-                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/files" ? "btn-active" : ""}`}
-                    title="My Files"
-                >
-                    <FileIcon className="size-5 text-base-content opacity-70" />
-                    {!isCollapsed && <span className="animate-fade-in whitespace-nowrap overflow-hidden">My Files</span>}
-                </Link>
-
-                <Link
-                    href="/study-groups"
-                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/study-groups" ? "btn-active" : ""}`}
-                    title="Study Groups"
-                >
-                    <BookOpenIcon className="size-5 text-base-content opacity-70" />
-                    {!isCollapsed && <span className="animate-fade-in whitespace-nowrap overflow-hidden">Study Groups</span>}
-                </Link>
-
-                <Link
-                    href="/schedule"
-                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/schedule" ? "btn-active" : ""}`}
-                    title="Study Schedule"
-                >
-                    <CalendarIcon className="size-5 text-base-content opacity-70" />
-                    {!isCollapsed && <span className="animate-fade-in whitespace-nowrap overflow-hidden">Study Schedule</span>}
-                </Link>
-
-                <Link
-                    href="/goals"
-                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/goals" ? "btn-active" : ""}`}
-                    title="Learning Goals"
-                >
-                    <TargetIcon className="size-5 text-base-content opacity-70" />
-                    {!isCollapsed && <span className="animate-fade-in whitespace-nowrap overflow-hidden">Learning Goals</span>}
-                </Link>
-
-                <Link
-                    href="/saved"
-                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/saved" ? "btn-active" : ""}`}
-                    title="Saved Resources"
-                >
-                    <BookmarkIcon className="size-5 text-base-content opacity-70" />
-                    {!isCollapsed && <span className="animate-fade-in whitespace-nowrap overflow-hidden">Saved Resources</span>}
-                </Link>
-
-                <Link
-                    href="/settings"
-                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${pathname === "/settings" ? "btn-active" : ""}`}
-                    title="Settings"
-                >
-                    <SettingsIcon className="size-5 text-base-content opacity-70" />
-                    {!isCollapsed && <span className="animate-fade-in whitespace-nowrap overflow-hidden">Settings</span>}
-                </Link>
+            {/* Navigation */}
+            <nav className="flex-1 p-4">
+                <ul className="space-y-2">
+                    {sidebarItems.map((item) => (
+                        <li key={item.href}>
+                            <Link
+                                href={item.href}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 ${
+                                    isActive(item.href)
+                                        ? "bg-primary text-primary-content"
+                                        : "text-base-content hover:bg-base-300"
+                                }`}
+                            >
+                                <item.icon className="h-5 w-5" />
+                                <span className="font-medium">{item.label}</span>
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
             </nav>
 
-            {/* USER PROFILE SECTION */}
-            <div className="p-4 border-t border-base-300 mt-auto">
-                {!isCollapsed ? (
-                    <div className="flex items-center gap-3">
-                        <div className="avatar">
-                            <div className="w-10 rounded-full relative overflow-hidden">
-                                {user?.profilePic && (
-                                    <Image
-                                        src={user.profilePic}
-                                        alt="User Avatar"
-                                        fill
-                                        className="object-cover"
-                                        sizes="40px"
-                                        priority
-                                    />
-                                )}
-                            </div>
-                        </div>
-                        <div className="flex-1">
-                            <div className="animate-fade-in">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="font-semibold text-sm">{user?.fullName}</p>
-                                        <p className="text-xs text-success flex items-center gap-1">
-                                            <span className="size-2 rounded-full bg-success inline-block" />
-                                            Online
-                                        </p>
-                                    </div>
-                                    <button
-                                        onClick={() => setIsCollapsed(!isCollapsed)}
-                                        className="btn btn-ghost btn-sm p-2 hover:bg-base-300 transition-colors"
-                                        title="Collapse sidebar"
-                                    >
-                                        <PanelLeftCloseIcon className="size-6" />
-                                    </button>
+            {/* User Profile */}
+            <div className="p-4 border-t border-base-300">
+                <div className="flex items-center gap-3 mb-3">
+                    <div className="avatar">
+                        <div className="w-10 rounded-full">
+                            {((user as any)?.profilePic || user?.image) ? (
+                                <img 
+                                    src={(user as any)?.profilePic || user?.image || ''} 
+                                    alt="User Avatar" 
+                                    className="w-10 h-10 rounded-full object-cover"
+                                />
+                            ) : (
+                                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                                    <UserIcon className="w-6 h-6 text-primary" />
                                 </div>
-                            </div>
+                            )}
                         </div>
                     </div>
-                ) : (
-                    <div className="flex justify-center">
-                        <button
-                            onClick={() => setIsCollapsed(!isCollapsed)}
-                            className="btn btn-ghost btn-sm p-2 hover:bg-base-300 transition-colors"
-                            title="Expand sidebar"
-                        >
-                            <PanelLeftOpenIcon className="size-7" />
-                        </button>
+                    <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-base-content truncate">
+                            {(user as any)?.fullName || user?.name || 'User'}
+                        </p>
+                        <p className="text-xs text-base-content/60 truncate">
+                            {user?.email}
+                        </p>
                     </div>
-                )}
+                </div>
+                <ProfileDropDown className="w-full" />
             </div>
-        </aside>
+        </div>
     );
 };
 

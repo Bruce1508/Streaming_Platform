@@ -290,6 +290,38 @@ export const getCachedStats = async (key: string): Promise<any | null> => {
     return await cache.get(generateCacheKey('stats', key));
 };
 
+// ===== SCHOOL CACHE FUNCTIONS =====
+export const cacheSchools = async (key: string, schoolData: any, ttl: number = 300): Promise<void> => {
+    await cache.set(generateCacheKey('schools', key), schoolData, ttl);
+};
+
+export const getCachedSchools = async (key: string): Promise<any | null> => {
+    return await cache.get(generateCacheKey('schools', key));
+};
+
+export const clearSchoolCache = async (schoolId?: string): Promise<void> => {
+    if (schoolId) {
+        await cache.del(generateCacheKey('schools', schoolId));
+    }
+    // Could implement pattern-based clearing if needed
+};
+
+// ===== PROGRAM CACHE FUNCTIONS =====
+export const cachePrograms = async (key: string, programData: any, ttl: number = 300): Promise<void> => {
+    await cache.set(generateCacheKey('programs', key), programData, ttl);
+};
+
+export const getCachedPrograms = async (key: string): Promise<any | null> => {
+    return await cache.get(generateCacheKey('programs', key));
+};
+
+export const clearProgramCache = async (programId?: string): Promise<void> => {
+    if (programId) {
+        await cache.del(generateCacheKey('programs', programId));
+    }
+    // Could implement pattern-based clearing if needed
+};
+
 // ✅ Generic cache wrapper for functions
 export const withCache = async <T>(
     key: string, 

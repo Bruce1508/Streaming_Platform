@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { StreamChat } from 'stream-chat'
-import { useAuth } from "@/contexts/AuthContext";
+import { useSession } from 'next-auth/react';
 import { getStreamToken } from '@/lib/api';
 import toast from 'react-hot-toast';
 import ChatLoader from '@/components/ui/ChatLoader';
@@ -34,7 +34,8 @@ const ChatPage = () => {
     const [loading, setLoading] = useState(true);
     const [tokenData, setTokenData] = useState<any>(null);
 
-    const { user: authUser } = useAuth();
+    const { data: session } = useSession();
+    const authUser = session?.user;
 
     useEffect(() => {
         const fetchToken = async () => {
@@ -75,9 +76,9 @@ const ChatPage = () => {
                 // Connect user
                 await client.connectUser(
                     {
-                        id: authUser._id,
-                        name: authUser.fullName,
-                        image: authUser.profilePic,
+                        id: authUser.id,
+                        name: authUser.name ?? 'Anonymous User',
+                        image: authUser.image ?? undefined,
                     },
                     tokenData.token
                 );
@@ -85,12 +86,12 @@ const ChatPage = () => {
                 console.log('👤 User connected to Stream');
 
                 // Create channel ID (consistent regardless of who starts chat)
-                const channelId = [authUser._id, targetUserId].sort().join("-");
+                const channelId = [authUser.id, targetUserId].sort().join("-");
                 console.log('💬 Channel ID:', channelId);
 
                 // Create/get channel
                 const currChannel = client.channel("messaging", channelId, {
-                    members: [authUser._id, targetUserId],
+                    members: [authUser.id, targetUserId],
                 });
 
                 await currChannel.watch();

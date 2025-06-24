@@ -6,7 +6,6 @@ import mongoose from "mongoose";
 import { 
     capitalize, 
     maskEmail,
-    formatFileSize,
     truncate 
 } from '../utils/Format.utils';
 import { 

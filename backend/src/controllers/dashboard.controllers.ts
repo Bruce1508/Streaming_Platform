@@ -14,9 +14,7 @@ import {
     getTopPerformers 
 } from '../utils/Stats.utils';
 import { 
-    logApiRequest,
-    createPaginatedResponse,
-    extractPagination 
+    logApiRequest
 } from '../utils/Api.utils';
 import { 
     getCachedStats,

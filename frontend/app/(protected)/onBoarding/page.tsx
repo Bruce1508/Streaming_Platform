@@ -3,7 +3,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/contexts/AuthContext";
+import { useSession } from "next-auth/react";
 import { completeOnBoarding } from "@/lib/api";
 import { LoaderIcon, MapPinIcon, ShipWheelIcon, ShuffleIcon, CameraIcon } from "lucide-react";
 import { LANGUAGES } from "@/constants";
@@ -20,9 +20,10 @@ interface FormErrors {
 
 export default function OnboardingPage() {
     const router = useRouter();
-    const { user, updateUser } = useAuth();
+    const { data: session, update } = useSession();
+    const user = session?.user;
     
-    const [profilePic, setProfilePic] = useState(user?.profilePic || "");
+    const [profilePic, setProfilePic] = useState((user as any)?.profilePic || "");
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState<FormErrors>({});
 
@@ -71,13 +72,20 @@ export default function OnboardingPage() {
             });
 
             if (result.success && result.user) {
-                // Update user in context
-                updateUser(result.user);
+                // Update NextAuth session with new user data
+                await update({
+                    ...session,
+                    user: {
+                        ...session?.user,
+                        ...result.user,
+                        isOnboarded: true
+                    }
+                });
                 
                 toast.success("Profile completed successfully!");
                 
                 setTimeout(() => {
-                    router.push('/');
+                    router.push('/dashboard');
                 }, 1000);
             } else {
                 toast.error(result.message || "Failed to complete onboarding");
@@ -140,7 +148,7 @@ export default function OnboardingPage() {
                                 id="fullName"
                                 type="text"
                                 name="fullName"
-                                defaultValue={user?.fullName || ""}
+                                defaultValue={(user as any)?.fullName || user?.name || ""}
                                 className="input w-full"
                                 placeholder="Your full name"
                                 disabled={isLoading}
@@ -160,9 +168,9 @@ export default function OnboardingPage() {
                             <textarea
                                 id="bio"
                                 name="bio"
-                                defaultValue={user?.bio || ""}
+                                defaultValue={(user as any)?.bio || ""}
                                 className="textarea w-full h-24 resize-none"
-                                placeholder="Tell others about yourself and your language learning goals"
+                                placeholder="Tell others about yourself and your study goals"
                                 disabled={isLoading}
                             />
                         </fieldset>
@@ -178,7 +186,7 @@ export default function OnboardingPage() {
                                     id="nativeLanguage"
                                     name="nativeLanguage"
                                     className="select w-full"
-                                    defaultValue={user?.nativeLanguage || ""}
+                                    defaultValue={(user as any)?.nativeLanguage || ""}
                                     disabled={isLoading}
                                 >
                                     <option value="" disabled hidden>Select your native language</option>
@@ -204,7 +212,7 @@ export default function OnboardingPage() {
                                     id="learningLanguage"
                                     name="learningLanguage"
                                     className="select w-full"
-                                    defaultValue={user?.learningLanguage || ""}
+                                    defaultValue={(user as any)?.learningLanguage || ""}
                                     disabled={isLoading}
                                 >
                                     <option value="" disabled hidden>Select the language you want to learn</option>
@@ -233,7 +241,7 @@ export default function OnboardingPage() {
                                     id="location"
                                     type="text"
                                     name="location"
-                                    defaultValue={user?.location || ""}
+                                    defaultValue={(user as any)?.location || ""}
                                     className="input w-full pl-[2.5rem]"
                                     placeholder="City, Country"
                                     disabled={isLoading}

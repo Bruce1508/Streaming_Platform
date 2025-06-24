@@ -1,45 +1,54 @@
 import { Response, Request } from "express";
 import { generateStreamToken } from "../lib/stream";
+import { logApiRequest } from '../utils/Api.utils';
+import { logger } from '../utils/logger.utils';
+import { asyncHandler } from '../utils/asyncHandler';
+import { ApiError } from '../utils/ApiError';
+import { ApiResponse } from '../utils/ApiResponse';
 
-export function getStreamToken(req: Request, res: Response): Response | any {
-    try {
-        console.log('🎯 getStreamToken called');
-        console.log('👤 User:', req.user);
-        
-        const user = (req as any).user; // Type assertion
-        
-        if (!user || !user._id) {
-            console.log('❌ User not found in request');
-            return res.status(401).json({ 
-                success: false, 
-                message: "User not authenticated" 
-            });
-        }
-
-        const userId = user._id.toString();
-        console.log('🔑 Generating token for user:', userId);
-        
-        const token = generateStreamToken(userId);
-        
-        if (!token) {
-            console.log('❌ Failed to generate Stream token');
-            return res.status(500).json({ 
-                success: false, 
-                message: "Failed to generate token" 
-            });
-        }
-
-        console.log('✅ Stream token generated successfully');
-        return res.status(200).json({ 
-            success: true, 
-            token 
-        });
-        
-    } catch (error: any) {
-        console.error("❌ Error in getStreamToken controller:", error);
-        return res.status(500).json({ 
-            success: false, 
-            message: "Internal Server Error" 
-        });
-    }
+// ===== INTERFACE DEFINITIONS =====
+interface AuthenticatedRequest extends Request {
+    user?: any;
 }
+
+// ===== STREAM TOKEN GENERATION =====
+export const getStreamToken = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    // ✅ Log API request
+    logApiRequest(req as any);
+
+    const user = req.user;
+    
+    if (!user || !user._id) {
+        logger.warn('Stream token request failed: User not authenticated', {
+            userId: user?._id,
+            ip: req.ip
+        });
+        throw new ApiError(401, "User not authenticated");
+    }
+
+    const userId = user._id.toString();
+    logger.info('Generating stream token', {
+        userId,
+        ip: req.ip,
+        userAgent: req.get('User-Agent')
+    });
+    
+    const token = generateStreamToken(userId);
+    
+    if (!token) {
+        logger.error('Failed to generate stream token', {
+            userId,
+            ip: req.ip
+        });
+        throw new ApiError(500, "Failed to generate token");
+    }
+
+    logger.info('Stream token generated successfully', {
+        userId,
+        ip: req.ip
+    });
+
+    return res.status(200).json(
+        new ApiResponse(200, { token }, 'Stream token generated successfully')
+    );
+});

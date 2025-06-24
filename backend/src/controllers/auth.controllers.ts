@@ -30,14 +30,13 @@ import {
 } from "../utils/Format.utils";
 import { logger } from "../utils/logger.utils";
 import { generateSecureToken, generateStudentId } from "../utils/Random.utils";
+import redis from 'ioredis';
 
 // ✅ Helper function to generate secure session ID
 const generateSessionId = (): string => {
     return crypto.randomBytes(32).toString('hex');
 };
 
-// ✅ Store session in Redis
-const redis = require('ioredis');
 const redisClient = new redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
 // ✅ ENHANCED signUp with utils integration
@@ -371,7 +370,7 @@ export const updateProfile = async (req: AuthRequest, res: Response): Promise<vo
 
         // ✅ Clear cache with utils
         const userCacheKey = generateCacheKey('user', userId);
-        cache.delete(userCacheKey);
+        cache.del(userCacheKey);
 
         logger.info('Profile updated', {
             userId,
@@ -708,7 +707,7 @@ export const logout = async (req: AuthRequest, res: Response): Promise<void> => 
         // ✅ Clear user cache
         if (req.user?._id) {
             const userCacheKey = generateCacheKey('user', req.user._id.toString());
-            cache.delete(userCacheKey);
+            cache.del(userCacheKey);
         }
 
         res.json({
@@ -760,7 +759,7 @@ export const logoutAllDevices = async (req: AuthRequest, res: Response): Promise
 
         // ✅ Clear user cache
         const userCacheKey = generateCacheKey('user', userId);
-        cache.delete(userCacheKey);
+        cache.del(userCacheKey);
 
         logger.info('User logged out from all devices', {
             userId,
@@ -777,6 +776,151 @@ export const logoutAllDevices = async (req: AuthRequest, res: Response): Promise
         res.status(500).json({
             success: false,
             message: "Failed to logout from all devices"
+        });
+    }
+};
+
+// ✅ NEW OAUTH HANDLER for Google/Social login
+export const handleOAuth = async (req: Request, res: Response): Promise<void> => {
+    try {
+        logApiRequest(req as AuthRequest);
+        
+        const { provider, email, fullName, profilePic, providerId } = req.body;
+
+        if (!provider || !email || !fullName) {
+            res.status(400).json({
+                success: false,
+                message: "Provider, email, and fullName are required"
+            });
+            return;
+        }
+
+        const normalizedEmail = email.toLowerCase().trim();
+
+        // Check if user exists
+        let user = await User.findOne({ email: normalizedEmail });
+
+        if (user) {
+            // Update existing user's OAuth info if needed
+            if (!user.authProvider || user.authProvider === 'local') {
+                user.authProvider = provider;
+                user.profilePic = profilePic || user.profilePic;
+                await user.save();
+            }
+
+            // Update last login
+            await user.updateLastLogin();
+            user.activity.loginCount += 1;
+            await user.save();
+        } else {
+            // Create new user from OAuth
+            const userData: Partial<IUser> = {
+                fullName: capitalize(fullName),
+                email: normalizedEmail,
+                role: 'student',
+                bio: "",
+                profilePic: profilePic || "",
+                location: "",
+                website: "",
+                isOnboarded: false,
+                authProvider: provider,
+                isActive: true,
+                isVerified: true, // OAuth users are considered verified
+                savedMaterials: [],
+                uploadedMaterials: [],
+                studyStats: {
+                    materialsViewed: 0,
+                    materialsSaved: 0,
+                    materialsCreated: 0,
+                    ratingsGiven: 0
+                },
+                preferences: {
+                    theme: 'system',
+                    notifications: {
+                        email: true,
+                        push: true,
+                        newMaterials: true,
+                        courseUpdates: true
+                    },
+                    privacy: {
+                        showProfile: true,
+                        showActivity: true
+                    }
+                },
+                activity: {
+                    loginCount: 1,
+                    uploadCount: 0,
+                    downloadCount: 0,
+                    contributionScore: 0
+                },
+                friends: []
+            };
+
+            user = new User(userData);
+            await user.save();
+        }
+
+        // ✅ Generate secure session and enhanced tokens
+        const sessionId = generateSessionId();
+        console.log('🔑 OAuth - Generated sessionId:', sessionId);
+        console.log('🔑 OAuth - User ID:', user._id.toString());
+        
+        const tokens = generateTokenPair(user._id.toString(), sessionId);
+        console.log('🔑 OAuth - Generated tokens:', {
+            accessTokenLength: tokens.accessToken.length,
+            refreshTokenLength: tokens.refreshToken.length
+        });
+
+        // ✅ Store session in Redis with user info
+        await redisClient.setex(`session:${sessionId}`, 7 * 24 * 60 * 60, JSON.stringify({
+            userId: user._id.toString(),
+            email: user.email,
+            role: user.role,
+            provider: provider,
+            createdAt: new Date().toISOString()
+        }));
+
+        // ✅ Cache user
+        await cacheUser(user._id.toString(), {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            role: user.role,
+            profilePic: user.profilePic,
+            isOnboarded: user.isOnboarded,
+            isVerified: user.isVerified,
+            isActive: user.isActive
+        });
+
+        logger.info('OAuth authentication successful', {
+            userId: user._id,
+            email: maskEmail(user.email),
+            provider,
+            isNewUser: !user.lastLogin
+        });
+
+        res.json({
+            success: true,
+            message: "OAuth authentication successful",
+            user: {
+                _id: user._id,
+                fullName: user.fullName,
+                email: user.email,
+                role: user.role,
+                profilePic: user.profilePic,
+                isOnboarded: user.isOnboarded,
+                isVerified: user.isVerified,
+                isActive: user.isActive,
+                authProvider: user.authProvider
+            },
+            token: tokens.accessToken // Return access token for NextAuth
+        });
+
+    } catch (error: any) {
+        logger.error("OAuth error:", error);
+        res.status(500).json({
+            success: false,
+            message: "OAuth authentication failed"
         });
     }
 };

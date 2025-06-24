@@ -341,8 +341,25 @@ export const securityMiddleware = {
 
         // Sanitize body, query, and params
         req.body = sanitizeObject(req.body);
-        req.query = sanitizeObject(req.query);
-        req.params = sanitizeObject(req.params);
+        
+        // Safely sanitize query (check if writable)
+        try {
+            const sanitizedQuery = sanitizeObject(req.query);
+            Object.keys(req.query).forEach(key => {
+                delete req.query[key];
+            });
+            Object.assign(req.query, sanitizedQuery);
+        } catch (error) {
+            // If query is read-only, skip sanitization
+            console.warn('Cannot sanitize req.query - read-only');
+        }
+        
+        // Safely sanitize params
+        try {
+            req.params = sanitizeObject(req.params);
+        } catch (error) {
+            console.warn('Cannot sanitize req.params - read-only');
+        }
         
         next();
     },

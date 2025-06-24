@@ -1,7 +1,7 @@
 // hooks/useUpload.ts
 
 import { useState, useCallback } from 'react';
-import { useAuth } from '@/contexts/AuthContext'; // Import useAuth vào hook
+import { useSession } from 'next-auth/react';
 
 export interface UploadFileResponse {
     success: boolean;
@@ -30,7 +30,7 @@ export interface FileWithStatus {
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 export function useUpload() {
-    const { user, token } = useAuth(); // Dùng useAuth trong hook
+    const { data: session } = useSession();
     const [files, setFiles] = useState<FileWithStatus[]>([]);
     const [uploading, setUploading] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -38,37 +38,23 @@ export function useUpload() {
     const [error, setError] = useState<string | null>(null);
 
     const getValidToken = (): string | null => {
-        // Try context first
-        if (token && typeof token === 'string' && token !== 'null') {
-            return token;
+        // Use session from NextAuth
+        if (session?.accessToken) {
+            return session.accessToken;
         }
-        // Try localStorage
+        // Fallback to localStorage for any legacy cases
         const storageToken = localStorage.getItem("auth_token");
         if (storageToken && storageToken !== 'null' && storageToken !== 'undefined') {
-            return typeof storageToken === 'string' ? storageToken : String(storageToken);
+            return storageToken;
         }
         return null;
     };
 
-    // Upload single file function - bây giờ có thể access token
+    // Upload single file function - now uses NextAuth session
     const uploadSingleFile = useCallback(async (
         file: File,
         onProgress?: (progress: number) => void
     ): Promise<UploadFileResponse> => {
-
-        const getValidToken = (): string | null => {
-            // Try context first
-            if (token && typeof token === 'string' && token !== 'null') {
-                return token;
-            }
-            // Try localStorage
-            const storageToken = localStorage.getItem("auth_token");
-            if (storageToken && storageToken !== 'null' && storageToken !== 'undefined') {
-                return typeof storageToken === 'string' ? storageToken : String(storageToken);
-            }
-            return null;
-        };
-
         try {
             const formData = new FormData();
             formData.append('file', file);
@@ -125,7 +111,7 @@ export function useUpload() {
             console.error('❌ Upload file error:', error);
             throw error;
         }
-    }, [token]); // Dependency array
+    }, [session]); // Dependency array uses session
 
     // Add files to upload queue
     const addFiles = useCallback((newFiles: File[]) => {
@@ -140,7 +126,7 @@ export function useUpload() {
         setError(null);
     }, []);
 
-    // Add method for multiple upload (>100) 
+    // Add method for multiple upload (>100)
     // USE FOR FUTURE SCALE
     const uploadMultipleFiles = useCallback(async (files: File[]): Promise<any> => {
         try {
@@ -172,7 +158,7 @@ export function useUpload() {
             console.error('❌ Multiple upload error:', error);
             throw error;
         }
-    }, []);
+    }, [session]);
 
     // Remove file from queue
     const removeFile = useCallback((fileId: string) => {

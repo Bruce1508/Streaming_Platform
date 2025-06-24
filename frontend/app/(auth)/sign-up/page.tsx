@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useState } from "react";
 import toast from 'react-hot-toast';
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/contexts/AuthContext";
 import { signUp } from "@/lib/api";
 import { signIn } from "next-auth/react";
 
@@ -22,7 +21,6 @@ export default function SignUpPage() {
     };
     const [errors, setErrors] = useState<Errors>({});
     const router = useRouter();
-    const { login } = useAuth();
 
     const hasGoogleAuth = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     console.log('🔧 Google Auth Check:', {
@@ -33,7 +31,7 @@ export default function SignUpPage() {
     const handleGoogleSignUp = async () => {
         setOauthLoading('google');
         try {
-            await signIn("google", { callbackUrl: "/onBoarding" });
+            await signIn("google", { callbackUrl: "/dashboard" });
         } catch (error: any) {
             toast.error("Failed to sign up with Google: ", error);
             setOauthLoading(null);
@@ -68,23 +66,38 @@ export default function SignUpPage() {
         }
 
         try {
+            console.log('🔄 Creating user account...');
+            // Step 1: Create user in backend
             const result = await signUp({ fullName, email, password });
 
-            if (result.success && result.user && result.token) {
-                login(result.user, result.token);
-                sessionStorage.setItem('justSignedUp', 'true');
-                toast.success("Registration successful!");
+            if (result.success) {
+                console.log('✅ Account created, now signing in with NextAuth...');
+                toast.success("Account created successfully!");
 
-                setTimeout(() => {
-                    router.push('/onBoarding');
-                }, 1000);
+                // Step 2: Sign in with NextAuth to create proper session
+                const signInResult = await signIn('credentials', {
+                    redirect: false,
+                    email,
+                    password,
+                });
+
+                if (signInResult?.ok) {
+                    console.log('✅ NextAuth session created, redirecting to dashboard...');
+                    toast.success("Welcome! Let's get started...");
+                    router.push('/dashboard');
+                } else {
+                    console.error('❌ NextAuth sign-in failed:', signInResult?.error);
+                    toast.error("Account created but sign-in failed. Please try signing in manually.");
+                    router.push('/sign-in');
+                }
             } else {
                 toast.error(result.message || "Registration failed");
                 if (result.message?.includes('email')) {
                     setErrors({ email: result.message });
                 }
             }
-        } catch (error) {
+        } catch (error: any) {
+            console.error('❌ Registration error:', error);
             toast.error("An unexpected error occurred");
         } finally {
             setIsLoading(false);
@@ -113,10 +126,10 @@ export default function SignUpPage() {
 
                             <div className="text-center space-y-4">
                                 <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                                    Join the Linguex Community
+                                    Join the StudyBuddy Community
                                 </h2>
                                 <p className="text-base opacity-80 text-base-content/70">
-                                    Connect with native speakers and master new languages
+                                    Share and discover study materials with fellow students
                                 </p>
 
                                 {/* Compact Benefits with better spacing */}
@@ -127,7 +140,7 @@ export default function SignUpPage() {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
-                                        <span className="text-sm">Real-time video conversations</span>
+                                        <span className="text-sm">Upload and share study materials</span>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
@@ -135,7 +148,7 @@ export default function SignUpPage() {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
-                                        <span className="text-sm">Native speakers from 50+ countries</span>
+                                        <span className="text-sm">Connect with study partners</span>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
@@ -143,7 +156,7 @@ export default function SignUpPage() {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
-                                        <span className="text-sm">Personalized language matching</span>
+                                        <span className="text-sm">Access course-specific resources</span>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +171,7 @@ export default function SignUpPage() {
                                 <ShipWheelIcon className="size-6 text-primary" />
                             </div>
                             <span className="text-4xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-                                LINGUEX
+                                StudyBuddy
                             </span>
                         </div>
 
@@ -167,7 +180,7 @@ export default function SignUpPage() {
                             <div>
                                 <h2 className="text-3xl font-bold mb-2">Create an Account</h2>
                                 <p className="text-base opacity-70">
-                                    Start your language learning adventure
+                                    Join the StudyBuddy community
                                 </p>
                             </div>
 
@@ -230,7 +243,7 @@ export default function SignUpPage() {
                                         <input
                                             type="email"
                                             name="email"
-                                            placeholder="john@example.com"
+                                            placeholder="student@myseneca.ca"
                                             className="input input-bordered w-full"
                                             disabled={isLoading || oauthLoading !== null}
                                         />
@@ -256,6 +269,23 @@ export default function SignUpPage() {
 
                                     {errors.password && (
                                         <span className="text-error text-sm mt-1">{errors.password}</span>
+                                    )}
+                                </div>
+
+                                {/* CONFIRM PASSWORD */}
+                                <div className="form-control w-full">
+                                    <label className="label">
+                                        <span className="label-text">Confirm Password</span>
+                                    </label>
+                                    <input
+                                        type="password"
+                                        name="confirmPassword"
+                                        placeholder="••••••••"
+                                        className="input input-bordered w-full"
+                                        disabled={isLoading || oauthLoading !== null}
+                                    />
+                                    {errors.confirmPassword && (
+                                        <span className="text-error text-sm mt-1">{errors.confirmPassword}</span>
                                     )}
                                 </div>
 

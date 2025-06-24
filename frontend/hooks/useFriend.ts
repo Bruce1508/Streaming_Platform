@@ -1,15 +1,18 @@
-import { useAuth } from "@/contexts/AuthContext";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { makeAuthenticationRequest } from "@/lib/api";
-import { getValidToken } from "@/lib/tokenUtils";
 import { FriendRequest, Friend } from "@/types/Friend";
 
 export function useFriend() {
-    const { user, token } = useAuth();
+    const { data: session } = useSession();
     const [friends, setFriends] = useState<Friend[]>([]);
     const [friendRequests, setFriendRequests] = useState<FriendRequest[]>([]);
     const [loading, setLoading] = useState(true);
     const [sentRequests, setSentRequests] = useState<FriendRequest[]>([]);
+
+    const getValidToken = (): string | null => {
+        return session?.accessToken || null;
+    };
 
     //fetch our friends
     const fetchFriendData = async () => {
@@ -97,12 +100,15 @@ export function useFriend() {
     };
 
     useEffect(() => {
-        fetchFriendData();
-    }, []);
+        if (session) {
+            fetchFriendData();
+        }
+    }, [session]);
 
     const acceptFriendRequest = async (requestId: string) => {
         try {
-            const token = localStorage.getItem("auth_token");
+            const token = getValidToken();
+            if (!token) throw new Error("Not authenticated");
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/users/friend-request/${requestId}/accept`,
                 {
@@ -113,8 +119,7 @@ export function useFriend() {
                 }
             );
             if (response.ok) {
-                // await fetchFriends();
-                await fetchFriendRequests();
+                await fetchFriendData();
             }
         } catch (error) {
             console.error("Error accepting friend request:", error);
@@ -123,7 +128,8 @@ export function useFriend() {
 
     const declineFriendRequest = async (requestId: string) => {
         try {
-            const token = localStorage.getItem("auth_token");
+            const token = getValidToken();
+            if (!token) throw new Error("Not authenticated");
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/users/friend-request/${requestId}/decline`,
                 {
@@ -134,7 +140,7 @@ export function useFriend() {
                 }
             );
             if (response.ok) {
-                await fetchFriendRequests();
+                await fetchFriendData();
             }
         } catch (error) {
             console.error("Error declining friend request:", error);
@@ -188,12 +194,6 @@ export function useFriend() {
             throw error;
         }
     };
-
-    useEffect(() => {
-        if (user?._id) {
-            fetchFriendData();
-        }
-    }, [user?._id, token]);
 
     return {
         friends,

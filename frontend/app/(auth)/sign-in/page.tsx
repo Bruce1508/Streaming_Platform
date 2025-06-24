@@ -4,64 +4,33 @@ import { useState } from "react";
 import { ShipWheelIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { signIn as loginApi } from "@/lib/api";
 import toast from "react-hot-toast";
-import { signIn } from "next-auth/react"
-
-// Define the error type
-interface ApiError extends Error {
-    response?: {
-        data?: {
-            message?: string;
-        };
-    };
-    message: string;
-}
+import { signIn } from "next-auth/react";
 
 const LoginPage = () => {
     const router = useRouter();
-    const { login } = useAuth();
 
-    // Form state
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
     });
 
-    // Loading and error states
     const [isPending, setIsPending] = useState(false);
     const [oauthLoading, setOauthLoading] = useState<string | null>(null);
-    const [error, setError] = useState<ApiError | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
-    // Check if OAuth is configured
     const hasGoogleAuth = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-    console.log('🔧 Google Auth Check:', {
-        hasGoogleAuth: !!hasGoogleAuth,
-        clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID?.substring(0, 10) + '...'
-    });
-    // const hasMicrosoftAuth = process.env.NEXT_PUBLIC_MICROSOFT_CLIENT_ID;
 
     const handleGoogleSignIn = async () => {
         setOauthLoading('google');
         try {
-            await signIn("google", { callbackUrl: "/" });
+            await signIn("google", { callbackUrl: "/dashboard" });
         } catch (error: any) {
-            toast.error("Failed to sign in with Google: ", error);
+            toast.error("Đăng nhập với Google thất bại.");
             setOauthLoading(null);
         }
-    }
-
-    // const handleMicrosoftSignIn = async () => {
-    //     setOauthLoading('microsoft');
-    //     try {
-    //         await signIn("microsoft-entra-id", { callbackUrl: "/" });
-    //     } catch (error) {
-    //         toast.error("Failed to sign in with Microsoft");
-    //         setOauthLoading(null);
-    //     }
-    // }
+    };
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -69,76 +38,64 @@ const LoginPage = () => {
         setError(null);
 
         try {
-            const result = await loginApi(loginData);
+            const result = await signIn('credentials', {
+                redirect: false,
+                email: loginData.email,
+                password: loginData.password,
+            });
 
-            if (result.success && result.user && result.token) {
-                // Save to context and localStorage
-                login(result.user, result.token);
-
-                toast.success("Welcome back!");
-
-                // Redirect based on onboarding status
-                setTimeout(() => {
-                    if (result.user.isOnboarded) {
-                        router.push("/");
-                    } else {
-                        router.push("/onBoarding");
-                    }
-                }, 1000);
+            if (result?.ok) {
+                toast.success("Chào mừng bạn đã quay trở lại!");
+                router.push("/dashboard");
+                router.refresh();
             } else {
-                setError({
-                    response: { data: { message: result.message || "Login failed" } },
-                } as ApiError);
+                setError(result?.error || "Email hoặc mật khẩu không hợp lệ.");
+                toast.error(result?.error || "Đăng nhập thất bại.");
             }
-        } catch (err) {
-            setError(err as ApiError);
+        } catch (err: any) {
+            setError("Đã có lỗi xảy ra. Vui lòng thử lại.");
+            toast.error("Đã có lỗi xảy ra. Vui lòng thử lại.");
         } finally {
             setIsPending(false);
         }
     };
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setLoginData(prev => ({ ...prev, [name]: value }));
+    };
+
     return (
-        <div
-            className="min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8"
-            data-theme="dark"
-        >
+        <div className="min-h-screen flex items-center justify-center p-4" data-theme="dark">
             <div className="border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-2xl overflow-hidden">
-                {/* LOGIN FORM SECTION */}
                 <div className="w-full lg:w-1/2 p-6 sm:p-10 flex flex-col">
-                    {/* LOGO */}
                     <div className="mb-8 flex items-center justify-start gap-2">
                         <div className="p-2 bg-primary/10 rounded-lg">
                             <ShipWheelIcon className="size-8 text-primary" />
                         </div>
                         <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
-                            LINGUEX
+                            StudyBuddy
                         </span>
                     </div>
 
-                    {/* ERROR MESSAGE DISPLAY */}
                     {error && (
                         <div className="alert alert-error mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span>
-                                {error.response?.data?.message || error.message}
-                            </span>
+                            <span>{error}</span>
                         </div>
                     )}
 
                     <div className="w-full space-y-6">
-                        {/* HEADER */}
                         <div>
                             <h2 className="text-3xl font-bold">Welcome Back</h2>
                             <p className="text-base opacity-70 mt-2">
-                                Sign in to continue your language learning journey
+                                Sign in to access your study materials
                             </p>
                         </div>
 
-                        {/* OAUTH BUTTONS */}
                         <div className="space-y-3">
-                            {/* Google Sign In */}
                             {hasGoogleAuth && (
                                 <button
                                     type="button"
@@ -159,36 +116,12 @@ const LoginPage = () => {
                                     <span className="font-medium">Continue with Google</span>
                                 </button>
                             )}
-
-                            {/* Microsoft Sign In
-                            {hasMicrosoftAuth && (
-                                <button
-                                    type="button"
-                                    onClick={handleMicrosoftSignIn}
-                                    disabled={oauthLoading === 'microsoft' || isPending}
-                                    className="btn btn-outline w-full gap-3 h-12 hover:bg-base-200"
-                                >
-                                    {oauthLoading === 'microsoft' ? (
-                                        <span className="loading loading-spinner loading-sm"></span>
-                                    ) : (
-                                        <svg className="w-5 h-5" viewBox="0 0 23 23">
-                                            <path fill="#f25022" d="M0 0h11v11H0z"/>
-                                            <path fill="#00a4ef" d="M12 0h11v11H12z"/>
-                                            <path fill="#7fba00" d="M0 12h11v11H0z"/>
-                                            <path fill="#ffb900" d="M12 12h11v11H12z"/>
-                                        </svg>
-                                    )}
-                                    <span className="font-medium">Continue with Microsoft</span>
-                                </button>
-                            )} */}
                         </div>
 
-                        {/* DIVIDER */}
-                        {(hasGoogleAuth) && (
+                        {hasGoogleAuth && (
                             <div className="divider text-sm">OR CONTINUE WITH EMAIL</div>
                         )}
 
-                        {/* LOGIN FORM */}
                         <form onSubmit={handleLogin} className="space-y-4">
                             <div className="space-y-4">
                                 <div className="form-control w-full">
@@ -197,118 +130,66 @@ const LoginPage = () => {
                                     </label>
                                     <input
                                         type="email"
-                                        placeholder="hello@example.com"
-                                        className="input input-bordered w-full h-12"
+                                        name="email"
+                                        placeholder="student@myseneca.ca"
+                                        className="input input-bordered w-full"
                                         value={loginData.email}
-                                        onChange={(e) =>
-                                            setLoginData({ ...loginData, email: e.target.value })
-                                        }
+                                        onChange={handleInputChange}
                                         required
-                                        disabled={isPending || oauthLoading !== null}
+                                        disabled={isPending || !!oauthLoading}
                                     />
                                 </div>
-
                                 <div className="form-control w-full">
                                     <label className="label">
                                         <span className="label-text font-medium">Password</span>
                                     </label>
                                     <input
                                         type="password"
+                                        name="password"
                                         placeholder="••••••••"
-                                        className="input input-bordered w-full h-12"
+                                        className="input input-bordered w-full"
                                         value={loginData.password}
-                                        onChange={(e) =>
-                                            setLoginData({ ...loginData, password: e.target.value })
-                                        }
+                                        onChange={handleInputChange}
                                         required
-                                        disabled={isPending || oauthLoading !== null}
+                                        disabled={isPending || !!oauthLoading}
                                     />
-                                    <label className="label">
-                                        <Link href="/forgot-password" className="label-text-alt link link-hover text-primary">
-                                            Forgot password?
-                                        </Link>
-                                    </label>
                                 </div>
-
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary w-full h-12"
-                                    disabled={isPending || oauthLoading !== null}
-                                >
-                                    {isPending ? (
-                                        <>
-                                            <span className="loading loading-spinner loading-sm"></span>
-                                            Signing in...
-                                        </>
-                                    ) : (
-                                        "Sign In"
-                                    )}
-                                </button>
                             </div>
-                        </form>
-
-                        {/* SIGN UP LINK */}
-                        <div className="text-center">
-                            <p className="text-sm">
-                                Don&apos;t have an account?{" "}
+                            <div className="flex items-center justify-between mt-2">
                                 <Link
-                                    href="/sign-up"
-                                    className="text-primary hover:underline font-medium"
+                                    href="/forgot-password"
+                                    className="text-sm text-primary hover:underline"
                                 >
-                                    Create one
+                                    Forgot password?
                                 </Link>
-                            </p>
-                        </div>
-
-                        {/* DEV MODE WARNING */}
-                        {process.env.NODE_ENV === 'development' && !hasGoogleAuth && (
-                            <div className="alert alert-warning">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
-                                <span className="text-sm">OAuth sign-in is not configured yet. Add OAuth credentials to enable social login.</span>
                             </div>
-                        )}
+                            <button
+                                type="submit"
+                                disabled={isPending || !!oauthLoading}
+                                className="btn btn-primary w-full mt-6"
+                            >
+                                {isPending ? (
+                                    <span className="loading loading-spinner"></span>
+                                ) : "Sign In"}
+                            </button>
+                        </form>
+                        <p className="text-center text-sm mt-4">
+                            Don&apos;t have an account?{" "}
+                            <Link href="/sign-up" className="text-primary hover:underline font-medium">
+                                Sign up
+                            </Link>
+                        </p>
                     </div>
                 </div>
 
-                {/* IMAGE SECTION */}
-                <div className="hidden lg:flex w-full lg:w-1/2 bg-gradient-to-br from-primary/20 to-secondary/20 items-center justify-center p-8">
-                    <div className="max-w-md">
-                        {/* Illustration */}
-                        <div className="relative aspect-square max-w-sm mx-auto mb-8">
-                            <div className="absolute inset-0 bg-primary/20 rounded-full blur-3xl"></div>
-                            <Image
-                                src="/i.png"
-                                alt="Language connection illustration"
-                                fill
-                                className="object-cover relative z-10"
-                                priority
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                            />
-                        </div>
-
-                        <div className="text-center space-y-4">
-                            <h2 className="text-2xl font-bold">
-                                Welcome back to Linguex
-                            </h2>
-                            <p className="text-base opacity-80">
-                                Continue your language learning journey and connect with native speakers worldwide
-                            </p>
-                            
-                            {/* Features */}
-                            <div className="grid grid-cols-2 gap-4 mt-8">
-                                <div className="text-center">
-                                    <div className="text-3xl font-bold text-primary">500+</div>
-                                    <div className="text-sm opacity-70">Active Learners</div>
-                                </div>
-                                <div className="text-center">
-                                    <div className="text-3xl font-bold text-secondary">14</div>
-                                    <div className="text-sm opacity-70">Languages</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-primary/5 to-secondary/5 items-center justify-center p-12">
+                    <Image
+                        src="/globe.svg" 
+                        alt="StudyBuddy Branding"
+                        width={400}
+                        height={400}
+                        className="object-contain"
+                    />
                 </div>
             </div>
         </div>

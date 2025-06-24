@@ -3,53 +3,46 @@
 import { useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import PageLoader from "@/components/ui/PageLoader";
-import { useAuthSession } from "@/hooks/useAuthSession";
 
 // app/(protected)/layout.tsx
 export default function ProtectedLayout({ children }: { children: ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
-
-    const { user, isAuthenticated, isLoading } = useAuthSession();
+    const { data: session, status } = useSession();
 
     console.log('🏠 Protected Layout:', {
-        isAuthenticated,
-        isLoading,
-        pathname
+        status,
+        hasSession: !!session,
+        pathname,
+        userEmail: session?.user?.email
     });
 
     useEffect(() => {
-        // QUAN TRỌNG: Phải check isLoading trước
-        if (isLoading) {
-            console.log("⏳ Auth still loading...");
+        // Wait for session to load
+        if (status === 'loading') {
+            console.log("⏳ Session still loading...");
             return;
         }
 
-        // Nếu không có user VÀ không phải đang loading
-        if (!user && !isLoading) {
-            console.log('❌ No user, redirecting to sign-in');
-            router.push("/sign-in"); // ← Đổi sang sign-in thay vì sign-up
+        // If not authenticated, redirect to sign-in
+        if (status === 'unauthenticated' || !session) {
+            console.log('❌ No session, redirecting to sign-in');
+            router.push("/sign-in");
             return;
         }
-
-        // Check onboarding
-        if (user && !user.isOnboarded && pathname !== "/onBoarding") {
-            console.log('🔄 Redirecting to onboarding');
-            router.push("/onBoarding");
-            return;
-        }
-    }, [isLoading, user, router, pathname]);
+    }, [status, session, router, pathname]);
 
     // Show loader while checking auth
-    if (isLoading) {
-        console.log('⏳ Showing loader - auth loading');
+    if (status === 'loading') {
+        console.log('⏳ Showing loader - session loading');
         return <PageLoader />;
     }
 
-    // If no user after loading complete
-    if (!user) {
-        console.log('🔄 No user, showing loader while redirecting');
+    // If no session after loading complete
+    if (status === 'unauthenticated' || !session) {
+        console.log('🔄 No session, showing loader while redirecting');
         return <PageLoader />;
     }
 

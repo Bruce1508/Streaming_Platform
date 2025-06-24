@@ -5,8 +5,24 @@ import path from 'path';
 import { UploadResponse } from '../types/uploadTypes/upload';
 import { SUPPORTED_FILE_TYPES, MAX_FILE_SIZE } from '../utils/typeValidation';
 import File from '../models/File';
+import { logApiRequest } from '../utils/Api.utils';
+import { logger } from '../utils/logger.utils';
+import { asyncHandler } from '../utils/asyncHandler';
+import { ApiError } from '../utils/ApiError';
+import { ApiResponse } from '../utils/ApiResponse';
+import { formatFileSize } from '../utils/Format.utils';
+import { generateRandomFileName } from '../utils/Random.utils';
 
-// Helper function to generate unique file key
+// ===== INTERFACE DEFINITIONS =====
+interface AuthenticatedRequest extends Request {
+    user?: any;
+}
+
+// ===== HELPER FUNCTIONS =====
+
+/**
+ * Generate unique file key for S3 storage
+ */
 const generateFileKey = (originalName: string, userId: string): string => {
     const timestamp = Date.now();
     const uuid = uuidv4().substring(0, 8);
@@ -18,6 +34,9 @@ const generateFileKey = (originalName: string, userId: string): string => {
     return `study-materials/${userId}/${timestamp}_${uuid}_${cleanName}${extension}`;
 };
 
+/**
+ * Validate uploaded file
+ */
 const validateFile = (file: Express.Multer.File): string | null => {
     // Check file type
     if (!SUPPORTED_FILE_TYPES[file.mimetype as keyof typeof SUPPORTED_FILE_TYPES]) {
@@ -26,7 +45,7 @@ const validateFile = (file: Express.Multer.File): string | null => {
 
     // Check file size
     if (file.size > MAX_FILE_SIZE) {
-        return 'File size exceeds 10MB limit';
+        return `File size exceeds ${formatFileSize(MAX_FILE_SIZE)} limit`;
     }
 
     // Check if file has content
@@ -37,218 +56,226 @@ const validateFile = (file: Express.Multer.File): string | null => {
     return null;
 };
 
+// ===== UPLOAD CONTROLLERS =====
 
-// Single file upload endpoint (Option A: Upload file first)
-export const uploadFile = async (req: Request, res: Response): Promise<Response | any> => {
-    try {
-        const user = (req as any).user;
+/**
+ * @desc    Upload single file
+ * @route   POST /api/upload/file
+ * @access  Private
+ */
+export const uploadFile = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    // ✅ Log API request
+    logApiRequest(req as any);
 
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                message: 'Authentication required'
-            } as UploadResponse);
-        }
-
-        // Check if file exists
-        if (!req.file) {
-            return res.status(400).json({
-                success: false,
-                message: 'No file provided'
-            } as UploadResponse);
-        }
-
-        const file = req.file;
-
-        const validationError = validateFile(file);
-        if (validationError) {
-            return res.status(400).json({
-                success: false,
-                message: validationError
-            });
-        }
-
-        // Generate unique file key
-        const fileKey = generateFileKey(file.originalname, user._id);
-
-        console.log('📤 Uploading file to S3:', {
-            originalName: file.originalname,
-            size: file.size,
-            mimeType: file.mimetype,
-            key: fileKey,
-            userId: user._id
+    const user = req.user;
+    if (!user) {
+        logger.warn('File upload denied: User not authenticated', {
+            ip: req.ip
         });
+        throw new ApiError(401, 'Authentication required');
+    }
 
-        // Upload to S3
-        const fileUrl = await uploadToS3(
-            file.buffer,
-            fileKey,
-            file.mimetype
-        );
+    // Check if file exists
+    if (!req.file) {
+        logger.warn('File upload failed: No file provided', {
+            userId: user._id,
+            ip: req.ip
+        });
+        throw new ApiError(400, 'No file provided');
+    }
 
-        console.log('✅ File uploaded successfully:', fileUrl);
+    const file = req.file;
 
-        const fileDoc = new File({
-            originalName: file.originalname,
+    // Validate file
+    const validationError = validateFile(file);
+    if (validationError) {
+        logger.warn('File upload failed: Validation error', {
+            userId: user._id,
+            fileName: file.originalname,
+            fileSize: file.size,
+            mimeType: file.mimetype,
+            error: validationError,
+            ip: req.ip
+        });
+        throw new ApiError(400, validationError);
+    }
+
+    // Generate unique file key
+    const fileKey = generateFileKey(file.originalname, user._id);
+
+    logger.info('Uploading file to S3', {
+        userId: user._id,
+        fileName: file.originalname,
+        fileSize: formatFileSize(file.size),
+        mimeType: file.mimetype,
+        s3Key: fileKey,
+        ip: req.ip
+    });
+
+    // Upload to S3
+    const fileUrl = await uploadToS3(
+        file.buffer,
+        fileKey,
+        file.mimetype
+    );
+
+    logger.info('File uploaded to S3 successfully', {
+        userId: user._id,
+        fileName: file.originalname,
+        s3Url: fileUrl,
+        ip: req.ip
+    });
+
+    // Save to database
+    const fileDoc = new File({
+        originalName: file.originalname,
+        filename: fileKey,
+        mimeType: file.mimetype,
+        size: file.size,
+        url: fileUrl,
+        uploadedBy: user._id,
+        category: file.mimetype.startsWith('image/') ? 'image' :
+            file.mimetype === 'application/pdf' ? 'pdf' : 'document',
+        isPublic: false
+    });
+
+    const savedFile = await fileDoc.save();
+    
+    logger.info('File saved to database', {
+        userId: user._id,
+        fileId: savedFile._id,
+        fileName: file.originalname,
+        ip: req.ip
+    });
+
+    // Return success response
+    const responseData = {
+        attachment: {
             filename: fileKey,
-            mimeType: file.mimetype,
+            originalName: file.originalname,
             size: file.size,
+            mimeType: file.mimetype,
             url: fileUrl,
-            uploadedBy: user._id,
+            uploadedAt: new Date(),
+            fileType: path.extname(file.originalname).toLowerCase(),
             category: file.mimetype.startsWith('image/') ? 'image' :
-                file.mimetype === 'application/pdf' ? 'pdf' : 'document',
-            isPublic: false // Default to private
+                file.mimetype === 'application/pdf' ? 'pdf' : 'document'
+        }
+    };
+
+    return res.status(200).json(
+        new ApiResponse(200, responseData, 'File uploaded successfully')
+    );
+});
+
+/**
+ * @desc    Upload multiple files
+ * @route   POST /api/upload/files
+ * @access  Private
+ */
+export const uploadFiles = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    // ✅ Log API request
+    logApiRequest(req as any);
+
+    const user = req.user;
+    if (!user) {
+        logger.warn('Multiple file upload denied: User not authenticated', {
+            ip: req.ip
         });
-
-        const savedFile = await fileDoc.save();
-        console.log('✅ File saved to database:', savedFile._id);
-
-        // Return success response with file info
-        return res.status(200).json({
-            success: true,
-            message: 'File uploaded successfully',
-            data: {
-                attachment: {
-                    filename: fileKey, // S3 KEY for database storage
-                    originalName: file.originalname,
-                    size: file.size,
-                    mimeType: file.mimetype,
-                    url: fileUrl, // S3 public URL for frontend access
-                    uploadedAt: new Date(),
-                    fileType: path.extname(file.originalname).toLowerCase(),
-                    // ✅ Add file category for frontend
-                    category: file.mimetype.startsWith('image/') ? 'image' :
-                        file.mimetype === 'application/pdf' ? 'pdf' : 'document'
-                }
-            }
-        });
-
-    } catch (error: any) {
-        console.error('❌ File upload error:', error);
-
-        return res.status(500).json({
-            success: false,
-            message: 'File upload failed in uploadFile function in backend',
-            error: error.message
-        } as UploadResponse);
+        throw new ApiError(401, 'Authentication required');
     }
-};
 
-// Multiple files upload endpoint (for future scalability)
-export const uploadFiles = async (req: Request, res: Response): Promise<Response | any> => {
-    try {
-        const user = (req as any).user;
-
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                message: 'Authentication required'
-            });
-        }
-
-        // Check if files exist
-        const files = req.files as Express.Multer.File[];
-        if (!files || files.length === 0) {
-            return res.status(400).json({
-                success: false,
-                message: 'No files provided'
-            });
-        }
-
-        console.log('📤 Uploading multiple files:', {
-            count: files.length,
-            userId: user._id
+    // Check if files exist
+    const files = req.files as Express.Multer.File[];
+    if (!files || files.length === 0) {
+        logger.warn('Multiple file upload failed: No files provided', {
+            userId: user._id,
+            ip: req.ip
         });
+        throw new ApiError(400, 'No files provided');
+    }
 
-        const uploadResults = [];
-        const errors = [];
+    logger.info('Uploading multiple files', {
+        userId: user._id,
+        fileCount: files.length,
+        ip: req.ip
+    });
 
-        // Process each file
-        for (const file of files) {
-            try {
-                // Validate file
-                const validationError = validateFile(file);
-                if (validationError) {
-                    errors.push(`${file.originalname}: ${validationError}`);
-                    continue;
-                }
+    const uploadResults = [];
+    const errors = [];
 
-                // Generate unique file key
-                const fileKey = generateFileKey(file.originalname, user._id);
-
-                // Upload to S3
-                const fileUrl = await uploadToS3(
-                    file.buffer,
-                    fileKey,
-                    file.mimetype
-                );
-
-                // Save to database
-                const fileDoc = new File({
-                    originalName: file.originalname,
-                    filename: fileKey,
-                    mimeType: file.mimetype,
-                    size: file.size,
-                    url: fileUrl,
-                    uploadedBy: user._id,
-                    category: file.mimetype.startsWith('image/') ? 'image' :
-                             file.mimetype === 'application/pdf' ? 'pdf' : 'document',
-                    isPublic: false
-                });
-
-                const savedFile = await fileDoc.save();
-
-                uploadResults.push({
-                    success: true,
-                    file: {
-                        id: savedFile._id,
-                        filename: savedFile.filename,
-                        originalName: savedFile.originalName,
-                        size: savedFile.size,
-                        mimeType: savedFile.mimeType,
-                        url: savedFile.url,
-                        uploadedAt: savedFile.uploadedAt,
-                        category: savedFile.category
-                    }
-                });
-
-            } catch (error: any) {
-                console.error(`❌ Error uploading ${file.originalname}:`, error);
-                errors.push(`${file.originalname}: ${error.message}`);
+    // Process each file
+    for (const file of files) {
+        try {
+            // Validate file
+            const validationError = validateFile(file);
+            if (validationError) {
+                errors.push(`${file.originalname}: ${validationError}`);
+                continue;
             }
+
+            // Generate unique file key
+            const fileKey = generateFileKey(file.originalname, user._id);
+
+            // Upload to S3
+            const fileUrl = await uploadToS3(
+                file.buffer,
+                fileKey,
+                file.mimetype
+            );
+
+            // Save to database
+            const fileDoc = new File({
+                originalName: file.originalname,
+                filename: fileKey,
+                mimeType: file.mimetype,
+                size: file.size,
+                url: fileUrl,
+                uploadedBy: user._id,
+                category: file.mimetype.startsWith('image/') ? 'image' :
+                         file.mimetype === 'application/pdf' ? 'pdf' : 'document',
+                isPublic: false
+            });
+
+            const savedFile = await fileDoc.save();
+
+            uploadResults.push({
+                filename: fileKey,
+                originalName: file.originalname,
+                size: file.size,
+                mimeType: file.mimetype,
+                url: fileUrl,
+                uploadedAt: new Date(),
+                fileType: path.extname(file.originalname).toLowerCase(),
+                category: file.mimetype.startsWith('image/') ? 'image' :
+                         file.mimetype === 'application/pdf' ? 'pdf' : 'document'
+            });
+
+        } catch (error: any) {
+            logger.error('File upload failed', {
+                userId: user._id,
+                fileName: file.originalname,
+                error: error.message,
+                ip: req.ip
+            });
+            errors.push(`${file.originalname}: Upload failed`);
         }
+    }
 
-        const successCount = uploadResults.length;
-        const errorCount = errors.length;
+    logger.info('Multiple file upload completed', {
+        userId: user._id,
+        successCount: uploadResults.length,
+        errorCount: errors.length,
+        ip: req.ip
+    });
 
-        console.log('✅ Multiple upload completed:', {
-            success: successCount,
-            errors: errorCount
-        });
-
-        return res.status(200).json({
-            success: true,
-            message: `Uploaded ${successCount} files successfully`,
-            data: {
-                files: uploadResults,
-                stats: {
-                    successful: successCount,
-                    failed: errorCount,
-                    total: files.length
-                }
-            },
+    return res.status(200).json(
+        new ApiResponse(200, {
+            uploads: uploadResults,
             errors: errors.length > 0 ? errors : undefined
-        });
-
-    } catch (error: any) {
-        console.error('❌ Multiple files upload error:', error);
-        return res.status(500).json({
-            success: false,
-            message: 'Multiple files upload failed',
-            error: error.message
-        });
-    }
-};
+        }, `Uploaded ${uploadResults.length} files successfully`)
+    );
+});
 
 // 🆕 Get user's files
 export const getUserFiles = async (req: Request, res: Response): Promise<Response | any> => {

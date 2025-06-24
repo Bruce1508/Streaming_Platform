@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { authAPI } from "@/lib/api"
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -25,39 +26,27 @@ export const authOptions: NextAuthOptions = {
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
-                    return null
+                    throw new Error("Please enter your email and password.");
                 }
 
                 try {
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/sign-in`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            email: credentials.email,
-                            password: credentials.password
-                        })
-                    })
+                    const response = await authAPI.signIn({
+                        email: credentials.email,
+                        password: credentials.password,
+                    });
 
-                    const data = await response.json()
-
-                    if (data.success && data.user) {
+                    if (response.success && response.data?.user) {
                         return {
-                            id: data.user._id,
-                            email: data.user.email,
-                            name: data.user.fullName,
-                            image: data.user.profilePic || "",
-                            isOnboarded: data.user.isOnboarded || false,
-                            bio: data.user.bio || "",
-                            nativeLanguage: data.user.nativeLanguage || "",
-                            learningLanguage: data.user.learningLanguage || "",
-                            location: data.user.location || "",
-                            accessToken: data.token // Ensure this is always defined
-                        }
+                            ...response.data.user,
+                            id: response.data.user._id,
+                            accessToken: response.data.token 
+                        };
+                    } else {
+                        throw new Error(response.message || "Invalid email or password.");
                     }
-                    return null
-                } catch (error) {
-                    console.error("Login error:", error)
-                    return null
+                } catch (error: any) {
+                    console.error("Authentication error:", error);
+                    throw new Error(error.response?.data?.message || error.message || "An error occurred.");
                 }
             }
         })
@@ -82,6 +71,7 @@ export const authOptions: NextAuthOptions = {
 
             if (account?.provider === "google") {
                 try {
+                    console.log("🔄 Making OAuth API call to backend...");
                     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/oauth`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -94,22 +84,34 @@ export const authOptions: NextAuthOptions = {
                         })
                     })
 
-                    const data = await response.json()
-                    console.log("OAuth API response:", data);
+                    console.log("📡 OAuth API response status:", response.status);
+                    
+                    if (!response.ok) {
+                        console.error("❌ OAuth API response not OK:", response.status, response.statusText);
+                        return false;
+                    }
 
-                    if (data.success) {
+                    const data = await response.json()
+                    console.log("📦 OAuth API response data:", data);
+
+                    if (data.success && data.user && data.token) {
+                        console.log("✅ OAuth API success, updating user object...");
                         user.id = data.user._id
                         user.isOnboarded = data.user.isOnboarded || false
                         user.bio = data.user.bio || ""
                         user.nativeLanguage = data.user.nativeLanguage || ""
                         user.learningLanguage = data.user.learningLanguage || ""
                         user.location = data.user.location || ""
-                        user.accessToken = data.token // Ensure token is set
+                        user.accessToken = data.token // Fixed: use data.token directly
+                        
+                        console.log("✅ User object updated successfully");
                         return true
+                    } else {
+                        console.error("❌ OAuth API returned success=false or missing data:", data);
+                        return false;
                     }
-                    return false
                 } catch (error) {
-                    console.error("OAuth API error:", error)
+                    console.error("❌ OAuth API error:", error)
                     return false
                 }
             }
@@ -117,41 +119,22 @@ export const authOptions: NextAuthOptions = {
             return true
         },
 
-        async jwt({ token, user, account }) {
-            // Initial sign in
+        async jwt({ token, user }) {
             if (user) {
-                token.id = user.id
-                token.email = user.email
-                token.name = user.name
-                token.picture = user.image
-                token.isOnboarded = user.isOnboarded
-                token.bio = user.bio
-                token.nativeLanguage = user.nativeLanguage
-                token.learningLanguage = user.learningLanguage
-                token.location = user.location
-                // Use optional chaining and provide default empty string
-                token.accessToken = user.accessToken || ""
-                console.log("JWT callback - token:", token);
+                token.id = user.id;
+                token.accessToken = (user as any).accessToken;
+                token.isOnboarded = (user as any).isOnboarded;
             }
-            return token
+            return token;
         },
 
         async session({ session, token }) {
-            console.log("Session callback - session:", session);
             if (session.user) {
-                session.user.id = token.id as string
-                session.user.email = token.email as string
-                session.user.name = token.name as string
-                session.user.image = token.picture as string
-                session.user.isOnboarded = token.isOnboarded as boolean
-                session.user.bio = token.bio as string
-                session.user.nativeLanguage = token.nativeLanguage as string
-                session.user.learningLanguage = token.learningLanguage as string
-                session.user.location = token.location as string
+                session.user.id = token.id as string;
+                session.user.isOnboarded = token.isOnboarded as boolean;
             }
-            // Use optional chaining and provide default empty string
-            session.accessToken = token.accessToken || ""
-            return session
+            session.accessToken = token.accessToken as string;
+            return session;
         },
 
         async redirect({ url, baseUrl }) {

@@ -14,8 +14,25 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { ApiError } from "./utils/ApiError";
 import courseRoutes from "./routes/course.routes";
+import schoolRoutes from "./routes/school.routes";
+import programRoutes from "./routes/program.routes";
+import onboardingRoutes from "./routes/onboarding.routes";
 import { errorHandler, notFound } from "./middleware/error.middleware";
 import { logger } from "./utils/logger.utils";
+
+// ✅ Import all models to register schemas
+import "./models/User";
+import "./models/School";
+import "./models/Program";
+import "./models/Course";
+import "./models/StudyMaterial";
+import "./models/BookMark";
+import "./models/Enrollment";
+import "./models/File";
+import "./models/Notification";
+import "./models/Report";
+import "./models/UserSession";
+import "./models/friendRequest";
 
 const app = express();
 
@@ -40,12 +57,15 @@ app.use('/api/', limiter);
 
 // ✅ API Routes - Session routes under /auth
 app.use("/api/auth", authRoutes);
-app.use("/api/sessions", sessionRoutes);        // ← Fixed path
+app.use("/api/sessions", sessionRoutes);        
 app.use("/api/users", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/materials", materialRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/courses", courseRoutes);
+app.use("/api/schools", schoolRoutes);
+app.use("/api/programs", programRoutes);
+app.use("/api/onboarding", onboardingRoutes);
 
 // Handle undefined routes
 app.all('/{*any}', notFound);

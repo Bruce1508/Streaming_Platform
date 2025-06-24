@@ -579,7 +579,7 @@ export const saveMaterial = async (req: Request, res: Response): Promise<Respons
 
         // ✅ Clear relevant caches
         const userCacheKey = generateCacheKey('user', authReq.user._id.toString());
-        cache.delete(userCacheKey);
+        cache.del(userCacheKey);
 
         return res.json({
             success: true,

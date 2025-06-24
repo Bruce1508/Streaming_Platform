@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ToasterProvider } from "@/components/ToasterProvider";
 import NextAuthSessionProvider from "@/providers/SessionProvider";
@@ -17,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Linguex",
-  description: "Experience seamless streaming with Linguex. Watch your favorite content anytime, anywhere with our modern streaming platform.",
+  title: "StudyBuddy",
+  description: "Share and discover study materials with fellow students at Seneca College.",
 };
 
 export default function RootLayout({
@@ -33,10 +32,8 @@ export default function RootLayout({
       >
         <NextAuthSessionProvider>
           <ThemeProvider>
-            <AuthProvider>
-              {children}
-              <ToasterProvider />
-            </AuthProvider>
+            {children}
+            <ToasterProvider />
           </ThemeProvider>
         </NextAuthSessionProvider>
       </body>

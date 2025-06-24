@@ -10,7 +10,8 @@ import {
     refreshToken,
     getAllUsers,      // ✅ NEW
     forgotPassword,   // ✅ NEW  
-    resetPassword     // ✅ NEW
+    resetPassword,    // ✅ NEW
+    handleOAuth       // ✅ NEW OAUTH
 } from "../controllers/auth.controllers";
 import { protectRoute } from "../middleware/auth.middleware";
 
@@ -55,6 +56,12 @@ router.post("/reset-password", [
     securityMiddleware.sanitizeInput,
     authValidators.validateResetPassword
 ], resetPassword);
+
+// ✅ NEW - OAUTH HANDLER (Minimal middleware for OAuth)
+router.post("/oauth", [
+    authRateLimiters.general
+    // Remove sanitizeInput middleware that's causing issues
+], handleOAuth);
 
 // ===== PROTECTED ROUTES =====
 
