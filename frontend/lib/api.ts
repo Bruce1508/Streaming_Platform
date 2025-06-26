@@ -112,6 +112,18 @@ export const uploadAPI = {
     getUserFiles: () => api.get('/upload/files'),
 };
 
+// ===== PROGRAM APIs =====
+export const programAPI = {
+    getPrograms: (params?: any) => {
+        const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
+        return api.get(`/programs${queryString}`);
+    },
+    getProgramById: (id: string) => api.get(`/programs/${id}`),
+    searchPrograms: (query: string) => api.get(`/programs/search?q=${encodeURIComponent(query)}`),
+    getProgramsBySchool: (schoolId: string) => api.get(`/programs/school/${schoolId}`),
+    getProgramLevels: () => api.get('/programs/levels'),
+};
+
 // ===== CHAT APIs =====
 export const chatAPI = {
     getStreamToken: () => api.get('/chat/token'),

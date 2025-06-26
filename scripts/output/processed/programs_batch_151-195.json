@@ -1,0 +1,573 @@
+[
+  {
+    "id": "mdn",
+    "code": "MDN",
+    "name": "Medical Esthetics Nursing (MDN)",
+    "overview": "Learn more about the MDN program. You’ll have the opportunity to explore the curriculum, discover career options and hear answers to some frequently asked questions.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "School of Fashion"
+  },
+  {
+    "id": "mhi",
+    "code": "MHI",
+    "name": "Mental Health Intervention (MHI)",
+    "overview": "This eight-month graduate certificate program equips you with specialized knowledge in mental health intervention, enhancing your skills and increasing your employability in the field. The program focuses on deepening your understanding of mental health issues, with an emphasis on reflecting on and addressing stigma in both personal and professional contexts.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "School of Community Services"
+  },
+  {
+    "id": "npm",
+    "code": "NPM",
+    "name": "Non-Profit & Social Sector Management (NPM)",
+    "overview": "This eight-month graduate certificate program will provide you with an in-depth understanding of how to lead and manage a non-profit organization towards sustainable growth. You will learn about program planning, development and evaluation, transparent and ethical corporate governance, and marketing and sales practices. You will explore the latest trends in fundraising, partnerships-building, and volunteer engagement.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "otp",
+    "code": "OTP",
+    "name": "Occupational Therapist Assistant and Physiotherapist Assistant (OTP)",
+    "overview": "Unique to Seneca’s approach, in the first semester of the program you’ll learn two-eyed seeing; a theoretical concept of seeing the world through both Indigenous and Western perspectives.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Health Sciences"
+  },
+  {
+    "id": "exs",
+    "code": "EXS",
+    "name": "Office Administration – Executive (EXS)",
+    "overview": "This twelve-month diploma program will develop the administrative and technological skills you will need in order to meet the demands of the current and emerging business environment. Through practical, hands-on training you will acquire a knowledge of business office procedures, document preparation, Microsoft Office applications, basic human resources practices, professionalism and ethics.",
+    "duration": "3 Semesters (12 Months)",
+    "campus": [],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "mes",
+    "code": "MES",
+    "name": "Office Administration – Health Services (MES)",
+    "overview": "This twelve-month diploma program gives you the opportunity to develop the specialized skills you need to work in a variety of healthcare settings. Through practical, hands-on training you will acquire a knowledge of computer skills and software, medical terminology, clinical and office procedures, specialized software and medical ethics.",
+    "duration": "3 Semesters (12 Months)",
+    "campus": [],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "les",
+    "code": "LES",
+    "name": "Office Administration – Legal (LES)",
+    "overview": "This twelve-month, flexible, diploma program will enable you to acquire the relevant administrative and technological skills to meet the demands of the current and emerging legal office environment. Through practical, hands-on training you will acquire a knowledge of legal office procedures, document production, specialized legal software, professionalism and ethics. Areas of study include litigation, family, corporate, real estate and estate law.",
+    "duration": "3 Semesters (12 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "optc",
+    "code": "OPTC",
+    "name": "Opticianry (OPTC)",
+    "overview": "In this two-year diploma program, you will acquire the specialized knowledge and skills to safely and competently dispense subnormal vision devices, contact lenses and eyeglasses. In the theory classes, you will learn the basic science of sight, optics and eye refraction and in the laboratory, classes will develop practical skills required to fit and dispense eyeglasses and contact lenses. Program graduates are qualified to register for the entry-to-practice examinations offered by the National Alliance of Canadian Optician Regulators (NACOR).",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Health Sciences"
+  },
+  {
+    "id": "ple",
+    "code": "PLE",
+    "name": "Paralegal (PLE)",
+    "overview": "Paralegals are unique to Ontario, providing specified legal services directly to the public for a fee without the supervision of a lawyer. This two-year diploma program prepares you to write the Law Society of Ontario (LSO) licensing examination and become a licensed paralegal in the province, in accordance with the requirements of the Law Society Act. Your learning will focus on both legal ethics and small-business practice so that you’ll be prepared to work in a law or paralegal firm, in a government setting or as a self-employed professional.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Public Safety"
+  },
+  {
+    "id": "plea",
+    "code": "PLEA",
+    "name": "Paralegal (Accelerated) (PLEA)",
+    "overview": "This is an accelerated version of our Paralegal program. To take advantage of this accelerated program option, prior education is required. If you do not have prior education, explore our Paralegal (PLE) program.",
+    "duration": "3 Semesters (13 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Public Safety"
+  },
+  {
+    "id": "pswc",
+    "code": "PSWC",
+    "name": "Personal Support Worker (PSWC)",
+    "overview": "This one-year certificate program is designed to teach you how to effectively provide care and assistance to clients and families in order to live fulfilling lives in their communities and in institutions. As a student of this program, you will develop a broad range of abilities emphasizing value, true sensitivity and respect for the individuality of each client. You will also have the opportunity to participate in cross disciplinary and/or inter-professional learning opportunities with other members of the care and service team for example, Practical Nursing, Registered Nursing and Social Service Workers.",
+    "duration": "2 Semesters (1 Year)",
+    "campus": [],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Certificate",
+    "school": "Seneca Nanji Foundation School of Nursing"
+  },
+  {
+    "id": "raq",
+    "code": "RAQ",
+    "name": "Pharmaceutical Regulatory Affairs & Quality Operations (RAQ)",
+    "overview": "Focus your career by specializing in this one-year graduate certificate program. You will gain a fundamental understanding of regulatory affairs and quality operations. Studies of regulatory compliance in Canada and internationally will prepare you for a career involving drug or medical regulations and quality assurance functions and roles. During the first semester, you will learn the fundamentals of regulatory affairs and quality operations. Your second semester will focus on more detailed exposure to the areas of regulation and quality operations. This program offers an optional work term(s), similar to the length to an academic semester, if you meet all the academic requirements.",
+    "duration": "2 Semesters (1 Year)",
+    "campus": [],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "School of Biological Sciences & Applied Chemistry"
+  },
+  {
+    "id": "law",
+    "code": "LAW",
+    "name": "Police Foundations (LAW)",
+    "overview": "Prepare for an exciting career in law enforcement and crime prevention. In this two-year diploma program, you will gain a comprehensive education combining professional knowledge with practical skills development. This program prepares you a range of careers in public safety, policing, investigations, security and enforcement services in public and private organizations, and corrections.",
+    "duration": "4 Semesters (Fall start - 24 months, Winter start - 16 months)",
+    "campus": [],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Public Safety"
+  },
+  {
+    "id": "pnd",
+    "code": "PND",
+    "name": "Practical Nursing (PND)",
+    "overview": "In this two-year diploma program, you will be working with experienced faculty to gain the knowledge, skills and judgment required for competent clinical nursing practice. You will study anatomy, physiology, English, as well as psychology which will prepare you to write the Canadian Practical Nurse Registration Examination. In addition, you will participate in a variety of learning modalities, online interactive learning, collaborative group learning, simulation experiences and direct nursing care in a variety of healthcare settings.",
+    "duration": "5 Semesters (2 Years)",
+    "campus": [],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "Seneca Nanji Foundation School of Nursing"
+  },
+  {
+    "id": "pbs",
+    "code": "PBS",
+    "name": "Pre-Business (PBS)",
+    "overview": "This program is only available for new students who have a valid study permit. Explore program options.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "phs",
+    "code": "PHS",
+    "name": "Pre-Health Sciences Pathway to Advanced Diplomas & Degrees (PHS)",
+    "overview": "This one-year certificate program equips you with essential knowledge and skills for academic success in health sciences and related fields. You'll gain expertise in communications, mathematics, human anatomy, biology and organic/inorganic chemistry. This program prepares you to advance your studies in health sciences at the diploma, advanced diploma or degree level. You'll explore potential careers in health sciences.",
+    "duration": "2 Semesters (1 Year)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Certificate",
+    "school": "School of Health Sciences"
+  },
+  {
+    "id": "pra",
+    "code": "PRA",
+    "name": "Professional Accounting Practice (PRA)",
+    "overview": "This graduate certificate program is a fast-track option for four-year degree graduates to pursue a career in accounting. This program is open to students with minimal existing knowledge of accounting. The program will provide you with all required Chartered Professional Accountants (CPA) preparatory-level courses. Upon successful completion of the courses, you will be eligible to register for the CPA Professional Education Program (PEP).",
+    "duration": "3 Semesters (12 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "psl",
+    "code": "PSL",
+    "name": "Professional Selling (PSL)",
+    "overview": "This eight-month graduate certificate program will give you the latest skills needed to succeed in business-to-business (B2B) sales roles in the culturally diverse environments of the global market. The skills-based program focuses on developing a technology-driven, post-pandemic salesforce, so that you will be ready to add value in a number of roles once you graduate.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "pme",
+    "code": "PME",
+    "name": "Project Management – Environmental (PME)",
+    "overview": "This eight-month graduate certificate program prepares you for careers in project development and management in both environmental and civil engineering industries. Your studies will encompass all aspects of project management, from the competitive bid process to scheduling, risk management and the closing of projects. During the second semester, you will gain valuable industry experience under the guidance of a mentor.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "School of Environmental & Civil Engineering Technology"
+  },
+  {
+    "id": "pmc",
+    "code": "PMC",
+    "name": "Project Management – Information Technology (PMC)",
+    "overview": "In this eight-month graduate certificate program, you will learn about the advances in project management taking place in the Information Technology (IT) industry. This program teaches an understanding of when to apply methodologies in the IT industry, including when each methodology is appropriate to use. This program will also refine your project management skills by providing an enhanced awareness of IT projects, programs and policies in two consecutive semesters. This program offers an optional work term for students to gain practical experience in the IT sector prior to graduation.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "School of Software Design & Data Science"
+  },
+  {
+    "id": "pad",
+    "code": "PAD",
+    "name": "Public Administration (PAD)",
+    "overview": "This eight-month graduate certificate program provides you with the multi-disciplinary skills and experience required to become or grow your career as a public sector employee.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Online"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "School of Arts & Science"
+  },
+  {
+    "id": "prc",
+    "code": "PRC",
+    "name": "Public Relations – Corporate Communications (PRC)",
+    "overview": "This eight-month graduate certificate program will immerse you in public relations and corporate communications theory and practice. You will learn to write news releases, work with the media, research and develop strategic communications programs, hone digital communications skills and work in teams. You will be mentored by highly experienced teachers and learn how to effectively pursue a career in the public relations and communications industry.",
+    "duration": "2 Semesters (1 Year)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "School of Media"
+  },
+  {
+    "id": "rpa",
+    "code": "RPA",
+    "name": "Real Property Administration (Assessment & Appraisal) (RPA)",
+    "overview": "This two-year diploma program is designed to prepare you to become a highly versatile and in-demand professional in the property valuation and property tax sectors.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Arts & Science"
+  },
+  {
+    "id": "rpaa",
+    "code": "RPAA",
+    "name": "Real Property Administration (Assessment & Appraisal) (Accelerated) (RPAA)",
+    "overview": "This is an accelerated version of our Real Property Administration (Assessment & Appraisal) program. To take advantage of this accelerated program option, prior education is required. If you do not have prior education, explore our Real Property Administration (Assessment & Appraisal) (RPA) program.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Arts & Science"
+  },
+  {
+    "id": "ssw",
+    "code": "SSW",
+    "name": "Social Service Worker (SSW)",
+    "overview": "The two-year SSW program provides students with the professional knowledge and skills to excel within the human services field. Practical interventions and strength-based approaches will equip you to promote equity and support populations experiencing trauma and challenging life events. You will be encouraged to examine your belief systems and inherent biases in relation to the Code of Ethics and Standards of Practice set out by the Ontario College of Social Workers and Social Service Workers (OCSWSSW).",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Community Services"
+  },
+  {
+    "id": "sswa",
+    "code": "SSWA",
+    "name": "Social Service Worker (Accelerated) (SSWA)",
+    "overview": "This one-year SSWA accelerated option allows you to build on your current credentials, upgrading your education or choosing a career specialization. This program consists of a seven-week summer semester starting in early May, followed by a regular academic year starting the day after Labour Day and concluding in mid-April.",
+    "duration": "3 Semesters (12 Months)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Community Services"
+  },
+  {
+    "id": "sswg",
+    "code": "SSWG",
+    "name": "Social Service Worker – Gerontology (SSWG)",
+    "overview": "Countries around the world are seeing a rapid increase in aging populations, resulting in an increased need for trained professionals. In Canada, one in four Canadians will be over the age of 65 by 2035. This two-year diploma program combines the knowledge, professional values and skill sets of social service to teach you how to support older adults to maintain independence and a good quality of life. The program draws from a biopsychosocial model and an anti-oppressive framework emphasizing a holistic, strength-based approach, situated within current legislation and best practices.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Community Services"
+  },
+  {
+    "id": "sswi",
+    "code": "SSWI",
+    "name": "Social Service Worker – Immigrants and Refugees (SSWI)",
+    "overview": "The two-year SSWI program is the first of its kind in Ontario, offering an in-depth understanding of the evolving landscape of newcomer reception and support in Canada. Learning through a critical and anti-oppressive lens, you will graduate prepared to support immigrants and refugees from diverse backgrounds. The program, which is grounded in equity, social justice and anti-oppression principles, provides insights into pre-migration conditions and how to offer meaningful support to individuals and families throughout the migration and integration process.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Community Services"
+  },
+  {
+    "id": "ssia",
+    "code": "SSIA",
+    "name": "Social Service Worker – Immigrants and Refugees (Accelerated) (SSIA)",
+    "overview": "The SSIA program is the first of its kind in Ontario, offering an in-depth understanding of the evolving landscape of newcomer reception and support in Canada. This one-year accelerated option allows you to build on your current credentials, upgrading your education or choosing a career specialization. This program consists of a seven-week summer semester starting in early May, followed by a regular academic year starting the day after Labour Day and concluding in mid-April.",
+    "duration": "3 Semesters (12 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Community Services"
+  },
+  {
+    "id": "sem",
+    "code": "SEM",
+    "name": "Sports, Entertainment & Event Marketing (SEM)",
+    "overview": "In this eight-month graduate certificate program, you will learn about this industry and the integrated roles that event properties, marketing agencies and brand sponsors play. You will learn to apply the principles of strategic marketing and brand management to the development of event properties and experiential marketing campaigns. This program prepares you for careers in the sports, entertainment and event marketing fields that span the private, non-profit and public sectors.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "scm",
+    "code": "SCM",
+    "name": "Supply Chain Management – Global Logistics (SCM)",
+    "overview": "This eight-month graduate certificate program provides you with not only the foundational competencies necessary to become a supply chain professional, but also the technical and analytical skills to participate in supply chain strategy and design decisions.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "smb",
+    "code": "SMB",
+    "name": "Sustainable Business Management (SMB)",
+    "overview": "This eight-month graduate certificate program focuses on the application and long-term economic, environmental and social value of sustainability in business. This program is designed to meet the growing need for professionals who can propose, measure and evaluate sustainability strategies and initiatives. You will learn how to develop and implement economically viable, socially inclusive and environmentally regenerative business strategies to help organizations thrive in the 21st century and how to create a purposeful sustainable business as an entrepreneur.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "ubs",
+    "code": "UBS",
+    "name": "Sustainable Urban & Transportation Planning (UBS)",
+    "overview": "This two-semester graduate certificate program will prepare you for planning roles that focus on ensuring urban areas are sustainable, inclusive and equitable. You will integrate economic, social-cultural, political and environmental considerations to imagine creative solutions for urban and transportation projects.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "School of Environmental & Civil Engineering Technology"
+  },
+  {
+    "id": "eli317",
+    "code": "ELI317",
+    "name": "TESL 1 (ELI317)",
+    "overview": "NOTE:  This program is suspended until further notice. If you are interested in pursuing part-time studies, visit Seneca's part-time TESL certificate program webpage.",
+    "duration": "2 Months",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "",
+    "credential": "Seneca College Certificate",
+    "school": "English Language Institute"
+  },
+  {
+    "id": "eli321",
+    "code": "ELI321",
+    "name": "TESL 2 (ELI321)",
+    "overview": "NOTE:  This program is suspended until further notice. If you are interested in pursuing part-time studies, visit Seneca's part-time TESL certificate program webpage.",
+    "duration": "2 Months",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "",
+    "credential": "Seneca College Certificate",
+    "school": "English Language Institute"
+  },
+  {
+    "id": "tec",
+    "code": "TEC",
+    "name": "Technical Communication (TEC)",
+    "overview": "This eight-month graduate certificate program offers practical experience for a career in technical, scientific, and computer-related communication. Today’s technical communicators are professionals who create technical content, develop user assistance, design websites, design and deliver corporate training, explain computers and technology to users, create multimedia materials, and develop support systems for consumer products.",
+    "duration": "2 Semesters (1 Year)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "School of Media"
+  },
+  {
+    "id": "gtb",
+    "code": "GTB",
+    "name": "Tourism – Services Management – Global Tourism Business Specialization (GTB)",
+    "overview": "The tourism sector is a large economic growth contributor in Ontario, Canada and the world. This two-year diploma program will help you establish a service-driven attitude and develop your business and entrepreneurial skills to create, promote and sell global tourism products and services. You will graduate as a specialist in tourism destination innovation and implementing exciting new tourism services.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "tis",
+    "code": "TIS",
+    "name": "Tourism – Services Management – Travel Services Specialization (TIS)",
+    "overview": "This two-year diploma program is designed to provide a solid foundation of the skills and knowledge required to work in the corporate travel business, leisure, or cruise travel sectors. In this program, you will understand the tourism industry as a business with an emphasis on developing a service-driven attitude and honing business skills in marketing, sales and customer relations.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "tto",
+    "code": "TTO",
+    "name": "Tourism – Travel Operations (TTO)",
+    "overview": "This eight-month certificate program is designed to develop your skills and knowledge appropriate for an entry-level position in the tourism and travel industry. In this program, you will learn to proactively promote tourism and travel products and services, improve the quality of customer experience, and discover major global tourism attractions and destinations.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "vta",
+    "code": "VTA",
+    "name": "Veterinary Assistant (VTA)",
+    "overview": "Throughout this eight-month certificate program, you will gain the essential skills needed to effectively assist veterinary professionals in the practice of veterinary science. To prepare you for a career as a veterinary assistant, you will be provided with a variety of basic laboratory skills and techniques to diagnose and treat domestic animals. You will gain a comprehensive understanding of:  Animal health and disease  Sanitation and disinfection  Animal husbandry   Medical terminology  Veterinary software applications  Client communication  Ethical conduct    Laboratory procedures",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Certificate",
+    "school": "School of Health Sciences"
+  },
+  {
+    "id": "vte",
+    "code": "VTE",
+    "name": "Veterinary Technician (VTE)",
+    "overview": "Throughout this two-year diploma program you will gain the knowledge and skills to assist and support veterinary practitioners, public health officers and biomedical research scientists. You will study a variety of subjects, including nutrition, clinical pathology, microbiology, radiography, anatomy, physiology and genetics. These studies will provide you with a strong grasp on animal behaviour, nursing and care.  The curriculum is taught by expert faculty who collaborate with students, graduates and industry professionals on applied research projects in the sector.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Health Sciences"
+  },
+  {
+    "id": "vcc",
+    "code": "VCC",
+    "name": "Visual Content Creation (VCC)",
+    "overview": "This two-year diploma program prepares you to become an innovative entrepreneur in a variety of industries where visual content creation is in high demand. Building on the basic principles of photography, videography and storytelling, it incorporates visual communication strategies, with a strong emphasis on social media, to prepare you for a successful career.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Creative Arts & Animation"
+  },
+  {
+    "id": "vft",
+    "code": "VFT",
+    "name": "Visual Effects for Film & Television (VFT)",
+    "overview": "The eight-month Visual Effects for Film and Television program is a leading provider for training in the dynamic and challenging special effects industry. This is a Houdini-certified school and all other software taught (Maya, Nuke) is industry standard. You will work on assignments that mirror the practical work you would do at a VFX studio to create a high-quality portfolio.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "School of Creative Arts & Animation"
+  },
+  {
+    "id": "vma",
+    "code": "VMA",
+    "name": "Visual Merchandising Arts (VMA)",
+    "overview": "Do you have a flair for creativity and a passion for design? Seneca Polytechnic's two-year Visual Merchandising Arts diploma program gives you hands-on expertise in fashion styling, digital design and retail and display methodologies, all while emphasizing sustainable practices.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Fashion"
+  },
+  {
+    "id": "wsp",
+    "code": "WSP",
+    "name": "Workplace Safety & Prevention (WSP)",
+    "overview": "This two-year diploma program is the first of its kind in the GTA. It is uniquely designed to meet the growing need for enhanced workplace health and safety in every industry. You will develop strong foundational knowledge in health and safety to identify, manage and assess risks in various workplace settings. This program will also focus on the policies and procedures in the care and prevention practice. You will apply concepts and theories with practical experience in field placements and graduate with the skills needed to identify and report on safety and health conditions in the workplace.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Health Sciences"
+  }
+]

@@ -6,7 +6,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'avatar.iran.liara.run',
         port: '',
-        pathname: '/**', // ✅ Change from '/public/**' to '/**'
+        pathname: '/**',
       },
       {
         protocol: 'https',
@@ -29,6 +29,12 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'getstream.io',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'source.unsplash.com',
         port: '',
         pathname: '/**',
       },

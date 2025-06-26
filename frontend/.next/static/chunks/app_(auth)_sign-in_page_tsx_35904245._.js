@@ -42,7 +42,7 @@ const LoginPage = ()=>{
         setOauthLoading('google');
         try {
             await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["signIn"])("google", {
-                callbackUrl: "/"
+                callbackUrl: "/dashboard"
             });
         } catch (error) {
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].error("Đăng nhập với Google thất bại.");
@@ -61,7 +61,7 @@ const LoginPage = ()=>{
             });
             if (result?.ok) {
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].success("Chào mừng bạn đã quay trở lại!");
-                router.push("/");
+                router.push("/dashboard");
                 router.refresh();
             } else {
                 setError(result?.error || "Email hoặc mật khẩu không hợp lệ.");

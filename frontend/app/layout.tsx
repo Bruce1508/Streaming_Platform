@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StudyBuddy",
+  title: "StudyBuddy", 
   description: "Share and discover study materials with fellow students at Seneca College.",
 };
 

@@ -20,10 +20,7 @@ const HeroSection = () => {
                 <h1 className="text-5xl md:text-6xl font-extrabold !leading-tight tracking-tight">
                     Find your course materials
                 </h1>
-                <p className="mt-6 text-lg md:text-xl max-w-2xl text-gray-200">
-                    Search for course codes or program names to access study resources 
-                </p>
-
+                
                 {/* Search Bar Wrapper */}
                 <div className="mt-8 w-full max-w-2xl">
                     <div className="
@@ -48,7 +45,10 @@ const HeroSection = () => {
                                 focus:outline-none
                             "
                         />
-                        <Button size="lg" className="cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-12 px-8">
+                        <Button 
+                            size="lg" 
+                            className="cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-12 px-8 bg-white/80 border border-white/70 text-primary font-bold shadow hover:bg-white/60 transition-colors"
+                        >
                             Search
                         </Button>
                     </div>

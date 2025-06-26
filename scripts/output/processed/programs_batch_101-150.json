@@ -1,0 +1,648 @@
+[
+  {
+    "id": "fpr",
+    "code": "FPR",
+    "name": "Honours Bachelor of Aviation Technology (FPR)",
+    "overview": "This four-year program is the only aviation technology-based degree program in Canada. Seneca has been the national leader in aviation education for more than 50 years. Responding to emerging industry demands, Seneca is now educating students at the degree level. Our program provides a rigorous aviation technology-based curriculum developing your theoretical and practical knowledge of aviation technology.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Aviation"
+  },
+  {
+    "id": "bbp",
+    "code": "BBP",
+    "name": "Honours Bachelor of Behavioural Psychology (BBP)",
+    "overview": "The Bachelor of Behavioural Psychology (BBP) program is the first four-year undergraduate honours degree in Canada that offers you a comprehensive study in the rapidly growing field of behavioural psychology and applied behaviour analysis (ABA). The curriculum emphasizes the interaction of behaviour and the environment within a biopsychosocial framework, covering a range of subjects across the human lifespan.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Public Safety"
+  },
+  {
+    "id": "bcd",
+    "code": "BCD",
+    "name": "Honours Bachelor of Child Development (BCD)",
+    "overview": "The four-year Honours Bachelor of Child Development degree program prepares you for expansive opportunities across the health, education, and social service sectors. Upon completion of this program, you will be able to pursue careers in family support services, recreation, early learning and education, infant mental health, and early intervention for children and youth with diverse abilities. You will also qualify to register as a member of the College of Early Childhood Educator and practice as a Registered Early Childhood Educator (RECE).",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Early Childhood Education"
+  },
+  {
+    "id": "bacf",
+    "code": "BACF",
+    "name": "Honours Bachelor of Commerce – Accounting & Finance (BACF)",
+    "overview": "In this four-year honours degree program you will develop accounting, finance, management, and technology competencies. You will learn how to prepare, interpret and analyze financial information and be on the path toward a professional accounting designation. With this unique accounting education you will be job-ready for the Canadian and global business environments.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "bbm",
+    "code": "BBM",
+    "name": "Honours Bachelor of Commerce – Business Management (BBM)",
+    "overview": "This four-year degree program will provide you with the fundamental principles of a well-rounded undergraduate education and a solid foundation in business management. Students learn strategic management concepts in a variety of business settings that include planning, organizing, leading and evaluating. They also learn how to apply business management techniques to areas such as finance, operations, human resources and marketing for-profit and non-profit businesses and organizations. Other study topics include business ethics, customer service, selling, presentation skills, global supply chain management, taxation and applied research methodology.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "btm",
+    "code": "BTM",
+    "name": "Honours Bachelor of Commerce – Business Technology Management (BTM)",
+    "overview": "This four-year bachelor degree will provide you with information technology (IT), business management and leadership skills which can be applied to a business. Graduates will be prepared for jobs as IT-savvy business professionals who can implement and manage strategies and operate effectively in teams. You will be capable of planning and implementing IT strategies and technologies to achieve a competitive advantage in the industry. This program includes a mandatory work placement that applies theoretical and practical knowledge in a real-world setting.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Software Design & Data Science"
+  },
+  {
+    "id": "cfp",
+    "code": "CFP",
+    "name": "Honours Bachelor of Commerce – Financial Planning (CFP)",
+    "overview": "Important: This program is unavailable for first semester students until further notice. See Related Programs for other options to explore.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "bhrm",
+    "code": "BHRM",
+    "name": "Honours Bachelor of Commerce – Human Resources Management (BHRM)",
+    "overview": "This four-year degree program combines theory with practice, allowing you to develop critical and strategic skills required for human resource management. You will gain necessary technical knowledge including HRIMS/SAP, data mining and metrics. As a graduate of this program, you will have the required knowledge to pursue several key industry designations such as:",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "bmi",
+    "code": "BMI",
+    "name": "Honours Bachelor of Commerce – International Business Management (BMI)",
+    "overview": "This four-year degree program is designed to provide you with specialized knowledge and skills in international business. The degree-level program builds upon the solid foundation of a well-rounded management education including accounting, finance, marketing, human resources, ethics and strategy. As you move into the intermediate and advanced years, the BMI program emphasizes business and supply chain processes that cross international boundaries and focuses on the complexities of operating in an international environment. Application of business technology is integrated throughout the program to introduce students to enterprise resource planning concepts and techniques.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "bmrk",
+    "code": "BMRK",
+    "name": "Honours Bachelor of Commerce – Marketing (BMRK)",
+    "overview": "Through this four-year degree program, you will be qualified to develop marketing strategies across traditional and emerging digital media and distribution channels, aspiring towards 360-degree customer engagement with campaigns grounded in marketing analytics. Students will study a range of marketing strategies, and profound expertise in business analytics and marketing insights.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "bcmm",
+    "code": "BCMM",
+    "name": "Honours Bachelor of Communications & Media (BCMM)",
+    "overview": "Seneca’s Honours Bachelor of Communications & Media degree program will prepare you to apply strategic communications leadership best practices in support of the goals of any organization, industry or entrepreneurial endeavour.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Media"
+  },
+  {
+    "id": "cia",
+    "code": "CIA",
+    "name": "Honours Bachelor of Crime & Intelligence Analysis (CIA)",
+    "overview": "This program will prepare you for the challenging and complex environment by providing you with in-depth knowledge of crime and intelligence as well as develop a breadth of analytical and research skills.  You will learn how to analyze and address public safety matters by applying professional practices, strategies and use the latest analytical tools and technologies. Your studies will include law, criminology, investigation and community policing which will be applicable to understanding topics and trends in crime and investigations.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Public Safety"
+  },
+  {
+    "id": "dsa",
+    "code": "DSA",
+    "name": "Honours Bachelor of Data Science and Analytics (DSA)",
+    "overview": "The Honours Bachelor of Data Science and Analytics program is the first-of-its-kind in Ontario. This four-year degree program was designed to meet the growing need for data-driven business solutions. You will learn to identify and interpret data using algorithms and acquire skills to draw meaningful conclusions. Your knowledge will be enhanced through theory and applied learning with the help of case studies, guest speakers and a co-op work experience. As a graduate of this program, you will be uniquely positioned to make an impact by combining solid business strategies with an in-depth knowledge of computer science, statistics and analytics.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Software Design & Data Science"
+  },
+  {
+    "id": "bdi",
+    "code": "BDI",
+    "name": "Honours Bachelor of Design in Interactive Media (BDI)",
+    "overview": "Drawing on Seneca’s strength and reputation in digital media education, the Honours Bachelor of Design in Interactive Media program will equip you with in-demand knowledge and skills for the growing field of user experience (UX). The program will focus on business skills along with the technical and design capabilities needed to create dynamic interactive experiences in video games, mobile apps and other online environments. The curriculum will be complemented with courses that address critical thinking, global awareness and research methods to develop evidence-based, rich interactive design.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Creative Arts & Animation"
+  },
+  {
+    "id": "bhad",
+    "code": "BHAD",
+    "name": "Honours Bachelor of Health Administration (BHAD)",
+    "overview": "This Honours Bachelor of Health Administration program takes an interdisciplinary approach ensuring students receive and develop a breadth and depth of knowledge, skills, attitudes, and behaviours which are critical to the administration of complex healthcare systems. The program prepares students to tackle the needs and priorities for evidence-informed decision making, patient-centered care, health promotion, illness prevention, financial sustainability, and modern strategic leadership. Students in this program take part in experiential learning opportunities from their first year along with specialized courses in health informatics, cross-cultural and global health, program planning, health law, mediation, patient safety, research, innovation, management and leadership.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Health Sciences"
+  },
+  {
+    "id": "bdm",
+    "code": "BDM",
+    "name": "Honours Bachelor of Information Technology Design and Management (BDM)",
+    "overview": "This four-year honours bachelor degree program immerses you in specialty information technology (IT) labs, featuring state-of-the-art technology from industry giants like Cisco and HPE Aruba. You will gain experience and expertise in cutting-edge technology including cloud solutions such as Microsoft Azure and leading open-source operating systems like Linux.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Information Technology Administration & Security"
+  },
+  {
+    "id": "ifs",
+    "code": "IFS",
+    "name": "Honours Bachelor of Information Technology – Cybersecurity (IFS)",
+    "overview": "In this four-year honours bachelor degree, you will learn the critical knowledge and practical skills required for a successful career in information security. You will develop comprehensive knowledge of vulnerability and threat assessment, risk management, data analysis and network and operating system infrastructure. This program focuses on practical applications that solve a variety of technological threats including hackers, malware and data breaches.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Information Technology Administration & Security"
+  },
+  {
+    "id": "ins",
+    "code": "INS",
+    "name": "Honours Bachelor of Interdisciplinary Studies (INS)",
+    "overview": "This flexible program is designed with diploma graduates in mind. Whether you are just starting your career or are a working professional upgrading to a degree, the Honours Bachelor of Interdisciplinary Studies program will help you to develop the workforce skills needed to progress in your career, regardless of your discipline. This program is also a good fit for students without existing postsecondary experience who wish to explore a variety of subjects with flexibility while completing a bachelor's degree.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Arts & Science"
+  },
+  {
+    "id": "bmha",
+    "code": "BMHA",
+    "name": "Honours Bachelor of Mental Health and Addiction (BMHA)",
+    "overview": "The Honours Bachelor of Mental Health and Addiction (BMHA) degree offers a comprehensive and interdisciplinary approach to understanding and addressing mental health and addiction issues. This program prioritizes effective interventions and support for individuals experiencing mental health challenges.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Community Services"
+  },
+  {
+    "id": "bbta",
+    "code": "BBTA",
+    "name": "Honours Bachelor of Science – Biotechnology (BBTA)",
+    "overview": "In this four-year degree program, you will prepare for work as a biological technologist, research and development associate, microbiology quality control technologist and more. The program combines in-depth theoretical knowledge and practical application to prepare you for success in a laboratory environment. You will also learn how to design and implement the latest experimental techniques, and use tools required in several fields of biotechnology including molecular genetics, immunology, virology and pharmaceuticals.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Biological Sciences & Applied Chemistry"
+  },
+  {
+    "id": "bsn",
+    "code": "BSN",
+    "name": "Honours Bachelor of Science – Nursing (BSN)",
+    "overview": "Honours Bachelor of Science – Nursing (BSN) – Designed for those who wish to complete the full program in four years (eight semesters). If you start in September, there are summer breaks. If you start in January, there are summer breaks after the first year.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "Seneca Nanji Foundation School of Nursing"
+  },
+  {
+    "id": "bsnb",
+    "code": "BSNB",
+    "name": "Honours Bachelor of Science – Nursing (Bridge) (BSNB)",
+    "overview": "Honours Bachelor of Science – Nursing (BSN) – Designed for those who wish to complete the full program in four years (eight semesters). If you start in September, there are summer breaks. If you start in January, there are summer breaks after the first year.",
+    "duration": "6 Semesters (3 Years)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "Seneca Nanji Foundation School of Nursing"
+  },
+  {
+    "id": "bsnf",
+    "code": "BSNF",
+    "name": "Honours Bachelor of Science – Nursing (Fast track) (BSNF)",
+    "overview": "Honours Bachelor of Science – Nursing (Fast track) (BSNF) – Designed for those who wish to complete the full program in three years (eight consecutive semesters).",
+    "duration": "8 semesters (3 years)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "Seneca Nanji Foundation School of Nursing"
+  },
+  {
+    "id": "bsd",
+    "code": "BSD",
+    "name": "Honours Bachelor of Technology – Software Development (BSD)",
+    "overview": "This four-year honours bachelor degree will provide you with extensive knowledge and technical skills in software development languages. This program also covers topics in operating systems, web applications, multimedia interfaces, information security, databases, system analysis and design principles. You will also develop communication skills to effectively present technical ideas.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Computer Programming & Analysis"
+  },
+  {
+    "id": "dtr",
+    "code": "DTR",
+    "name": "Honours Bachelor of Therapeutic Recreation (DTR)",
+    "overview": "In this four-year degree program, you will learn to assess, plan, implement and evaluate therapeutic recreation interventions to work with future clients in a strength-based approach. The purpose of therapeutic recreation is to help clients achieve their highest quality of life and to live life as fully and independently as possible. Therapeutic recreation interventions are leisure activities that have been designed to achieve goals and outcomes within the physical, psychological, social, cognitive, spiritual and/or environmental domains. As a student of this program, you will gain essential knowledge and expertise in the core foundational theories and concepts within therapeutic recreation, as well as various related areas such as health sciences, recreation and leisure, psychology and research methods. Within the final years of the program, you will explore application-based learning to increase your understanding in program delivery and adaptations, which will be an added advantage in working with diverse populations and settings.",
+    "duration": "8 Semesters (4 Years)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Honours Bachelor Degree",
+    "school": "School of Health Sciences"
+  },
+  {
+    "id": "hfc",
+    "code": "HFC",
+    "name": "Hospitality Foundations (HFC)",
+    "overview": "This eight-month certificate program will prepare you to enter a wide range of employment opportunities within the thriving hospitality industry. You will develop skills and knowledge in the core areas of hospitality industry, such as food preparation, service leadership, food safety and sanitation, food theory and practice, guest services and customer relations, and dining room service. Throughout the program, you will also earn industry-recognized certifications that are built into coursework to enhance your resumé, ensuring you graduate job-ready.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "htm",
+    "code": "HTM",
+    "name": "Hospitality – Hotel & Restaurant Services Management (HTM)",
+    "overview": "This two-year diploma program is designed to prepare you for a career in the vibrant global hotel and hospitality industry. Not only will you work closely with your peers and professors who are industry professionals, but you will learn and practise through paid work experience key skills employers are seeking, including exceptional guest service, industry standard software applications, cultural diversity and management skills.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "hrm",
+    "code": "HRM",
+    "name": "Human Resources Management (HRM)",
+    "overview": "In the face of a changing workforce – including an aging population, increased number of retirements, and a challenging economic environment – organizations in Canada are placing an increased emphasis on strategic human resources management. The demand for qualified Human Resources professionals is increasing. This eight-month graduate certificate program will help you acquire a comprehensive background in the functions of human resources from both theoretical and practical perspectives. The focus of the program is on applied, relevant and current learning with opportunities to interact directly with industry professionals, and learn from qualified and award-winning faculty.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "ils",
+    "code": "ILS",
+    "name": "Illustration (ILS)",
+    "overview": "This two-year creative diploma program combines traditional and digital illustrative media with freelance business skills to help you succeed as a professional illustrator.",
+    "duration": "4 Semesters (16 Months Consecutive)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Creative Arts & Animation"
+  },
+  {
+    "id": "icm",
+    "code": "ICM",
+    "name": "Immigration Case Management (ICM)",
+    "overview": "Seneca’s Immigration Case Management program prepares you to support legal practitioners, specifically immigration lawyers and licensed immigration and citizenship consultants, in their practice within the context of the broader Canadian legal framework.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "School of Public Safety"
+  },
+  {
+    "id": "imp",
+    "code": "IMP",
+    "name": "Independent Music Production (IMP)",
+    "overview": "In this eight-month certificate program, you will learn the skills necessary for success as an independent musician. Guided by professionals who are active in the industry, you will gain hands-on experience in home-based recording, music production and distribution and songwriting. You will also be taught business and entrepreneurial skills.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Certificate",
+    "school": "School of Creative Arts & Animation"
+  },
+  {
+    "id": "ips",
+    "code": "IPS",
+    "name": "Independent Songwriting & Performance (IPS)",
+    "overview": "In this eight-month certificate program, your studies will focus on lyric and songwriting, studio preparation, performance, vocal skills, music theory and practice. The program offers basic training in technical and business skills essential to establishing your presence in the marketplace. You will experience hands-on learning through private and traditional classroom lessons led by working professionals in the industries.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Certificate",
+    "school": "School of Creative Arts & Animation"
+  },
+  {
+    "id": "imh",
+    "code": "IMH",
+    "name": "Infant & Early Child Mental Health (IMH)",
+    "overview": "This eight-month, graduate certificate program provides you with additional knowledge and the skills required to specialize in infant and early childhood mental health. Expand your professional opportunities and learn to improve mental health outcomes across the early lifespan.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "King"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "School of Early Childhood Education"
+  },
+  {
+    "id": "inm",
+    "code": "INM",
+    "name": "Interactive Media Design (INM)",
+    "overview": "This two-year diploma program is designed to prepare you for a career in digital media. It equips students with the knowledge and skills to design, develop, implement and manage digital strategies and multimedia applications.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Creative Arts & Animation"
+  },
+  {
+    "id": "ibs",
+    "code": "IBS",
+    "name": "International Business Management (IBS)",
+    "overview": "Elevate your business knowledge in this comprehensive eight-month graduate certificate program where you will learn about the complex world of international business. You will learn from experienced industry professionals with first-hand knowledge of today’s global business environment. With an emphasis on collaborative, project-based learning, case analysis and in-class discussions, you will cultivate essential critical-thinking skills. Team research and analysis of a real Canadian company will culminate in the development of an international export business plan.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "tcs",
+    "code": "TCS",
+    "name": "International Transportation & Customs (TCS)",
+    "overview": "This two-year diploma program provides you with a solid technical understanding and practical knowledge of international transportation, customs brokerage and international freight forwarding. You will gain valued expertise and knowledge to help companies effectively manage the movement of goods and services internationally in our complex global economy. Your learning will be further advanced by current and industry expert faculty members.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "jrn",
+    "code": "JRN",
+    "name": "Journalism (JRN)",
+    "overview": "Seneca’s two-year diploma Journalism program will provide you with hands-on training for multiple platforms — broadcast, video, audio, multimedia, online and social media. You will work in integrated newsrooms across all platforms.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Media"
+  },
+  {
+    "id": "jas",
+    "code": "JAS",
+    "name": "Justice Administration Services (JAS)",
+    "overview": "This two-year diploma program will equip you with necessary skills to work in the justice sector, as a professional public service administrator, or clerk for courts or quasi-judicial administrative tribunals. You will study Canadian law, procedure and ethics, and gain hands-on experience in the areas of project management, legal research, public administration and technology. Fluency in English is critical to your success as there is a strong focus on effective written and verbal communication throughout the program.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Public Safety"
+  },
+  {
+    "id": "jasy",
+    "code": "JASY",
+    "name": "Justice Administration Services (Articulated) (JASY)",
+    "overview": "This is an articulated version of our Justice Administration Services program. To take advantage of this accelerated program option, prior education is required. If you do not have prior education, explore our Justice Administration Services (JAS) program.",
+    "duration": "2 Semesters (9 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Public Safety"
+  },
+  {
+    "id": "lck",
+    "code": "LCK",
+    "name": "Law Clerk (LCK)",
+    "overview": "Are you looking forward to working in the fast-paced legal industry? This two-year legal paraprofessional program will equip you with the knowledge and skills required to work alongside lawyers on their cases in a corporate, government or law firm setting. The curriculum is taught by legal professionals with extensive experience who will focus your learning on real estate, corporate and commercial law, litigation, wills and estates, and family law. Through workshops, law firm tours, court visits, career preparation events, a field placement and speaking engagements, you’ll acquire the technical skills, principles and ethics required for practise.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Public Safety"
+  },
+  {
+    "id": "lcka",
+    "code": "LCKA",
+    "name": "Law Clerk (Accelerated) (LCKA)",
+    "overview": "This is an accelerated version of our Law Clerk program. To take advantage of this accelerated program option, prior education is required. If you do not have prior education, explore our Law Clerk (LCK) program.",
+    "duration": "2 Semesters (9 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Public Safety"
+  },
+  {
+    "id": "lat",
+    "code": "LAT",
+    "name": "Liberal Arts University Transfer (LAT)",
+    "overview": "Earn both a diploma and a degree in as little as four years. This program offers an opportunity to save on tuition compared to a traditional four-year university program. Start at Seneca and complete your bachelor’s degree at our top-tier university partners including Queen’s University, Trent University, University of Toronto Scarborough, University of Toronto St. George and York University.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Arts & Science"
+  },
+  {
+    "id": "lit",
+    "code": "LIT",
+    "name": "Library & Information Technician (LIT)",
+    "overview": "This two-year diploma program prepares you to work in various library environments, performing essential day-to-day library operations and working alongside librarians.  Learn to provide materials, information and services to library clients. Become an expert in acquiring, preparing and organizing all types of library materials, using software specific to the library and information industry.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Arts & Science"
+  },
+  {
+    "id": "lita",
+    "code": "LITA",
+    "name": "Library & Information Technician (Accelerated) (LITA)",
+    "overview": "This is an accelerated version of our Library & Information Technician program. To take advantage of this accelerated program option, prior education is required. If you do not have prior education, explore our Library & Information Technician (LIT) program.",
+    "duration": "3 Semesters (12 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Arts & Science"
+  },
+  {
+    "id": "mrk",
+    "code": "MRK",
+    "name": "Marketing & Communications Strategy (MRK)",
+    "overview": "If you are an international student looking to work in the Canadian marketing industry, Seneca’s two-year Marketing & Communications Strategy graduate certificate program is for you.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "mkm",
+    "code": "MKM",
+    "name": "Marketing Management (MKM)",
+    "overview": "This eight-month graduate certificate program will develop your fundamental knowledge of marketing management and channel your strength towards creating, building, communicating and delivering value to customers in innovative and creative ways. You will gain skills and knowledge in several key areas including marketing research techniques, launching a new product or service, market segmentation techniques, pricing strategies, promotion and communications strategies, strategic market planning, generating new accounts and sales revenues.",
+    "duration": "2 Semesters (8 Months)",
+    "campus": [
+      "Seneca@York"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Graduate Certificate",
+    "school": "Seneca Business"
+  },
+  {
+    "id": "matd",
+    "code": "MATD",
+    "name": "Mechanical Engineering Technician (Tool Design) (MATD)",
+    "overview": "In this two-year diploma program, you will learn to use the latest computer software to assist in the manufacturing of production tools. You will learn and gain valuable skills in conventional manufacturing technologies, computer production and design along with prototyping techniques and quality control. You will have the opportunity to experience the practical production considerations of tool design as you gain experience in a fully equipped machining lab.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Environmental & Civil Engineering Technology"
+  },
+  {
+    "id": "mbt",
+    "code": "MBT",
+    "name": "Mechanical Engineering Technology – Building Sciences (MBT)",
+    "overview": "Mitigating climate change has become imperative in many industries, including the building sector. This program will prepare you to become an expert in managing environmentally responsible systems for various types of properties. After three years of study, you’ll obtain an advanced diploma and be able to examine, implement and manage a building's energy system, both traditional and renewable, with a focus on sustainability and efficiency.",
+    "duration": "6 Semesters (3 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Advanced Diploma",
+    "school": "School of Environmental & Civil Engineering Technology"
+  },
+  {
+    "id": "mit",
+    "code": "MIT",
+    "name": "Mechanical Engineering Technology – Industrial Design (MIT)",
+    "overview": "In this three-year advanced diploma program, you will increase your knowledge of design and engineering principles. You will learn to apply theories of design, production and marketing to gain an understanding of the steps necessary to commercialize a design idea. Your studies will introduce you to machining and production techniques, rapid prototyping, principles of mechanical design, engineering analysis, marketing, basic accounting practices, entrepreneurial skills, ergonomics, basic electricity and electronics, reverse engineering and product and design digitizing.",
+    "duration": "6 Semesters (3 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Advanced Diploma",
+    "school": "School of Environmental & Civil Engineering Technology"
+  },
+  {
+    "id": "mtcp",
+    "code": "MTCP",
+    "name": "Mechanical Technician – CNC Programming (MTCP)",
+    "overview": "Graduates of this program work in a range of employment settings in the manufacturing industries; examples include aerospace and defence, automotive, building products, fabricated metal products, machinery, railway and marine and natural resource industries like energy, forestry and mining.",
+    "duration": "4 Semesters (2 Years)",
+    "campus": [
+      "Newnham"
+    ],
+    "delivery": "program delivery options",
+    "credential": "Ontario College Diploma",
+    "school": "School of Environmental & Civil Engineering Technology"
+  }
+]
