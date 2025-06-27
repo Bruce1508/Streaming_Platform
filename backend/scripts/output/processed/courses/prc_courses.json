@@ -1,0 +1,115 @@
+{
+  "programId": "PRC",
+  "programName": "Public Relations – Corporate Communications",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "ccm701",
+          "code": "CCM701",
+          "name": "Writing for Public Relations Practitioners I"
+        },
+        {
+          "id": "ccm707",
+          "code": "CCM707",
+          "name": "Digital and Social Media"
+        },
+        {
+          "id": "ccm708",
+          "code": "CCM708",
+          "name": "Public Relations Management Techniques - Internal"
+        },
+        {
+          "id": "ccm718",
+          "code": "CCM718",
+          "name": "Strategic Communication Planning"
+        },
+        {
+          "id": "ccm737",
+          "code": "CCM737",
+          "name": "Media Relations"
+        },
+        {
+          "id": "ccm745",
+          "code": "CCM745",
+          "name": "Principles of Public Relations"
+        },
+        {
+          "id": "ccm747",
+          "code": "CCM747",
+          "name": "Introduction to Research"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "ccm702",
+          "code": "CCM702",
+          "name": "Writing for Public Relations Practitioners II"
+        },
+        {
+          "id": "ccm715",
+          "code": "CCM715",
+          "name": "Advanced Presentation Skills I"
+        },
+        {
+          "id": "ccm717",
+          "code": "CCM717",
+          "name": "Digital Communications: Strategies and Applications"
+        },
+        {
+          "id": "ccm726",
+          "code": "CCM726",
+          "name": "Corporate Communications Seminars"
+        },
+        {
+          "id": "ccm741",
+          "code": "CCM741",
+          "name": "Public Relations Research Project"
+        },
+        {
+          "id": "ccm746",
+          "code": "CCM746",
+          "name": "Investor Relations"
+        },
+        {
+          "id": "ccm749",
+          "code": "CCM749",
+          "name": "International Communications"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "prc441",
+          "code": "PRC441",
+          "name": "Public Relations - Corp Comm, Work Term"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "ccm751",
+          "code": "CCM751",
+          "name": "Public Relations Career Management"
+        }
+      ]
+    }
+  ]
+}

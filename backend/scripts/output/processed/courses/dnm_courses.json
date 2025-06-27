@@ -1,0 +1,68 @@
+{
+  "programId": "DNM",
+  "programName": "Documentary & Non-Fiction Media Production",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "dnm700",
+          "code": "DNM700",
+          "name": "Documentary Form"
+        },
+        {
+          "id": "dnm720",
+          "code": "DNM720",
+          "name": "Editing For Non-Fiction"
+        },
+        {
+          "id": "dnm740",
+          "code": "DNM740",
+          "name": "Directing for Documentary"
+        },
+        {
+          "id": "dnm760",
+          "code": "DNM760",
+          "name": "Production Management"
+        },
+        {
+          "id": "dnm770",
+          "code": "DNM770",
+          "name": "Story Producing"
+        },
+        {
+          "id": "dnm800",
+          "code": "DNM800",
+          "name": "Documentary Form"
+        },
+        {
+          "id": "dnm820",
+          "code": "DNM820",
+          "name": "Transmedia"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "dnm710",
+          "code": "DNM710",
+          "name": "Cinematography"
+        },
+        {
+          "id": "dnm840",
+          "code": "DNM840",
+          "name": "Production Lab"
+        },
+        {
+          "id": "dnm850",
+          "code": "DNM850",
+          "name": "Editing II"
+        }
+      ]
+    }
+  ]
+}

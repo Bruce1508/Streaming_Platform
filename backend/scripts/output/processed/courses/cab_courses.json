@@ -1,0 +1,698 @@
+{
+  "programId": "CAB",
+  "programName": "Creative Advertising",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "cab173",
+          "code": "CAB173",
+          "name": "Introduction to Account Services and Project Management"
+        },
+        {
+          "id": "cab174",
+          "code": "CAB174",
+          "name": "Introduction to Insights, Consumer Behaviour and Market Research"
+        },
+        {
+          "id": "cab175",
+          "code": "CAB175",
+          "name": "Introduction to Creative Advertising"
+        },
+        {
+          "id": "cab176",
+          "code": "CAB176",
+          "name": "Introduction to Media, Analytics and Measurement"
+        },
+        {
+          "id": "cab177",
+          "code": "CAB177",
+          "name": "History of Advertising: Perspectives and Ethics"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "cab473",
+          "code": "CAB473",
+          "name": "IMC: Launch or Relaunch"
+        },
+        {
+          "id": "cab474",
+          "code": "CAB474",
+          "name": "IMC: Seasonal or Evergreen"
+        },
+        {
+          "id": "cab475",
+          "code": "CAB475",
+          "name": "IMC: Customer Experience"
+        },
+        {
+          "id": "cab476",
+          "code": "CAB476",
+          "name": "IMC: Cause or Not-for-Profit"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cab293",
+          "code": "CAB293",
+          "name": "Presentation Skills in Advertising"
+        },
+        {
+          "id": "cab294",
+          "code": "CAB294",
+          "name": "Research and Strategy - Analytics and Measurement"
+        },
+        {
+          "id": "cab295",
+          "code": "CAB295",
+          "name": "Consumer Behaviour and Customer Experience"
+        },
+        {
+          "id": "cab296",
+          "code": "CAB296",
+          "name": "Account Management II"
+        },
+        {
+          "id": "cab297",
+          "code": "CAB297",
+          "name": "Brand Management and Marketing Principles: Walking in your Clients Shoes"
+        },
+        {
+          "id": "cab298",
+          "code": "CAB298",
+          "name": "Project Management"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cab373",
+          "code": "CAB373",
+          "name": "Career Skills"
+        },
+        {
+          "id": "cab393",
+          "code": "CAB393",
+          "name": "Strategic Portfolio: Launch or Relaunch"
+        },
+        {
+          "id": "cab394",
+          "code": "CAB394",
+          "name": "Strategic Portfolio: Seasonal or Evergreen"
+        },
+        {
+          "id": "cab395",
+          "code": "CAB395",
+          "name": "Strategic Portfolio: E-commerce"
+        },
+        {
+          "id": "cab396",
+          "code": "CAB396",
+          "name": "Strategic Portfolio: Cause or Not-for-Profit"
+        },
+        {
+          "id": "cab397",
+          "code": "CAB397",
+          "name": "Strategic Portfolio: Customer Experience"
+        }
+      ]
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cab293",
+          "code": "CAB293",
+          "name": "Presentation Skills in Advertising"
+        },
+        {
+          "id": "cab294",
+          "code": "CAB294",
+          "name": "Research and Strategy - Analytics and Measurement"
+        },
+        {
+          "id": "cab295",
+          "code": "CAB295",
+          "name": "Consumer Behaviour and Customer Experience"
+        },
+        {
+          "id": "cab296",
+          "code": "CAB296",
+          "name": "Account Management II"
+        },
+        {
+          "id": "cab297",
+          "code": "CAB297",
+          "name": "Brand Management and Marketing Principles: Walking in your Clients Shoes"
+        },
+        {
+          "id": "cab298",
+          "code": "CAB298",
+          "name": "Project Management"
+        },
+        {
+          "id": "cab373",
+          "code": "CAB373",
+          "name": "Career Skills"
+        },
+        {
+          "id": "cab393",
+          "code": "CAB393",
+          "name": "Strategic Portfolio: Launch or Relaunch"
+        },
+        {
+          "id": "cab394",
+          "code": "CAB394",
+          "name": "Strategic Portfolio: Seasonal or Evergreen"
+        },
+        {
+          "id": "cab395",
+          "code": "CAB395",
+          "name": "Strategic Portfolio: E-commerce"
+        },
+        {
+          "id": "cab396",
+          "code": "CAB396",
+          "name": "Strategic Portfolio: Cause or Not-for-Profit"
+        },
+        {
+          "id": "cab397",
+          "code": "CAB397",
+          "name": "Strategic Portfolio: Customer Experience"
+        }
+      ]
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cab253",
+          "code": "CAB253",
+          "name": "Advertising Tools of the Trade: Layout and Design"
+        },
+        {
+          "id": "cab254",
+          "code": "CAB254",
+          "name": "Advertising Tools of the Trade: Video"
+        },
+        {
+          "id": "cab255",
+          "code": "CAB255",
+          "name": "Advertising Tools of the Trade: Content and Social Media"
+        },
+        {
+          "id": "cab256",
+          "code": "CAB256",
+          "name": "Copywriting and Advertising"
+        },
+        {
+          "id": "cab257",
+          "code": "CAB257",
+          "name": "Design Thinking and Processes"
+        },
+        {
+          "id": "cab258",
+          "code": "CAB258",
+          "name": "Art Direction for Advertising"
+        }
+      ]
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cab353",
+          "code": "CAB353",
+          "name": "Creative Portfolio: Launch or Relaunch"
+        },
+        {
+          "id": "cab354",
+          "code": "CAB354",
+          "name": "Creative Portfolio: Seasonal or Evergreen"
+        },
+        {
+          "id": "cab355",
+          "code": "CAB355",
+          "name": "Creative Portfolio: E-commerce"
+        },
+        {
+          "id": "cab356",
+          "code": "CAB356",
+          "name": "Creative Portfolio: Cause or Not-for-Profit"
+        },
+        {
+          "id": "cab357",
+          "code": "CAB357",
+          "name": "Creative Portfolio: Customer Experience"
+        },
+        {
+          "id": "cab373",
+          "code": "CAB373",
+          "name": "Career Skills"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cab253",
+          "code": "CAB253",
+          "name": "Advertising Tools of the Trade: Layout and Design"
+        },
+        {
+          "id": "cab254",
+          "code": "CAB254",
+          "name": "Advertising Tools of the Trade: Video"
+        },
+        {
+          "id": "cab255",
+          "code": "CAB255",
+          "name": "Advertising Tools of the Trade: Content and Social Media"
+        },
+        {
+          "id": "cab256",
+          "code": "CAB256",
+          "name": "Copywriting and Advertising"
+        },
+        {
+          "id": "cab257",
+          "code": "CAB257",
+          "name": "Design Thinking and Processes"
+        },
+        {
+          "id": "cab258",
+          "code": "CAB258",
+          "name": "Art Direction for Advertising"
+        },
+        {
+          "id": "cab353",
+          "code": "CAB353",
+          "name": "Creative Portfolio: Launch or Relaunch"
+        },
+        {
+          "id": "cab354",
+          "code": "CAB354",
+          "name": "Creative Portfolio: Seasonal or Evergreen"
+        },
+        {
+          "id": "cab355",
+          "code": "CAB355",
+          "name": "Creative Portfolio: E-commerce"
+        },
+        {
+          "id": "cab356",
+          "code": "CAB356",
+          "name": "Creative Portfolio: Cause or Not-for-Profit"
+        },
+        {
+          "id": "cab357",
+          "code": "CAB357",
+          "name": "Creative Portfolio: Customer Experience"
+        },
+        {
+          "id": "cab373",
+          "code": "CAB373",
+          "name": "Career Skills"
+        }
+      ]
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "cab173",
+          "code": "CAB173",
+          "name": "Introduction to Account Services and Project Management"
+        },
+        {
+          "id": "cab174",
+          "code": "CAB174",
+          "name": "Introduction to Insights, Consumer Behaviour and Market Research"
+        },
+        {
+          "id": "cab175",
+          "code": "CAB175",
+          "name": "Introduction to Creative Advertising"
+        },
+        {
+          "id": "cab176",
+          "code": "CAB176",
+          "name": "Introduction to Media, Analytics and Measurement"
+        },
+        {
+          "id": "cab177",
+          "code": "CAB177",
+          "name": "History of Advertising: Perspectives and Ethics"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        }
+      ]
+    },
+    {
+      "id": "semester10",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "cab473",
+          "code": "CAB473",
+          "name": "IMC: Launch or Relaunch"
+        },
+        {
+          "id": "cab474",
+          "code": "CAB474",
+          "name": "IMC: Seasonal or Evergreen"
+        },
+        {
+          "id": "cab475",
+          "code": "CAB475",
+          "name": "IMC: Customer Experience"
+        },
+        {
+          "id": "cab476",
+          "code": "CAB476",
+          "name": "IMC: Cause or Not-for-Profit"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester11",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cab293",
+          "code": "CAB293",
+          "name": "Presentation Skills in Advertising"
+        },
+        {
+          "id": "cab294",
+          "code": "CAB294",
+          "name": "Research and Strategy - Analytics and Measurement"
+        },
+        {
+          "id": "cab295",
+          "code": "CAB295",
+          "name": "Consumer Behaviour and Customer Experience"
+        },
+        {
+          "id": "cab296",
+          "code": "CAB296",
+          "name": "Account Management II"
+        },
+        {
+          "id": "cab297",
+          "code": "CAB297",
+          "name": "Brand Management and Marketing Principles: Walking in your Clients Shoes"
+        },
+        {
+          "id": "cab298",
+          "code": "CAB298",
+          "name": "Project Management"
+        }
+      ]
+    },
+    {
+      "id": "semester12",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cab373",
+          "code": "CAB373",
+          "name": "Career Skills"
+        },
+        {
+          "id": "cab393",
+          "code": "CAB393",
+          "name": "Strategic Portfolio: Launch or Relaunch"
+        },
+        {
+          "id": "cab394",
+          "code": "CAB394",
+          "name": "Strategic Portfolio: Seasonal or Evergreen"
+        },
+        {
+          "id": "cab395",
+          "code": "CAB395",
+          "name": "Strategic Portfolio: E-commerce"
+        },
+        {
+          "id": "cab396",
+          "code": "CAB396",
+          "name": "Strategic Portfolio: Cause or Not-for-Profit"
+        },
+        {
+          "id": "cab397",
+          "code": "CAB397",
+          "name": "Strategic Portfolio: Customer Experience"
+        }
+      ]
+    },
+    {
+      "id": "semester13",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cab293",
+          "code": "CAB293",
+          "name": "Presentation Skills in Advertising"
+        },
+        {
+          "id": "cab294",
+          "code": "CAB294",
+          "name": "Research and Strategy - Analytics and Measurement"
+        },
+        {
+          "id": "cab295",
+          "code": "CAB295",
+          "name": "Consumer Behaviour and Customer Experience"
+        },
+        {
+          "id": "cab296",
+          "code": "CAB296",
+          "name": "Account Management II"
+        },
+        {
+          "id": "cab297",
+          "code": "CAB297",
+          "name": "Brand Management and Marketing Principles: Walking in your Clients Shoes"
+        },
+        {
+          "id": "cab298",
+          "code": "CAB298",
+          "name": "Project Management"
+        },
+        {
+          "id": "cab373",
+          "code": "CAB373",
+          "name": "Career Skills"
+        },
+        {
+          "id": "cab393",
+          "code": "CAB393",
+          "name": "Strategic Portfolio: Launch or Relaunch"
+        },
+        {
+          "id": "cab394",
+          "code": "CAB394",
+          "name": "Strategic Portfolio: Seasonal or Evergreen"
+        },
+        {
+          "id": "cab395",
+          "code": "CAB395",
+          "name": "Strategic Portfolio: E-commerce"
+        },
+        {
+          "id": "cab396",
+          "code": "CAB396",
+          "name": "Strategic Portfolio: Cause or Not-for-Profit"
+        },
+        {
+          "id": "cab397",
+          "code": "CAB397",
+          "name": "Strategic Portfolio: Customer Experience"
+        }
+      ]
+    },
+    {
+      "id": "semester14",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cab253",
+          "code": "CAB253",
+          "name": "Advertising Tools of the Trade: Layout and Design"
+        },
+        {
+          "id": "cab254",
+          "code": "CAB254",
+          "name": "Advertising Tools of the Trade: Video"
+        },
+        {
+          "id": "cab255",
+          "code": "CAB255",
+          "name": "Advertising Tools of the Trade: Content and Social Media"
+        },
+        {
+          "id": "cab256",
+          "code": "CAB256",
+          "name": "Copywriting and Advertising"
+        },
+        {
+          "id": "cab257",
+          "code": "CAB257",
+          "name": "Design Thinking and Processes"
+        },
+        {
+          "id": "cab258",
+          "code": "CAB258",
+          "name": "Art Direction for Advertising"
+        }
+      ]
+    },
+    {
+      "id": "semester15",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cab353",
+          "code": "CAB353",
+          "name": "Creative Portfolio: Launch or Relaunch"
+        },
+        {
+          "id": "cab354",
+          "code": "CAB354",
+          "name": "Creative Portfolio: Seasonal or Evergreen"
+        },
+        {
+          "id": "cab355",
+          "code": "CAB355",
+          "name": "Creative Portfolio: E-commerce"
+        },
+        {
+          "id": "cab356",
+          "code": "CAB356",
+          "name": "Creative Portfolio: Cause or Not-for-Profit"
+        },
+        {
+          "id": "cab357",
+          "code": "CAB357",
+          "name": "Creative Portfolio: Customer Experience"
+        },
+        {
+          "id": "cab373",
+          "code": "CAB373",
+          "name": "Career Skills"
+        }
+      ]
+    },
+    {
+      "id": "semester16",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cab253",
+          "code": "CAB253",
+          "name": "Advertising Tools of the Trade: Layout and Design"
+        },
+        {
+          "id": "cab254",
+          "code": "CAB254",
+          "name": "Advertising Tools of the Trade: Video"
+        },
+        {
+          "id": "cab255",
+          "code": "CAB255",
+          "name": "Advertising Tools of the Trade: Content and Social Media"
+        },
+        {
+          "id": "cab256",
+          "code": "CAB256",
+          "name": "Copywriting and Advertising"
+        },
+        {
+          "id": "cab257",
+          "code": "CAB257",
+          "name": "Design Thinking and Processes"
+        },
+        {
+          "id": "cab258",
+          "code": "CAB258",
+          "name": "Art Direction for Advertising"
+        },
+        {
+          "id": "cab353",
+          "code": "CAB353",
+          "name": "Creative Portfolio: Launch or Relaunch"
+        },
+        {
+          "id": "cab354",
+          "code": "CAB354",
+          "name": "Creative Portfolio: Seasonal or Evergreen"
+        },
+        {
+          "id": "cab355",
+          "code": "CAB355",
+          "name": "Creative Portfolio: E-commerce"
+        },
+        {
+          "id": "cab356",
+          "code": "CAB356",
+          "name": "Creative Portfolio: Cause or Not-for-Profit"
+        },
+        {
+          "id": "cab357",
+          "code": "CAB357",
+          "name": "Creative Portfolio: Customer Experience"
+        },
+        {
+          "id": "cab373",
+          "code": "CAB373",
+          "name": "Career Skills"
+        }
+      ]
+    }
+  ]
+}

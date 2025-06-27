@@ -1,0 +1,265 @@
+{
+  "programId": "BMHA",
+  "programName": "Honours Bachelor of Mental Health and Addiction",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "cmh183",
+          "code": "CMH183",
+          "name": "Introduction to Community Mental Health"
+        },
+        {
+          "id": "eng106",
+          "code": "ENG106",
+          "name": "Writing Strategies"
+        },
+        {
+          "id": "lso260",
+          "code": "LSO260",
+          "name": "Principles of Psychology"
+        },
+        {
+          "id": "lsp320",
+          "code": "LSP320",
+          "name": "Interpersonal Communications"
+        },
+        {
+          "id": "soc181",
+          "code": "SOC181",
+          "name": "Sociology of Health"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cmh182",
+          "code": "CMH182",
+          "name": "Diversity Building Resilience Health and Well-being"
+        },
+        {
+          "id": "cmh282",
+          "code": "CMH282",
+          "name": "Income Security, Social Inclusion and Healthy Population"
+        },
+        {
+          "id": "cmh383",
+          "code": "CMH383",
+          "name": "Counselling and Communication Skills"
+        },
+        {
+          "id": "cmh581",
+          "code": "CMH581",
+          "name": "Indigenous Perspectives on Community Mental Health"
+        },
+        {
+          "id": "psy281",
+          "code": "PSY281",
+          "name": "Health Psychology"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cmh283",
+          "code": "CMH283",
+          "name": "Food and Shelter in Healthy Population"
+        },
+        {
+          "id": "cmh381",
+          "code": "CMH381",
+          "name": "Group Dynamics"
+        },
+        {
+          "id": "cmh484",
+          "code": "CMH484",
+          "name": "Therapeutic Approaches"
+        },
+        {
+          "id": "psy383",
+          "code": "PSY383",
+          "name": "Human Development"
+        },
+        {
+          "id": "soc380",
+          "code": "SOC380",
+          "name": "Addiction I"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "cmh306",
+          "code": "CMH306",
+          "name": "Dynamics of the Family"
+        },
+        {
+          "id": "cmh481",
+          "code": "CMH481",
+          "name": "Crisis Counselling"
+        },
+        {
+          "id": "cmh483",
+          "code": "CMH483",
+          "name": "Trauma Methods and Practice in Community Mental Health"
+        },
+        {
+          "id": "psy482",
+          "code": "PSY482",
+          "name": "Critical Community Psychology"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "cmh583",
+          "code": "CMH583",
+          "name": "Social Justice and Health"
+        },
+        {
+          "id": "cmh682",
+          "code": "CMH682",
+          "name": "Concurrent Disorders"
+        },
+        {
+          "id": "sta683",
+          "code": "STA683",
+          "name": "Applied Statistics in Social Sciences"
+        },
+        {
+          "id": "wtp200",
+          "code": "WTP200",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "cmh584",
+          "code": "CMH584",
+          "name": "Health and Wellness Engagement"
+        },
+        {
+          "id": "cmh681",
+          "code": "CMH681",
+          "name": "Community Mental Health Policy"
+        },
+        {
+          "id": "mhr774",
+          "code": "MHR774",
+          "name": "Research Methods"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 4
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "cmh881",
+          "code": "CMH881",
+          "name": "Community Mental Health, Work Term"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 7",
+      "courses": [
+        {
+          "id": "cmh771",
+          "code": "CMH771",
+          "name": "Hope, Resilience and Recovery"
+        },
+        {
+          "id": "cmh772",
+          "code": "CMH772",
+          "name": "Madness and Sanity: A Continuum"
+        },
+        {
+          "id": "mhr884",
+          "code": "MHR884",
+          "name": "Research Project"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 4
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "cmh582",
+          "code": "CMH582",
+          "name": "Ethics and Community Mental Health"
+        },
+        {
+          "id": "cmh880",
+          "code": "CMH880",
+          "name": "Contemporary Issues in Community Mental Health and Wellness"
+        },
+        {
+          "id": "cmh883",
+          "code": "CMH883",
+          "name": "Independent Study"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 4
+    }
+  ]
+}

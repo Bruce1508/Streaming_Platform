@@ -1,0 +1,89 @@
+{
+  "programId": "MRK",
+  "programName": "Marketing & Communications Strategy",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bab100",
+          "code": "BAB100",
+          "name": "Introduction to Canadian Business"
+        },
+        {
+          "id": "mkm706",
+          "code": "MKM706",
+          "name": "Marketing Fundamentals"
+        },
+        {
+          "id": "mrk704",
+          "code": "MRK704",
+          "name": "Research and Market Analysis"
+        },
+        {
+          "id": "mrk705",
+          "code": "MRK705",
+          "name": "Inclusive and Sustainable Business Practices"
+        },
+        {
+          "id": "mrk707",
+          "code": "MRK707",
+          "name": "Strategic Integrated Marketing Communications"
+        },
+        {
+          "id": "mrk709",
+          "code": "MRK709",
+          "name": "Introduction to Strategic Writing"
+        },
+        {
+          "id": "mrk718",
+          "code": "MRK718",
+          "name": "Presenting Complex Material"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "bmk817",
+          "code": "BMK817",
+          "name": "Marketing Enabling Technologies"
+        },
+        {
+          "id": "opr725",
+          "code": "OPR725",
+          "name": "Project Management"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "dmm200",
+          "code": "DMM200",
+          "name": "Content Creation - Words and Pictures"
+        },
+        {
+          "id": "dmm201",
+          "code": "DMM201",
+          "name": "Content Creation - Audio and Video"
+        },
+        {
+          "id": "sem135",
+          "code": "SEM135",
+          "name": "Event Project Management"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    }
+  ]
+}

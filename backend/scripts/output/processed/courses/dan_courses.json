@@ -1,0 +1,98 @@
+{
+  "programId": "DAN",
+  "programName": "3D Animation",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "act351",
+          "code": "ACT351",
+          "name": "Acting for Animators"
+        },
+        {
+          "id": "ani101",
+          "code": "ANI101",
+          "name": "Animation Priniciples"
+        },
+        {
+          "id": "may721",
+          "code": "MAY721",
+          "name": "Modeling I - Concepts"
+        },
+        {
+          "id": "may724",
+          "code": "MAY724",
+          "name": "Animation Tools"
+        },
+        {
+          "id": "may730",
+          "code": "MAY730",
+          "name": "Basic Rigging"
+        },
+        {
+          "id": "may740",
+          "code": "MAY740",
+          "name": "Lighting, Texturing and Rendering"
+        },
+        {
+          "id": "mgl102",
+          "code": "MGL102",
+          "name": "Life Drawing I"
+        },
+        {
+          "id": "str121",
+          "code": "STR121",
+          "name": "Storyboarding - Film Priniciples"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "dgt471",
+          "code": "DGT471",
+          "name": "Advanced Digital Tools"
+        },
+        {
+          "id": "may681",
+          "code": "MAY681",
+          "name": "Project Development"
+        },
+        {
+          "id": "may821",
+          "code": "MAY821",
+          "name": "Advanced Modeling"
+        },
+        {
+          "id": "may823",
+          "code": "MAY823",
+          "name": "Lighting and Rendering"
+        },
+        {
+          "id": "may824",
+          "code": "MAY824",
+          "name": "Advanced Character Animation"
+        },
+        {
+          "id": "may825",
+          "code": "MAY825",
+          "name": "Dynamics/MEL"
+        },
+        {
+          "id": "may830",
+          "code": "MAY830",
+          "name": "Advanced Rigging"
+        },
+        {
+          "id": "mgl202",
+          "code": "MGL202",
+          "name": "Life Drawing II"
+        }
+      ]
+    }
+  ]
+}

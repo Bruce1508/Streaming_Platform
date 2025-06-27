@@ -1,0 +1,272 @@
+{
+  "programId": "DTR",
+  "programName": "Honours Bachelor of Therapeutic Recreation",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "eng106",
+          "code": "ENG106",
+          "name": "Writing Strategies"
+        },
+        {
+          "id": "hsc103",
+          "code": "HSC103",
+          "name": "Anatomy and Physiology"
+        },
+        {
+          "id": "lso260",
+          "code": "LSO260",
+          "name": "Principles of Psychology"
+        },
+        {
+          "id": "rec105",
+          "code": "REC105",
+          "name": "Recreation and Leisure Studies"
+        },
+        {
+          "id": "trc101",
+          "code": "TRC101",
+          "name": "The Role of TR in Wellness and Health Promotion"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "hsc205",
+          "code": "HSC205",
+          "name": "Clinical Biomechanics and Kinesiology"
+        },
+        {
+          "id": "lsp320",
+          "code": "LSP320",
+          "name": "Interpersonal Communications"
+        },
+        {
+          "id": "trc201",
+          "code": "TRC201",
+          "name": "Assessment and Program Planning for TR"
+        },
+        {
+          "id": "trc302",
+          "code": "TRC302",
+          "name": "Adaptive Recreation and Leisure Activities"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "hcm305",
+          "code": "HCM305",
+          "name": "Principles of Health Conditions and Management I"
+        },
+        {
+          "id": "lls304",
+          "code": "LLS304",
+          "name": "Leadership and Life Skills"
+        },
+        {
+          "id": "phy301",
+          "code": "PHY301",
+          "name": "Exercise Physiology"
+        },
+        {
+          "id": "swo202",
+          "code": "SWO202",
+          "name": "Lifespan Development"
+        },
+        {
+          "id": "trc203",
+          "code": "TRC203",
+          "name": "Leisure Education in Therapeutic Recreation"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "ftr407",
+          "code": "FTR407",
+          "name": "Therapeutic Recreation, Field Placement Preparation"
+        },
+        {
+          "id": "hcm405",
+          "code": "HCM405",
+          "name": "Principles of Health Conditions and Management II"
+        },
+        {
+          "id": "lsl404",
+          "code": "LSL404",
+          "name": "Abnormal Psychology"
+        },
+        {
+          "id": "trc103",
+          "code": "TRC103",
+          "name": "Professional Ethics for TR Practitioners"
+        },
+        {
+          "id": "trc402",
+          "code": "TRC402",
+          "name": "Assessment and Therapeutic Recreation Interventions I"
+        }
+      ]
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "ftr507",
+          "code": "FTR507",
+          "name": "Therapeutic Recreation, Field Placement"
+        },
+        {
+          "id": "sco501",
+          "code": "SCO501",
+          "name": "Cognitive and Developmental Disorders"
+        },
+        {
+          "id": "swo504",
+          "code": "SWO504",
+          "name": "Understanding Addiction"
+        },
+        {
+          "id": "trc502",
+          "code": "TRC502",
+          "name": "Assessment and Therapeutic Recreation Interventions II"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "ftr607",
+          "code": "FTR607",
+          "name": "Therapeutic Recreation, Field Placement"
+        },
+        {
+          "id": "hum709",
+          "code": "HUM709",
+          "name": "Analysis of Canadian Health and Social Programs"
+        },
+        {
+          "id": "sta863",
+          "code": "STA863",
+          "name": "Statistics for Applied Research"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 4
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 7",
+      "courses": [
+        {
+          "id": "ftr707",
+          "code": "FTR707",
+          "name": "Therapeutic Recreation, Field Placement"
+        },
+        {
+          "id": "rsc875",
+          "code": "RSC875",
+          "name": "Research Methods"
+        },
+        {
+          "id": "swo400",
+          "code": "SWO400",
+          "name": "Theories of Counselling"
+        },
+        {
+          "id": "trc700",
+          "code": "TRC700",
+          "name": "Leisure Counselling in Therapeutic Recreation"
+        },
+        {
+          "id": "trc702",
+          "code": "TRC702",
+          "name": "Application of Therapeutic Recreation Interventions I"
+        },
+        {
+          "id": "wtp200",
+          "code": "WTP200",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 7",
+      "courses": [
+        {
+          "id": "dtr881",
+          "code": "DTR881",
+          "name": "Therapeutic Recreation, Work Term"
+        }
+      ]
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "ftr807",
+          "code": "FTR807",
+          "name": "Therapeutic Recreation, Field Placement"
+        },
+        {
+          "id": "rsc885",
+          "code": "RSC885",
+          "name": "Research Project"
+        },
+        {
+          "id": "trc803",
+          "code": "TRC803",
+          "name": "Business Management"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 4
+    }
+  ]
+}

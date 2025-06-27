@@ -1,0 +1,94 @@
+{
+  "programId": "PAD",
+  "programName": "Public Administration",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "pad110",
+          "code": "PAD110",
+          "name": "Municipal Issues and the Evolution of Local Government"
+        },
+        {
+          "id": "pad130",
+          "code": "PAD130",
+          "name": "Public Sector Financial Management"
+        },
+        {
+          "id": "pad140",
+          "code": "PAD140",
+          "name": "Public Sector Governance and Systems"
+        },
+        {
+          "id": "pad150",
+          "code": "PAD150",
+          "name": "Communications in Public Administration"
+        },
+        {
+          "id": "pad220",
+          "code": "PAD220",
+          "name": "Municipal Management and Administrative Structures"
+        },
+        {
+          "id": "pad230",
+          "code": "PAD230",
+          "name": "Project Management"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "pad120",
+          "code": "PAD120",
+          "name": "Municipal Law and Ethics in Government"
+        },
+        {
+          "id": "pad160",
+          "code": "PAD160",
+          "name": "Municipal Revenues"
+        },
+        {
+          "id": "pad210",
+          "code": "PAD210",
+          "name": "Human Resources and Municipal Management"
+        },
+        {
+          "id": "pad250",
+          "code": "PAD250",
+          "name": "Dispute Resolution in Municipal Government"
+        },
+        {
+          "id": "pad260",
+          "code": "PAD260",
+          "name": "Public Policy Research and Analysis"
+        },
+        {
+          "id": "pad280",
+          "code": "PAD280",
+          "name": "Work Integrated Project"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "pad441",
+          "code": "PAD441",
+          "name": "Public Administration, Work Term"
+        }
+      ]
+    }
+  ]
+}

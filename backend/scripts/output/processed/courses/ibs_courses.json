@@ -1,0 +1,88 @@
+{
+  "programId": "IBS",
+  "programName": "International Business Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "cap505",
+          "code": "CAP505",
+          "name": "International Business Management: Career Planning"
+        },
+        {
+          "id": "ibs601",
+          "code": "IBS601",
+          "name": "Digital Applications for Business"
+        },
+        {
+          "id": "ibs603",
+          "code": "IBS603",
+          "name": "Fundamentals of Project Management"
+        },
+        {
+          "id": "ibs605",
+          "code": "IBS605",
+          "name": "Business in the Global Economy"
+        },
+        {
+          "id": "ibs607",
+          "code": "IBS607",
+          "name": "Consulting Across Cultures"
+        },
+        {
+          "id": "ibs630",
+          "code": "IBS630",
+          "name": "Trade Research and Market Analysis"
+        },
+        {
+          "id": "ibs660",
+          "code": "IBS660",
+          "name": "Management Accounting"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "ibs801",
+          "code": "IBS801",
+          "name": "International Banking and Finance"
+        },
+        {
+          "id": "ibs805",
+          "code": "IBS805",
+          "name": "Global Marketing"
+        },
+        {
+          "id": "ibs806",
+          "code": "IBS806",
+          "name": "Global Supply Chain Management"
+        },
+        {
+          "id": "ibs807",
+          "code": "IBS807",
+          "name": "Sustainability and Sustainable Development"
+        },
+        {
+          "id": "ibs810",
+          "code": "IBS810",
+          "name": "Human Resource Management"
+        },
+        {
+          "id": "ibs820",
+          "code": "IBS820",
+          "name": "International Business Plan"
+        },
+        {
+          "id": "ibs850",
+          "code": "IBS850",
+          "name": "Legal Environment of International Business"
+        }
+      ]
+    }
+  ]
+}

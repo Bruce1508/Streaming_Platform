@@ -1,0 +1,73 @@
+{
+  "programId": "IMH",
+  "programName": "Infant & Early Child Mental Health",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "imh101",
+          "code": "IMH101",
+          "name": "Infant and Early Childhood Mental Health"
+        },
+        {
+          "id": "imh103",
+          "code": "IMH103",
+          "name": "Dynamics of the Family: A Child's Perspective"
+        },
+        {
+          "id": "imh105",
+          "code": "IMH105",
+          "name": "Integrating Attachment and Brain Development"
+        },
+        {
+          "id": "imh106",
+          "code": "IMH106",
+          "name": "Human Development"
+        },
+        {
+          "id": "imh108",
+          "code": "IMH108",
+          "name": "Fundamentals of Communications and Counselling with Families"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "imh201",
+          "code": "IMH201",
+          "name": "Understanding and Responding to the Challenging Behaviour of Young Children"
+        },
+        {
+          "id": "imh203",
+          "code": "IMH203",
+          "name": "Health Promotion and Education"
+        },
+        {
+          "id": "imh204",
+          "code": "IMH204",
+          "name": "Advanced Practice in Infant and Early Child Mental Health"
+        },
+        {
+          "id": "imh205",
+          "code": "IMH205",
+          "name": "Screening and Assessment: Infants, Young Children and Families"
+        },
+        {
+          "id": "imh206",
+          "code": "IMH206",
+          "name": "Promoting Resilience in Infants and Young Children Impacted by Stress and Trauma"
+        },
+        {
+          "id": "imh207",
+          "code": "IMH207",
+          "name": "Field Placement IMH"
+        }
+      ]
+    }
+  ]
+}

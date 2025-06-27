@@ -1,0 +1,220 @@
+{
+  "programId": "CSN",
+  "programName": "Computer Systems Technician",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "mst100",
+          "code": "MST100",
+          "name": "Introduction to Microsoft Services"
+        },
+        {
+          "id": "ops145",
+          "code": "OPS145",
+          "name": "Introduction to Linux"
+        },
+        {
+          "id": "sps120",
+          "code": "SPS120",
+          "name": "Strategic Problem Solving"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "csn205",
+          "code": "CSN205",
+          "name": "Static Networks"
+        },
+        {
+          "id": "mst200",
+          "code": "MST200",
+          "name": "Microsoft Server Administration"
+        },
+        {
+          "id": "ops245",
+          "code": "OPS245",
+          "name": "Open Systems Server"
+        },
+        {
+          "id": "sec220",
+          "code": "SEC220",
+          "name": "Introduction to System Security"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 2,
+          "description": "General Education Course (2)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "csn305",
+          "code": "CSN305",
+          "name": "Software Defined Networks"
+        },
+        {
+          "id": "dat330",
+          "code": "DAT330",
+          "name": "Introduction to Databases"
+        },
+        {
+          "id": "mst300",
+          "code": "MST300",
+          "name": "Introduction to Microsoft Cloud Technologies"
+        },
+        {
+          "id": "ops345",
+          "code": "OPS345",
+          "name": "Open System Application Server"
+        },
+        {
+          "id": "sec320",
+          "code": "SEC320",
+          "name": "Security Incident Response"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "csn405",
+          "code": "CSN405",
+          "name": "Wireless Networks"
+        },
+        {
+          "id": "csp450",
+          "code": "CSP450",
+          "name": "Computer Systems Projects: On Premises Networking and Server Administration"
+        },
+        {
+          "id": "eac594",
+          "code": "EAC594",
+          "name": "Business Communication for the Digital Workplace"
+        },
+        {
+          "id": "mst400",
+          "code": "MST400",
+          "name": "MS Cloud Administration"
+        },
+        {
+          "id": "ops445",
+          "code": "OPS445",
+          "name": "Open System Administration"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Professional Options",
+          "count": 1,
+          "description": "Professional Options (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "cpo500",
+          "code": "CPO500",
+          "name": "Red Hat Academy Exam Preparation"
+        },
+        {
+          "id": "cpo520",
+          "code": "CPO520",
+          "name": "Cisco Certification Preparation"
+        },
+        {
+          "id": "csp451",
+          "code": "CSP451",
+          "name": "Computer Systems Projects: Cloud Environments"
+        },
+        {
+          "id": "cyt145",
+          "code": "CYT145",
+          "name": "IT Security: Ethical and Legal Issues"
+        },
+        {
+          "id": "cyt160",
+          "code": "CYT160",
+          "name": "Security for Cloud and Internet of Things"
+        },
+        {
+          "id": "dcn686",
+          "code": "DCN686",
+          "name": "Configuring Cisco Devices"
+        },
+        {
+          "id": "ops400",
+          "code": "OPS400",
+          "name": "AS/400 Operations"
+        },
+        {
+          "id": "pmc115",
+          "code": "PMC115",
+          "name": "IT Project Mgmt. Fundamentals, Tools and Techniques"
+        },
+        {
+          "id": "srt211",
+          "code": "SRT211",
+          "name": "Secure Scripting"
+        },
+        {
+          "id": "tec701",
+          "code": "TEC701",
+          "name": "Technical Support for Network Administrators"
+        },
+        {
+          "id": "tec702",
+          "code": "TEC702",
+          "name": "Technician as an Entrepreneur"
+        },
+        {
+          "id": "win500",
+          "code": "WIN500",
+          "name": "Windows Server Scripting"
+        },
+        {
+          "id": "win700",
+          "code": "WIN700",
+          "name": "Windows Active Directory Services"
+        }
+      ]
+    }
+  ]
+}

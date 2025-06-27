@@ -1,0 +1,232 @@
+{
+  "programId": "BCMS",
+  "programName": "Bachelor of Computer Science",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "dbs101",
+          "code": "DBS101",
+          "name": "Introduction to Database Management Systems"
+        },
+        {
+          "id": "dei101",
+          "code": "DEI101",
+          "name": "Introduction to Diversity, Equity, Inclusion and Accessibility"
+        },
+        {
+          "id": "mth130",
+          "code": "MTH130",
+          "name": "Math Foundations"
+        },
+        {
+          "id": "ops106",
+          "code": "OPS106",
+          "name": "Introduction to Unix"
+        },
+        {
+          "id": "pbs101",
+          "code": "PBS101",
+          "name": "Introduction to Problem Solving"
+        },
+        {
+          "id": "prg101",
+          "code": "PRG101",
+          "name": "Introduction to Computer Programming"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "eng106",
+          "code": "ENG106",
+          "name": "Writing Strategies"
+        },
+        {
+          "id": "mth230",
+          "code": "MTH230",
+          "name": "Discrete Mathematics and Logic"
+        },
+        {
+          "id": "ntf201",
+          "code": "NTF201",
+          "name": "Networking Fundamentals"
+        },
+        {
+          "id": "prg210",
+          "code": "PRG210",
+          "name": "Object Oriented Programming"
+        },
+        {
+          "id": "sys210",
+          "code": "SYS210",
+          "name": "System Analysis"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "dei301",
+          "code": "DEI301",
+          "name": "Diversity, Equity and Inclusion in Computer Science"
+        },
+        {
+          "id": "dsa301",
+          "code": "DSA301",
+          "name": "Data Structure and Algorithms"
+        },
+        {
+          "id": "mth330",
+          "code": "MTH330",
+          "name": "Calculus"
+        },
+        {
+          "id": "sys310",
+          "code": "SYS310",
+          "name": "System Design and Architecture"
+        },
+        {
+          "id": "web310",
+          "code": "WEB310",
+          "name": "Web Development I"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "btc440",
+          "code": "BTC440",
+          "name": "Business and Technical Writing"
+        },
+        {
+          "id": "cao401",
+          "code": "CAO401",
+          "name": "Computer Architecture and Organization"
+        },
+        {
+          "id": "sec401",
+          "code": "SEC401",
+          "name": "Introduction to Security"
+        },
+        {
+          "id": "udi401",
+          "code": "UDI401",
+          "name": "User Interface Design"
+        },
+        {
+          "id": "web401",
+          "code": "WEB401",
+          "name": "Web Development II"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "dei501",
+          "code": "DEI501",
+          "name": "Building an Accessibility Toolkit"
+        },
+        {
+          "id": "rea501",
+          "code": "REA501",
+          "name": "Research Methodologies"
+        },
+        {
+          "id": "sec501",
+          "code": "SEC501",
+          "name": "Software Security"
+        },
+        {
+          "id": "wtp200",
+          "code": "WTP200",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "clo601",
+          "code": "CLO601",
+          "name": "Cloud Computing for Programmers"
+        },
+        {
+          "id": "cpt601",
+          "code": "CPT601",
+          "name": "Capstone Project"
+        },
+        {
+          "id": "eth601",
+          "code": "ETH601",
+          "name": "Law and Ethics"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        },
+        {
+          "type": "Professional Options",
+          "count": 1,
+          "description": "Professional Options (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "dpi912",
+          "code": "DPI912",
+          "name": "Python for Programmers: Sockets and Security"
+        },
+        {
+          "id": "dpi914",
+          "code": "DPI914",
+          "name": "Social Engineering"
+        },
+        {
+          "id": "dps909",
+          "code": "DPS909",
+          "name": "Topics in Open Source Development"
+        }
+      ]
+    }
+  ]
+}

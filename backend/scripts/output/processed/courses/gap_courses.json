@@ -1,0 +1,82 @@
+{
+  "programId": "GAP",
+  "programName": "General Arts – One Year Certificate",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "can149",
+          "code": "CAN149",
+          "name": "Current Issues in Canada"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "nat108",
+          "code": "NAT108",
+          "name": "Understanding Science and Technology"
+        },
+        {
+          "id": "psy355",
+          "code": "PSY355",
+          "name": "Applied Psychology of Learning and Careers"
+        },
+        {
+          "id": "soc122",
+          "code": "SOC122",
+          "name": "Introduction to Social Sciences"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cul145",
+          "code": "CUL145",
+          "name": "The Digital World - Issues and Trends"
+        },
+        {
+          "id": "phl185",
+          "code": "PHL185",
+          "name": "Big Ideas in Philosophy"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 3,
+          "description": "General Education Course (3)"
+        },
+        {
+          "type": "Professional Options",
+          "count": 3,
+          "description": "Professional Options (3)"
+        }
+      ],
+      "totalCourses": 8
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "acc120",
+          "code": "ACC120",
+          "name": "Accounting Basics I"
+        },
+        {
+          "id": "mrk106",
+          "code": "MRK106",
+          "name": "Marketing I"
+        }
+      ]
+    }
+  ]
+}

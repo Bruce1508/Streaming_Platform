@@ -1,0 +1,174 @@
+{
+  "programId": "LIT",
+  "programName": "Library & Information Technician",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "lit100",
+          "code": "LIT100",
+          "name": "LIT Introduction to Computer Applications"
+        },
+        {
+          "id": "lit103",
+          "code": "LIT103",
+          "name": "Cataloguing I"
+        },
+        {
+          "id": "lit104",
+          "code": "LIT104",
+          "name": "Circulation"
+        },
+        {
+          "id": "lit108",
+          "code": "LIT108",
+          "name": "Searching I"
+        },
+        {
+          "id": "lit150",
+          "code": "LIT150",
+          "name": "Introducing Libraries"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "lit203",
+          "code": "LIT203",
+          "name": "Cataloguing II"
+        },
+        {
+          "id": "lit204",
+          "code": "LIT204",
+          "name": "Acquiring Library Materials I"
+        },
+        {
+          "id": "lit206",
+          "code": "LIT206",
+          "name": "Reference Resources I"
+        },
+        {
+          "id": "lit208",
+          "code": "LIT208",
+          "name": "Searching II"
+        },
+        {
+          "id": "lit210",
+          "code": "LIT210",
+          "name": "Library Promotions"
+        },
+        {
+          "id": "lit250",
+          "code": "LIT250",
+          "name": "Placement and Work Skills"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "fpl385",
+          "code": "FPL385",
+          "name": "Field Placement I for Library Technicians"
+        },
+        {
+          "id": "lit303",
+          "code": "LIT303",
+          "name": "Cataloguing III"
+        },
+        {
+          "id": "lit304",
+          "code": "LIT304",
+          "name": "Acquiring Library Materials II"
+        },
+        {
+          "id": "lit306",
+          "code": "LIT306",
+          "name": "Reference Resources II"
+        },
+        {
+          "id": "lit314",
+          "code": "LIT314",
+          "name": "Library Software"
+        },
+        {
+          "id": "lit316",
+          "code": "LIT316",
+          "name": "Reference Processes"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "fpl485",
+          "code": "FPL485",
+          "name": "Field Placement II for Library Technicians"
+        },
+        {
+          "id": "lit400",
+          "code": "LIT400",
+          "name": "Professional Issues in Libraries"
+        },
+        {
+          "id": "lit403",
+          "code": "LIT403",
+          "name": "Cataloguing IV"
+        },
+        {
+          "id": "lit408",
+          "code": "LIT408",
+          "name": "Searching III"
+        },
+        {
+          "id": "lit416",
+          "code": "LIT416",
+          "name": "Library Programs"
+        },
+        {
+          "id": "lit420",
+          "code": "LIT420",
+          "name": "Human Relations in Libraries"
+        }
+      ]
+    }
+  ]
+}

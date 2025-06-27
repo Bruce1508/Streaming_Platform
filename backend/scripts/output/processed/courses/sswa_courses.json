@@ -1,0 +1,143 @@
+{
+  "programId": "SSWA",
+  "programName": "Social Service Worker (Accelerated)",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "ssw101",
+          "code": "SSW101",
+          "name": "Interpersonal Communications"
+        },
+        {
+          "id": "ssw102",
+          "code": "SSW102",
+          "name": "Anti Oppressive Practice"
+        },
+        {
+          "id": "ssw147",
+          "code": "SSW147",
+          "name": "Preparation for Social Service Work Practice"
+        },
+        {
+          "id": "ssw201",
+          "code": "SSW201",
+          "name": "Group Dynamics"
+        },
+        {
+          "id": "ssw212",
+          "code": "SSW212",
+          "name": "Interviewing Skills and Principles"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "ssw311",
+          "code": "SSW311",
+          "name": "Service Coordination and Advocacy"
+        },
+        {
+          "id": "ssw312",
+          "code": "SSW312",
+          "name": "Supportive Counselling"
+        },
+        {
+          "id": "ssw347",
+          "code": "SSW347",
+          "name": "Field Seminar II"
+        },
+        {
+          "id": "ssw357",
+          "code": "SSW357",
+          "name": "Field Practicum II"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Professional Options",
+          "count": 1,
+          "description": "Professional Options (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "ssw227",
+          "code": "SSW227",
+          "name": "Families in Change"
+        },
+        {
+          "id": "ssw401",
+          "code": "SSW401",
+          "name": "Social Welfare and Policy"
+        },
+        {
+          "id": "ssw402",
+          "code": "SSW402",
+          "name": "Community Practice"
+        },
+        {
+          "id": "ssw447",
+          "code": "SSW447",
+          "name": "Field Seminar III"
+        },
+        {
+          "id": "ssw457",
+          "code": "SSW457",
+          "name": "Field Practicum III"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "bhs204",
+          "code": "BHS204",
+          "name": "Autism and Developmental Disabilities"
+        },
+        {
+          "id": "gwl137",
+          "code": "GWL137",
+          "name": "Introduction to Aging"
+        },
+        {
+          "id": "gwl377",
+          "code": "GWL377",
+          "name": "Volunteer Program Management"
+        },
+        {
+          "id": "ssw371",
+          "code": "SSW371",
+          "name": "Selected Issues: Intimate Partner Abuse and Violence"
+        },
+        {
+          "id": "ssw372",
+          "code": "SSW372",
+          "name": "Selected Issues: Addictions"
+        },
+        {
+          "id": "ssw373",
+          "code": "SSW373",
+          "name": "Selected Issues: Mental Health"
+        },
+        {
+          "id": "ssw374",
+          "code": "SSW374",
+          "name": "Selected Issues: Child Welfare"
+        }
+      ]
+    }
+  ]
+}

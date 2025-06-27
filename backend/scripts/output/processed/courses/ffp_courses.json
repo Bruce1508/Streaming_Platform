@@ -1,0 +1,84 @@
+{
+  "programId": "FFP",
+  "programName": "Firefighter, Pre-Service Education and Training",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "fff101",
+          "code": "FFF101",
+          "name": "Fitness for Firefighters"
+        },
+        {
+          "id": "fir001",
+          "code": "FIR001",
+          "name": "Introduction to the Fire Service and Life Safety Programs"
+        },
+        {
+          "id": "fir002",
+          "code": "FIR002",
+          "name": "Introduction to Firefighting"
+        },
+        {
+          "id": "fir003",
+          "code": "FIR003",
+          "name": "Fire Ground Operations I"
+        },
+        {
+          "id": "fir004",
+          "code": "FIR004",
+          "name": "Fire Suppression I"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "fir005",
+          "code": "FIR005",
+          "name": "Fire Ground Operations II"
+        },
+        {
+          "id": "fir006",
+          "code": "FIR006",
+          "name": "Fire Suppression II"
+        },
+        {
+          "id": "fir007",
+          "code": "FIR007",
+          "name": "Firefighter Emergency Medical Responder"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "fir008",
+          "code": "FIR008",
+          "name": "Hazardous Materials Operations - NFPA 1072"
+        },
+        {
+          "id": "fir009",
+          "code": "FIR009",
+          "name": "Technical Rescue Operations - NFPA 1001 and 1006"
+        },
+        {
+          "id": "fir012",
+          "code": "FIR012",
+          "name": "Fire Service Skills and Career Prep"
+        },
+        {
+          "id": "fir013",
+          "code": "FIR013",
+          "name": "Fire Apparatus and Pump Operations"
+        }
+      ]
+    }
+  ]
+}

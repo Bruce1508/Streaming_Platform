@@ -1,0 +1,167 @@
+{
+  "programId": "PND",
+  "programName": "Practical Nursing",
+  "semesters": [
+    {
+      "id": "semester6",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "mdm101",
+          "code": "MDM101",
+          "name": "Mathematics for Medication Administration"
+        },
+        {
+          "id": "pna100",
+          "code": "PNA100",
+          "name": "Anatomy and Physiology for the Practical Nurse"
+        },
+        {
+          "id": "pnc121",
+          "code": "PNC121",
+          "name": "Practical Nursing - Clinical Preparation"
+        },
+        {
+          "id": "pnh101",
+          "code": "PNH101",
+          "name": "Health and Healing for the Practical Nurse"
+        },
+        {
+          "id": "pnl110",
+          "code": "PNL110",
+          "name": "Skills Lab for the Practical Nurse I"
+        },
+        {
+          "id": "pnr100",
+          "code": "PNR100",
+          "name": "Role Development for the Practical Nurse"
+        }
+      ]
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "pna200",
+          "code": "PNA200",
+          "name": "Anatomy and Physiology for the Practical Nurse"
+        },
+        {
+          "id": "pnc220",
+          "code": "PNC220",
+          "name": "Practical Nursing and Clinical"
+        },
+        {
+          "id": "pne203",
+          "code": "PNE203",
+          "name": "Health Assessment for Practical Nurses"
+        },
+        {
+          "id": "pnh201",
+          "code": "PNH201",
+          "name": "Healing Practices for Practical Nurses II"
+        },
+        {
+          "id": "pnl210",
+          "code": "PNL210",
+          "name": "Skills Lab for the Practical Nurse I"
+        },
+        {
+          "id": "psy100",
+          "code": "PSY100",
+          "name": "Introduction to Psychology"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "pnc320",
+          "code": "PNC320",
+          "name": "Practical Nursing Clinical"
+        },
+        {
+          "id": "pnh301",
+          "code": "PNH301",
+          "name": "Healing Practices for the Practical Nurse III"
+        },
+        {
+          "id": "pnm300",
+          "code": "PNM300",
+          "name": "Pharmacology for the Practical Nurse"
+        },
+        {
+          "id": "pnp301",
+          "code": "PNP301",
+          "name": "Pathophysiology for the Practical Nurse I"
+        },
+        {
+          "id": "pnr300",
+          "code": "PNR300",
+          "name": "Role Development for the Practical Nurse"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "pnc420",
+          "code": "PNC420",
+          "name": "Practical Nursing Clinical"
+        },
+        {
+          "id": "pnh401",
+          "code": "PNH401",
+          "name": "Healing Practices for the Practical Nurse IV"
+        },
+        {
+          "id": "pnp401",
+          "code": "PNP401",
+          "name": "Pathophysiology for the Practical Nurse II"
+        },
+        {
+          "id": "pnr400",
+          "code": "PNR400",
+          "name": "Role Development for the Practical Nurse"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 2,
+          "description": "General Education Course (2)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester10",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "pnc520",
+          "code": "PNC520",
+          "name": "Practical Nursing Consolidation"
+        }
+      ]
+    }
+  ]
+}

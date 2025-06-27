@@ -1,0 +1,27 @@
+{
+  "programId": "ADF",
+  "programName": "Art & Design Foundations",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "adf142",
+          "code": "ADF142",
+          "name": "Design I"
+        },
+        {
+          "id": "adf182",
+          "code": "ADF182",
+          "name": "Drawing I"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        }
+      ]
+    }
+  ]
+}

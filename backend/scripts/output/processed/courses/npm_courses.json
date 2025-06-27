@@ -1,0 +1,94 @@
+{
+  "programId": "NPM",
+  "programName": "Non-Profit & Social Sector Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "ibs603",
+          "code": "IBS603",
+          "name": "Fundamentals of Project Management"
+        },
+        {
+          "id": "npm700",
+          "code": "NPM700",
+          "name": "Introduction to the Non-Profit Sector"
+        },
+        {
+          "id": "npm704",
+          "code": "NPM704",
+          "name": "HR Management in the Social Economy"
+        },
+        {
+          "id": "npm706",
+          "code": "NPM706",
+          "name": "Resource Development Strategies"
+        },
+        {
+          "id": "npm802",
+          "code": "NPM802",
+          "name": "Computer Applications and Information Systems"
+        },
+        {
+          "id": "npm804",
+          "code": "NPM804",
+          "name": "Financial Management for Non-Profit Organizations"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "npm702",
+          "code": "NPM702",
+          "name": "Leadership Approaches in the Non-Profit Sector"
+        },
+        {
+          "id": "npm703",
+          "code": "NPM703",
+          "name": "Stat. Planning for Non-Profit and Social Enterprises"
+        },
+        {
+          "id": "npm800",
+          "code": "NPM800",
+          "name": "Building Alliances and Partnerships in Social Sector"
+        },
+        {
+          "id": "npm801",
+          "code": "NPM801",
+          "name": "Marketing Management for Non-Profit and Social Ent."
+        },
+        {
+          "id": "npm803",
+          "code": "NPM803",
+          "name": "Program Development, Management and Evaluation"
+        },
+        {
+          "id": "npm807",
+          "code": "NPM807",
+          "name": "Integrated Project"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "npm441",
+          "code": "NPM441",
+          "name": "Non-Profit and Social Sector Management, Work Term"
+        }
+      ]
+    }
+  ]
+}

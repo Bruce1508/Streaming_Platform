@@ -1,0 +1,144 @@
+{
+  "programId": "CLT",
+  "programName": "Chemical Laboratory Technician",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bio173",
+          "code": "BIO173",
+          "name": "Biology"
+        },
+        {
+          "id": "chm173",
+          "code": "CHM173",
+          "name": "Chemistry"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "mth173",
+          "code": "MTH173",
+          "name": "MathematicsMathematics"
+        },
+        {
+          "id": "ssa001",
+          "code": "SSA001",
+          "name": "Science Survival"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "aca273",
+          "code": "ACA273",
+          "name": "Advanced Computer Applications"
+        },
+        {
+          "id": "bio273",
+          "code": "BIO273",
+          "name": "Biology"
+        },
+        {
+          "id": "chm273",
+          "code": "CHM273",
+          "name": "Chemistry"
+        },
+        {
+          "id": "mth273",
+          "code": "MTH273",
+          "name": "Mathematics"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "aic372",
+          "code": "AIC372",
+          "name": "Applied Inorganic Chemistry"
+        },
+        {
+          "id": "cho372",
+          "code": "CHO372",
+          "name": "Chemistry - Organic"
+        },
+        {
+          "id": "mbg372",
+          "code": "MBG372",
+          "name": "Microbiology"
+        },
+        {
+          "id": "phy453",
+          "code": "PHY453",
+          "name": "Physics"
+        },
+        {
+          "id": "ses391",
+          "code": "SES391",
+          "name": "Effective Technical Writing"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "bic472",
+          "code": "BIC472",
+          "name": "Biochemistry"
+        },
+        {
+          "id": "imb472",
+          "code": "IMB472",
+          "name": "Industrial MicrobiologyIntroduction to Pharmaceutical Manufacturing"
+        },
+        {
+          "id": "ioc472",
+          "code": "IOC472",
+          "name": "Analytical Chemistry"
+        },
+        {
+          "id": "itm472",
+          "code": "ITM472",
+          "name": "Instrumental Methods"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    }
+  ]
+}

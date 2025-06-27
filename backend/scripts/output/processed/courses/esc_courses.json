@@ -1,0 +1,78 @@
+{
+  "programId": "ESC",
+  "programName": "911 & Emergency Services Communications",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "ecp110",
+          "code": "ECP110",
+          "name": "Introduction to Public Safety Communications"
+        },
+        {
+          "id": "ecp121",
+          "code": "ECP121",
+          "name": "Communications and Conflict Management"
+        },
+        {
+          "id": "ecp130",
+          "code": "ECP130",
+          "name": "Law for Communications Operators"
+        },
+        {
+          "id": "ecp141",
+          "code": "ECP141",
+          "name": "Communication Centre Technology"
+        },
+        {
+          "id": "ecp150",
+          "code": "ECP150",
+          "name": "Ethical Considerations for Telecommunicators"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "ecp210",
+          "code": "ECP210",
+          "name": "Health and Stress Management"
+        },
+        {
+          "id": "ecp220",
+          "code": "ECP220",
+          "name": "Police Communications Procedures"
+        },
+        {
+          "id": "ecp230",
+          "code": "ECP230",
+          "name": "Fire Communications Procedures"
+        },
+        {
+          "id": "ecp240",
+          "code": "ECP240",
+          "name": "EMS Communications Procedures"
+        },
+        {
+          "id": "ecp250",
+          "code": "ECP250",
+          "name": "Crisis and Emergency Management"
+        },
+        {
+          "id": "psy100",
+          "code": "PSY100",
+          "name": "Introduction to Psychology"
+        }
+      ]
+    }
+  ]
+}

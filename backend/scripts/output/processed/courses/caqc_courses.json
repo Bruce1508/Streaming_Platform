@@ -1,0 +1,99 @@
+{
+  "programId": "CAQC",
+  "programName": "Cannabis Regulation & Quality Assurance",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "caq100",
+          "code": "CAQ100",
+          "name": "Introduction to Cannabis"
+        },
+        {
+          "id": "caq102",
+          "code": "CAQ102",
+          "name": "Cannabis Clinical"
+        },
+        {
+          "id": "caq103",
+          "code": "CAQ103",
+          "name": "Cannabis Quality Assurance and Documentation"
+        },
+        {
+          "id": "caq104",
+          "code": "CAQ104",
+          "name": "Cannabis Product Quality and Grading"
+        },
+        {
+          "id": "caq105",
+          "code": "CAQ105",
+          "name": "Cannabis Facilities, Operations, Security and Inventory Control"
+        },
+        {
+          "id": "caq200",
+          "code": "CAQ200",
+          "name": "Canadian Legal and Regulatory Landscape"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "caq441",
+          "code": "CAQ441",
+          "name": "Cannabis Regulation and Quality Assurance, Work Term"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "caq101",
+          "code": "CAQ101",
+          "name": "Legal and Regulatory Landscape for Cannabis"
+        },
+        {
+          "id": "caq201",
+          "code": "CAQ201",
+          "name": "Marketing and Promotion Regulations for Cannabis Across Borders"
+        },
+        {
+          "id": "caq202",
+          "code": "CAQ202",
+          "name": "Cannabis Economics"
+        },
+        {
+          "id": "caq203",
+          "code": "CAQ203",
+          "name": "Advanced Quality Assurance for Cannabis"
+        },
+        {
+          "id": "caq204",
+          "code": "CAQ204",
+          "name": "Internal Quality Assurance Cannabis"
+        },
+        {
+          "id": "caq205",
+          "code": "CAQ205",
+          "name": "Advanced Product Formats for Cannabis"
+        },
+        {
+          "id": "caq206",
+          "code": "CAQ206",
+          "name": "Cannabis Capstone Project"
+        }
+      ]
+    }
+  ]
+}

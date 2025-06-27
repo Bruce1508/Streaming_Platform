@@ -1,0 +1,169 @@
+{
+  "programId": "BMT",
+  "programName": "Business – Marketing",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bam101",
+          "code": "BAM101",
+          "name": "Introduction to Business Administration"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "mbf100",
+          "code": "MBF100",
+          "name": "Mathematics of Business and FinanceMathematics of Business and Finance"
+        },
+        {
+          "id": "mrk106",
+          "code": "MRK106",
+          "name": "Marketing I"
+        },
+        {
+          "id": "mrk130",
+          "code": "MRK130",
+          "name": "Marketing Professionalism and Careers"
+        },
+        {
+          "id": "mrk264",
+          "code": "MRK264",
+          "name": "Advanced Computer Applications for Marketing"
+        },
+        {
+          "id": "sdg101",
+          "code": "SDG101",
+          "name": "Introduction to Sustainable Business"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "acc106",
+          "code": "ACC106",
+          "name": "Accounting I"
+        },
+        {
+          "id": "eac594",
+          "code": "EAC594",
+          "name": "Business Communication for the Digital Workplace"
+        },
+        {
+          "id": "ecn550",
+          "code": "ECN550",
+          "name": "Economics: An Overview"
+        },
+        {
+          "id": "mrk177",
+          "code": "MRK177",
+          "name": "Professional Presentations"
+        },
+        {
+          "id": "mrk200",
+          "code": "MRK200",
+          "name": "Marketing II"
+        },
+        {
+          "id": "mrk255",
+          "code": "MRK255",
+          "name": "Modern Research Methods"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "mrk260",
+          "code": "MRK260",
+          "name": "Graphic and Web Design"
+        },
+        {
+          "id": "mrk430",
+          "code": "MRK430",
+          "name": "Professional Selling"
+        },
+        {
+          "id": "mrk455",
+          "code": "MRK455",
+          "name": "Applied Marketing Research"
+        },
+        {
+          "id": "obr250",
+          "code": "OBR250",
+          "name": "Organizational Behaviour"
+        },
+        {
+          "id": "qnm223",
+          "code": "QNM223",
+          "name": "Business Statistics"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "cap506",
+          "code": "CAP506",
+          "name": "Career Launching and Portfolio Planning"
+        },
+        {
+          "id": "mrk317",
+          "code": "MRK317",
+          "name": "Integrated Marketing Communications I"
+        },
+        {
+          "id": "mrk428",
+          "code": "MRK428",
+          "name": "Marketing Strategy and Analysis"
+        },
+        {
+          "id": "mrk460",
+          "code": "MRK460",
+          "name": "Global Marketing"
+        },
+        {
+          "id": "mrk634",
+          "code": "MRK634",
+          "name": "Driving Digital Media for Business"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    }
+  ]
+}

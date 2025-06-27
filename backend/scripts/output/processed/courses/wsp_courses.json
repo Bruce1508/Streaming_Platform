@@ -1,0 +1,156 @@
+{
+  "programId": "WSP",
+  "programName": "Workplace Safety & Prevention",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "chm170",
+          "code": "CHM170",
+          "name": "Introduction to Chemistry"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "com470",
+          "code": "COM470",
+          "name": "Interpersonal Communication"
+        },
+        {
+          "id": "hra848",
+          "code": "HRA848",
+          "name": "Training Techniques and Practices"
+        },
+        {
+          "id": "ohs106",
+          "code": "OHS106",
+          "name": "Occupational Health and Safety"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 2,
+          "description": "General Education Course (2)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "bio210",
+          "code": "BIO210",
+          "name": "Anatomy and Physiology of Wellness"
+        },
+        {
+          "id": "hra855",
+          "code": "HRA855",
+          "name": "The Legal Environment"
+        },
+        {
+          "id": "mgs521",
+          "code": "MGS521",
+          "name": "Business Ethics and Values"
+        },
+        {
+          "id": "ohs203",
+          "code": "OHS203",
+          "name": "OHS Management Systems"
+        },
+        {
+          "id": "ohs304",
+          "code": "OHS304",
+          "name": "Health and Wellness"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "ohs201",
+          "code": "OHS201",
+          "name": "Ergonomics"
+        },
+        {
+          "id": "ohs202",
+          "code": "OHS202",
+          "name": "Risk Management"
+        },
+        {
+          "id": "ohs204",
+          "code": "OHS204",
+          "name": "Accident Prevention and Invest"
+        },
+        {
+          "id": "ohs205",
+          "code": "OHS205",
+          "name": "Disability Management"
+        },
+        {
+          "id": "ohs501",
+          "code": "OHS501",
+          "name": "Field Placement"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "hra742",
+          "code": "HRA742",
+          "name": "Organizational Behaviour"
+        },
+        {
+          "id": "ohs300",
+          "code": "OHS300",
+          "name": "Industrial Hygiene and Toxicology"
+        },
+        {
+          "id": "ohs301",
+          "code": "OHS301",
+          "name": "Emergency Planning and Management"
+        },
+        {
+          "id": "ohs305",
+          "code": "OHS305",
+          "name": "Operational Safety"
+        },
+        {
+          "id": "ohs306",
+          "code": "OHS306",
+          "name": "Introduction to Process Safety"
+        },
+        {
+          "id": "ohs400",
+          "code": "OHS400",
+          "name": "Industrial Hygiene and Toxicology Lab"
+        },
+        {
+          "id": "ohs401",
+          "code": "OHS401",
+          "name": "Environmental Management"
+        }
+      ]
+    }
+  ]
+}

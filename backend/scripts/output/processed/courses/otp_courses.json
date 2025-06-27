@@ -1,0 +1,194 @@
+{
+  "programId": "OTP",
+  "programName": "Occupational Therapist Assistant and Physiotherapist Assistant",
+  "semesters": [
+    {
+      "id": "semester3",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "otp100",
+          "code": "OTP100",
+          "name": "Introduction to the Canadian Healthcare System"
+        },
+        {
+          "id": "otp101",
+          "code": "OTP101",
+          "name": "Anatomy and Physiology"
+        },
+        {
+          "id": "otp102",
+          "code": "OTP102",
+          "name": "Human Kinetics"
+        },
+        {
+          "id": "otp103",
+          "code": "OTP103",
+          "name": "Orientation to OTA and PTA Roles"
+        },
+        {
+          "id": "otp104",
+          "code": "OTP104",
+          "name": "Therapeutic Communication and Documentation"
+        },
+        {
+          "id": "otp105",
+          "code": "OTP105",
+          "name": "Two-eyed Seeing and Healthcare"
+        },
+        {
+          "id": "otp106",
+          "code": "OTP106",
+          "name": "Developmental Psychology in OTA/PTA Practice"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "otp200",
+          "code": "OTP200",
+          "name": "PTA – Principles and Techniques I"
+        },
+        {
+          "id": "otp201",
+          "code": "OTP201",
+          "name": "OTA – Principles and Techniques I"
+        },
+        {
+          "id": "otp202",
+          "code": "OTP202",
+          "name": "Human Conditions I"
+        },
+        {
+          "id": "otp203",
+          "code": "OTP203",
+          "name": "Social Determinants of Health"
+        },
+        {
+          "id": "otp204",
+          "code": "OTP204",
+          "name": "Establishing Client-Centered and Reflective Practice"
+        },
+        {
+          "id": "otp205",
+          "code": "OTP205",
+          "name": "Introduction to Clinical Practice"
+        },
+        {
+          "id": "otp206",
+          "code": "OTP206",
+          "name": "Professional Ethics"
+        }
+      ]
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "otp100",
+          "code": "OTP100",
+          "name": "Introduction to the Canadian Healthcare System"
+        },
+        {
+          "id": "otp101",
+          "code": "OTP101",
+          "name": "Anatomy and Physiology"
+        },
+        {
+          "id": "otp102",
+          "code": "OTP102",
+          "name": "Human Kinetics"
+        },
+        {
+          "id": "otp103",
+          "code": "OTP103",
+          "name": "Orientation to OTA and PTA Roles"
+        },
+        {
+          "id": "otp104",
+          "code": "OTP104",
+          "name": "Therapeutic Communication and Documentation"
+        },
+        {
+          "id": "otp106",
+          "code": "OTP106",
+          "name": "Developmental Psychology in OTA/PTA Practice"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "otp200",
+          "code": "OTP200",
+          "name": "PTA – Principles and Techniques I"
+        },
+        {
+          "id": "otp201",
+          "code": "OTP201",
+          "name": "OTA – Principles and Techniques I"
+        },
+        {
+          "id": "otp202",
+          "code": "OTP202",
+          "name": "Human Conditions I"
+        },
+        {
+          "id": "otp203",
+          "code": "OTP203",
+          "name": "Social Determinants of Health"
+        },
+        {
+          "id": "otp204",
+          "code": "OTP204",
+          "name": "Establishing Client-Centered and Reflective Practice"
+        },
+        {
+          "id": "otp205",
+          "code": "OTP205",
+          "name": "Introduction to Clinical Practice"
+        },
+        {
+          "id": "otp206",
+          "code": "OTP206",
+          "name": "Professional Ethics"
+        }
+      ]
+    },
+    {
+      "id": "semester10",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "otp105",
+          "code": "OTP105",
+          "name": "Two-eyed Seeing and Healthcare"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 2
+    }
+  ]
+}

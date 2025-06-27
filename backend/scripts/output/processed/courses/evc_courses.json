@@ -1,0 +1,68 @@
+{
+  "programId": "EVC",
+  "programName": "Event Management – Creative Design",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "clp702",
+          "code": "CLP702",
+          "name": "Client Presentations I"
+        },
+        {
+          "id": "evd702",
+          "code": "EVD702",
+          "name": "Event Design"
+        },
+        {
+          "id": "evt706",
+          "code": "EVT706",
+          "name": "Behind the Scenes of Events"
+        },
+        {
+          "id": "evt760",
+          "code": "EVT760",
+          "name": "Integrated Marketing Communications for Events"
+        },
+        {
+          "id": "log702",
+          "code": "LOG702",
+          "name": "Event Planning and Logistics"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "brp702",
+          "code": "BRP702",
+          "name": "Event Financial Management"
+        },
+        {
+          "id": "clp802",
+          "code": "CLP802",
+          "name": "Client Presentations II"
+        },
+        {
+          "id": "evt850",
+          "code": "EVT850",
+          "name": "Behind the Scenes of Events II"
+        },
+        {
+          "id": "evt880",
+          "code": "EVT880",
+          "name": "Floral Design for Events"
+        },
+        {
+          "id": "log803",
+          "code": "LOG803",
+          "name": "Event Planning and Logistics II"
+        }
+      ]
+    }
+  ]
+}

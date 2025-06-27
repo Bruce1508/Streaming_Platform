@@ -1,0 +1,359 @@
+{
+  "programId": "FPR",
+  "programName": "Honours Bachelor of Aviation Technology",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "aer100",
+          "code": "AER100",
+          "name": "Aeronautics Fundamentals"
+        },
+        {
+          "id": "com100",
+          "code": "COM100",
+          "name": "Technical Communications"
+        },
+        {
+          "id": "ele100",
+          "code": "ELE100",
+          "name": "Electricity Fundamentals"
+        },
+        {
+          "id": "isr104",
+          "code": "ISR104",
+          "name": "Computer Fundamentals"
+        },
+        {
+          "id": "mec110",
+          "code": "MEC110",
+          "name": "Mechanics"
+        },
+        {
+          "id": "mth110",
+          "code": "MTH110",
+          "name": "Mathematics"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "aer200",
+          "code": "AER200",
+          "name": "Advanced Aeronautics"
+        },
+        {
+          "id": "chm300",
+          "code": "CHM300",
+          "name": "Chemistry"
+        },
+        {
+          "id": "ele200",
+          "code": "ELE200",
+          "name": "Fundamentals of Electronics"
+        },
+        {
+          "id": "mec200",
+          "code": "MEC200",
+          "name": "Mechanics II"
+        },
+        {
+          "id": "mth200",
+          "code": "MTH200",
+          "name": "Mathematics II"
+        },
+        {
+          "id": "phy200",
+          "code": "PHY200",
+          "name": "Fluid Mechanics"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "avn300",
+          "code": "AVN300",
+          "name": "Instruments and Avionics Fundamentals"
+        },
+        {
+          "id": "com400",
+          "code": "COM400",
+          "name": "Advanced Technical Communications"
+        },
+        {
+          "id": "mth300",
+          "code": "MTH300",
+          "name": "Mathematics"
+        },
+        {
+          "id": "mts300",
+          "code": "MTS300",
+          "name": "Materials Science"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "aro400",
+          "code": "ARO400",
+          "name": "Fundamentals of Aerodynamics"
+        },
+        {
+          "id": "asd400",
+          "code": "ASD400",
+          "name": "Aircraft Structural Design"
+        },
+        {
+          "id": "avn400",
+          "code": "AVN400",
+          "name": "Advanced Instruments and Avionics"
+        },
+        {
+          "id": "met400",
+          "code": "MET400",
+          "name": "Meteorology"
+        },
+        {
+          "id": "the300",
+          "code": "THE300",
+          "name": "Thermodynamics"
+        }
+      ]
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "irt500",
+          "code": "IRT500",
+          "name": "Instrument Rating Procedures"
+        }
+      ]
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "aro500",
+          "code": "ARO500",
+          "name": "Advanced Aerodynamics"
+        },
+        {
+          "id": "asy500",
+          "code": "ASY500",
+          "name": "Basic Aircraft Systems"
+        },
+        {
+          "id": "bab100",
+          "code": "BAB100",
+          "name": "Introduction to Canadian Business"
+        },
+        {
+          "id": "flp500",
+          "code": "FLP500",
+          "name": "Flight Propulsion"
+        },
+        {
+          "id": "hum500",
+          "code": "HUM500",
+          "name": "Human Factors Ethics and Safety"
+        }
+      ]
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "aas700",
+          "code": "AAS700",
+          "name": "Advanced Aircraft Systems"
+        },
+        {
+          "id": "acp700",
+          "code": "ACP700",
+          "name": "Air Carrier Procedure"
+        },
+        {
+          "id": "asc600",
+          "code": "ASC600",
+          "name": "Aircraft Stability and Control"
+        },
+        {
+          "id": "bab700",
+          "code": "BAB700",
+          "name": "Management Principles and Practices"
+        },
+        {
+          "id": "cpa600",
+          "code": "CPA600",
+          "name": "Computer Programming Aerospace"
+        },
+        {
+          "id": "sms600",
+          "code": "SMS600",
+          "name": "Safety Management System"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "fpr881",
+          "code": "FPR881",
+          "name": "Aviation, Work Term"
+        }
+      ]
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 7",
+      "courses": [
+        {
+          "id": "adm600",
+          "code": "ADM600",
+          "name": "Air Carrier Administration"
+        },
+        {
+          "id": "adv700",
+          "code": "ADV700",
+          "name": "Advanced Aircraft Design"
+        },
+        {
+          "id": "flo600",
+          "code": "FLO600",
+          "name": "Flight Operations I"
+        },
+        {
+          "id": "fsl100",
+          "code": "FSL100",
+          "name": "Introductory French I for Degree Students"
+        },
+        {
+          "id": "lsp700",
+          "code": "LSP700",
+          "name": "Applied Research Methodology"
+        }
+      ]
+    },
+    {
+      "id": "semester10",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "adv800",
+          "code": "ADV800",
+          "name": "Advanced Aircraft Design"
+        },
+        {
+          "id": "aop800",
+          "code": "AOP800",
+          "name": "Airport Planning"
+        },
+        {
+          "id": "flo800",
+          "code": "FLO800",
+          "name": "Flight Operations II"
+        },
+        {
+          "id": "lsp800",
+          "code": "LSP800",
+          "name": "Applied Research Project"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester11",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "fly100",
+          "code": "FLY100",
+          "name": "First Solo"
+        },
+        {
+          "id": "fly200",
+          "code": "FLY200",
+          "name": "Solo Cross Country"
+        },
+        {
+          "id": "fly300",
+          "code": "FLY300",
+          "name": "Private Pilot Licence"
+        },
+        {
+          "id": "fly400",
+          "code": "FLY400",
+          "name": "Complex Aircraft Check on Type"
+        },
+        {
+          "id": "fly500",
+          "code": "FLY500",
+          "name": "Multi-Engine Rating"
+        },
+        {
+          "id": "fly600",
+          "code": "FLY600",
+          "name": "Single Engine Instrument Flying Validation"
+        },
+        {
+          "id": "fly700",
+          "code": "FLY700",
+          "name": "Multi Crew Air Taxi Turboprop - Pilot Monitoring"
+        },
+        {
+          "id": "fly800",
+          "code": "FLY800",
+          "name": "Multi Crew Airline Turbojet"
+        },
+        {
+          "id": "fly900",
+          "code": "FLY900",
+          "name": "Multi Crew Air Taxi Turboprop - Pilot Flying"
+        }
+      ]
+    },
+    {
+      "id": "semester12",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "wtp200",
+          "code": "WTP200",
+          "name": "Work Term Preparation"
+        }
+      ]
+    }
+  ]
+}

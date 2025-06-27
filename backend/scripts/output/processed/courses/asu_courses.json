@@ -1,0 +1,130 @@
+{
+  "programId": "ASU",
+  "programName": "Arts and Science – University Transfer",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bio358",
+          "code": "BIO358",
+          "name": "Biology I"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "mth358",
+          "code": "MTH358",
+          "name": "Functions and Relations"
+        },
+        {
+          "id": "psy191",
+          "code": "PSY191",
+          "name": "Foundations of Psychology I"
+        },
+        {
+          "id": "ykc100",
+          "code": "YKC100",
+          "name": "Critical Thinking I"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "arw250",
+          "code": "ARW250",
+          "name": "Academic Research and Writing"
+        },
+        {
+          "id": "bio359",
+          "code": "BIO359",
+          "name": "Biology II"
+        },
+        {
+          "id": "mth458",
+          "code": "MTH458",
+          "name": "Calculus I"
+        },
+        {
+          "id": "psy291",
+          "code": "PSY291",
+          "name": "Foundations of Psychology II"
+        },
+        {
+          "id": "ykc200",
+          "code": "YKC200",
+          "name": "Critical Thinking II"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "chm358",
+          "code": "CHM358",
+          "name": "Chemistry I"
+        },
+        {
+          "id": "mth459",
+          "code": "MTH459",
+          "name": "Calculus II"
+        },
+        {
+          "id": "phy358",
+          "code": "PHY358",
+          "name": "Physics I"
+        },
+        {
+          "id": "scl191",
+          "code": "SCL191",
+          "name": "Introduction to Sociology I: Social Inequality"
+        },
+        {
+          "id": "ykl100",
+          "code": "YKL100",
+          "name": "Introduction to World Literature I"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "can604",
+          "code": "CAN604",
+          "name": "A Social History of Canada"
+        },
+        {
+          "id": "chm359",
+          "code": "CHM359",
+          "name": "Chemistry II"
+        },
+        {
+          "id": "phy359",
+          "code": "PHY359",
+          "name": "Physics II"
+        },
+        {
+          "id": "scl291",
+          "code": "SCL291",
+          "name": "Introduction to Sociology II: Social Inequality"
+        },
+        {
+          "id": "ykl200",
+          "code": "YKL200",
+          "name": "Introduction to World Literature II"
+        }
+      ]
+    }
+  ]
+}

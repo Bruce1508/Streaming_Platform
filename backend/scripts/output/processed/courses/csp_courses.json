@@ -1,0 +1,89 @@
+{
+  "programId": "CSP",
+  "programName": "Cosmetic Science",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "csp102",
+          "code": "CSP102",
+          "name": "Product Evaluation and Biological Targets"
+        },
+        {
+          "id": "csp103",
+          "code": "CSP103",
+          "name": "Pigments, Powders and Poured Products"
+        },
+        {
+          "id": "csp104",
+          "code": "CSP104",
+          "name": "Formulation I"
+        },
+        {
+          "id": "csp105",
+          "code": "CSP105",
+          "name": "Regulations and the Cosmetic Industry"
+        },
+        {
+          "id": "csp111",
+          "code": "CSP111",
+          "name": "Raw Materials"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "csp441",
+          "code": "CSP441",
+          "name": "Cosmetic Science, Work Term"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "csp106",
+          "code": "CSP106",
+          "name": "Formulation II: Advanced Concepts"
+        },
+        {
+          "id": "csp107",
+          "code": "CSP107",
+          "name": "Fragrances"
+        },
+        {
+          "id": "csp108",
+          "code": "CSP108",
+          "name": "Actives"
+        },
+        {
+          "id": "csp109",
+          "code": "CSP109",
+          "name": "Product Development, Marketing and Sales"
+        },
+        {
+          "id": "csp110",
+          "code": "CSP110",
+          "name": "Capstone Project: Rouge"
+        },
+        {
+          "id": "pqa713",
+          "code": "PQA713",
+          "name": "Introduction to Cosmetic Quality Assurance"
+        }
+      ]
+    }
+  ]
+}

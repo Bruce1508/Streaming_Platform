@@ -1,0 +1,135 @@
+{
+  "programId": "LES",
+  "programName": "Office Administration – Legal",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bcm111",
+          "code": "BCM111",
+          "name": "Business Communications"
+        },
+        {
+          "id": "bma101",
+          "code": "BMA101",
+          "name": "Business Math Applications"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "dpw112",
+          "code": "DPW112",
+          "name": "Introduction to Document Production for LES"
+        },
+        {
+          "id": "ecs111",
+          "code": "ECS111",
+          "name": "Email and Calendaring Software"
+        },
+        {
+          "id": "icp111",
+          "code": "ICP111",
+          "name": "Computer Presentation Software"
+        },
+        {
+          "id": "lct501",
+          "code": "LCT501",
+          "name": "Law and the Citizen"
+        },
+        {
+          "id": "opr112",
+          "code": "OPR112",
+          "name": "Office Procedures"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "ldp311",
+          "code": "LDP311",
+          "name": "Introduction to Legal Document Production"
+        },
+        {
+          "id": "lpi311",
+          "code": "LPI311",
+          "name": "Introduction to Legal Procedures"
+        },
+        {
+          "id": "lpl511",
+          "code": "LPL511",
+          "name": "Legal Procedures Litigation"
+        },
+        {
+          "id": "sde311",
+          "code": "SDE311",
+          "name": "Spreadsheet Software"
+        },
+        {
+          "id": "trt311",
+          "code": "TRT311",
+          "name": "Transcription Techniques"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 2,
+          "description": "General Education Course (2)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cpd501",
+          "code": "CPD501",
+          "name": "Career and Professional Development"
+        },
+        {
+          "id": "lfp501",
+          "code": "LFP501",
+          "name": "Legal Field Placement"
+        },
+        {
+          "id": "lpc311",
+          "code": "LPC311",
+          "name": "Legal Procedures Corporate"
+        },
+        {
+          "id": "lpe512",
+          "code": "LPE512",
+          "name": "Legal Procedures: Wills, Estates and Family Law"
+        },
+        {
+          "id": "lpr511",
+          "code": "LPR511",
+          "name": "Legal Procedures Real Estate"
+        },
+        {
+          "id": "ltr511",
+          "code": "LTR511",
+          "name": "Legal Transcription"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    }
+  ]
+}

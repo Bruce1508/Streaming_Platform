@@ -1,0 +1,96 @@
+{
+  "programId": "VTA",
+  "programName": "Veterinary Assistant",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "boa112",
+          "code": "BOA112",
+          "name": "Behaviour of Animals"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "ety100",
+          "code": "ETY100",
+          "name": "Veterinary Etymology"
+        },
+        {
+          "id": "vah100",
+          "code": "VAH100",
+          "name": "Animal Handling Introduction"
+        },
+        {
+          "id": "vap101",
+          "code": "VAP101",
+          "name": "Anatomy and Physiology"
+        },
+        {
+          "id": "vcr100",
+          "code": "VCR100",
+          "name": "Client Relations"
+        },
+        {
+          "id": "vlp100",
+          "code": "VLP100",
+          "name": "Laboratory Procedures and Techniques"
+        },
+        {
+          "id": "vmp100",
+          "code": "VMP100",
+          "name": "Math and Pharmacology"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "vac200",
+          "code": "VAC200",
+          "name": "Animal and Clinic Care"
+        },
+        {
+          "id": "vcp200",
+          "code": "VCP200",
+          "name": "Career Management and Field Placement"
+        },
+        {
+          "id": "vgh200",
+          "code": "VGH200",
+          "name": "Animal Handling, Therapeutic and Grooming Skills"
+        },
+        {
+          "id": "vin200",
+          "code": "VIN200",
+          "name": "Introduction to Animal Nutrition"
+        },
+        {
+          "id": "vll200",
+          "code": "VLL200",
+          "name": "Large and Laboratory Handling"
+        },
+        {
+          "id": "vsr200",
+          "code": "VSR200",
+          "name": "Surgical Assisting and Radiology"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    }
+  ]
+}

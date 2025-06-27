@@ -1,0 +1,263 @@
+{
+  "programId": "HTM",
+  "programName": "Hospitality – Hotel & Restaurant Services Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "hsp101",
+          "code": "HSP101",
+          "name": "Service Leadership"
+        },
+        {
+          "id": "htm102",
+          "code": "HTM102",
+          "name": "Math in Hospitality"
+        },
+        {
+          "id": "htm105",
+          "code": "HTM105",
+          "name": "Hotel Front Office Operations and Management"
+        },
+        {
+          "id": "htm205",
+          "code": "HTM205",
+          "name": "Dining Room Service Management"
+        },
+        {
+          "id": "tcs200",
+          "code": "TCS200",
+          "name": "Computer Essentials"
+        },
+        {
+          "id": "trv106",
+          "code": "TRV106",
+          "name": "Business of Tourism"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "hsp203",
+          "code": "HSP203",
+          "name": "Food, Theory and PracticeEvents, Meetings and Convention Services"
+        },
+        {
+          "id": "htm215",
+          "code": "HTM215",
+          "name": "Housekeeping ManagementMeetings and Incentives"
+        },
+        {
+          "id": "htm220",
+          "code": "HTM220",
+          "name": "Food and Beverage Operations Management"
+        },
+        {
+          "id": "htm240",
+          "code": "HTM240",
+          "name": "Hospitality Accounting"
+        },
+        {
+          "id": "htm299",
+          "code": "HTM299",
+          "name": "Career Strategies for Hospitality"
+        },
+        {
+          "id": "mrk233",
+          "code": "MRK233",
+          "name": "Services Marketing"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "htm305",
+          "code": "HTM305",
+          "name": "Guest Security ManagementWedding Planner Business"
+        },
+        {
+          "id": "htm330",
+          "code": "HTM330",
+          "name": "Human Resource Management"
+        },
+        {
+          "id": "htm440",
+          "code": "HTM440",
+          "name": "Financial Management and Analysis"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        },
+        {
+          "type": "Professional Options",
+          "count": 1,
+          "description": "Professional Options (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "htm430",
+          "code": "HTM430",
+          "name": "Strategic Supervision and ManagementEvent, Exhibit and Design Services"
+        },
+        {
+          "id": "htm450",
+          "code": "HTM450",
+          "name": "Hospitality Law Management"
+        },
+        {
+          "id": "htm490",
+          "code": "HTM490",
+          "name": "Hospitality Management SimulationFood, Liquor and Wine"
+        },
+        {
+          "id": "mrk335",
+          "code": "MRK335",
+          "name": "Business Development Management"
+        },
+        {
+          "id": "mrk413",
+          "code": "MRK413",
+          "name": "Digital Marketing and Social Media"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        },
+        {
+          "type": "Professional Options",
+          "count": 1,
+          "description": "Professional Options (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "htm250",
+          "code": "HTM250",
+          "name": "Industry Externship I"
+        }
+      ]
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "htm251",
+          "code": "HTM251",
+          "name": "Industry Externship II"
+        }
+      ]
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "gcb400",
+          "code": "GCB400",
+          "name": "Global Cruise Business"
+        },
+        {
+          "id": "hlt400",
+          "code": "HLT400",
+          "name": "Hospitality and Culture Experience"
+        },
+        {
+          "id": "htm405",
+          "code": "HTM405",
+          "name": "Catering Management"
+        },
+        {
+          "id": "htm406",
+          "code": "HTM406",
+          "name": "Sommelier: An Introduction"
+        },
+        {
+          "id": "htm412",
+          "code": "HTM412",
+          "name": "Baking and Confectionary"
+        },
+        {
+          "id": "htm416",
+          "code": "HTM416",
+          "name": "Live Event Planning and Execution"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "gcb400",
+          "code": "GCB400",
+          "name": "Global Cruise Business"
+        },
+        {
+          "id": "hlt400",
+          "code": "HLT400",
+          "name": "Hospitality and Culture Experience"
+        },
+        {
+          "id": "htm405",
+          "code": "HTM405",
+          "name": "Catering Management"
+        },
+        {
+          "id": "htm406",
+          "code": "HTM406",
+          "name": "Sommelier: An Introduction"
+        },
+        {
+          "id": "htm412",
+          "code": "HTM412",
+          "name": "Baking and Confectionary"
+        },
+        {
+          "id": "htm416",
+          "code": "HTM416",
+          "name": "Live Event Planning and Execution"
+        }
+      ]
+    }
+  ]
+}

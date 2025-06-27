@@ -1,0 +1,223 @@
+{
+  "programId": "TIS",
+  "programName": "Tourism – Services Management – Travel Services Specialization",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "hsp101",
+          "code": "HSP101",
+          "name": "Service Leadership"
+        },
+        {
+          "id": "htm105",
+          "code": "HTM105",
+          "name": "Hotel Front Office Operations and Management"
+        },
+        {
+          "id": "htm408",
+          "code": "HTM408",
+          "name": "Voluntourism and Sustainable Development"
+        },
+        {
+          "id": "sms202",
+          "code": "SMS202",
+          "name": "Business Computer Applications"
+        },
+        {
+          "id": "trv103",
+          "code": "TRV103",
+          "name": "Tourism Destination Exploration I"
+        },
+        {
+          "id": "trv106",
+          "code": "TRV106",
+          "name": "Business of Tourism"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "mrk233",
+          "code": "MRK233",
+          "name": "Services Marketing"
+        },
+        {
+          "id": "tac300",
+          "code": "TAC300",
+          "name": "Financial Accounting I"
+        },
+        {
+          "id": "trv202",
+          "code": "TRV202",
+          "name": "Leisure Travel Theory and Practice"
+        },
+        {
+          "id": "trv203",
+          "code": "TRV203",
+          "name": "Tourism Destination Exploration II"
+        },
+        {
+          "id": "trv204",
+          "code": "TRV204",
+          "name": "Tourism Design and Experiences"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "tis331",
+          "code": "TIS331",
+          "name": "Tourism - Services Management - Travel Services Specialization, Co-op"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "crm400",
+          "code": "CRM400",
+          "name": "CRM and Selling"
+        },
+        {
+          "id": "gcb400",
+          "code": "GCB400",
+          "name": "Global Cruise Business"
+        },
+        {
+          "id": "tea300",
+          "code": "TEA300",
+          "name": "Global Eco and Sustainable Tourism Practices"
+        },
+        {
+          "id": "trv302",
+          "code": "TRV302",
+          "name": "Travel Services Business Operations"
+        },
+        {
+          "id": "tsa200",
+          "code": "TSA200",
+          "name": "Sabre Reservation Specialist"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "hpl325",
+          "code": "HPL325",
+          "name": "Event and Meeting Management"
+        },
+        {
+          "id": "htm330",
+          "code": "HTM330",
+          "name": "Human Resource Management"
+        },
+        {
+          "id": "htm430",
+          "code": "HTM430",
+          "name": "Strategic Supervision and Management"
+        },
+        {
+          "id": "trv301",
+          "code": "TRV301",
+          "name": "Legal Liability and Risk Management"
+        },
+        {
+          "id": "trv402",
+          "code": "TRV402",
+          "name": "The Global Travel Professional"
+        },
+        {
+          "id": "tsa300",
+          "code": "TSA300",
+          "name": "Amadeus Reservation Specialist"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "trv299",
+          "code": "TRV299",
+          "name": "Professional Internship Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 2
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "tis200",
+          "code": "TIS200",
+          "name": "Professional Internship"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 2
+    }
+  ]
+}

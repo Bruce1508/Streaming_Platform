@@ -1,0 +1,391 @@
+{
+  "programId": "BTM",
+  "programName": "Honours Bachelor of Commerce – Business Technology Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bab100",
+          "code": "BAB100",
+          "name": "Introduction to Canadian Business"
+        },
+        {
+          "id": "bab210",
+          "code": "BAB210",
+          "name": "Business Statistics"
+        },
+        {
+          "id": "btm100",
+          "code": "BTM100",
+          "name": "Introduction to Information Systems and Society"
+        },
+        {
+          "id": "btm110",
+          "code": "BTM110",
+          "name": "Introduction to IT Infrastructure"
+        },
+        {
+          "id": "eng106",
+          "code": "ENG106",
+          "name": "Writing Strategies"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "bab140",
+          "code": "BAB140",
+          "name": "Introduction to Financial Accounting"
+        },
+        {
+          "id": "bab235",
+          "code": "BAB235",
+          "name": "Introduction to Marketing"
+        },
+        {
+          "id": "bdp100",
+          "code": "BDP100",
+          "name": "Introduction to Programming"
+        },
+        {
+          "id": "btm210",
+          "code": "BTM210",
+          "name": "Structured and Unstructured Data Management"
+        },
+        {
+          "id": "eng205",
+          "code": "ENG205",
+          "name": "Applied Communication for Business and Industry"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "bab231",
+          "code": "BAB231",
+          "name": "Introduction to Business Law"
+        },
+        {
+          "id": "bab310",
+          "code": "BAB310",
+          "name": "Quantitative Decision Making"
+        },
+        {
+          "id": "btm300",
+          "code": "BTM300",
+          "name": "Business Systems Analysis and Design"
+        },
+        {
+          "id": "lsp240",
+          "code": "LSP240",
+          "name": "Micro Economics - Theory and Practice"
+        },
+        {
+          "id": "lsp350",
+          "code": "LSP350",
+          "name": "Ethics and Technology"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "bab240",
+          "code": "BAB240",
+          "name": "Management Accounting"
+        },
+        {
+          "id": "btm400",
+          "code": "BTM400",
+          "name": "Data Analytics"
+        },
+        {
+          "id": "btm410",
+          "code": "BTM410",
+          "name": "Cloud Technologies"
+        },
+        {
+          "id": "hst430",
+          "code": "HST430",
+          "name": "Organizational Behaviour"
+        },
+        {
+          "id": "lsp400",
+          "code": "LSP400",
+          "name": "Presentation Skills"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "btm500",
+          "code": "BTM500",
+          "name": "Privacy Issues in Information Systems"
+        },
+        {
+          "id": "hst330",
+          "code": "HST330",
+          "name": "Business Finance"
+        },
+        {
+          "id": "hst400",
+          "code": "HST400",
+          "name": "Operations Management"
+        },
+        {
+          "id": "lsp340",
+          "code": "LSP340",
+          "name": "Macroeconomics - Theory and Practice"
+        },
+        {
+          "id": "wtp200",
+          "code": "WTP200",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Professional Options",
+          "count": 1,
+          "description": "Professional Options (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "bab905",
+          "code": "BAB905",
+          "name": "Project Management"
+        },
+        {
+          "id": "bmt545",
+          "code": "BMT545",
+          "name": "Effective Selling"
+        },
+        {
+          "id": "btm600",
+          "code": "BTM600",
+          "name": "Digital Entrepreneurship"
+        },
+        {
+          "id": "btm610",
+          "code": "BTM610",
+          "name": "Risk Management"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 7",
+      "courses": [
+        {
+          "id": "bmt855",
+          "code": "BMT855",
+          "name": "Leadership for Managers"
+        },
+        {
+          "id": "btm700",
+          "code": "BTM700",
+          "name": "Emergent Technologies"
+        },
+        {
+          "id": "btm710",
+          "code": "BTM710",
+          "name": "Research Methods"
+        },
+        {
+          "id": "btm720",
+          "code": "BTM720",
+          "name": "IT Audit and Control"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "bmt850",
+          "code": "BMT850",
+          "name": "Strategic Management"
+        },
+        {
+          "id": "btm800",
+          "code": "BTM800",
+          "name": "Technology Planning and Acquisition"
+        },
+        {
+          "id": "btm810",
+          "code": "BTM810",
+          "name": "Integration Project"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        },
+        {
+          "type": "Professional Options",
+          "count": 1,
+          "description": "Professional Options (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester10",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "bhm181",
+          "code": "BHM181",
+          "name": "Health Informatics: Information Technology"
+        },
+        {
+          "id": "bmt646",
+          "code": "BMT646",
+          "name": "Customer Service"
+        },
+        {
+          "id": "bth745",
+          "code": "BTH745",
+          "name": "Human-Computer Interaction"
+        },
+        {
+          "id": "dps950",
+          "code": "DPS950",
+          "name": "Introduction to Microsoft Cloud Technologies"
+        },
+        {
+          "id": "dps960",
+          "code": "DPS960",
+          "name": "Advanced Data Analytics Tools"
+        },
+        {
+          "id": "mrt287",
+          "code": "MRT287",
+          "name": "Marketing Research I"
+        },
+        {
+          "id": "mrt295",
+          "code": "MRT295",
+          "name": "Marketing Planning and Strategy"
+        },
+        {
+          "id": "mrt297",
+          "code": "MRT297",
+          "name": "Predictive Analytics for Marketing"
+        },
+        {
+          "id": "mrt493",
+          "code": "MRT493",
+          "name": "Social Media Intelligence and Web Analytics"
+        },
+        {
+          "id": "sea100",
+          "code": "SEA100",
+          "name": "Exploration of Artificial Intelligence"
+        }
+      ]
+    },
+    {
+      "id": "semester11",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "bhm181",
+          "code": "BHM181",
+          "name": "Health Informatics: Information Technology"
+        },
+        {
+          "id": "bmt646",
+          "code": "BMT646",
+          "name": "Customer Service"
+        },
+        {
+          "id": "bth745",
+          "code": "BTH745",
+          "name": "Human-Computer Interaction"
+        },
+        {
+          "id": "dps950",
+          "code": "DPS950",
+          "name": "Introduction to Microsoft Cloud Technologies"
+        },
+        {
+          "id": "dps960",
+          "code": "DPS960",
+          "name": "Advanced Data Analytics Tools"
+        },
+        {
+          "id": "mrt287",
+          "code": "MRT287",
+          "name": "Marketing Research I"
+        },
+        {
+          "id": "mrt295",
+          "code": "MRT295",
+          "name": "Marketing Planning and Strategy"
+        },
+        {
+          "id": "mrt297",
+          "code": "MRT297",
+          "name": "Predictive Analytics for Marketing"
+        },
+        {
+          "id": "mrt493",
+          "code": "MRT493",
+          "name": "Social Media Intelligence and Web Analytics"
+        },
+        {
+          "id": "sea100",
+          "code": "SEA100",
+          "name": "Exploration of Artificial Intelligence"
+        }
+      ]
+    }
+  ]
+}

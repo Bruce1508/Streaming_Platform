@@ -1,0 +1,99 @@
+{
+  "programId": "TEC",
+  "programName": "Technical Communication",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "tcn700",
+          "code": "TCN700",
+          "name": "Technical Writing I"
+        },
+        {
+          "id": "tcn705",
+          "code": "TCN705",
+          "name": "Technologies for Technical Writers"
+        },
+        {
+          "id": "tcn706",
+          "code": "TCN706",
+          "name": "Online User Assistance"
+        },
+        {
+          "id": "tcn707",
+          "code": "TCN707",
+          "name": "Revising and Editing for Usability"
+        },
+        {
+          "id": "tcn708",
+          "code": "TCN708",
+          "name": "Web Design and Prototyping"
+        },
+        {
+          "id": "tcn709",
+          "code": "TCN709",
+          "name": "Introduction to Authoring"
+        },
+        {
+          "id": "tcn710",
+          "code": "TCN710",
+          "name": "Introduction to User Experience Design"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "tcn800",
+          "code": "TCN800",
+          "name": "Technical Writing II"
+        },
+        {
+          "id": "tcn805",
+          "code": "TCN805",
+          "name": "Content Strategy for Technical Communicators"
+        },
+        {
+          "id": "tcn806",
+          "code": "TCN806",
+          "name": "Instructional Design"
+        },
+        {
+          "id": "tcn808",
+          "code": "TCN808",
+          "name": "Structured Authoring and DITA"
+        },
+        {
+          "id": "tcn809",
+          "code": "TCN809",
+          "name": "Career Management"
+        },
+        {
+          "id": "tcn812",
+          "code": "TCN812",
+          "name": "UX Writing"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "tec441",
+          "code": "TEC441",
+          "name": "Technical Communications, Work Term"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,276 @@
+{
+  "programId": "BBM",
+  "programName": "Honours Bachelor of Commerce – Business Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bab100",
+          "code": "BAB100",
+          "name": "Introduction to Canadian Business"
+        },
+        {
+          "id": "bab110",
+          "code": "BAB110",
+          "name": "Financial Mathematics"
+        },
+        {
+          "id": "bab120",
+          "code": "BAB120",
+          "name": "Computer Applications for Business I"
+        },
+        {
+          "id": "bab140",
+          "code": "BAB140",
+          "name": "Introduction to Financial Accounting"
+        },
+        {
+          "id": "bba101",
+          "code": "BBA101",
+          "name": "Business Presentations Strategy"
+        },
+        {
+          "id": "eng106",
+          "code": "ENG106",
+          "name": "Writing Strategies"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "bab210",
+          "code": "BAB210",
+          "name": "Business Statistics"
+        },
+        {
+          "id": "bab220",
+          "code": "BAB220",
+          "name": "Computer Applications for Business II"
+        },
+        {
+          "id": "bab231",
+          "code": "BAB231",
+          "name": "Introduction to Business Law"
+        },
+        {
+          "id": "bab240",
+          "code": "BAB240",
+          "name": "Management Accounting"
+        },
+        {
+          "id": "eng205",
+          "code": "ENG205",
+          "name": "Applied Communication for Business and Industry"
+        },
+        {
+          "id": "hrm701",
+          "code": "HRM701",
+          "name": "Introduction to Human Resources Management"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "bab235",
+          "code": "BAB235",
+          "name": "Introduction to Marketing"
+        },
+        {
+          "id": "hst310",
+          "code": "HST310",
+          "name": "Business Ethics"
+        },
+        {
+          "id": "hst330",
+          "code": "HST330",
+          "name": "Business Finance"
+        },
+        {
+          "id": "hst430",
+          "code": "HST430",
+          "name": "Organizational Behaviour"
+        },
+        {
+          "id": "lsp240",
+          "code": "LSP240",
+          "name": "Micro Economics - Theory and Practice"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "bab905",
+          "code": "BAB905",
+          "name": "Project Management"
+        },
+        {
+          "id": "inx117",
+          "code": "INX117",
+          "name": "Foundations of Global Sustainability"
+        },
+        {
+          "id": "lsp101",
+          "code": "LSP101",
+          "name": "World Geography"
+        },
+        {
+          "id": "lsp340",
+          "code": "LSP340",
+          "name": "Macroeconomics - Theory and Practice"
+        },
+        {
+          "id": "mrt296",
+          "code": "MRT296",
+          "name": "Integrated Marketing Communications"
+        },
+        {
+          "id": "wtp200",
+          "code": "WTP200",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "bmt540",
+          "code": "BMT540",
+          "name": "Business to Business Marketing"
+        },
+        {
+          "id": "bmt545",
+          "code": "BMT545",
+          "name": "Effective Selling"
+        },
+        {
+          "id": "bmt550",
+          "code": "BMT550",
+          "name": "Management for Non-Profit and Social Enterprises"
+        },
+        {
+          "id": "bmt850",
+          "code": "BMT850",
+          "name": "Strategic Management"
+        },
+        {
+          "id": "gcn500",
+          "code": "GCN500",
+          "name": "Consultative Skills in a Global Environment"
+        },
+        {
+          "id": "hst400",
+          "code": "HST400",
+          "name": "Operations Management"
+        }
+      ]
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "bmt700",
+          "code": "BMT700",
+          "name": "International Business Management"
+        },
+        {
+          "id": "bmt780",
+          "code": "BMT780",
+          "name": "Contemporary Issues in Management Sustainability"
+        },
+        {
+          "id": "bmt855",
+          "code": "BMT855",
+          "name": "Leadership for Managers"
+        },
+        {
+          "id": "bmt870",
+          "code": "BMT870",
+          "name": "Global Supply Chain Management"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 7",
+      "courses": [
+        {
+          "id": "bab906",
+          "code": "BAB906",
+          "name": "Project Management II"
+        },
+        {
+          "id": "bmt646",
+          "code": "BMT646",
+          "name": "Customer Service"
+        },
+        {
+          "id": "lsp700",
+          "code": "LSP700",
+          "name": "Applied Research Methodology"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 4
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "bmt644",
+          "code": "BMT644",
+          "name": "Business Finance Taxation"
+        },
+        {
+          "id": "bmt880",
+          "code": "BMT880",
+          "name": "Contemporary Issues in Management Innovation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 3
+    }
+  ]
+}

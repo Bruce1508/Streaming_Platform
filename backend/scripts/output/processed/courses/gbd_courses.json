@@ -1,0 +1,99 @@
+{
+  "programId": "GBD",
+  "programName": "Global Hospitality Business Development",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "gbd110",
+          "code": "GBD110",
+          "name": "Services Marketing"
+        },
+        {
+          "id": "gbd120",
+          "code": "GBD120",
+          "name": "Service Leadership Strategy"
+        },
+        {
+          "id": "gbd130",
+          "code": "GBD130",
+          "name": "Responsible Global Communications"
+        },
+        {
+          "id": "gbd160",
+          "code": "GBD160",
+          "name": "Integrated Project I"
+        },
+        {
+          "id": "gbd205",
+          "code": "GBD205",
+          "name": "Data Analytics and Finance"
+        },
+        {
+          "id": "mkm915",
+          "code": "MKM915",
+          "name": "Digital Marketing"
+        },
+        {
+          "id": "opr725",
+          "code": "OPR725",
+          "name": "Project Management"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "gbd200",
+          "code": "GBD200",
+          "name": "Measuring Relationship Performance"
+        },
+        {
+          "id": "gbd210",
+          "code": "GBD210",
+          "name": "Global Sales Management Strategies"
+        },
+        {
+          "id": "gbd220",
+          "code": "GBD220",
+          "name": "Global Procurement Management"
+        },
+        {
+          "id": "gbd230",
+          "code": "GBD230",
+          "name": "Asset Planning Management"
+        },
+        {
+          "id": "gbd250",
+          "code": "GBD250",
+          "name": "Integrated Project II"
+        },
+        {
+          "id": "mgm721",
+          "code": "MGM721",
+          "name": "Seminar in Decision Theory"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "gbd441",
+          "code": "GBD441",
+          "name": "Global Hospitality Business Development, Work Term"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "programId": "CAA",
+  "programName": "Cloud Architecture & Administration",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "acs730",
+          "code": "ACS730",
+          "name": "Cloud Automation and Control Systems"
+        },
+        {
+          "id": "clo700",
+          "code": "CLO700",
+          "name": "Introduction to Cloud Infrastructure"
+        },
+        {
+          "id": "clo745",
+          "code": "CLO745",
+          "name": "Cloud Architecture"
+        },
+        {
+          "id": "pfc710",
+          "code": "PFC710",
+          "name": "Programming for Cloud"
+        },
+        {
+          "id": "pmc720",
+          "code": "PMC720",
+          "name": "Project Management"
+        },
+        {
+          "id": "sec715",
+          "code": "SEC715",
+          "name": "Security Management"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "caa900",
+          "code": "CAA900",
+          "name": "Capstone Project"
+        },
+        {
+          "id": "clo800",
+          "code": "CLO800",
+          "name": "Cloud Integration"
+        },
+        {
+          "id": "clo835",
+          "code": "CLO835",
+          "name": "Portable Technologies in Cloud"
+        },
+        {
+          "id": "dsm760",
+          "code": "DSM760",
+          "name": "Data Storage and Management Technologies"
+        },
+        {
+          "id": "ecr775",
+          "code": "ECR775",
+          "name": "Ethics, Compliance and Risk Management"
+        },
+        {
+          "id": "sec815",
+          "code": "SEC815",
+          "name": "Incident Response and Forensics"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    }
+  ]
+}

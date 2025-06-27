@@ -1,0 +1,83 @@
+{
+  "programId": "ASM",
+  "programName": "Asset Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "asm111",
+          "code": "ASM111",
+          "name": "Business and the Organizational Context"
+        },
+        {
+          "id": "asm112",
+          "code": "ASM112",
+          "name": "Strategic Asset Management"
+        },
+        {
+          "id": "asm113",
+          "code": "ASM113",
+          "name": "Maintenance Management"
+        },
+        {
+          "id": "asm114",
+          "code": "ASM114",
+          "name": "Project Management"
+        },
+        {
+          "id": "asm115",
+          "code": "ASM115",
+          "name": "Organizations and People"
+        },
+        {
+          "id": "asm116",
+          "code": "ASM116",
+          "name": "Procurement and Supply Chain"
+        },
+        {
+          "id": "asm117",
+          "code": "ASM117",
+          "name": "Financial Mathematics"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "asm211",
+          "code": "ASM211",
+          "name": "Asset Lifecycle Management"
+        },
+        {
+          "id": "asm212",
+          "code": "ASM212",
+          "name": "Capstone Project"
+        },
+        {
+          "id": "asm213",
+          "code": "ASM213",
+          "name": "Business Finance"
+        },
+        {
+          "id": "asm214",
+          "code": "ASM214",
+          "name": "Risk Analysis"
+        },
+        {
+          "id": "asm215",
+          "code": "ASM215",
+          "name": "Sustainability and Management"
+        },
+        {
+          "id": "asm216",
+          "code": "ASM216",
+          "name": "Information and Data Systems"
+        }
+      ]
+    }
+  ]
+}

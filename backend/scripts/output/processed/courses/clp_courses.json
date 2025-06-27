@@ -1,0 +1,222 @@
+{
+  "programId": "CLP",
+  "programName": "Chemical Laboratory Technology – Pharmaceutical",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bio173",
+          "code": "BIO173",
+          "name": "Biology"
+        },
+        {
+          "id": "chm173",
+          "code": "CHM173",
+          "name": "Chemistry"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "mth173",
+          "code": "MTH173",
+          "name": "MathematicsMathematics"
+        },
+        {
+          "id": "ssa001",
+          "code": "SSA001",
+          "name": "Science Survival"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "aca273",
+          "code": "ACA273",
+          "name": "Advanced Computer Applications"
+        },
+        {
+          "id": "bio273",
+          "code": "BIO273",
+          "name": "Biology"
+        },
+        {
+          "id": "chm273",
+          "code": "CHM273",
+          "name": "Chemistry"
+        },
+        {
+          "id": "mth273",
+          "code": "MTH273",
+          "name": "Mathematics"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cho333",
+          "code": "CHO333",
+          "name": "Chemistry - Organic"
+        },
+        {
+          "id": "cmi333",
+          "code": "CMI333",
+          "name": "Chemical Instrumentation"
+        },
+        {
+          "id": "pha333",
+          "code": "PHA333",
+          "name": "Pharmaceutical Analysis"
+        },
+        {
+          "id": "ses391",
+          "code": "SES391",
+          "name": "Effective Technical Writing"
+        },
+        {
+          "id": "tac333",
+          "code": "TAC333",
+          "name": "Techniques in Analytical Chemistry"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "clp441",
+          "code": "CLP441",
+          "name": "Chemical Laboratory Technology, Work Term"
+        }
+      ]
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "bic433",
+          "code": "BIC433",
+          "name": "Biochemistry"
+        },
+        {
+          "id": "cho433",
+          "code": "CHO433",
+          "name": "Chemistry - Organic"
+        },
+        {
+          "id": "mbg353",
+          "code": "MBG353",
+          "name": "Microbiology"
+        },
+        {
+          "id": "sta453",
+          "code": "STA453",
+          "name": "Statistics"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "bph633",
+          "code": "BPH633",
+          "name": "Biopharmaceuticals"
+        },
+        {
+          "id": "phc533",
+          "code": "PHC533",
+          "name": "Pharmaceutical Calculations"
+        },
+        {
+          "id": "phm633",
+          "code": "PHM633",
+          "name": "Pharmaceutical Microbiology"
+        },
+        {
+          "id": "ppf633",
+          "code": "PPF633",
+          "name": "Pharmaceutical Product Formulations"
+        },
+        {
+          "id": "pym633",
+          "code": "PYM633",
+          "name": "Pharmaceutical Manufacturing"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "cmi533",
+          "code": "CMI533",
+          "name": "Chemical Instrumentation"
+        },
+        {
+          "id": "pac633",
+          "code": "PAC633",
+          "name": "Organic Chemistry"
+        },
+        {
+          "id": "pha533",
+          "code": "PHA533",
+          "name": "Pharmaceutical Analysis - Advanced"
+        },
+        {
+          "id": "pht533",
+          "code": "PHT533",
+          "name": "Pharmacology and Applied Toxicology"
+        },
+        {
+          "id": "phy453",
+          "code": "PHY453",
+          "name": "Physics"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    }
+  ]
+}

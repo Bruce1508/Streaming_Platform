@@ -1,0 +1,169 @@
+{
+  "programId": "MATD",
+  "programName": "Mechanical Engineering Technician (Tool Design)",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bpr101",
+          "code": "BPR101",
+          "name": "Blueprint Reading"
+        },
+        {
+          "id": "cnc101",
+          "code": "CNC101",
+          "name": "Computer Numerical Control"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "mat111",
+          "code": "MAT111",
+          "name": "Mathematics"
+        },
+        {
+          "id": "shp101",
+          "code": "SHP101",
+          "name": "Shop"
+        },
+        {
+          "id": "thy101",
+          "code": "THY101",
+          "name": "Machining Theory"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cam201",
+          "code": "CAM201",
+          "name": "Computer Assisted Machining"
+        },
+        {
+          "id": "mth201",
+          "code": "MTH201",
+          "name": "Technical Mathematics I"
+        },
+        {
+          "id": "shp201",
+          "code": "SHP201",
+          "name": "Shop"
+        },
+        {
+          "id": "thy201",
+          "code": "THY201",
+          "name": "Machining Theory"
+        },
+        {
+          "id": "tld201",
+          "code": "TLD201",
+          "name": "Tool Design"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "hpn301",
+          "code": "HPN301",
+          "name": "Hydraulics and Pneumatics"
+        },
+        {
+          "id": "jfx301",
+          "code": "JFX301",
+          "name": "Jig and Fixture Design"
+        },
+        {
+          "id": "man301",
+          "code": "MAN301",
+          "name": "Manufacturing Processes I"
+        },
+        {
+          "id": "mdd301",
+          "code": "MDD301",
+          "name": "Mould Design"
+        },
+        {
+          "id": "mth301",
+          "code": "MTH301",
+          "name": "Technical Mathematics II"
+        },
+        {
+          "id": "plc301",
+          "code": "PLC301",
+          "name": "PLC Electrical Control Systems"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "die401",
+          "code": "DIE401",
+          "name": "Die Design"
+        },
+        {
+          "id": "est401",
+          "code": "EST401",
+          "name": "Estimating"
+        },
+        {
+          "id": "man401",
+          "code": "MAN401",
+          "name": "Manufacturing Processes II"
+        },
+        {
+          "id": "mcd401",
+          "code": "MCD401",
+          "name": "Machine Design"
+        },
+        {
+          "id": "qla401",
+          "code": "QLA401",
+          "name": "Quality Assurance CMM"
+        },
+        {
+          "id": "shp401",
+          "code": "SHP401",
+          "name": "Machine Shop"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    }
+  ]
+}

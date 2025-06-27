@@ -1,0 +1,277 @@
+{
+  "programId": "BCMM",
+  "programName": "Honours Bachelor of Communications & Media",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bcm100",
+          "code": "BCM100",
+          "name": "Information Theory and Interactivity"
+        },
+        {
+          "id": "bcm101",
+          "code": "BCM101",
+          "name": "Introduction to Audio and Video Production"
+        },
+        {
+          "id": "bcm102",
+          "code": "BCM102",
+          "name": "Persuasive Communication"
+        },
+        {
+          "id": "bcm103",
+          "code": "BCM103",
+          "name": "Contemporary Narrative Structures"
+        },
+        {
+          "id": "eng106",
+          "code": "ENG106",
+          "name": "Writing Strategies"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "bcm120",
+          "code": "BCM120",
+          "name": "Media, Law and Ethics"
+        },
+        {
+          "id": "bcm121",
+          "code": "BCM121",
+          "name": "Communicating Across Genres and Ideologies"
+        },
+        {
+          "id": "bcm122",
+          "code": "BCM122",
+          "name": "Information Product Development, Infopreneurs and Communication Structures"
+        },
+        {
+          "id": "bcm123",
+          "code": "BCM123",
+          "name": "Audiences, Usability and Data Analytics"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "bcm200",
+          "code": "BCM200",
+          "name": "Media and Culture"
+        },
+        {
+          "id": "bcm202",
+          "code": "BCM202",
+          "name": "Web Development and Design"
+        },
+        {
+          "id": "bcm203",
+          "code": "BCM203",
+          "name": "Quantitative Storytelling"
+        },
+        {
+          "id": "hst430",
+          "code": "HST430",
+          "name": "Organizational Behaviour"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "bcm220",
+          "code": "BCM220",
+          "name": "Corporate Communications and Public Relations"
+        },
+        {
+          "id": "bcm221",
+          "code": "BCM221",
+          "name": "Strategic Planning and Development"
+        },
+        {
+          "id": "bcm222",
+          "code": "BCM222",
+          "name": "Social Media and Content Management"
+        },
+        {
+          "id": "bcm223",
+          "code": "BCM223",
+          "name": "Generative Artificial Intelligence for Communicators"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "bab905",
+          "code": "BAB905",
+          "name": "Project Management"
+        },
+        {
+          "id": "bcm300",
+          "code": "BCM300",
+          "name": "Advanced Community Engagement and Strategic Relations"
+        },
+        {
+          "id": "bcm302",
+          "code": "BCM302",
+          "name": "Multiplatform Content Development"
+        },
+        {
+          "id": "bcm303",
+          "code": "BCM303",
+          "name": "Communications Methodology"
+        },
+        {
+          "id": "lso510",
+          "code": "LSO510",
+          "name": "Indigenous Awareness: Towards Truth and Reconciliation"
+        }
+      ]
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "bcm320",
+          "code": "BCM320",
+          "name": "Assessing Communications Performance"
+        },
+        {
+          "id": "bcm321",
+          "code": "BCM321",
+          "name": "Business for Communications and Media"
+        },
+        {
+          "id": "bcm322",
+          "code": "BCM322",
+          "name": "Production Planning, Budgeting and Scheduling"
+        },
+        {
+          "id": "bcm323",
+          "code": "BCM323",
+          "name": "Research Methods in Communications"
+        },
+        {
+          "id": "wtp200",
+          "code": "WTP200",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 7",
+      "courses": [
+        {
+          "id": "bcm400",
+          "code": "BCM400",
+          "name": "Evaluation Communication Campaigns"
+        },
+        {
+          "id": "bcm401",
+          "code": "BCM401",
+          "name": "Digital Entrepreneurship"
+        },
+        {
+          "id": "bcm402",
+          "code": "BCM402",
+          "name": "Advanced Concept Development and Production: Independent"
+        },
+        {
+          "id": "bcm403",
+          "code": "BCM403",
+          "name": "Communications Research Project Independent"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "bcm420",
+          "code": "BCM420",
+          "name": "Leadership and Applied Ethics"
+        },
+        {
+          "id": "bcm421",
+          "code": "BCM421",
+          "name": "Strategic Communications Leadership"
+        },
+        {
+          "id": "bcm422",
+          "code": "BCM422",
+          "name": "Advanced Concept Development and Production: Team"
+        },
+        {
+          "id": "bcm423",
+          "code": "BCM423",
+          "name": "Communications Research Project Team"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    }
+  ]
+}

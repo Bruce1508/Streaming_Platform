@@ -1,0 +1,93 @@
+{
+  "programId": "DMM",
+  "programName": "Digital & Social Media Marketing",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "dmm101",
+          "code": "DMM101",
+          "name": "Digital and Social Media Strategies"
+        },
+        {
+          "id": "dmm102",
+          "code": "DMM102",
+          "name": "Consumer Behaviour for Digital Marketing"
+        },
+        {
+          "id": "dmm103",
+          "code": "DMM103",
+          "name": "Search Engine Strategies"
+        },
+        {
+          "id": "dmm104",
+          "code": "DMM104",
+          "name": "Technical Skills for Digital and Social Media"
+        },
+        {
+          "id": "dmm105",
+          "code": "DMM105",
+          "name": "Content Marketing Management"
+        },
+        {
+          "id": "dmm106",
+          "code": "DMM106",
+          "name": "Managing Web Design and Development for Digital Marketing"
+        },
+        {
+          "id": "mkm706",
+          "code": "MKM706",
+          "name": "Marketing Fundamentals"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "dmm200",
+          "code": "DMM200",
+          "name": "Content Creation - Words and Pictures"
+        },
+        {
+          "id": "dmm201",
+          "code": "DMM201",
+          "name": "Content Creation - Audio and Video"
+        },
+        {
+          "id": "dmm202",
+          "code": "DMM202",
+          "name": "Internet Market Research"
+        },
+        {
+          "id": "dmm203",
+          "code": "DMM203",
+          "name": "Data and Analytics for Digital and Social Media Marketing"
+        },
+        {
+          "id": "dmm204",
+          "code": "DMM204",
+          "name": "Influence Based Marketing"
+        },
+        {
+          "id": "dmm205",
+          "code": "DMM205",
+          "name": "Digital and Social Media Marketing Capstone"
+        },
+        {
+          "id": "mrk718",
+          "code": "MRK718",
+          "name": "Presenting Complex Material"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    }
+  ]
+}

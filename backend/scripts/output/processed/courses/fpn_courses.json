@@ -1,0 +1,220 @@
+{
+  "programId": "FPN",
+  "programName": "Fire Protection Engineering Technician",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "alg191",
+          "code": "ALG191",
+          "name": "Fire Analytics I"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "fpf190",
+          "code": "FPF190",
+          "name": "Fire Protection Fundamentals"
+        },
+        {
+          "id": "fss190",
+          "code": "FSS190",
+          "name": "Fire Sprinkler Systems - Applied I"
+        },
+        {
+          "id": "obc190",
+          "code": "OBC190",
+          "name": "Building Construction and The Effects of Fire"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "fas290",
+          "code": "FAS290",
+          "name": "Electricity and Electronics for Fire Systems"
+        },
+        {
+          "id": "fdy293",
+          "code": "FDY293",
+          "name": "Fire Dynamics and Ignition Sources"
+        },
+        {
+          "id": "ofc395",
+          "code": "OFC395",
+          "name": "Ontario Fire Code - General"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 4
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "afs390",
+          "code": "AFS390",
+          "name": "Alternative Fire Suppression Systems"
+        },
+        {
+          "id": "fas390",
+          "code": "FAS390",
+          "name": "Fire Alarm Systems - Design"
+        },
+        {
+          "id": "obc395",
+          "code": "OBC395",
+          "name": "Ontario Building Code - Fire Protection I"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 4
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "ffi693",
+          "code": "FFI693",
+          "name": "Fundamentals of Fire Investigation"
+        },
+        {
+          "id": "fsp490",
+          "code": "FSP490",
+          "name": "Fire Safety Plans and Emergency Planning"
+        },
+        {
+          "id": "hom390",
+          "code": "HOM390",
+          "name": "NFPA 1072 - Hazardous Materials"
+        },
+        {
+          "id": "tec400",
+          "code": "TEC400",
+          "name": "Technical Communications"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "ofc690",
+          "code": "OFC690",
+          "name": "Ontario Fire Code: FPPA Inspections, Legal and Courtroom Procedures"
+        }
+      ]
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "iff290",
+          "code": "IFF290",
+          "name": "Introduction to Firefighter Wellness and Fitness"
+        },
+        {
+          "id": "ifs490",
+          "code": "IFS490",
+          "name": "Introduction to the Fire Service"
+        }
+      ]
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "itr490",
+          "code": "ITR490",
+          "name": "Introduction to Technical Rescue"
+        },
+        {
+          "id": "wfs490",
+          "code": "WFS490",
+          "name": "Wildland Fire Suppression"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cad290",
+          "code": "CAD290",
+          "name": "Computer Aided Design I"
+        },
+        {
+          "id": "fss290",
+          "code": "FSS290",
+          "name": "Fire Sprinkler Systems - Applied II"
+        }
+      ]
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cad390",
+          "code": "CAD390",
+          "name": "Computer-Aided Design II"
+        },
+        {
+          "id": "fls590",
+          "code": "FLS590",
+          "name": "NFPA 1035 Level I - Fire and Life Safety Educator"
+        }
+      ]
+    },
+    {
+      "id": "semester10",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "fas490",
+          "code": "FAS490",
+          "name": "Fire Alarms - Troubleshooting"
+        },
+        {
+          "id": "prm693",
+          "code": "PRM693",
+          "name": "Project Management"
+        }
+      ]
+    }
+  ]
+}

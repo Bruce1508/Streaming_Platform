@@ -1,0 +1,94 @@
+{
+  "programId": "EMK",
+  "programName": "Esports Marketing Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "emk100",
+          "code": "EMK100",
+          "name": "Digital Marketing and Social Media for Esports"
+        },
+        {
+          "id": "emk110",
+          "code": "EMK110",
+          "name": "Esports Experience and Culture of Gaming"
+        },
+        {
+          "id": "emk120",
+          "code": "EMK120",
+          "name": "Business of Esports"
+        },
+        {
+          "id": "emk130",
+          "code": "EMK130",
+          "name": "Marketing Communications in Esports"
+        },
+        {
+          "id": "emk140",
+          "code": "EMK140",
+          "name": "Sponsorship Strategies for Esport Entities"
+        },
+        {
+          "id": "emk150",
+          "code": "EMK150",
+          "name": "Esports Media Landscape"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "emk200",
+          "code": "EMK200",
+          "name": "Athlete and Influencer Marketing"
+        },
+        {
+          "id": "emk210",
+          "code": "EMK210",
+          "name": "Esports Event Production and Distribution"
+        },
+        {
+          "id": "emk220",
+          "code": "EMK220",
+          "name": "Entrepreneurship for Esports"
+        },
+        {
+          "id": "emk230",
+          "code": "EMK230",
+          "name": "Audience Analytics for Esports"
+        },
+        {
+          "id": "emk250",
+          "code": "EMK250",
+          "name": "Evolution of Esports Technology"
+        },
+        {
+          "id": "sem245",
+          "code": "SEM245",
+          "name": "Brand Activation and Experiential Marketing"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "emk441",
+          "code": "EMK441",
+          "name": "Esports Marketing Management, Work Term"
+        }
+      ]
+    }
+  ]
+}

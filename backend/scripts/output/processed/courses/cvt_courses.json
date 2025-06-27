@@ -1,0 +1,320 @@
+{
+  "programId": "CVT",
+  "programName": "Civil Engineering Technology",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bea101",
+          "code": "BEA101",
+          "name": "CAD Fundamentals"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "ens141",
+          "code": "ENS141",
+          "name": "Engineering Problems and Statics"
+        },
+        {
+          "id": "evs141",
+          "code": "EVS141",
+          "name": "Environmental Science"
+        },
+        {
+          "id": "mta100",
+          "code": "MTA100",
+          "name": "Mathematics 100"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "crx342",
+          "code": "CRX342",
+          "name": "Civil CAD Drafting II"
+        },
+        {
+          "id": "ips255",
+          "code": "IPS255",
+          "name": "Interpersonal Skills in the Engineering Workplace"
+        },
+        {
+          "id": "mta002",
+          "code": "MTA002",
+          "name": "Mathematics II"
+        },
+        {
+          "id": "mtr241",
+          "code": "MTR241",
+          "name": "Materials"
+        },
+        {
+          "id": "stm241",
+          "code": "STM241",
+          "name": "Strength of Materials"
+        },
+        {
+          "id": "svc001",
+          "code": "SVC001",
+          "name": "Surveying I"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "gis443",
+          "code": "GIS443",
+          "name": "Geographic Information Systems"
+        },
+        {
+          "id": "gtq342",
+          "code": "GTQ342",
+          "name": "Geotechniques"
+        },
+        {
+          "id": "mta443",
+          "code": "MTA443",
+          "name": "Calculus and Statistics"
+        },
+        {
+          "id": "sds443",
+          "code": "SDS443",
+          "name": "Structural Design - Steel (B)"
+        },
+        {
+          "id": "svc002",
+          "code": "SVC002",
+          "name": "Surveying II"
+        },
+        {
+          "id": "tec400",
+          "code": "TEC400",
+          "name": "Technical Communications"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cvt331",
+          "code": "CVT331",
+          "name": "Civil Engineering Technology, Co-op"
+        }
+      ]
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "hdy443",
+          "code": "HDY443",
+          "name": "Hydraulics and Hydrology"
+        },
+        {
+          "id": "hwt443",
+          "code": "HWT443",
+          "name": "Highway Technology"
+        },
+        {
+          "id": "smf443",
+          "code": "SMF443",
+          "name": "Soil Mechanics and Foundations"
+        },
+        {
+          "id": "src343",
+          "code": "SRC343",
+          "name": "Structural Design - Concrete"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 2,
+          "description": "General Education Course (2)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "cvt332",
+          "code": "CVT332",
+          "name": "Civil Engineering Technology, Co-op II"
+        }
+      ]
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "blc543",
+          "code": "BLC543",
+          "name": "Building Code"
+        },
+        {
+          "id": "bsc543",
+          "code": "BSC543",
+          "name": "Building Science Technology"
+        },
+        {
+          "id": "etr591",
+          "code": "ETR591",
+          "name": "Engineering Technical Report I"
+        },
+        {
+          "id": "mpt543",
+          "code": "MPT543",
+          "name": "Municipal Technology"
+        },
+        {
+          "id": "plr643",
+          "code": "PLR643",
+          "name": "Planning"
+        },
+        {
+          "id": "trn543",
+          "code": "TRN543",
+          "name": "Traffic Engineering Technology"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "cmg543",
+          "code": "CMG543",
+          "name": "Construction Management"
+        },
+        {
+          "id": "etr592",
+          "code": "ETR592",
+          "name": "Engineering Technical Report II"
+        },
+        {
+          "id": "mta643",
+          "code": "MTA643",
+          "name": "Advanced Math"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Professional Options",
+          "count": 1,
+          "description": "Professional Options (1)"
+        }
+      ],
+      "totalCourses": 4
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "bim543",
+          "code": "BIM543",
+          "name": "Building Information Modeling"
+        }
+      ]
+    },
+    {
+      "id": "semester10",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "bud643",
+          "code": "BUD643",
+          "name": "Building Design"
+        },
+        {
+          "id": "stw543",
+          "code": "STW543",
+          "name": "Structural Design - Wood"
+        }
+      ]
+    },
+    {
+      "id": "semester11",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "cda543",
+          "code": "CDA543",
+          "name": "Civil Design Application"
+        }
+      ]
+    },
+    {
+      "id": "semester12",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "med643",
+          "code": "MED643",
+          "name": "Municipal Environmental Design"
+        },
+        {
+          "id": "wmc643",
+          "code": "WMC643",
+          "name": "Water Management Control"
+        }
+      ]
+    },
+    {
+      "id": "semester13",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "ben655",
+          "code": "BEN655",
+          "name": "Building Envelope Systems"
+        },
+        {
+          "id": "cdm643",
+          "code": "CDM643",
+          "name": "Concrete Detailing Modeling"
+        },
+        {
+          "id": "epp655",
+          "code": "EPP655",
+          "name": "Engineering and Public Policy"
+        },
+        {
+          "id": "ppe655",
+          "code": "PPE655",
+          "name": "Engineering Ethics and Professional Practice"
+        },
+        {
+          "id": "rbe643",
+          "code": "RBE643",
+          "name": "Rehabilitating the Built Environment"
+        }
+      ]
+    }
+  ]
+}

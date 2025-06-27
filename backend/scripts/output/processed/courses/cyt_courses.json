@@ -1,0 +1,88 @@
+{
+  "programId": "CYT",
+  "programName": "Cybersecurity & Threat Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "cyt100",
+          "code": "CYT100",
+          "name": "Information Security Principles and Policies"
+        },
+        {
+          "id": "cyt115",
+          "code": "CYT115",
+          "name": "Security Architecture; OS, Mobile and Network"
+        },
+        {
+          "id": "cyt130",
+          "code": "CYT130",
+          "name": "Ethical Hacking and Vulnerability Testing"
+        },
+        {
+          "id": "cyt145",
+          "code": "CYT145",
+          "name": "IT Security: Ethical and Legal Issues"
+        },
+        {
+          "id": "cyt160",
+          "code": "CYT160",
+          "name": "Security for Cloud and Internet of Things"
+        },
+        {
+          "id": "cyt180",
+          "code": "CYT180",
+          "name": "Data Analytics for Cybersecurity"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cyt200",
+          "code": "CYT200",
+          "name": "Communication Skills for Cybersecurity Professionals"
+        },
+        {
+          "id": "cyt215",
+          "code": "CYT215",
+          "name": "IT Security Forensics"
+        },
+        {
+          "id": "cyt230",
+          "code": "CYT230",
+          "name": "Mobile Application Security Assessment"
+        },
+        {
+          "id": "cyt250",
+          "code": "CYT250",
+          "name": "Threat Investigation"
+        },
+        {
+          "id": "cyt260",
+          "code": "CYT260",
+          "name": "Project Management"
+        },
+        {
+          "id": "cyt275",
+          "code": "CYT275",
+          "name": "Authentication and Access Control"
+        },
+        {
+          "id": "cyt300",
+          "code": "CYT300",
+          "name": "IT Security Capstone Project"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    }
+  ]
+}

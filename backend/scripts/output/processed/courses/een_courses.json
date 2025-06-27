@@ -1,0 +1,164 @@
+{
+  "programId": "EEN",
+  "programName": "Electronics Engineering Technician",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "ety155",
+          "code": "ETY155",
+          "name": "Electricity"
+        },
+        {
+          "id": "ico155",
+          "code": "ICO155",
+          "name": "Introduction to Computers"
+        },
+        {
+          "id": "lin155",
+          "code": "LIN155",
+          "name": "Electronic Lab Instrumentation and Techniques"
+        },
+        {
+          "id": "mth147",
+          "code": "MTH147",
+          "name": "Mathematics with Foundations"
+        },
+        {
+          "id": "prg155",
+          "code": "PRG155",
+          "name": "Programming Fundamentals Using \"C\""
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cad266",
+          "code": "CAD266",
+          "name": "Computer Aided Design for Electronics"
+        },
+        {
+          "id": "dgs266",
+          "code": "DGS266",
+          "name": "Digital Electronics and Introduction to PLC"
+        },
+        {
+          "id": "ecr255",
+          "code": "ECR255",
+          "name": "AC Circuit Principles"
+        },
+        {
+          "id": "ips255",
+          "code": "IPS255",
+          "name": "Interpersonal Skills in the Engineering Workplace"
+        },
+        {
+          "id": "mec355",
+          "code": "MEC355",
+          "name": "Mechatronics: Pneumatics and Hydraulic"
+        },
+        {
+          "id": "mth255",
+          "code": "MTH255",
+          "name": "Mathematics"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cad366",
+          "code": "CAD366",
+          "name": "Advanced Computer Aided Design for Electronics"
+        },
+        {
+          "id": "com455",
+          "code": "COM455",
+          "name": "Communications Fundamentals"
+        },
+        {
+          "id": "csf453",
+          "code": "CSF453",
+          "name": "Control Systems Fundamentals"
+        },
+        {
+          "id": "eld255",
+          "code": "ELD255",
+          "name": "Semiconductor Devices"
+        },
+        {
+          "id": "hsi266",
+          "code": "HSI266",
+          "name": "Hardware Software Integration"
+        },
+        {
+          "id": "mir355",
+          "code": "MIR355",
+          "name": "Microcomputer Repair"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "een331",
+          "code": "EEN331",
+          "name": "Electronics Engineering Technician, Co-op"
+        }
+      ]
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "ecp455",
+          "code": "ECP455",
+          "name": "Engineering Codes and Practices"
+        },
+        {
+          "id": "mco455",
+          "code": "MCO455",
+          "name": "Microcontroller Concepts"
+        },
+        {
+          "id": "tec400",
+          "code": "TEC400",
+          "name": "Technical Communications"
+        },
+        {
+          "id": "tpj452",
+          "code": "TPJ452",
+          "name": "Electronics Technician Senior Project"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 2,
+          "description": "General Education Course (2)"
+        }
+      ],
+      "totalCourses": 6
+    }
+  ]
+}

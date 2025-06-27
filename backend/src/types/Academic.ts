@@ -1,49 +1,6 @@
 import { Document, Types } from 'mongoose';
 
-// ===== CORE INTERFACES =====
-export interface ISchool {
-    name: string;
-    code: string;
-    description?: string;
-    website?: string;
-    color: string;
-    isActive: boolean;
-    createdAt?: Date;
-    updatedAt?: Date;
-}
-
-export interface IProgram {
-    name: string;
-    code: string;
-    school: Types.ObjectId | string;
-    level: 'certificate' | 'diploma' | 'degree' | 'graduate' | 'postgraduate';
-    duration: {
-        semesters: number;
-        years: number;
-    };
-    description?: string;
-    requirements?: {
-        academic: string[];
-        english?: string;
-        other: string[];
-    };
-    careerOutcomes: string[];
-    totalCredits: number;
-    tuition?: {
-        domestic?: number;
-        international?: number;
-        currency: string;
-    };
-    isActive: boolean;
-    stats: {
-        enrollmentCount: number;
-        graduationRate?: number;
-        employmentRate?: number;
-    };
-    createdAt?: Date;
-    updatedAt?: Date;
-}
-
+// ===== COURSE INTERFACES =====
 export interface ICourse {
     code: string;
     name: string;
@@ -58,14 +15,14 @@ export interface ICourse {
     prerequisites: string[];
     corequisites: string[];
     programs: {
-        program: Types.ObjectId | string;
+        program: string;
         semester: number;
         isCore: boolean;
         isElective: boolean;
     }[];
-    school: Types.ObjectId | string;
+    school: string;
     department?: string;
-    level: '1' | '2' | '3' | '4' | 'graduate';
+    level: '1' | '2' | '3' | '4' | 'graduate' | 'undergraduate';
     delivery: ('in-person' | 'online' | 'hybrid' | 'blended')[];
     language: 'english' | 'french' | 'bilingual';
     difficulty: 'beginner' | 'intermediate' | 'advanced';
@@ -94,10 +51,71 @@ export interface ICourse {
             count: number;
         };
     };
-    createdAt?: Date;
-    updatedAt?: Date;
 }
 
+export interface ICourseDocument extends ICourse, Document {
+    fullCode: string;
+    getProgramCodes(): string[];
+}
+
+// ===== PROGRAM INTERFACES =====
+export interface IProgram {
+    code: string;
+    name: string;
+    description: string;
+    school: string;
+    department?: string;
+    level: 'certificate' | 'diploma' | 'advanced_diploma' | 'bachelor' | 'graduate_certificate' | 'master' | 'phd';
+    duration: number; // in semesters
+    totalCredits: number;
+    delivery: ('in-person' | 'online' | 'hybrid')[];
+    language: 'english' | 'french' | 'bilingual';
+    startDates: string[]; // e.g., ['Fall', 'Winter', 'Summer']
+    admissionRequirements: string[];
+    careerOutcomes: string[];
+    isActive: boolean;
+    stats: {
+        enrollmentCount: number;
+        averageGrade?: number;
+        passRate?: number;
+        courseCount: number;
+        materialCount: number;
+    };
+}
+
+export interface IProgramDocument extends IProgram, Document {}
+
+// ===== SCHOOL INTERFACES =====
+export interface ISchool {
+    code: string;
+    name: string;
+    description: string;
+    location: {
+        address: string;
+        city: string;
+        province: string;
+        postalCode: string;
+        country: string;
+    };
+    contact: {
+        phone: string;
+        email: string;
+        website: string;
+    };
+    type: 'college' | 'university' | 'institute';
+    accreditation: string[];
+    isActive: boolean;
+    stats: {
+        programCount: number;
+        courseCount: number;
+        studentCount: number;
+        instructorCount: number;
+    };
+}
+
+export interface ISchoolDocument extends ISchool, Document {}
+
+// ===== STUDY MATERIAL INTERFACES =====
 export interface IStudyMaterial {
     title: string;
     description: string;
@@ -198,6 +216,14 @@ export interface IStudyMaterial {
     updatedAt?: Date;
 }
 
+export interface IStudyMaterialDocument extends IStudyMaterial, Document {
+    _id: Types.ObjectId;
+    incrementViews(): Promise<IStudyMaterialDocument>;
+    incrementDownloads(): Promise<IStudyMaterialDocument>;
+    ratingText: string;
+}
+
+// ===== USER INTERFACES =====
 export interface IUser {
     email: string;
     password: string;
@@ -245,23 +271,6 @@ export interface IUser {
     updatedAt?: Date;
 }
 
-// ===== DOCUMENT INTERFACES (for Mongoose) =====
-export interface ISchoolDocument extends ISchool, Document {
-    _id: Types.ObjectId;
-}
-export interface IProgramDocument extends IProgram, Document {
-    _id: Types.ObjectId;
-}
-export interface ICourseDocument extends ICourse, Document {
-    _id: Types.ObjectId;
-    getProgramCodes(): string[];
-}
-export interface IStudyMaterialDocument extends IStudyMaterial, Document {
-    _id: Types.ObjectId;
-    incrementViews(): Promise<IStudyMaterialDocument>;
-    incrementDownloads(): Promise<IStudyMaterialDocument>;
-    ratingText: string;
-}
 export interface IUserDocument extends IUser, Document {
     _id: Types.ObjectId;
     comparePassword(password: string): Promise<boolean>;

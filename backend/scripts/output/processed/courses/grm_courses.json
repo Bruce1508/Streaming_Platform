@@ -1,0 +1,115 @@
+{
+  "programId": "GRM",
+  "programName": "Government Relations",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "grm700",
+          "code": "GRM700",
+          "name": "Introduction to Government Relations"
+        },
+        {
+          "id": "grm701",
+          "code": "GRM701",
+          "name": "Writing for Government Relations Practitioners"
+        },
+        {
+          "id": "grm707",
+          "code": "GRM707",
+          "name": "Digital Campaigning"
+        },
+        {
+          "id": "grm715",
+          "code": "GRM715",
+          "name": "Presentation Tools and Techniques"
+        },
+        {
+          "id": "grm725",
+          "code": "GRM725",
+          "name": "Introduction to Public Policy"
+        },
+        {
+          "id": "grm739",
+          "code": "GRM739",
+          "name": "Media Relations and Communications Planning"
+        },
+        {
+          "id": "grm747",
+          "code": "GRM747",
+          "name": "Introduction to Research"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "grm800",
+          "code": "GRM800",
+          "name": "Alliances and Stakeholder Relations"
+        },
+        {
+          "id": "grm802",
+          "code": "GRM802",
+          "name": "Ethics, Advocacy and Managing the Government Relations Function"
+        },
+        {
+          "id": "grm805",
+          "code": "GRM805",
+          "name": "Campaigns"
+        },
+        {
+          "id": "grm809",
+          "code": "GRM809",
+          "name": "Municipal Government Relations"
+        },
+        {
+          "id": "grm811",
+          "code": "GRM811",
+          "name": "Federal and Provincial Government Relations"
+        },
+        {
+          "id": "grm817",
+          "code": "GRM817",
+          "name": "Digital Campaign Lab"
+        },
+        {
+          "id": "grm841",
+          "code": "GRM841",
+          "name": "Government Relations Research Project"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "grm441",
+          "code": "GRM441",
+          "name": "Government Relations, Work Term"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "grm751",
+          "code": "GRM751",
+          "name": "Government Relations Career Management"
+        }
+      ]
+    }
+  ]
+}

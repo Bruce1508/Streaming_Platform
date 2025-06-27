@@ -1,0 +1,98 @@
+{
+  "programId": "JASY",
+  "programName": "Justice Administration Services (Articulated)",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "jas318",
+          "code": "JAS318",
+          "name": "Rules of Civil Procedure I"
+        },
+        {
+          "id": "jas319",
+          "code": "JAS319",
+          "name": "Family Court and Procedure"
+        },
+        {
+          "id": "jas323",
+          "code": "JAS323",
+          "name": "Criminal Court and Procedure"
+        },
+        {
+          "id": "jas340",
+          "code": "JAS340",
+          "name": "Public Administration"
+        },
+        {
+          "id": "jas360",
+          "code": "JAS360",
+          "name": "Justice Administration"
+        },
+        {
+          "id": "jas438",
+          "code": "JAS438",
+          "name": "Legal Computer Skills - II"
+        },
+        {
+          "id": "lgl102",
+          "code": "LGL102",
+          "name": "Contracts and Torts"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "fpl470",
+          "code": "FPL470",
+          "name": "Field Placement"
+        },
+        {
+          "id": "jas251",
+          "code": "JAS251",
+          "name": "Employment Law and Regulation"
+        },
+        {
+          "id": "jas255",
+          "code": "JAS255",
+          "name": "Dispute Resolution and Client Service"
+        },
+        {
+          "id": "jas330",
+          "code": "JAS330",
+          "name": "Computer Skills for Career Success"
+        },
+        {
+          "id": "jas423",
+          "code": "JAS423",
+          "name": "Rules of Civil Procedure II"
+        },
+        {
+          "id": "jas425",
+          "code": "JAS425",
+          "name": "Government Project Management"
+        },
+        {
+          "id": "jas426",
+          "code": "JAS426",
+          "name": "Refugee Law for Justice Administration Services"
+        },
+        {
+          "id": "jas429",
+          "code": "JAS429",
+          "name": "Tribunal Procedures for JAS"
+        },
+        {
+          "id": "lgl225",
+          "code": "LGL225",
+          "name": "Immigration Law"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,280 @@
+{
+  "programId": "BCD",
+  "programName": "Honours Bachelor of Child Development",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bcd102",
+          "code": "BCD102",
+          "name": "Healthy Environments: Health, Safety and Nutrition"
+        },
+        {
+          "id": "bcd104",
+          "code": "BCD104",
+          "name": "Human Development and Observation: Conception to Toddlerhood"
+        },
+        {
+          "id": "bcd106",
+          "code": "BCD106",
+          "name": "Foundations of Teaching and Learning"
+        },
+        {
+          "id": "bcd108",
+          "code": "BCD108",
+          "name": "Professional Practice in a Diverse Culture"
+        },
+        {
+          "id": "eng106",
+          "code": "ENG106",
+          "name": "Writing Strategies"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "bcd200",
+          "code": "BCD200",
+          "name": "Integrative Seminar: Preschool Placement"
+        },
+        {
+          "id": "bcd204",
+          "code": "BCD204",
+          "name": "Human Development and Observation: Preschool to School Age"
+        },
+        {
+          "id": "bcd206",
+          "code": "BCD206",
+          "name": "Art and Science to Explore the Natural World"
+        },
+        {
+          "id": "bcd208",
+          "code": "BCD208",
+          "name": "Ethics, Policy and Legislation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "bcd300",
+          "code": "BCD300",
+          "name": "Integrative Seminar: Infant and Toddler Placement"
+        },
+        {
+          "id": "bcd304",
+          "code": "BCD304",
+          "name": "Children with Diverse Abilities"
+        },
+        {
+          "id": "bcd306",
+          "code": "BCD306",
+          "name": "Physical Literacy and Music"
+        },
+        {
+          "id": "bcd308",
+          "code": "BCD308",
+          "name": "Developing and Sustaining Partnership with Families"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "bcd400",
+          "code": "BCD400",
+          "name": "Integrative Seminar: Kindergarten to Grade 3 Placement"
+        },
+        {
+          "id": "bcd404",
+          "code": "BCD404",
+          "name": "Attachment Across the Lifespan"
+        },
+        {
+          "id": "bcd406",
+          "code": "BCD406",
+          "name": "Mathematics and Digital Literacy"
+        },
+        {
+          "id": "bcd408",
+          "code": "BCD408",
+          "name": "Child and Family Relationships: Theoretical Foundations"
+        },
+        {
+          "id": "bcd410",
+          "code": "BCD410",
+          "name": "Critical Social Theories"
+        }
+      ]
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "bcd500",
+          "code": "BCD500",
+          "name": "Integrative Seminar: Community Placement"
+        },
+        {
+          "id": "bcd502",
+          "code": "BCD502",
+          "name": "Mental Health Intervention Planning for Children"
+        },
+        {
+          "id": "bcd504",
+          "code": "BCD504",
+          "name": "Supporting Emotional Well-Being from Early Childhood through Adolescence"
+        },
+        {
+          "id": "bcd508",
+          "code": "BCD508",
+          "name": "Interprofessional Collaboration"
+        },
+        {
+          "id": "lso510",
+          "code": "LSO510",
+          "name": "Indigenous Awareness: Towards Truth and Reconciliation"
+        }
+      ]
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "bcd604",
+          "code": "BCD604",
+          "name": "The Brain and Cognitive Development"
+        },
+        {
+          "id": "bcd606",
+          "code": "BCD606",
+          "name": "Introduction to Research Methods"
+        },
+        {
+          "id": "bcd608",
+          "code": "BCD608",
+          "name": "Care Collaboration with Families"
+        },
+        {
+          "id": "bcd610",
+          "code": "BCD610",
+          "name": "Language Development"
+        },
+        {
+          "id": "wtp200",
+          "code": "WTP200",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "bcd881",
+          "code": "BCD881",
+          "name": "Childhood Development, Work Term"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 7",
+      "courses": [
+        {
+          "id": "bcd702",
+          "code": "BCD702",
+          "name": "Effects of Stress, Trauma and Violence on Children's Learning"
+        },
+        {
+          "id": "bcd706",
+          "code": "BCD706",
+          "name": "Applied Research Proposal"
+        },
+        {
+          "id": "bcd708",
+          "code": "BCD708",
+          "name": "Methods of Screening and Assessment"
+        },
+        {
+          "id": "bcd710",
+          "code": "BCD710",
+          "name": "Childhood in Global Contexts"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "bcd802",
+          "code": "BCD802",
+          "name": "Transformative Learning in Communities"
+        },
+        {
+          "id": "bcd806",
+          "code": "BCD806",
+          "name": "Applied Research Paper"
+        },
+        {
+          "id": "bcd808",
+          "code": "BCD808",
+          "name": "Family Focused Practice: Early Intervention"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 2,
+          "description": "Liberal Studies Course (2)"
+        }
+      ],
+      "totalCourses": 5
+    }
+  ]
+}

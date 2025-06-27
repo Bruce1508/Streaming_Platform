@@ -1,0 +1,154 @@
+{
+  "programId": "EST",
+  "programName": "Esthetician",
+  "semesters": [
+    {
+      "id": "semester3",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "etc103",
+          "code": "ETC103",
+          "name": "Hand Anatomy - Physiology and Care"
+        },
+        {
+          "id": "etc104",
+          "code": "ETC104",
+          "name": "Foot Anatomy - Physiology and Care"
+        },
+        {
+          "id": "etc115",
+          "code": "ETC115",
+          "name": "Skin Care I"
+        },
+        {
+          "id": "spm101",
+          "code": "SPM101",
+          "name": "Spa Customer Service"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "etb215",
+          "code": "ETB215",
+          "name": "Product Knowledge"
+        },
+        {
+          "id": "etc205",
+          "code": "ETC205",
+          "name": "Waxing"
+        },
+        {
+          "id": "etc216",
+          "code": "ETC216",
+          "name": "Skin Care II"
+        },
+        {
+          "id": "spm108",
+          "code": "SPM108",
+          "name": "Skin Analysis"
+        },
+        {
+          "id": "spm200",
+          "code": "SPM200",
+          "name": "Evolutions Spa"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "est560",
+          "code": "EST560",
+          "name": "Nutrition and Health"
+        },
+        {
+          "id": "etc310",
+          "code": "ETC310",
+          "name": "Spa Treatments I"
+        },
+        {
+          "id": "etc317",
+          "code": "ETC317",
+          "name": "Skin Care III"
+        },
+        {
+          "id": "spm300",
+          "code": "SPM300",
+          "name": "Evolutions Spa"
+        },
+        {
+          "id": "spm302",
+          "code": "SPM302",
+          "name": "Spa Business Operations I"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "etc313",
+          "code": "ETC313",
+          "name": "Make-Up Techniques and Application"
+        },
+        {
+          "id": "etc418",
+          "code": "ETC418",
+          "name": "Skin Care IV"
+        },
+        {
+          "id": "spm400",
+          "code": "SPM400",
+          "name": "Evolutions Spa"
+        },
+        {
+          "id": "spm402",
+          "code": "SPM402",
+          "name": "Spa Business Operations II"
+        },
+        {
+          "id": "wes410",
+          "code": "WES410",
+          "name": "Wellness and Esthetics"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    }
+  ]
+}

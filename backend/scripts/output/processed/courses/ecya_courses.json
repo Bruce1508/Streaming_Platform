@@ -1,0 +1,114 @@
+{
+  "programId": "ECYA",
+  "programName": "Early Childhood Education (Accelerated)",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "ecy100",
+          "code": "ECY100",
+          "name": "Child Development"
+        },
+        {
+          "id": "ecy102",
+          "code": "ECY102",
+          "name": "Preschool Curriculum"
+        },
+        {
+          "id": "ecy103",
+          "code": "ECY103",
+          "name": "Health, Safety and Nutrition"
+        },
+        {
+          "id": "ecy104",
+          "code": "ECY104",
+          "name": "Exploring Diversity"
+        },
+        {
+          "id": "ecy105",
+          "code": "ECY105",
+          "name": "Music and Creative Arts"
+        },
+        {
+          "id": "efp102",
+          "code": "EFP102",
+          "name": "Preschool Field Placement"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "ecy200",
+          "code": "ECY200",
+          "name": "Infant and Toddler Development"
+        },
+        {
+          "id": "ecy202",
+          "code": "ECY202",
+          "name": "Infant and Toddler Curriculum"
+        },
+        {
+          "id": "ecy203",
+          "code": "ECY203",
+          "name": "Child, Family and Community"
+        },
+        {
+          "id": "ecy204",
+          "code": "ECY204",
+          "name": "Interpersonal Communication"
+        },
+        {
+          "id": "ecy205",
+          "code": "ECY205",
+          "name": "Philosophy of ECE"
+        },
+        {
+          "id": "efp202",
+          "code": "EFP202",
+          "name": "Infant and Toddler Field Placement"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "ecy300",
+          "code": "ECY300",
+          "name": "Children with Exceptionalities"
+        },
+        {
+          "id": "ecy302",
+          "code": "ECY302",
+          "name": "Inclusive Curriculum"
+        },
+        {
+          "id": "ecy304",
+          "code": "ECY304",
+          "name": "Legislation and Social Policy in Professional Practice"
+        },
+        {
+          "id": "ecy305",
+          "code": "ECY305",
+          "name": "School Age Curriculum"
+        },
+        {
+          "id": "efp302",
+          "code": "EFP302",
+          "name": "Community Placement"
+        },
+        {
+          "id": "efp305",
+          "code": "EFP305",
+          "name": "School Age Field Placement"
+        }
+      ]
+    }
+  ]
+}

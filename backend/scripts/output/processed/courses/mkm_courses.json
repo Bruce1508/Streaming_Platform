@@ -1,0 +1,84 @@
+{
+  "programId": "MKM",
+  "programName": "Marketing Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "crm700",
+          "code": "CRM700",
+          "name": "CRM - Process and Patterns I"
+        },
+        {
+          "id": "mkm701",
+          "code": "MKM701",
+          "name": "Applied Marketing Research"
+        },
+        {
+          "id": "mkm704",
+          "code": "MKM704",
+          "name": "Financial Aspects of Marketing"
+        },
+        {
+          "id": "mkm706",
+          "code": "MKM706",
+          "name": "Marketing Fundamentals"
+        },
+        {
+          "id": "mrk718",
+          "code": "MRK718",
+          "name": "Presenting Complex Material"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "mkm803",
+          "code": "MKM803",
+          "name": "Integrated Marketing Communications"
+        },
+        {
+          "id": "mkm804",
+          "code": "MKM804",
+          "name": "Interactive B2B Selling"
+        },
+        {
+          "id": "mkm805",
+          "code": "MKM805",
+          "name": "Strategic Marketing Management"
+        },
+        {
+          "id": "mkm915",
+          "code": "MKM915",
+          "name": "Digital Marketing"
+        },
+        {
+          "id": "mkm916",
+          "code": "MKM916",
+          "name": "Interactive Marketing"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "mkm441",
+          "code": "MKM441",
+          "name": "Marketing Management, Work Term"
+        }
+      ]
+    }
+  ]
+}

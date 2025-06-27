@@ -1,0 +1,300 @@
+{
+  "programId": "BAG",
+  "programName": "Business Administration – Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bam101",
+          "code": "BAM101",
+          "name": "Introduction to Business Administration"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "mbf100",
+          "code": "MBF100",
+          "name": "Mathematics of Business and FinanceMathematics of Business and Finance"
+        },
+        {
+          "id": "pps100",
+          "code": "PPS100",
+          "name": "Professional Presentation Skills"
+        },
+        {
+          "id": "sdg101",
+          "code": "SDG101",
+          "name": "Introduction to Sustainable Business"
+        },
+        {
+          "id": "sms202",
+          "code": "SMS202",
+          "name": "Business Computer Applications"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "acc106",
+          "code": "ACC106",
+          "name": "Accounting I"
+        },
+        {
+          "id": "man200",
+          "code": "MAN200",
+          "name": "Innovation and Entrepreneurship"
+        },
+        {
+          "id": "mrk108",
+          "code": "MRK108",
+          "name": "Introduction to Marketing"
+        },
+        {
+          "id": "obr250",
+          "code": "OBR250",
+          "name": "Organizational Behaviour"
+        },
+        {
+          "id": "sms310",
+          "code": "SMS310",
+          "name": "Data Analysis Tools for Business"
+        },
+        {
+          "id": "soc135",
+          "code": "SOC135",
+          "name": "Global Economic Issues"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "css300",
+          "code": "CSS300",
+          "name": "Customer Service Solutions"
+        },
+        {
+          "id": "eac594",
+          "code": "EAC594",
+          "name": "Business Communication for the Digital Workplace"
+        },
+        {
+          "id": "ecn501",
+          "code": "ECN501",
+          "name": "Introduction to Principles of Economics - Micro"
+        },
+        {
+          "id": "hra701",
+          "code": "HRA701",
+          "name": "Introduction to Human Resources Management"
+        },
+        {
+          "id": "opm400",
+          "code": "OPM400",
+          "name": "Production and Operations Management - Manufacturing and Services"
+        },
+        {
+          "id": "qnm223",
+          "code": "QNM223",
+          "name": "Business Statistics"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "acc212",
+          "code": "ACC212",
+          "name": "Managerial Accounting"
+        },
+        {
+          "id": "bus400",
+          "code": "BUS400",
+          "name": "Business Economics"
+        },
+        {
+          "id": "cap500",
+          "code": "CAP500",
+          "name": "Career Planning"
+        },
+        {
+          "id": "crm400",
+          "code": "CRM400",
+          "name": "CRM and Selling"
+        },
+        {
+          "id": "man400",
+          "code": "MAN400",
+          "name": "Introduction to Project Management"
+        },
+        {
+          "id": "mgs350",
+          "code": "MGS350",
+          "name": "Management Studies: Canadian Business Law"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "mgs521",
+          "code": "MGS521",
+          "name": "Business Ethics and Values"
+        },
+        {
+          "id": "mgs522",
+          "code": "MGS522",
+          "name": "Negotiation Strategies for Business"
+        },
+        {
+          "id": "mgs524",
+          "code": "MGS524",
+          "name": "Effective Leadership"
+        },
+        {
+          "id": "msc510",
+          "code": "MSC510",
+          "name": "Decision Analysis II"
+        },
+        {
+          "id": "sib575",
+          "code": "SIB575",
+          "name": "Introduction to Finance"
+        }
+      ]
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "ibm600",
+          "code": "IBM600",
+          "name": "International Business Management"
+        },
+        {
+          "id": "man600",
+          "code": "MAN600",
+          "name": "Developing Business Plans"
+        },
+        {
+          "id": "mgs410",
+          "code": "MGS410",
+          "name": "Management Studies"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Professional Options",
+          "count": 3,
+          "description": "Professional Options (3)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "bab906",
+          "code": "BAB906",
+          "name": "Project Management II"
+        },
+        {
+          "id": "bmi501",
+          "code": "BMI501",
+          "name": "International Trade Finance"
+        },
+        {
+          "id": "bmi502",
+          "code": "BMI502",
+          "name": "Global Sourcing Procurement I"
+        },
+        {
+          "id": "bmt540",
+          "code": "BMT540",
+          "name": "Business to Business Marketing"
+        },
+        {
+          "id": "bmt550",
+          "code": "BMT550",
+          "name": "Management for Non-Profit and Social Enterprises"
+        },
+        {
+          "id": "csr600",
+          "code": "CSR600",
+          "name": "Corporate Social Responsibility"
+        },
+        {
+          "id": "hra822",
+          "code": "HRA822",
+          "name": "Human Resources Planning and Development"
+        },
+        {
+          "id": "hra845",
+          "code": "HRA845",
+          "name": "Industrial Relations"
+        },
+        {
+          "id": "lsp101",
+          "code": "LSP101",
+          "name": "World Geography"
+        },
+        {
+          "id": "mrk513",
+          "code": "MRK513",
+          "name": "Buyer Behaviour"
+        },
+        {
+          "id": "mrk526",
+          "code": "MRK526",
+          "name": "Management of Marketing Channels"
+        },
+        {
+          "id": "mrk644",
+          "code": "MRK644",
+          "name": "Digital Marketing II"
+        }
+      ]
+    }
+  ]
+}

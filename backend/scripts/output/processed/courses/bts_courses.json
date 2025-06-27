@@ -1,0 +1,171 @@
+{
+  "programId": "BTS",
+  "programName": "Building Systems Engineering Technician",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bes700",
+          "code": "BES700",
+          "name": "Building Systems: Overview"
+        },
+        {
+          "id": "bgd117",
+          "code": "BGD117",
+          "name": "CAD Fundamentals"
+        },
+        {
+          "id": "bgs161",
+          "code": "BGS161",
+          "name": "Building a Sustainable Future"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "ebe161",
+          "code": "EBE161",
+          "name": "Intro. to Engineering and the Built Environment"
+        },
+        {
+          "id": "mth147",
+          "code": "MTH147",
+          "name": "Mathematics with Foundations"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "bes221",
+          "code": "BES221",
+          "name": "Applied Heating"
+        },
+        {
+          "id": "bes222",
+          "code": "BES222",
+          "name": "Applied Air Conditioning and Refrigeration"
+        },
+        {
+          "id": "bes802",
+          "code": "BES802",
+          "name": "Site Management and Building Safety"
+        },
+        {
+          "id": "bgl261",
+          "code": "BGL261",
+          "name": "Electricity Fundamentals"
+        },
+        {
+          "id": "ips255",
+          "code": "IPS255",
+          "name": "Interpersonal Skills in the Engineering Workplace"
+        },
+        {
+          "id": "mth217",
+          "code": "MTH217",
+          "name": "Mathematics II"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "bes703",
+          "code": "BES703",
+          "name": "Air Handling"
+        },
+        {
+          "id": "bes704",
+          "code": "BES704",
+          "name": "Electrical"
+        },
+        {
+          "id": "bes706",
+          "code": "BES706",
+          "name": "Water Treatment"
+        },
+        {
+          "id": "bgd361",
+          "code": "BGD361",
+          "name": "Building Systems CAD"
+        },
+        {
+          "id": "bgm361",
+          "code": "BGM361",
+          "name": "Codes and Regulations"
+        },
+        {
+          "id": "bgp361",
+          "code": "BGP361",
+          "name": "Plumbing and Pipe Systems"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "bes705",
+          "code": "BES705",
+          "name": "Controls"
+        },
+        {
+          "id": "bes709",
+          "code": "BES709",
+          "name": "Hospital Building Systems"
+        },
+        {
+          "id": "bes710",
+          "code": "BES710",
+          "name": "Energy Efficiency - Large Buildings"
+        },
+        {
+          "id": "bes910",
+          "code": "BES910",
+          "name": "Energy Auditing - Large Buildings"
+        },
+        {
+          "id": "bgb561",
+          "code": "BGB561",
+          "name": "Fire Protection Systems and Procedures"
+        },
+        {
+          "id": "tec400",
+          "code": "TEC400",
+          "name": "Technical Communications"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    }
+  ]
+}

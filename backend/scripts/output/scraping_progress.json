@@ -1,0 +1,11 @@
+{
+  "timestamp": "2025-06-27T20:30:38.436Z",
+  "completedBatches": 4,
+  "stats": {
+    "total": 195,
+    "success": 0,
+    "failed": 0,
+    "skipped": 195,
+    "errors": []
+  }
+}

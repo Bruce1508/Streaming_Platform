@@ -1,0 +1,68 @@
+{
+  "programId": "FNT",
+  "programName": "Financial Technology",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "fnt101",
+          "code": "FNT101",
+          "name": "Financial Services and Products"
+        },
+        {
+          "id": "fnt102",
+          "code": "FNT102",
+          "name": "Privacy Management and Identity Theft"
+        },
+        {
+          "id": "fnt103",
+          "code": "FNT103",
+          "name": "Blockchain/DLT and Cryptocurrencies"
+        },
+        {
+          "id": "fnt104",
+          "code": "FNT104",
+          "name": "Financial Services Regulatory Landscape and RegTech"
+        },
+        {
+          "id": "fnt105",
+          "code": "FNT105",
+          "name": "Business Analysis for Fintech"
+        },
+        {
+          "id": "fnt106",
+          "code": "FNT106",
+          "name": "Cybersecurity"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "fnt201",
+          "code": "FNT201",
+          "name": "Web and Mobile Design for Fintech"
+        },
+        {
+          "id": "fnt202",
+          "code": "FNT202",
+          "name": "Fintech Entrepreneurship and Start-Up Strategies"
+        },
+        {
+          "id": "fnt203",
+          "code": "FNT203",
+          "name": "Fintech Capstone Project"
+        },
+        {
+          "id": "fnt204",
+          "code": "FNT204",
+          "name": "Data Analytics in Financial Services"
+        }
+      ]
+    }
+  ]
+}

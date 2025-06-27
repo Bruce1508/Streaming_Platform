@@ -1,0 +1,88 @@
+{
+  "programId": "TTO",
+  "programName": "Tourism – Travel Operations",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "hsp101",
+          "code": "HSP101",
+          "name": "Service Leadership"
+        },
+        {
+          "id": "htm408",
+          "code": "HTM408",
+          "name": "Voluntourism and Sustainable Development"
+        },
+        {
+          "id": "trv103",
+          "code": "TRV103",
+          "name": "Tourism Destination Exploration I"
+        },
+        {
+          "id": "trv106",
+          "code": "TRV106",
+          "name": "Business of Tourism"
+        },
+        {
+          "id": "trv202",
+          "code": "TRV202",
+          "name": "Leisure Travel Theory and Practice"
+        },
+        {
+          "id": "trv299",
+          "code": "TRV299",
+          "name": "Professional Internship Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "gcb400",
+          "code": "GCB400",
+          "name": "Global Cruise Business"
+        },
+        {
+          "id": "htm105",
+          "code": "HTM105",
+          "name": "Hotel Front Office Operations and Management"
+        },
+        {
+          "id": "tis200",
+          "code": "TIS200",
+          "name": "Professional Internship"
+        },
+        {
+          "id": "trv203",
+          "code": "TRV203",
+          "name": "Tourism Destination Exploration II"
+        },
+        {
+          "id": "trv204",
+          "code": "TRV204",
+          "name": "Tourism Design and Experiences"
+        },
+        {
+          "id": "trv302",
+          "code": "TRV302",
+          "name": "Travel Services Business Operations"
+        },
+        {
+          "id": "tsa200",
+          "code": "TSA200",
+          "name": "Sabre Reservation Specialist"
+        }
+      ]
+    }
+  ]
+}

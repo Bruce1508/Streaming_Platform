@@ -1,0 +1,68 @@
+{
+  "programId": "PSWC",
+  "programName": "Personal Support Worker",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "psw115",
+          "code": "PSW115",
+          "name": "Introduction to Personal Support Worker"
+        },
+        {
+          "id": "psw120",
+          "code": "PSW120",
+          "name": "Client and Family Centred Care"
+        },
+        {
+          "id": "psw125",
+          "code": "PSW125",
+          "name": "Human Body and Illness Management"
+        },
+        {
+          "id": "psw130",
+          "code": "PSW130",
+          "name": "Fundamental Skills for the Personal Support Worker"
+        },
+        {
+          "id": "psw135",
+          "code": "PSW135",
+          "name": "Safe Client Care"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "psw225",
+          "code": "PSW225",
+          "name": "Palliative Care Across Contexts"
+        },
+        {
+          "id": "psw230",
+          "code": "PSW230",
+          "name": "Mental Health and Cognitive Impairment"
+        },
+        {
+          "id": "psw235",
+          "code": "PSW235",
+          "name": "Practicum Placement-Facility"
+        },
+        {
+          "id": "psw240",
+          "code": "PSW240",
+          "name": "Practicum Placement-Preceptorship"
+        }
+      ]
+    }
+  ]
+}

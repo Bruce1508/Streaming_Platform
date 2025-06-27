@@ -1,0 +1,190 @@
+{
+  "programId": "MTCP",
+  "programName": "Mechanical Technician – CNC Programming",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bpr101",
+          "code": "BPR101",
+          "name": "Blueprint Reading"
+        },
+        {
+          "id": "cnc101",
+          "code": "CNC101",
+          "name": "Computer Numerical Control"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "mat111",
+          "code": "MAT111",
+          "name": "Mathematics"
+        },
+        {
+          "id": "shp101",
+          "code": "SHP101",
+          "name": "Shop"
+        },
+        {
+          "id": "thy101",
+          "code": "THY101",
+          "name": "Machining Theory"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cam201",
+          "code": "CAM201",
+          "name": "Computer Assisted Machining"
+        },
+        {
+          "id": "mth201",
+          "code": "MTH201",
+          "name": "Technical Mathematics I"
+        },
+        {
+          "id": "shp201",
+          "code": "SHP201",
+          "name": "Shop"
+        },
+        {
+          "id": "thy201",
+          "code": "THY201",
+          "name": "Machining Theory"
+        },
+        {
+          "id": "tld201",
+          "code": "TLD201",
+          "name": "Tool Design"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cam302",
+          "code": "CAM302",
+          "name": "Computer Assisted Machining Lathe"
+        },
+        {
+          "id": "cam355",
+          "code": "CAM355",
+          "name": "Computer Assisted Machining Level II"
+        },
+        {
+          "id": "cnc301",
+          "code": "CNC301",
+          "name": "CNC Manual Programming and Setup"
+        },
+        {
+          "id": "mth301",
+          "code": "MTH301",
+          "name": "Technical Mathematics II"
+        },
+        {
+          "id": "tec400",
+          "code": "TEC400",
+          "name": "Technical Communications"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "cam455",
+          "code": "CAM455",
+          "name": "Computer Assisted Machining Level III"
+        },
+        {
+          "id": "cnc401",
+          "code": "CNC401",
+          "name": "Advanced Tool Setup"
+        },
+        {
+          "id": "tpj454",
+          "code": "TPJ454",
+          "name": "Technical Project"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        },
+        {
+          "type": "Professional Options",
+          "count": 2,
+          "description": "Professional Options (2)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "amd500",
+          "code": "AMD500",
+          "name": "Additive Manufacturing"
+        },
+        {
+          "id": "cad255",
+          "code": "CAD255",
+          "name": "Mechanical Designs and Drawing"
+        },
+        {
+          "id": "jfx301",
+          "code": "JFX301",
+          "name": "Jig and Fixture Design"
+        },
+        {
+          "id": "qla401",
+          "code": "QLA401",
+          "name": "Quality Assurance CMM"
+        },
+        {
+          "id": "swk901",
+          "code": "SWK901",
+          "name": "Solid Works Level One"
+        }
+      ]
+    }
+  ]
+}

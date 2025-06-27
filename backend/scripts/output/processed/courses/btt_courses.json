@@ -1,0 +1,150 @@
+{
+  "programId": "BTT",
+  "programName": "Business Information Technology",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "cis660",
+          "code": "CIS660",
+          "name": "Communication Skills IT Professionals"
+        },
+        {
+          "id": "dbs610",
+          "code": "DBS610",
+          "name": "Introduction to Database Systems"
+        },
+        {
+          "id": "nwk680",
+          "code": "NWK680",
+          "name": "Introduction to Networks"
+        },
+        {
+          "id": "osl645",
+          "code": "OSL645",
+          "name": "Introduction to Open Source Systems"
+        },
+        {
+          "id": "osm620",
+          "code": "OSM620",
+          "name": "Fundamentals of Microsoft Systems"
+        },
+        {
+          "id": "prg600",
+          "code": "PRG600",
+          "name": "Programming Fundamentals"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "dbs710",
+          "code": "DBS710",
+          "name": "Advanced Database Design"
+        },
+        {
+          "id": "nwk780",
+          "code": "NWK780",
+          "name": "Traditional Networks"
+        },
+        {
+          "id": "osl745",
+          "code": "OSL745",
+          "name": "Administration of Open Source Systems"
+        },
+        {
+          "id": "osm720",
+          "code": "OSM720",
+          "name": "Administration of Microsoft Systems"
+        },
+        {
+          "id": "pmc700",
+          "code": "PMC700",
+          "name": "IT Project Management, Fundamentals, Tools and Techniques"
+        },
+        {
+          "id": "web700",
+          "code": "WEB700",
+          "name": "Web Programming"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "ldm860",
+          "code": "LDM860",
+          "name": "Leadership for Managers"
+        },
+        {
+          "id": "lpe945",
+          "code": "LPE945",
+          "name": "Law and Ethics"
+        },
+        {
+          "id": "osm820",
+          "code": "OSM820",
+          "name": "Advanced Administration of Microsoft Systems"
+        },
+        {
+          "id": "qat810",
+          "code": "QAT810",
+          "name": "Quality Assurance and Troubleshoot"
+        },
+        {
+          "id": "sec935",
+          "code": "SEC935",
+          "name": "Security Operations and Administration"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "adm950",
+          "code": "ADM950",
+          "name": "Enterprise Project"
+        },
+        {
+          "id": "dbs900",
+          "code": "DBS900",
+          "name": "Assessing Big Data"
+        },
+        {
+          "id": "prg800",
+          "code": "PRG800",
+          "name": "Programming Project"
+        },
+        {
+          "id": "sec835",
+          "code": "SEC835",
+          "name": "Security in Databases and Web Applications"
+        },
+        {
+          "id": "soa915",
+          "code": "SOA915",
+          "name": "Service Oriented Architecture"
+        },
+        {
+          "id": "tpa905",
+          "code": "TPA905",
+          "name": "Technology Planning and Acquisition"
+        }
+      ]
+    }
+  ]
+}

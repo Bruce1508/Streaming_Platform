@@ -1,0 +1,138 @@
+{
+  "programId": "LAT",
+  "programName": "Liberal Arts University Transfer",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "hum100",
+          "code": "HUM100",
+          "name": "Humanities: The Development of Western Thought I"
+        },
+        {
+          "id": "psy191",
+          "code": "PSY191",
+          "name": "Foundations of Psychology I"
+        },
+        {
+          "id": "soc117",
+          "code": "SOC117",
+          "name": "Global Sustainability"
+        },
+        {
+          "id": "ykc100",
+          "code": "YKC100",
+          "name": "Critical Thinking I"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "arw250",
+          "code": "ARW250",
+          "name": "Academic Research and Writing"
+        },
+        {
+          "id": "fls100",
+          "code": "FLS100",
+          "name": "Introductory FrenchIntroductory Spanish"
+        },
+        {
+          "id": "hum200",
+          "code": "HUM200",
+          "name": "Humanities: The Development of Western Thought II"
+        },
+        {
+          "id": "psy291",
+          "code": "PSY291",
+          "name": "Foundations of Psychology II"
+        },
+        {
+          "id": "scl191",
+          "code": "SCL191",
+          "name": "Introduction to Sociology I: Social Inequality"
+        },
+        {
+          "id": "ykc200",
+          "code": "YKC200",
+          "name": "Critical Thinking II"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "arw350",
+          "code": "ARW350",
+          "name": "Academic Research and Writing II"
+        },
+        {
+          "id": "fls200",
+          "code": "FLS200",
+          "name": "Intermediate FrenchIntermediate Spanish"
+        },
+        {
+          "id": "hum301",
+          "code": "HUM301",
+          "name": "Humanities: The Development of Western Thought III"
+        },
+        {
+          "id": "scl291",
+          "code": "SCL291",
+          "name": "Introduction to Sociology II: Social Inequality"
+        },
+        {
+          "id": "ykl100",
+          "code": "YKL100",
+          "name": "Introduction to World Literature I"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "can604",
+          "code": "CAN604",
+          "name": "A Social History of Canada"
+        },
+        {
+          "id": "hum389",
+          "code": "HUM389",
+          "name": "European Art and Culture"
+        },
+        {
+          "id": "hum400",
+          "code": "HUM400",
+          "name": "Humanities: The Development of Western Thought IV"
+        },
+        {
+          "id": "ykl200",
+          "code": "YKL200",
+          "name": "Introduction to World Literature II"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    }
+  ]
+}

@@ -1,0 +1,5378 @@
+[
+  {
+    "programId": "MDN",
+    "programName": "Medical Esthetics Nursing",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "mdn100",
+            "code": "MDN100",
+            "name": "Medical Esthetics Nursing Practice"
+          },
+          {
+            "id": "mdn101",
+            "code": "MDN101",
+            "name": "Injectables I"
+          },
+          {
+            "id": "mdn102",
+            "code": "MDN102",
+            "name": "Medispa Treatments"
+          },
+          {
+            "id": "mdn103",
+            "code": "MDN103",
+            "name": "Medical Esthetics Lab"
+          },
+          {
+            "id": "spm511",
+            "code": "SPM511",
+            "name": "Anatomy and Physiology"
+          },
+          {
+            "id": "spm513",
+            "code": "SPM513",
+            "name": "Medical Esthetics Technologies"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "spm611",
+            "code": "SPM611",
+            "name": "Advanced Anatomy and Physiology"
+          },
+          {
+            "id": "spm613",
+            "code": "SPM613",
+            "name": "Anti-aging Technologies"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "MHI",
+    "programName": "Mental Health Intervention",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "mhi100",
+            "code": "MHI100",
+            "name": "Introduction to Mental Health"
+          },
+          {
+            "id": "mhi101",
+            "code": "MHI101",
+            "name": "Diversity: Building Resilience"
+          },
+          {
+            "id": "mhi119",
+            "code": "MHI119",
+            "name": "Psychosocial Health"
+          },
+          {
+            "id": "mhi214",
+            "code": "MHI214",
+            "name": "Community Outreach"
+          },
+          {
+            "id": "mhi406",
+            "code": "MHI406",
+            "name": "Dynamics of the Family"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "mhi200",
+            "code": "MHI200",
+            "name": "Trauma Methods and Practice"
+          },
+          {
+            "id": "mhi215",
+            "code": "MHI215",
+            "name": "Community Outreach II"
+          },
+          {
+            "id": "mhi304",
+            "code": "MHI304",
+            "name": "Crisis Counselling"
+          },
+          {
+            "id": "mhi402",
+            "code": "MHI402",
+            "name": "Health Promotion and Education"
+          },
+          {
+            "id": "mhi403",
+            "code": "MHI403",
+            "name": "Contemporary Issues in Community Mental Health"
+          },
+          {
+            "id": "mhi504",
+            "code": "MHI504",
+            "name": "Understanding Addiction"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "NPM",
+    "programName": "Non-Profit & Social Sector Management",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "ibs603",
+            "code": "IBS603",
+            "name": "Fundamentals of Project Management"
+          },
+          {
+            "id": "npm700",
+            "code": "NPM700",
+            "name": "Introduction to the Non-Profit Sector"
+          },
+          {
+            "id": "npm704",
+            "code": "NPM704",
+            "name": "HR Management in the Social Economy"
+          },
+          {
+            "id": "npm706",
+            "code": "NPM706",
+            "name": "Resource Development Strategies"
+          },
+          {
+            "id": "npm802",
+            "code": "NPM802",
+            "name": "Computer Applications and Information Systems"
+          },
+          {
+            "id": "npm804",
+            "code": "NPM804",
+            "name": "Financial Management for Non-Profit Organizations"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "npm702",
+            "code": "NPM702",
+            "name": "Leadership Approaches in the Non-Profit Sector"
+          },
+          {
+            "id": "npm703",
+            "code": "NPM703",
+            "name": "Stat. Planning for Non-Profit and Social Enterprises"
+          },
+          {
+            "id": "npm800",
+            "code": "NPM800",
+            "name": "Building Alliances and Partnerships in Social Sector"
+          },
+          {
+            "id": "npm801",
+            "code": "NPM801",
+            "name": "Marketing Management for Non-Profit and Social Ent."
+          },
+          {
+            "id": "npm803",
+            "code": "NPM803",
+            "name": "Program Development, Management and Evaluation"
+          },
+          {
+            "id": "npm807",
+            "code": "NPM807",
+            "name": "Integrated Project"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "npm441",
+            "code": "NPM441",
+            "name": "Non-Profit and Social Sector Management, Work Term"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "OTP",
+    "programName": "Occupational Therapist Assistant and Physiotherapist Assistant",
+    "semesters": [
+      {
+        "id": "semester3",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "otp100",
+            "code": "OTP100",
+            "name": "Introduction to the Canadian Healthcare System"
+          },
+          {
+            "id": "otp101",
+            "code": "OTP101",
+            "name": "Anatomy and Physiology"
+          },
+          {
+            "id": "otp102",
+            "code": "OTP102",
+            "name": "Human Kinetics"
+          },
+          {
+            "id": "otp103",
+            "code": "OTP103",
+            "name": "Orientation to OTA and PTA Roles"
+          },
+          {
+            "id": "otp104",
+            "code": "OTP104",
+            "name": "Therapeutic Communication and Documentation"
+          },
+          {
+            "id": "otp105",
+            "code": "OTP105",
+            "name": "Two-eyed Seeing and Healthcare"
+          },
+          {
+            "id": "otp106",
+            "code": "OTP106",
+            "name": "Developmental Psychology in OTA/PTA Practice"
+          }
+        ]
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "otp200",
+            "code": "OTP200",
+            "name": "PTA – Principles and Techniques I"
+          },
+          {
+            "id": "otp201",
+            "code": "OTP201",
+            "name": "OTA – Principles and Techniques I"
+          },
+          {
+            "id": "otp202",
+            "code": "OTP202",
+            "name": "Human Conditions I"
+          },
+          {
+            "id": "otp203",
+            "code": "OTP203",
+            "name": "Social Determinants of Health"
+          },
+          {
+            "id": "otp204",
+            "code": "OTP204",
+            "name": "Establishing Client-Centered and Reflective Practice"
+          },
+          {
+            "id": "otp205",
+            "code": "OTP205",
+            "name": "Introduction to Clinical Practice"
+          },
+          {
+            "id": "otp206",
+            "code": "OTP206",
+            "name": "Professional Ethics"
+          }
+        ]
+      },
+      {
+        "id": "semester7",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "otp100",
+            "code": "OTP100",
+            "name": "Introduction to the Canadian Healthcare System"
+          },
+          {
+            "id": "otp101",
+            "code": "OTP101",
+            "name": "Anatomy and Physiology"
+          },
+          {
+            "id": "otp102",
+            "code": "OTP102",
+            "name": "Human Kinetics"
+          },
+          {
+            "id": "otp103",
+            "code": "OTP103",
+            "name": "Orientation to OTA and PTA Roles"
+          },
+          {
+            "id": "otp104",
+            "code": "OTP104",
+            "name": "Therapeutic Communication and Documentation"
+          },
+          {
+            "id": "otp106",
+            "code": "OTP106",
+            "name": "Developmental Psychology in OTA/PTA Practice"
+          }
+        ]
+      },
+      {
+        "id": "semester8",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "otp200",
+            "code": "OTP200",
+            "name": "PTA – Principles and Techniques I"
+          },
+          {
+            "id": "otp201",
+            "code": "OTP201",
+            "name": "OTA – Principles and Techniques I"
+          },
+          {
+            "id": "otp202",
+            "code": "OTP202",
+            "name": "Human Conditions I"
+          },
+          {
+            "id": "otp203",
+            "code": "OTP203",
+            "name": "Social Determinants of Health"
+          },
+          {
+            "id": "otp204",
+            "code": "OTP204",
+            "name": "Establishing Client-Centered and Reflective Practice"
+          },
+          {
+            "id": "otp205",
+            "code": "OTP205",
+            "name": "Introduction to Clinical Practice"
+          },
+          {
+            "id": "otp206",
+            "code": "OTP206",
+            "name": "Professional Ethics"
+          }
+        ]
+      },
+      {
+        "id": "semester10",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "otp105",
+            "code": "OTP105",
+            "name": "Two-eyed Seeing and Healthcare"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 2
+      }
+    ]
+  },
+  {
+    "programId": "EXS",
+    "programName": "Office Administration – Executive",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "bcm111",
+            "code": "BCM111",
+            "name": "Business Communications"
+          },
+          {
+            "id": "bma101",
+            "code": "BMA101",
+            "name": "Business Math Applications"
+          },
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "dpw111",
+            "code": "DPW111",
+            "name": "Introduction to Document Production"
+          },
+          {
+            "id": "ecs111",
+            "code": "ECS111",
+            "name": "Email and Calendaring Software"
+          },
+          {
+            "id": "icp111",
+            "code": "ICP111",
+            "name": "Computer Presentation Software"
+          },
+          {
+            "id": "opr112",
+            "code": "OPR112",
+            "name": "Office Procedures"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "aci311",
+            "code": "ACI311",
+            "name": "Introductory Accounting"
+          },
+          {
+            "id": "dba311",
+            "code": "DBA311",
+            "name": "Database Software"
+          },
+          {
+            "id": "dpw311",
+            "code": "DPW311",
+            "name": "Intermediate Document Production"
+          },
+          {
+            "id": "sde311",
+            "code": "SDE311",
+            "name": "Spreadsheet Software"
+          },
+          {
+            "id": "trt311",
+            "code": "TRT311",
+            "name": "Transcription Techniques"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 2,
+            "description": "General Education Course (2)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "acs511",
+            "code": "ACS511",
+            "name": "Accounting Software"
+          },
+          {
+            "id": "cpd501",
+            "code": "CPD501",
+            "name": "Career and Professional Development"
+          },
+          {
+            "id": "dpw511",
+            "code": "DPW511",
+            "name": "Advanced Document Production"
+          },
+          {
+            "id": "efp501",
+            "code": "EFP501",
+            "name": "Executive Field Placement"
+          },
+          {
+            "id": "eop511",
+            "code": "EOP511",
+            "name": "Executive Office Procedures"
+          },
+          {
+            "id": "ihr511",
+            "code": "IHR511",
+            "name": "Introductory Human Resources"
+          },
+          {
+            "id": "ipm511",
+            "code": "IPM511",
+            "name": "Introduction to Project Management"
+          },
+          {
+            "id": "swi511",
+            "code": "SWI511",
+            "name": "Software Integration"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 9
+      }
+    ]
+  },
+  {
+    "programId": "MES",
+    "programName": "Office Administration – Health Services",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "bcm111",
+            "code": "BCM111",
+            "name": "Business Communications"
+          },
+          {
+            "id": "bma101",
+            "code": "BMA101",
+            "name": "Business Math Applications"
+          },
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "dpw111",
+            "code": "DPW111",
+            "name": "Introduction to Document Production"
+          },
+          {
+            "id": "ecs111",
+            "code": "ECS111",
+            "name": "Email and Calendaring Software"
+          },
+          {
+            "id": "mat101",
+            "code": "MAT101",
+            "name": "Medical Terminology I"
+          },
+          {
+            "id": "opr112",
+            "code": "OPR112",
+            "name": "Office Procedures"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "dpw311",
+            "code": "DPW311",
+            "name": "Intermediate Document Production"
+          },
+          {
+            "id": "icp111",
+            "code": "ICP111",
+            "name": "Computer Presentation Software"
+          },
+          {
+            "id": "mat301",
+            "code": "MAT301",
+            "name": "Medical Terminology II"
+          },
+          {
+            "id": "mop311",
+            "code": "MOP311",
+            "name": "Medical Office Procedures"
+          },
+          {
+            "id": "trt311",
+            "code": "TRT311",
+            "name": "Transcription Techniques"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 2,
+            "description": "General Education Course (2)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "cpd501",
+            "code": "CPD501",
+            "name": "Career and Professional Development"
+          },
+          {
+            "id": "dpw511",
+            "code": "DPW511",
+            "name": "Advanced Document Production"
+          },
+          {
+            "id": "mfp501",
+            "code": "MFP501",
+            "name": "Medical Field PlacementMedical Office Simulations"
+          },
+          {
+            "id": "mhb511",
+            "code": "MHB511",
+            "name": "Medical Health Billing"
+          },
+          {
+            "id": "sde311",
+            "code": "SDE311",
+            "name": "Spreadsheet Software"
+          },
+          {
+            "id": "trm511",
+            "code": "TRM511",
+            "name": "Medical Transcription"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 7
+      }
+    ]
+  },
+  {
+    "programId": "LES",
+    "programName": "Office Administration – Legal",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "bcm111",
+            "code": "BCM111",
+            "name": "Business Communications"
+          },
+          {
+            "id": "bma101",
+            "code": "BMA101",
+            "name": "Business Math Applications"
+          },
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "dpw112",
+            "code": "DPW112",
+            "name": "Introduction to Document Production for LES"
+          },
+          {
+            "id": "ecs111",
+            "code": "ECS111",
+            "name": "Email and Calendaring Software"
+          },
+          {
+            "id": "icp111",
+            "code": "ICP111",
+            "name": "Computer Presentation Software"
+          },
+          {
+            "id": "lct501",
+            "code": "LCT501",
+            "name": "Law and the Citizen"
+          },
+          {
+            "id": "opr112",
+            "code": "OPR112",
+            "name": "Office Procedures"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "ldp311",
+            "code": "LDP311",
+            "name": "Introduction to Legal Document Production"
+          },
+          {
+            "id": "lpi311",
+            "code": "LPI311",
+            "name": "Introduction to Legal Procedures"
+          },
+          {
+            "id": "lpl511",
+            "code": "LPL511",
+            "name": "Legal Procedures Litigation"
+          },
+          {
+            "id": "sde311",
+            "code": "SDE311",
+            "name": "Spreadsheet Software"
+          },
+          {
+            "id": "trt311",
+            "code": "TRT311",
+            "name": "Transcription Techniques"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 2,
+            "description": "General Education Course (2)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "cpd501",
+            "code": "CPD501",
+            "name": "Career and Professional Development"
+          },
+          {
+            "id": "lfp501",
+            "code": "LFP501",
+            "name": "Legal Field Placement"
+          },
+          {
+            "id": "lpc311",
+            "code": "LPC311",
+            "name": "Legal Procedures Corporate"
+          },
+          {
+            "id": "lpe512",
+            "code": "LPE512",
+            "name": "Legal Procedures: Wills, Estates and Family Law"
+          },
+          {
+            "id": "lpr511",
+            "code": "LPR511",
+            "name": "Legal Procedures Real Estate"
+          },
+          {
+            "id": "ltr511",
+            "code": "LTR511",
+            "name": "Legal Transcription"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 7
+      }
+    ]
+  },
+  {
+    "programId": "OPTC",
+    "programName": "Opticianry",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across Contexts"
+          },
+          {
+            "id": "com470",
+            "code": "COM470",
+            "name": "Interpersonal Communication"
+          },
+          {
+            "id": "opt100",
+            "code": "OPT100",
+            "name": "Introduction to Optics"
+          },
+          {
+            "id": "opt104",
+            "code": "OPT104",
+            "name": "Anatomy and Physiology of the Eye"
+          },
+          {
+            "id": "opt105",
+            "code": "OPT105",
+            "name": "Eyeglass Dispensing Lab - Fittings and Measurements"
+          },
+          {
+            "id": "opt106",
+            "code": "OPT106",
+            "name": "Eyeglass Dispensing Lab - Lens Verification"
+          },
+          {
+            "id": "opt107",
+            "code": "OPT107",
+            "name": "Eyeglass Dispensing Theory I"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "opt201",
+            "code": "OPT201",
+            "name": "Refraction Theory I"
+          },
+          {
+            "id": "opt203",
+            "code": "OPT203",
+            "name": "Refraction Lab I"
+          },
+          {
+            "id": "opt204",
+            "code": "OPT204",
+            "name": "Eyeglass Fabrication Lab I"
+          },
+          {
+            "id": "opt205",
+            "code": "OPT205",
+            "name": "Ocular Patho-Physiology"
+          },
+          {
+            "id": "opt206",
+            "code": "OPT206",
+            "name": "Eyeglass Dispensing Lab II"
+          },
+          {
+            "id": "opt207",
+            "code": "OPT207",
+            "name": "Eyeglass Dispensing Theory II"
+          },
+          {
+            "id": "opt208",
+            "code": "OPT208",
+            "name": "Professional Practice and Optical Business"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "opt302",
+            "code": "OPT302",
+            "name": "Advanced Eyeglass Dispensing Lab"
+          },
+          {
+            "id": "opt303",
+            "code": "OPT303",
+            "name": "Contact Lens Dispensing Theory I"
+          },
+          {
+            "id": "opt304",
+            "code": "OPT304",
+            "name": "Contact Lens Lab I"
+          },
+          {
+            "id": "opt305",
+            "code": "OPT305",
+            "name": "Eyeglass Fabrication Lab II"
+          },
+          {
+            "id": "opt306",
+            "code": "OPT306",
+            "name": "Advanced Eyeglass Dispensing Theory"
+          },
+          {
+            "id": "opt309",
+            "code": "OPT309",
+            "name": "Refraction Theory II"
+          },
+          {
+            "id": "opt310",
+            "code": "OPT310",
+            "name": "Refraction Lab II"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ]
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "opt551",
+            "code": "OPT551",
+            "name": "Opticianry, Work Term"
+          }
+        ]
+      },
+      {
+        "id": "semester5",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "opt401",
+            "code": "OPT401",
+            "name": "Contact Lens Dispensing Theory II"
+          },
+          {
+            "id": "opt402",
+            "code": "OPT402",
+            "name": "Contact Lens Lab II"
+          },
+          {
+            "id": "opt404",
+            "code": "OPT404",
+            "name": "Contact Lens Continuous Care Theory"
+          },
+          {
+            "id": "opt405",
+            "code": "OPT405",
+            "name": "Advanced Contact Lens Lab - Ocular Assessment"
+          },
+          {
+            "id": "opt406",
+            "code": "OPT406",
+            "name": "Binocular Vision and Low Vision"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 2,
+            "description": "General Education Course (2)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester6",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "opt552",
+            "code": "OPT552",
+            "name": "Opticinary, Work Term II"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "PLE",
+    "programName": "Paralegal",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "lgl151",
+            "code": "LGL151",
+            "name": "Introduction to the Legal System for Paralegals"
+          },
+          {
+            "id": "lgl152",
+            "code": "LGL152",
+            "name": "Contracts and Torts for Paralegals"
+          },
+          {
+            "id": "lgl153",
+            "code": "LGL153",
+            "name": "Legal Entities and Relationships"
+          },
+          {
+            "id": "lgl154",
+            "code": "LGL154",
+            "name": "Computer Applications for Paralegals I"
+          },
+          {
+            "id": "lgl160",
+            "code": "LGL160",
+            "name": "Legal Drafting and Communication"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "lgl156",
+            "code": "LGL156",
+            "name": "Administrative Law for Paralegals"
+          },
+          {
+            "id": "lgl225",
+            "code": "LGL225",
+            "name": "Immigration Law"
+          },
+          {
+            "id": "lgl250",
+            "code": "LGL250",
+            "name": "Legal Research for Paralegals"
+          },
+          {
+            "id": "lgl251",
+            "code": "LGL251",
+            "name": "Employment Law For Paralegals"
+          },
+          {
+            "id": "lgl252",
+            "code": "LGL252",
+            "name": "Residential Landlord and Tenant Law for Paralegals"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "pla350",
+            "code": "PLA350",
+            "name": "Legal Accounting"
+          },
+          {
+            "id": "ple351",
+            "code": "PLE351",
+            "name": "Evidence and the Litigation Process"
+          },
+          {
+            "id": "plo352",
+            "code": "PLO352",
+            "name": "Criminal Law/Summary Conviction Procedure"
+          },
+          {
+            "id": "plr311",
+            "code": "PLR311",
+            "name": "Refugee Law for Paralegals"
+          },
+          {
+            "id": "plt353",
+            "code": "PLT353",
+            "name": "Tribunal Practice and Procedure"
+          },
+          {
+            "id": "ply354",
+            "code": "PLY354",
+            "name": "Computer Applications for Paralegals II"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "plc450",
+            "code": "PLC450",
+            "name": "Small Claims Court - Practice and Procedure"
+          },
+          {
+            "id": "pld451",
+            "code": "PLD451",
+            "name": "Advocacy"
+          },
+          {
+            "id": "ple452",
+            "code": "PLE452",
+            "name": "Ethics and Professional Responsibility"
+          },
+          {
+            "id": "pln455",
+            "code": "PLN455",
+            "name": "Alternative Dispute Resolution"
+          },
+          {
+            "id": "plo453",
+            "code": "PLO453",
+            "name": "Provincial Offences/ Motor Vehicle Offences"
+          },
+          {
+            "id": "plp454",
+            "code": "PLP454",
+            "name": "Practice Management and Business Communications"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "PLEA",
+    "programName": "Paralegal (Accelerated)",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "lgl151",
+            "code": "LGL151",
+            "name": "Introduction to the Legal System for Paralegals"
+          },
+          {
+            "id": "lgl152",
+            "code": "LGL152",
+            "name": "Contracts and Torts for Paralegals"
+          },
+          {
+            "id": "lgl153",
+            "code": "LGL153",
+            "name": "Legal Entities and Relationships"
+          },
+          {
+            "id": "lgl154",
+            "code": "LGL154",
+            "name": "Computer Applications for Paralegals I"
+          },
+          {
+            "id": "lgl156",
+            "code": "LGL156",
+            "name": "Administrative Law for Paralegals"
+          },
+          {
+            "id": "lgl160",
+            "code": "LGL160",
+            "name": "Legal Drafting and Communication"
+          },
+          {
+            "id": "lgl225",
+            "code": "LGL225",
+            "name": "Immigration Law"
+          },
+          {
+            "id": "lgl250",
+            "code": "LGL250",
+            "name": "Legal Research for Paralegals"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "lgl251",
+            "code": "LGL251",
+            "name": "Employment Law For Paralegals"
+          },
+          {
+            "id": "lgl252",
+            "code": "LGL252",
+            "name": "Residential Landlord and Tenant Law for Paralegals"
+          },
+          {
+            "id": "pla350",
+            "code": "PLA350",
+            "name": "Legal Accounting"
+          },
+          {
+            "id": "ple351",
+            "code": "PLE351",
+            "name": "Evidence and the Litigation Process"
+          },
+          {
+            "id": "plo352",
+            "code": "PLO352",
+            "name": "Criminal Law/Summary Conviction Procedure"
+          },
+          {
+            "id": "plt353",
+            "code": "PLT353",
+            "name": "Tribunal Practice and Procedure"
+          },
+          {
+            "id": "ply354",
+            "code": "PLY354",
+            "name": "Computer Applications for Paralegals II"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "plc450",
+            "code": "PLC450",
+            "name": "Small Claims Court - Practice and Procedure"
+          },
+          {
+            "id": "pld451",
+            "code": "PLD451",
+            "name": "Advocacy"
+          },
+          {
+            "id": "ple452",
+            "code": "PLE452",
+            "name": "Ethics and Professional Responsibility"
+          },
+          {
+            "id": "pln455",
+            "code": "PLN455",
+            "name": "Alternative Dispute Resolution"
+          },
+          {
+            "id": "plo453",
+            "code": "PLO453",
+            "name": "Provincial Offences/ Motor Vehicle Offences"
+          },
+          {
+            "id": "plp454",
+            "code": "PLP454",
+            "name": "Practice Management and Business Communications"
+          },
+          {
+            "id": "plr311",
+            "code": "PLR311",
+            "name": "Refugee Law for Paralegals"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "PSWC",
+    "programName": "Personal Support Worker",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "psw115",
+            "code": "PSW115",
+            "name": "Introduction to Personal Support Worker"
+          },
+          {
+            "id": "psw120",
+            "code": "PSW120",
+            "name": "Client and Family Centred Care"
+          },
+          {
+            "id": "psw125",
+            "code": "PSW125",
+            "name": "Human Body and Illness Management"
+          },
+          {
+            "id": "psw130",
+            "code": "PSW130",
+            "name": "Fundamental Skills for the Personal Support Worker"
+          },
+          {
+            "id": "psw135",
+            "code": "PSW135",
+            "name": "Safe Client Care"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "psw225",
+            "code": "PSW225",
+            "name": "Palliative Care Across Contexts"
+          },
+          {
+            "id": "psw230",
+            "code": "PSW230",
+            "name": "Mental Health and Cognitive Impairment"
+          },
+          {
+            "id": "psw235",
+            "code": "PSW235",
+            "name": "Practicum Placement-Facility"
+          },
+          {
+            "id": "psw240",
+            "code": "PSW240",
+            "name": "Practicum Placement-Preceptorship"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "RAQ",
+    "programName": "Pharmaceutical Regulatory Affairs & Quality Operations",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "pbb814",
+            "code": "PBB814",
+            "name": "Biotechnology and Biopharmaceuticals"
+          },
+          {
+            "id": "pfm714",
+            "code": "PFM714",
+            "name": "Product Formulation and Manufacturing"
+          },
+          {
+            "id": "pqa711",
+            "code": "PQA711",
+            "name": "Introduction to Quality Assurance"
+          },
+          {
+            "id": "pra700",
+            "code": "PRA700",
+            "name": "Introduction to Pharmaceutical Regulatory Affairs"
+          },
+          {
+            "id": "twc713",
+            "code": "TWC713",
+            "name": "Technical Writing and Communication I"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "raq441",
+            "code": "RAQ441",
+            "name": "Pharmaceutical Regulatory Affairs, Work Term"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "ira815",
+            "code": "IRA815",
+            "name": "International Regulatory Affairs and Harmonization"
+          },
+          {
+            "id": "pcr901",
+            "code": "PCR901",
+            "name": "Introduction to Clinical Research"
+          },
+          {
+            "id": "pec715",
+            "code": "PEC715",
+            "name": "Pharmacoeconomics"
+          },
+          {
+            "id": "pqa811",
+            "code": "PQA811",
+            "name": "Quality Assurance II"
+          },
+          {
+            "id": "pra800",
+            "code": "PRA800",
+            "name": "Regulatory Affairs II"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "LAW",
+    "programName": "Police Foundations",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "law120",
+            "code": "LAW120",
+            "name": "Criminal Law and the Charter"
+          },
+          {
+            "id": "law130",
+            "code": "LAW130",
+            "name": "Criminal Justice and Community Services"
+          },
+          {
+            "id": "law140",
+            "code": "LAW140",
+            "name": "Interviewing and Communications in Law Enforcement"
+          },
+          {
+            "id": "pfd150",
+            "code": "PFD150",
+            "name": "Career Preparation and Fitness Leadership"
+          },
+          {
+            "id": "pfd180",
+            "code": "PFD180",
+            "name": "Diversity and Indigenous Peoples in Canada"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "law220",
+            "code": "LAW220",
+            "name": "Arrest, Search and Use of Force"
+          },
+          {
+            "id": "law230",
+            "code": "LAW230",
+            "name": "Criminal Code Offences"
+          },
+          {
+            "id": "law240",
+            "code": "LAW240",
+            "name": "Security and Crime Prevention"
+          },
+          {
+            "id": "pfd260",
+            "code": "PFD260",
+            "name": "Crisis Intervention and Defensive Tactics"
+          },
+          {
+            "id": "pfd270",
+            "code": "PFD270",
+            "name": "Criminology and Criminal Behaviour"
+          },
+          {
+            "id": "psy100",
+            "code": "PSY100",
+            "name": "Introduction to Psychology"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "pfd310",
+            "code": "PFD310",
+            "name": "Forensic Crime Scene Investigation"
+          },
+          {
+            "id": "pfd360",
+            "code": "PFD360",
+            "name": "Youth in Conflict With the Law"
+          },
+          {
+            "id": "pfd370",
+            "code": "PFD370",
+            "name": "Ethical Reasoning in Public Safety"
+          },
+          {
+            "id": "pfd380",
+            "code": "PFD380",
+            "name": "Crime Prevention Through Community Mobilization"
+          },
+          {
+            "id": "pfd390",
+            "code": "PFD390",
+            "name": "Interpersonal Communications and Mental Health Issues"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "pfd410",
+            "code": "PFD410",
+            "name": "Traffic Enforcement Investigations"
+          },
+          {
+            "id": "pfd420",
+            "code": "PFD420",
+            "name": "Provincial and Federal Statutes"
+          },
+          {
+            "id": "pfd445",
+            "code": "PFD445",
+            "name": "Evidence and Interviewing"
+          },
+          {
+            "id": "pfd470",
+            "code": "PFD470",
+            "name": "Career Preparation and Leadership II"
+          },
+          {
+            "id": "pfd480",
+            "code": "PFD480",
+            "name": "Applied Topics: Public Safety"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 6
+      }
+    ]
+  },
+  {
+    "programId": "PND",
+    "programName": "Practical Nursing",
+    "semesters": [
+      {
+        "id": "semester6",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "mdm101",
+            "code": "MDM101",
+            "name": "Mathematics for Medication Administration"
+          },
+          {
+            "id": "pna100",
+            "code": "PNA100",
+            "name": "Anatomy and Physiology for the Practical Nurse"
+          },
+          {
+            "id": "pnc121",
+            "code": "PNC121",
+            "name": "Practical Nursing - Clinical Preparation"
+          },
+          {
+            "id": "pnh101",
+            "code": "PNH101",
+            "name": "Health and Healing for the Practical Nurse"
+          },
+          {
+            "id": "pnl110",
+            "code": "PNL110",
+            "name": "Skills Lab for the Practical Nurse I"
+          },
+          {
+            "id": "pnr100",
+            "code": "PNR100",
+            "name": "Role Development for the Practical Nurse"
+          }
+        ]
+      },
+      {
+        "id": "semester7",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "pna200",
+            "code": "PNA200",
+            "name": "Anatomy and Physiology for the Practical Nurse"
+          },
+          {
+            "id": "pnc220",
+            "code": "PNC220",
+            "name": "Practical Nursing and Clinical"
+          },
+          {
+            "id": "pne203",
+            "code": "PNE203",
+            "name": "Health Assessment for Practical Nurses"
+          },
+          {
+            "id": "pnh201",
+            "code": "PNH201",
+            "name": "Healing Practices for Practical Nurses II"
+          },
+          {
+            "id": "pnl210",
+            "code": "PNL210",
+            "name": "Skills Lab for the Practical Nurse I"
+          },
+          {
+            "id": "psy100",
+            "code": "PSY100",
+            "name": "Introduction to Psychology"
+          }
+        ]
+      },
+      {
+        "id": "semester8",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "pnc320",
+            "code": "PNC320",
+            "name": "Practical Nursing Clinical"
+          },
+          {
+            "id": "pnh301",
+            "code": "PNH301",
+            "name": "Healing Practices for the Practical Nurse III"
+          },
+          {
+            "id": "pnm300",
+            "code": "PNM300",
+            "name": "Pharmacology for the Practical Nurse"
+          },
+          {
+            "id": "pnp301",
+            "code": "PNP301",
+            "name": "Pathophysiology for the Practical Nurse I"
+          },
+          {
+            "id": "pnr300",
+            "code": "PNR300",
+            "name": "Role Development for the Practical Nurse"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester9",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "pnc420",
+            "code": "PNC420",
+            "name": "Practical Nursing Clinical"
+          },
+          {
+            "id": "pnh401",
+            "code": "PNH401",
+            "name": "Healing Practices for the Practical Nurse IV"
+          },
+          {
+            "id": "pnp401",
+            "code": "PNP401",
+            "name": "Pathophysiology for the Practical Nurse II"
+          },
+          {
+            "id": "pnr400",
+            "code": "PNR400",
+            "name": "Role Development for the Practical Nurse"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 2,
+            "description": "General Education Course (2)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester10",
+        "name": "Semester 5",
+        "courses": [
+          {
+            "id": "pnc520",
+            "code": "PNC520",
+            "name": "Practical Nursing Consolidation"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "PBS",
+    "programName": "Pre-Business",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "acc103",
+            "code": "ACC103",
+            "name": "Pre-Business Accounting I"
+          },
+          {
+            "id": "bam107",
+            "code": "BAM107",
+            "name": "Business Foundations I"
+          },
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "mbf100",
+            "code": "MBF100",
+            "name": "Mathematics of Business and Finance"
+          },
+          {
+            "id": "mrk113",
+            "code": "MRK113",
+            "name": "Introduction to Marketing I"
+          },
+          {
+            "id": "sms113",
+            "code": "SMS113",
+            "name": "Business Computer Applications I"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "acc104",
+            "code": "ACC104",
+            "name": "Pre-Business Accounting II"
+          },
+          {
+            "id": "bam108",
+            "code": "BAM108",
+            "name": "Business Foundations II"
+          },
+          {
+            "id": "mrk114",
+            "code": "MRK114",
+            "name": "Introduction to Marketing II"
+          },
+          {
+            "id": "pps100",
+            "code": "PPS100",
+            "name": "Professional Presentation Skills"
+          },
+          {
+            "id": "sdg101",
+            "code": "SDG101",
+            "name": "Introduction to Sustainable Business"
+          },
+          {
+            "id": "sms114",
+            "code": "SMS114",
+            "name": "Business Computer Applications II"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 7
+      }
+    ]
+  },
+  {
+    "programId": "PHS",
+    "programName": "Pre-Health Sciences Pathway to Advanced Diplomas & Degrees",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "bio105",
+            "code": "BIO105",
+            "name": "Biology"
+          },
+          {
+            "id": "chm101",
+            "code": "CHM101",
+            "name": "Chemistry"
+          },
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "mth135",
+            "code": "MTH135",
+            "name": "Foundations of Mathematics"
+          },
+          {
+            "id": "sci101",
+            "code": "SCI101",
+            "name": "Pathway to Academic and Career Excellence"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "bio215",
+            "code": "BIO215",
+            "name": "Human Biology"
+          },
+          {
+            "id": "bio216",
+            "code": "BIO216",
+            "name": "Anatomy and Physiology of Wellness"
+          },
+          {
+            "id": "chm201",
+            "code": "CHM201",
+            "name": "Chemistry"
+          },
+          {
+            "id": "mth177",
+            "code": "MTH177",
+            "name": "Mathematics of Data Management"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 5
+      }
+    ]
+  },
+  {
+    "programId": "PRA",
+    "programName": "Professional Accounting Practice",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "bab140",
+            "code": "BAB140",
+            "name": "Introduction to Financial Accounting"
+          },
+          {
+            "id": "bab210",
+            "code": "BAB210",
+            "name": "Business Statistics"
+          },
+          {
+            "id": "bab231",
+            "code": "BAB231",
+            "name": "Introduction to Business Law"
+          },
+          {
+            "id": "iaf330",
+            "code": "IAF330",
+            "name": "Finance"
+          },
+          {
+            "id": "iaf340",
+            "code": "IAF340",
+            "name": "Business Information Systems"
+          },
+          {
+            "id": "lsp240",
+            "code": "LSP240",
+            "name": "Micro Economics - Theory and Practice"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "bab240",
+            "code": "BAB240",
+            "name": "Management Accounting"
+          },
+          {
+            "id": "iaf310",
+            "code": "IAF310",
+            "name": "Intermediate Financial Accounting I"
+          },
+          {
+            "id": "iaf320",
+            "code": "IAF320",
+            "name": "Income Tax I"
+          },
+          {
+            "id": "iaf520",
+            "code": "IAF520",
+            "name": "Auditing"
+          },
+          {
+            "id": "iaf620",
+            "code": "IAF620",
+            "name": "Financial Management"
+          },
+          {
+            "id": "lsp340",
+            "code": "LSP340",
+            "name": "Macroeconomics - Theory and Practice"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "iaf410",
+            "code": "IAF410",
+            "name": "Intermediate Financial Accounting II"
+          },
+          {
+            "id": "iaf420",
+            "code": "IAF420",
+            "name": "Income Tax II"
+          },
+          {
+            "id": "iaf530",
+            "code": "IAF530",
+            "name": "Management Accounting - Intermediate"
+          },
+          {
+            "id": "iaf640",
+            "code": "IAF640",
+            "name": "Business Cases I"
+          },
+          {
+            "id": "iaf710",
+            "code": "IAF710",
+            "name": "Advanced Financial Accounting"
+          },
+          {
+            "id": "iaf831",
+            "code": "IAF831",
+            "name": "International Strategic Management"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "PSL",
+    "programName": "Professional Selling",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "crm701",
+            "code": "CRM701",
+            "name": "Sales Technology"
+          },
+          {
+            "id": "psl101",
+            "code": "PSL101",
+            "name": "Prospecting Fundamentals"
+          },
+          {
+            "id": "psl102",
+            "code": "PSL102",
+            "name": "Effective Client Conversations"
+          },
+          {
+            "id": "psl103",
+            "code": "PSL103",
+            "name": "Sales Process Essentials"
+          },
+          {
+            "id": "psl104",
+            "code": "PSL104",
+            "name": "Virtual Selling"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "mkm707",
+            "code": "MKM707",
+            "name": "Marketing Fundamentals for Sales Professionals"
+          },
+          {
+            "id": "psl201",
+            "code": "PSL201",
+            "name": "Inside Sales/Customer Success"
+          },
+          {
+            "id": "psl202",
+            "code": "PSL202",
+            "name": "Sales Technology and Analytics"
+          },
+          {
+            "id": "psl203",
+            "code": "PSL203",
+            "name": "Advanced Client Conversations"
+          },
+          {
+            "id": "psl204",
+            "code": "PSL204",
+            "name": "Communicating Value and Impact"
+          },
+          {
+            "id": "psl205",
+            "code": "PSL205",
+            "name": "Capstone Project"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "psl441",
+            "code": "PSL441",
+            "name": "Professional Selling, Work Term"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "PME",
+    "programName": "Project Management – Environmental",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "pme100",
+            "code": "PME100",
+            "name": "Applied Communications for Business and Industry"
+          },
+          {
+            "id": "pme101",
+            "code": "PME101",
+            "name": "The Sustainability Matrix"
+          },
+          {
+            "id": "pme104",
+            "code": "PME104",
+            "name": "Introduction to Internship"
+          },
+          {
+            "id": "pme170",
+            "code": "PME170",
+            "name": "Business Principles"
+          },
+          {
+            "id": "pme200",
+            "code": "PME200",
+            "name": "Project Management Fundamentals"
+          },
+          {
+            "id": "pme201",
+            "code": "PME201",
+            "name": "Planning and Controlling the Baseline"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "pme202",
+            "code": "PME202",
+            "name": "Geographic Information Systems and Data Management"
+          },
+          {
+            "id": "pme230",
+            "code": "PME230",
+            "name": "Environmental Law"
+          },
+          {
+            "id": "pme240",
+            "code": "PME240",
+            "name": "Civil Infrastructure"
+          },
+          {
+            "id": "pme400",
+            "code": "PME400",
+            "name": "Applied Project Management II"
+          },
+          {
+            "id": "pme707",
+            "code": "PME707",
+            "name": "Environmental Management Systems"
+          },
+          {
+            "id": "pme808",
+            "code": "PME808",
+            "name": "Environmental Risk Management"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "PMC",
+    "programName": "Project Management – Information Technology",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com610",
+            "code": "COM610",
+            "name": "Communication Skills for IT Project Managers"
+          },
+          {
+            "id": "pmc115",
+            "code": "PMC115",
+            "name": "IT Project Mgmt. Fundamentals, Tools and Techniques"
+          },
+          {
+            "id": "pmc120",
+            "code": "PMC120",
+            "name": "Business Systems Environments"
+          },
+          {
+            "id": "pmc130",
+            "code": "PMC130",
+            "name": "Fundamentals of Systems Development"
+          },
+          {
+            "id": "pmc140",
+            "code": "PMC140",
+            "name": "Project Leadership"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "fnc750",
+            "code": "FNC750",
+            "name": "Finance for IT Project Managers"
+          },
+          {
+            "id": "pmc200",
+            "code": "PMC200",
+            "name": "Advanced IT Project Management"
+          },
+          {
+            "id": "pmc220",
+            "code": "PMC220",
+            "name": "Contract Law, Ethics and IT Professionalism"
+          },
+          {
+            "id": "pmc230",
+            "code": "PMC230",
+            "name": "IT Project Management Case Studies"
+          },
+          {
+            "id": "pmc240",
+            "code": "PMC240",
+            "name": "Quality Assurance and Testing in IT Projects"
+          },
+          {
+            "id": "pmc250",
+            "code": "PMC250",
+            "name": "Applied IT Project Management"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "pmc441",
+            "code": "PMC441",
+            "name": "Project Management IT, Work Term"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "PAD",
+    "programName": "Public Administration",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "pad110",
+            "code": "PAD110",
+            "name": "Municipal Issues and the Evolution of Local Government"
+          },
+          {
+            "id": "pad130",
+            "code": "PAD130",
+            "name": "Public Sector Financial Management"
+          },
+          {
+            "id": "pad140",
+            "code": "PAD140",
+            "name": "Public Sector Governance and Systems"
+          },
+          {
+            "id": "pad150",
+            "code": "PAD150",
+            "name": "Communications in Public Administration"
+          },
+          {
+            "id": "pad220",
+            "code": "PAD220",
+            "name": "Municipal Management and Administrative Structures"
+          },
+          {
+            "id": "pad230",
+            "code": "PAD230",
+            "name": "Project Management"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "pad120",
+            "code": "PAD120",
+            "name": "Municipal Law and Ethics in Government"
+          },
+          {
+            "id": "pad160",
+            "code": "PAD160",
+            "name": "Municipal Revenues"
+          },
+          {
+            "id": "pad210",
+            "code": "PAD210",
+            "name": "Human Resources and Municipal Management"
+          },
+          {
+            "id": "pad250",
+            "code": "PAD250",
+            "name": "Dispute Resolution in Municipal Government"
+          },
+          {
+            "id": "pad260",
+            "code": "PAD260",
+            "name": "Public Policy Research and Analysis"
+          },
+          {
+            "id": "pad280",
+            "code": "PAD280",
+            "name": "Work Integrated Project"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "pad441",
+            "code": "PAD441",
+            "name": "Public Administration, Work Term"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "PRC",
+    "programName": "Public Relations – Corporate Communications",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "ccm701",
+            "code": "CCM701",
+            "name": "Writing for Public Relations Practitioners I"
+          },
+          {
+            "id": "ccm707",
+            "code": "CCM707",
+            "name": "Digital and Social Media"
+          },
+          {
+            "id": "ccm708",
+            "code": "CCM708",
+            "name": "Public Relations Management Techniques - Internal"
+          },
+          {
+            "id": "ccm718",
+            "code": "CCM718",
+            "name": "Strategic Communication Planning"
+          },
+          {
+            "id": "ccm737",
+            "code": "CCM737",
+            "name": "Media Relations"
+          },
+          {
+            "id": "ccm745",
+            "code": "CCM745",
+            "name": "Principles of Public Relations"
+          },
+          {
+            "id": "ccm747",
+            "code": "CCM747",
+            "name": "Introduction to Research"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "ccm702",
+            "code": "CCM702",
+            "name": "Writing for Public Relations Practitioners II"
+          },
+          {
+            "id": "ccm715",
+            "code": "CCM715",
+            "name": "Advanced Presentation Skills I"
+          },
+          {
+            "id": "ccm717",
+            "code": "CCM717",
+            "name": "Digital Communications: Strategies and Applications"
+          },
+          {
+            "id": "ccm726",
+            "code": "CCM726",
+            "name": "Corporate Communications Seminars"
+          },
+          {
+            "id": "ccm741",
+            "code": "CCM741",
+            "name": "Public Relations Research Project"
+          },
+          {
+            "id": "ccm746",
+            "code": "CCM746",
+            "name": "Investor Relations"
+          },
+          {
+            "id": "ccm749",
+            "code": "CCM749",
+            "name": "International Communications"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "prc441",
+            "code": "PRC441",
+            "name": "Public Relations - Corp Comm, Work Term"
+          }
+        ]
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "ccm751",
+            "code": "CCM751",
+            "name": "Public Relations Career Management"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "RPA",
+    "programName": "Real Property Administration (Assessment & Appraisal)",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "rpa107",
+            "code": "RPA107",
+            "name": "Spreadsheet Analysis I"
+          },
+          {
+            "id": "rpa112",
+            "code": "RPA112",
+            "name": "The Appraisal of Real Estate"
+          },
+          {
+            "id": "rpa115",
+            "code": "RPA115",
+            "name": "Mortgage Underwriting"
+          },
+          {
+            "id": "rpa120",
+            "code": "RPA120",
+            "name": "Principles of Microeconomics"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "rpa208",
+            "code": "RPA208",
+            "name": "Canadian Real Property Law and Real Estate Ethics"
+          },
+          {
+            "id": "rpa210",
+            "code": "RPA210",
+            "name": "Municipal Tax Administration"
+          },
+          {
+            "id": "rpa212",
+            "code": "RPA212",
+            "name": "Real Estate Investment Analysis and Adv. Income App."
+          },
+          {
+            "id": "rpa220",
+            "code": "RPA220",
+            "name": "Ethical Guide for the Assessor"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 5
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "csp201",
+            "code": "CSP201",
+            "name": "Communication Skills for Public Administration"
+          },
+          {
+            "id": "fpl355",
+            "code": "FPL355",
+            "name": "Field Placement I"
+          },
+          {
+            "id": "rpa304",
+            "code": "RPA304",
+            "name": "Advanced Real Property Assessment I"
+          },
+          {
+            "id": "rpa306",
+            "code": "RPA306",
+            "name": "Construction and Cost Techniques"
+          },
+          {
+            "id": "rpa307",
+            "code": "RPA307",
+            "name": "Statistical and Computer Applications in Valuation"
+          },
+          {
+            "id": "rpa323",
+            "code": "RPA323",
+            "name": "Assessment Appeals"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "fpl455",
+            "code": "FPL455",
+            "name": "Field Placement II"
+          },
+          {
+            "id": "rpa407",
+            "code": "RPA407",
+            "name": "Spreadsheet Analysis II"
+          },
+          {
+            "id": "rpa414",
+            "code": "RPA414",
+            "name": "Alternative Dispute Resolution"
+          },
+          {
+            "id": "rpa415",
+            "code": "RPA415",
+            "name": "Professional Issues in the Assessment Industry"
+          },
+          {
+            "id": "rpa422",
+            "code": "RPA422",
+            "name": "Residential Data Collection"
+          },
+          {
+            "id": "rpa423",
+            "code": "RPA423",
+            "name": "Appeals in Practice"
+          },
+          {
+            "id": "rpa426",
+            "code": "RPA426",
+            "name": "Income Properties"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "RPAA",
+    "programName": "Real Property Administration (Assessment & Appraisal) (Accelerated)",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "csp201",
+            "code": "CSP201",
+            "name": "Communication Skills for Public Administration"
+          },
+          {
+            "id": "fpl355",
+            "code": "FPL355",
+            "name": "Field Placement I"
+          },
+          {
+            "id": "rpa107",
+            "code": "RPA107",
+            "name": "Spreadsheet Analysis I"
+          },
+          {
+            "id": "rpa112",
+            "code": "RPA112",
+            "name": "The Appraisal of Real Estate"
+          },
+          {
+            "id": "rpa115",
+            "code": "RPA115",
+            "name": "Mortgage Underwriting"
+          },
+          {
+            "id": "rpa120",
+            "code": "RPA120",
+            "name": "Principles of Microeconomics"
+          },
+          {
+            "id": "rpa304",
+            "code": "RPA304",
+            "name": "Advanced Real Property Assessment I"
+          },
+          {
+            "id": "rpa306",
+            "code": "RPA306",
+            "name": "Construction and Cost Techniques"
+          },
+          {
+            "id": "rpa307",
+            "code": "RPA307",
+            "name": "Statistical and Computer Applications in Valuation"
+          },
+          {
+            "id": "rpa323",
+            "code": "RPA323",
+            "name": "Assessment Appeals"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "fpl455",
+            "code": "FPL455",
+            "name": "Field Placement II"
+          },
+          {
+            "id": "rpa208",
+            "code": "RPA208",
+            "name": "Canadian Real Property Law and Real Estate Ethics"
+          },
+          {
+            "id": "rpa210",
+            "code": "RPA210",
+            "name": "Municipal Tax Administration"
+          },
+          {
+            "id": "rpa212",
+            "code": "RPA212",
+            "name": "Real Estate Investment Analysis and Adv. Income App."
+          },
+          {
+            "id": "rpa220",
+            "code": "RPA220",
+            "name": "Ethical Guide for the Assessor"
+          },
+          {
+            "id": "rpa407",
+            "code": "RPA407",
+            "name": "Spreadsheet Analysis II"
+          },
+          {
+            "id": "rpa414",
+            "code": "RPA414",
+            "name": "Alternative Dispute Resolution"
+          },
+          {
+            "id": "rpa415",
+            "code": "RPA415",
+            "name": "Professional Issues in the Assessment Industry"
+          },
+          {
+            "id": "rpa422",
+            "code": "RPA422",
+            "name": "Residential Data Collection"
+          },
+          {
+            "id": "rpa423",
+            "code": "RPA423",
+            "name": "Appeals in Practice"
+          },
+          {
+            "id": "rpa426",
+            "code": "RPA426",
+            "name": "Income Properties"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "SSW",
+    "programName": "Social Service Worker",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "sll307",
+            "code": "SLL307",
+            "name": "Sociology: A Practical Approach"
+          },
+          {
+            "id": "ssw101",
+            "code": "SSW101",
+            "name": "Interpersonal Communications"
+          },
+          {
+            "id": "ssw102",
+            "code": "SSW102",
+            "name": "Anti Oppressive Practice"
+          },
+          {
+            "id": "ssw136",
+            "code": "SSW136",
+            "name": "Social Justice Approaches to Social Problems"
+          },
+          {
+            "id": "ssw147",
+            "code": "SSW147",
+            "name": "Preparation for Social Service Work Practice"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "ssw201",
+            "code": "SSW201",
+            "name": "Group Dynamics"
+          },
+          {
+            "id": "ssw206",
+            "code": "SSW206",
+            "name": "Resiliency through the Life Span"
+          },
+          {
+            "id": "ssw212",
+            "code": "SSW212",
+            "name": "Interviewing Skills and Principles"
+          },
+          {
+            "id": "ssw227",
+            "code": "SSW227",
+            "name": "Families in Change"
+          },
+          {
+            "id": "ssw247",
+            "code": "SSW247",
+            "name": "Field Seminar I"
+          },
+          {
+            "id": "ssw257",
+            "code": "SSW257",
+            "name": "Field Practicum I"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "ssw311",
+            "code": "SSW311",
+            "name": "Service Coordination and Advocacy"
+          },
+          {
+            "id": "ssw312",
+            "code": "SSW312",
+            "name": "Supportive Counselling"
+          },
+          {
+            "id": "ssw347",
+            "code": "SSW347",
+            "name": "Field Seminar II"
+          },
+          {
+            "id": "ssw357",
+            "code": "SSW357",
+            "name": "Field Practicum II"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          },
+          {
+            "type": "Professional Options",
+            "count": 1,
+            "description": "Professional Options (1)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "ssw401",
+            "code": "SSW401",
+            "name": "Social Welfare and Policy"
+          },
+          {
+            "id": "ssw402",
+            "code": "SSW402",
+            "name": "Community Practice"
+          },
+          {
+            "id": "ssw447",
+            "code": "SSW447",
+            "name": "Field Seminar III"
+          },
+          {
+            "id": "ssw457",
+            "code": "SSW457",
+            "name": "Field Practicum III"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 2,
+            "description": "General Education Course (2)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester5",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "bhs204",
+            "code": "BHS204",
+            "name": "Autism and Developmental Disabilities"
+          },
+          {
+            "id": "cyc376",
+            "code": "CYC376",
+            "name": "Human Sexuality"
+          },
+          {
+            "id": "cyc377",
+            "code": "CYC377",
+            "name": "Impact of Social Networking"
+          },
+          {
+            "id": "gwl137",
+            "code": "GWL137",
+            "name": "Introduction to Aging"
+          },
+          {
+            "id": "gwl377",
+            "code": "GWL377",
+            "name": "Volunteer Program Management"
+          },
+          {
+            "id": "ssw371",
+            "code": "SSW371",
+            "name": "Selected Issues: Intimate Partner Abuse and Violence"
+          },
+          {
+            "id": "ssw372",
+            "code": "SSW372",
+            "name": "Selected Issues: Addictions"
+          },
+          {
+            "id": "ssw373",
+            "code": "SSW373",
+            "name": "Selected Issues: Mental Health"
+          },
+          {
+            "id": "ssw374",
+            "code": "SSW374",
+            "name": "Selected Issues: Child Welfare"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "SSWA",
+    "programName": "Social Service Worker (Accelerated)",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "ssw101",
+            "code": "SSW101",
+            "name": "Interpersonal Communications"
+          },
+          {
+            "id": "ssw102",
+            "code": "SSW102",
+            "name": "Anti Oppressive Practice"
+          },
+          {
+            "id": "ssw147",
+            "code": "SSW147",
+            "name": "Preparation for Social Service Work Practice"
+          },
+          {
+            "id": "ssw201",
+            "code": "SSW201",
+            "name": "Group Dynamics"
+          },
+          {
+            "id": "ssw212",
+            "code": "SSW212",
+            "name": "Interviewing Skills and Principles"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "ssw311",
+            "code": "SSW311",
+            "name": "Service Coordination and Advocacy"
+          },
+          {
+            "id": "ssw312",
+            "code": "SSW312",
+            "name": "Supportive Counselling"
+          },
+          {
+            "id": "ssw347",
+            "code": "SSW347",
+            "name": "Field Seminar II"
+          },
+          {
+            "id": "ssw357",
+            "code": "SSW357",
+            "name": "Field Practicum II"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "Professional Options",
+            "count": 1,
+            "description": "Professional Options (1)"
+          }
+        ],
+        "totalCourses": 5
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "ssw227",
+            "code": "SSW227",
+            "name": "Families in Change"
+          },
+          {
+            "id": "ssw401",
+            "code": "SSW401",
+            "name": "Social Welfare and Policy"
+          },
+          {
+            "id": "ssw402",
+            "code": "SSW402",
+            "name": "Community Practice"
+          },
+          {
+            "id": "ssw447",
+            "code": "SSW447",
+            "name": "Field Seminar III"
+          },
+          {
+            "id": "ssw457",
+            "code": "SSW457",
+            "name": "Field Practicum III"
+          }
+        ]
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "bhs204",
+            "code": "BHS204",
+            "name": "Autism and Developmental Disabilities"
+          },
+          {
+            "id": "gwl137",
+            "code": "GWL137",
+            "name": "Introduction to Aging"
+          },
+          {
+            "id": "gwl377",
+            "code": "GWL377",
+            "name": "Volunteer Program Management"
+          },
+          {
+            "id": "ssw371",
+            "code": "SSW371",
+            "name": "Selected Issues: Intimate Partner Abuse and Violence"
+          },
+          {
+            "id": "ssw372",
+            "code": "SSW372",
+            "name": "Selected Issues: Addictions"
+          },
+          {
+            "id": "ssw373",
+            "code": "SSW373",
+            "name": "Selected Issues: Mental Health"
+          },
+          {
+            "id": "ssw374",
+            "code": "SSW374",
+            "name": "Selected Issues: Child Welfare"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "SSWG",
+    "programName": "Social Service Worker – Gerontology",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "gwl137",
+            "code": "GWL137",
+            "name": "Introduction to Aging"
+          },
+          {
+            "id": "gwl147",
+            "code": "GWL147",
+            "name": "Gerontology Field Work Seminar"
+          },
+          {
+            "id": "sll307",
+            "code": "SLL307",
+            "name": "Sociology: A Practical Approach"
+          },
+          {
+            "id": "ssw101",
+            "code": "SSW101",
+            "name": "Interpersonal Communications"
+          },
+          {
+            "id": "ssw102",
+            "code": "SSW102",
+            "name": "Anti Oppressive Practice"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "gwl208",
+            "code": "GWL208",
+            "name": "Gerontological Group and Activation Techniques"
+          },
+          {
+            "id": "gwl212",
+            "code": "GWL212",
+            "name": "Interviewing and Assessing Older Adults"
+          },
+          {
+            "id": "gwl219",
+            "code": "GWL219",
+            "name": "The Retirement Home Industry - Overview and Skills"
+          },
+          {
+            "id": "gwl247",
+            "code": "GWL247",
+            "name": "Integrative Field Work Seminar"
+          },
+          {
+            "id": "gwl257",
+            "code": "GWL257",
+            "name": "Gerontology Field Work"
+          },
+          {
+            "id": "gwl261",
+            "code": "GWL261",
+            "name": "Therapeutic Program Planning"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "gwl318",
+            "code": "GWL318",
+            "name": "Therapeutic Interventions for Dementia"
+          },
+          {
+            "id": "gwl347",
+            "code": "GWL347",
+            "name": "Integrative Field Work Seminar"
+          },
+          {
+            "id": "gwl357",
+            "code": "GWL357",
+            "name": "Gerontology Field Work"
+          },
+          {
+            "id": "gwl377",
+            "code": "GWL377",
+            "name": "Volunteer Program Management"
+          },
+          {
+            "id": "ssw311",
+            "code": "SSW311",
+            "name": "Service Coordination and Advocacy"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "gwl407",
+            "code": "GWL407",
+            "name": "Death, Dying, Grief and Bereavement"
+          },
+          {
+            "id": "gwl447",
+            "code": "GWL447",
+            "name": "Integrative Field Work Seminar"
+          },
+          {
+            "id": "gwl457",
+            "code": "GWL457",
+            "name": "Gerontology Field Work"
+          },
+          {
+            "id": "ssw402",
+            "code": "SSW402",
+            "name": "Community Practice"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 2,
+            "description": "General Education Course (2)"
+          }
+        ],
+        "totalCourses": 6
+      }
+    ]
+  },
+  {
+    "programId": "SSWI",
+    "programName": "Social Service Worker – Immigrants and Refugees",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "ssw101",
+            "code": "SSW101",
+            "name": "Interpersonal Communications"
+          },
+          {
+            "id": "ssw102",
+            "code": "SSW102",
+            "name": "Anti Oppressive Practice"
+          },
+          {
+            "id": "ssw206",
+            "code": "SSW206",
+            "name": "Resiliency through the Life Span"
+          },
+          {
+            "id": "wir100",
+            "code": "WIR100",
+            "name": "Introduction to Immigrant and Refugee Policies"
+          },
+          {
+            "id": "wir147",
+            "code": "WIR147",
+            "name": "Field Seminar: Laws, Principles and Ethics"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "ssw201",
+            "code": "SSW201",
+            "name": "Group Dynamics"
+          },
+          {
+            "id": "ssw212",
+            "code": "SSW212",
+            "name": "Interviewing Skills and Principles"
+          },
+          {
+            "id": "wir208",
+            "code": "WIR208",
+            "name": "Introduction to Settlement Sectors"
+          },
+          {
+            "id": "wir227",
+            "code": "WIR227",
+            "name": "Immigrant Families and Systemic Violence"
+          },
+          {
+            "id": "wir247",
+            "code": "WIR247",
+            "name": "Integrative Field Work Seminar"
+          },
+          {
+            "id": "wir257",
+            "code": "WIR257",
+            "name": "Field Placement"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "ssw311",
+            "code": "SSW311",
+            "name": "Service Coordination and Advocacy"
+          },
+          {
+            "id": "ssw312",
+            "code": "SSW312",
+            "name": "Supportive Counselling"
+          },
+          {
+            "id": "wir347",
+            "code": "WIR347",
+            "name": "Integrative Field Work Seminar"
+          },
+          {
+            "id": "wir357",
+            "code": "WIR357",
+            "name": "Field Placement"
+          },
+          {
+            "id": "wir377",
+            "code": "WIR377",
+            "name": "Non-Profit Funding and Grant Writing"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "ssw402",
+            "code": "SSW402",
+            "name": "Community Practice"
+          },
+          {
+            "id": "wir408",
+            "code": "WIR408",
+            "name": "Migration and Trauma"
+          },
+          {
+            "id": "wir447",
+            "code": "WIR447",
+            "name": "Integrative Field Work Seminar"
+          },
+          {
+            "id": "wir457",
+            "code": "WIR457",
+            "name": "Field Placement"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 2,
+            "description": "General Education Course (2)"
+          }
+        ],
+        "totalCourses": 6
+      }
+    ]
+  },
+  {
+    "programId": "SSIA",
+    "programName": "Social Service Worker – Immigrants and Refugees (Accelerated)",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "ssw102",
+            "code": "SSW102",
+            "name": "Anti Oppressive Practice"
+          },
+          {
+            "id": "ssw212",
+            "code": "SSW212",
+            "name": "Interviewing Skills and Principles"
+          },
+          {
+            "id": "wir100",
+            "code": "WIR100",
+            "name": "Introduction to Immigrant and Refugee Policies"
+          },
+          {
+            "id": "wir147",
+            "code": "WIR147",
+            "name": "Field Seminar: Laws, Principles and Ethics"
+          },
+          {
+            "id": "wir208",
+            "code": "WIR208",
+            "name": "Introduction to Settlement Sectors"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "ssw206",
+            "code": "SSW206",
+            "name": "Resiliency through the Life Span"
+          },
+          {
+            "id": "ssw311",
+            "code": "SSW311",
+            "name": "Service Coordination and Advocacy"
+          },
+          {
+            "id": "ssw312",
+            "code": "SSW312",
+            "name": "Supportive Counselling"
+          },
+          {
+            "id": "wir347",
+            "code": "WIR347",
+            "name": "Integrative Field Work Seminar"
+          },
+          {
+            "id": "wir357",
+            "code": "WIR357",
+            "name": "Field Placement"
+          },
+          {
+            "id": "wir377",
+            "code": "WIR377",
+            "name": "Non-Profit Funding and Grant Writing"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "ssw201",
+            "code": "SSW201",
+            "name": "Group Dynamics"
+          },
+          {
+            "id": "wir227",
+            "code": "WIR227",
+            "name": "Immigrant Families and Systemic Violence"
+          },
+          {
+            "id": "wir408",
+            "code": "WIR408",
+            "name": "Migration and Trauma"
+          },
+          {
+            "id": "wir447",
+            "code": "WIR447",
+            "name": "Integrative Field Work Seminar"
+          },
+          {
+            "id": "wir457",
+            "code": "WIR457",
+            "name": "Field Placement"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "SEM",
+    "programName": "Sports, Entertainment & Event Marketing",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "emk110",
+            "code": "EMK110",
+            "name": "Esports Experience"
+          },
+          {
+            "id": "sem115",
+            "code": "SEM115",
+            "name": "Event Marketing Strategy"
+          },
+          {
+            "id": "sem120",
+            "code": "SEM120",
+            "name": "Sports Marketing"
+          },
+          {
+            "id": "sem135",
+            "code": "SEM135",
+            "name": "Event Project Management"
+          },
+          {
+            "id": "sem145",
+            "code": "SEM145",
+            "name": "Event Financial Management"
+          },
+          {
+            "id": "sem175",
+            "code": "SEM175",
+            "name": "Event Digital Marketing Strategy"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "sem201",
+            "code": "SEM201",
+            "name": "Entertainment Marketing"
+          },
+          {
+            "id": "sem235",
+            "code": "SEM235",
+            "name": "Digital Media Applications"
+          },
+          {
+            "id": "sem245",
+            "code": "SEM245",
+            "name": "Brand Activation and Experiential Marketing"
+          },
+          {
+            "id": "sem255",
+            "code": "SEM255",
+            "name": "Sponsorship Strategy"
+          },
+          {
+            "id": "sem285",
+            "code": "SEM285",
+            "name": "Event Analytics"
+          },
+          {
+            "id": "sem295",
+            "code": "SEM295",
+            "name": "Consumer Behavior and The Event Experience"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "sem441",
+            "code": "SEM441",
+            "name": "Event Marketing - Sports, Entertainment, Arts, Work Term"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "SCM",
+    "programName": "Supply Chain Management – Global Logistics",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "scm820",
+            "code": "SCM820",
+            "name": "Business Processes I"
+          },
+          {
+            "id": "scm830",
+            "code": "SCM830",
+            "name": "Logistics and Supply Chain Management I"
+          },
+          {
+            "id": "scm840",
+            "code": "SCM840",
+            "name": "Business Analysis"
+          },
+          {
+            "id": "scm860",
+            "code": "SCM860",
+            "name": "Financial and Management Accounting"
+          },
+          {
+            "id": "scm870",
+            "code": "SCM870",
+            "name": "Scheduling and Inventory Management"
+          },
+          {
+            "id": "scm880",
+            "code": "SCM880",
+            "name": "International Purchasing and Supplier Management"
+          },
+          {
+            "id": "scm890",
+            "code": "SCM890",
+            "name": "Sustainability and CSR"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "scm850",
+            "code": "SCM850",
+            "name": "International Business Law"
+          },
+          {
+            "id": "scm920",
+            "code": "SCM920",
+            "name": "Business Processes IISupply Chain Sustainability"
+          },
+          {
+            "id": "scm930",
+            "code": "SCM930",
+            "name": "Transportation"
+          },
+          {
+            "id": "scm940",
+            "code": "SCM940",
+            "name": "Logistics and Supply Chain Management II"
+          },
+          {
+            "id": "scm960",
+            "code": "SCM960",
+            "name": "Project Management"
+          },
+          {
+            "id": "scm970",
+            "code": "SCM970",
+            "name": "Customs Process"
+          },
+          {
+            "id": "scm985",
+            "code": "SCM985",
+            "name": "Supply Chain Integrated Project"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "SMB",
+    "programName": "Sustainable Business Management",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "smb700",
+            "code": "SMB700",
+            "name": "Environmental Assessment and Business Strategy"
+          },
+          {
+            "id": "smb701",
+            "code": "SMB701",
+            "name": "Global Sustainability: Sustainable Development Goals"
+          },
+          {
+            "id": "smb703",
+            "code": "SMB703",
+            "name": "Sustainable Management"
+          },
+          {
+            "id": "smb704",
+            "code": "SMB704",
+            "name": "Social Impact"
+          },
+          {
+            "id": "smb705",
+            "code": "SMB705",
+            "name": "Sustainable Investing and Data Analytics"
+          },
+          {
+            "id": "smb805",
+            "code": "SMB805",
+            "name": "Project Management"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "smb702",
+            "code": "SMB702",
+            "name": "Sustainability Across Industries"
+          },
+          {
+            "id": "smb800",
+            "code": "SMB800",
+            "name": "Circularity Net Zero and Sustainability"
+          },
+          {
+            "id": "smb801",
+            "code": "SMB801",
+            "name": "Leadership for Sustainable Change"
+          },
+          {
+            "id": "smb802",
+            "code": "SMB802",
+            "name": "Marketing and Communication"
+          },
+          {
+            "id": "smb803",
+            "code": "SMB803",
+            "name": "Sustainable Business Model Design"
+          },
+          {
+            "id": "smb804",
+            "code": "SMB804",
+            "name": "Integrated Sustainability Proposal"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "smb441",
+            "code": "SMB441",
+            "name": "Sustainable Business Management, Work Term"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "UBS",
+    "programName": "Sustainable Urban & Transportation Planning",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "ubs201",
+            "code": "UBS201",
+            "name": "History and Theories of Community Planning"
+          },
+          {
+            "id": "ubs202",
+            "code": "UBS202",
+            "name": "Land Use Planning Principles and Policy Framework"
+          },
+          {
+            "id": "ubs203",
+            "code": "UBS203",
+            "name": "Communication and Leadership"
+          },
+          {
+            "id": "ubs204",
+            "code": "UBS204",
+            "name": "Infrastructure and Transportation Planning"
+          },
+          {
+            "id": "ubs205",
+            "code": "UBS205",
+            "name": "Geographic Information Systems and Data Visualization"
+          },
+          {
+            "id": "ubs206",
+            "code": "UBS206",
+            "name": "Planning Research Methods and Analysis (Studio) - Spatial Data Acquisition and Analysis"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "ubs301",
+            "code": "UBS301",
+            "name": "Community Well-being Planning"
+          },
+          {
+            "id": "ubs302",
+            "code": "UBS302",
+            "name": "Planning Legislation and Governance"
+          },
+          {
+            "id": "ubs303",
+            "code": "UBS303",
+            "name": "Sustainability and Applied Ecology for Urban Planners"
+          },
+          {
+            "id": "ubs304",
+            "code": "UBS304",
+            "name": "Advanced Transportation Planning"
+          },
+          {
+            "id": "ubs305",
+            "code": "UBS305",
+            "name": "Urban Design and Landscape Design"
+          },
+          {
+            "id": "ubs306",
+            "code": "UBS306",
+            "name": "Advanced Planning Studio"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "TEC",
+    "programName": "Technical Communication",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "tcn700",
+            "code": "TCN700",
+            "name": "Technical Writing I"
+          },
+          {
+            "id": "tcn705",
+            "code": "TCN705",
+            "name": "Technologies for Technical Writers"
+          },
+          {
+            "id": "tcn706",
+            "code": "TCN706",
+            "name": "Online User Assistance"
+          },
+          {
+            "id": "tcn707",
+            "code": "TCN707",
+            "name": "Revising and Editing for Usability"
+          },
+          {
+            "id": "tcn708",
+            "code": "TCN708",
+            "name": "Web Design and Prototyping"
+          },
+          {
+            "id": "tcn709",
+            "code": "TCN709",
+            "name": "Introduction to Authoring"
+          },
+          {
+            "id": "tcn710",
+            "code": "TCN710",
+            "name": "Introduction to User Experience Design"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "tcn800",
+            "code": "TCN800",
+            "name": "Technical Writing II"
+          },
+          {
+            "id": "tcn805",
+            "code": "TCN805",
+            "name": "Content Strategy for Technical Communicators"
+          },
+          {
+            "id": "tcn806",
+            "code": "TCN806",
+            "name": "Instructional Design"
+          },
+          {
+            "id": "tcn808",
+            "code": "TCN808",
+            "name": "Structured Authoring and DITA"
+          },
+          {
+            "id": "tcn809",
+            "code": "TCN809",
+            "name": "Career Management"
+          },
+          {
+            "id": "tcn812",
+            "code": "TCN812",
+            "name": "UX Writing"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ]
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "tec441",
+            "code": "TEC441",
+            "name": "Technical Communications, Work Term"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "GTB",
+    "programName": "Tourism – Services Management – Global Tourism Business Specialization",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "hsp101",
+            "code": "HSP101",
+            "name": "Service Leadership"
+          },
+          {
+            "id": "htm105",
+            "code": "HTM105",
+            "name": "Hotel Front Office Operations and Management"
+          },
+          {
+            "id": "htm408",
+            "code": "HTM408",
+            "name": "Voluntourism and Sustainable Development"
+          },
+          {
+            "id": "sms202",
+            "code": "SMS202",
+            "name": "Business Computer Applications"
+          },
+          {
+            "id": "trv103",
+            "code": "TRV103",
+            "name": "Tourism Destination Exploration I"
+          },
+          {
+            "id": "trv106",
+            "code": "TRV106",
+            "name": "Business of Tourism"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "mrk233",
+            "code": "MRK233",
+            "name": "Services Marketing"
+          },
+          {
+            "id": "tac300",
+            "code": "TAC300",
+            "name": "Financial Accounting I"
+          },
+          {
+            "id": "trv202",
+            "code": "TRV202",
+            "name": "Leisure Travel Theory and Practice"
+          },
+          {
+            "id": "trv203",
+            "code": "TRV203",
+            "name": "Tourism Destination Exploration II"
+          },
+          {
+            "id": "trv204",
+            "code": "TRV204",
+            "name": "Tourism Design and Experiences"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "gtb331",
+            "code": "GTB331",
+            "name": "Tourism - Services Management - Global Tourism Business Specialization, Co-op"
+          }
+        ]
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "crm400",
+            "code": "CRM400",
+            "name": "CRM and Selling"
+          },
+          {
+            "id": "htm330",
+            "code": "HTM330",
+            "name": "Human Resource Management"
+          },
+          {
+            "id": "htm440",
+            "code": "HTM440",
+            "name": "Financial Management and Analysis"
+          },
+          {
+            "id": "tea300",
+            "code": "TEA300",
+            "name": "Global Eco and Sustainable Tourism Practices"
+          },
+          {
+            "id": "tsa300",
+            "code": "TSA300",
+            "name": "Amadeus Reservation Specialist"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester5",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "gcb400",
+            "code": "GCB400",
+            "name": "Global Cruise Business"
+          },
+          {
+            "id": "htm430",
+            "code": "HTM430",
+            "name": "Strategic Supervision and Management"
+          },
+          {
+            "id": "mrk436",
+            "code": "MRK436",
+            "name": "Marketing Attractions and Destinations"
+          },
+          {
+            "id": "trv200",
+            "code": "TRV200",
+            "name": "Sport Tourism Development"
+          },
+          {
+            "id": "trv301",
+            "code": "TRV301",
+            "name": "Legal Liability and Risk Management"
+          },
+          {
+            "id": "trv303",
+            "code": "TRV303",
+            "name": "Tourism Research and Entrepreneurship"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester6",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "trv299",
+            "code": "TRV299",
+            "name": "Professional Internship Preparation"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 2
+      },
+      {
+        "id": "semester7",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "tis200",
+            "code": "TIS200",
+            "name": "Professional Internship"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 2
+      }
+    ]
+  },
+  {
+    "programId": "TIS",
+    "programName": "Tourism – Services Management – Travel Services Specialization",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "hsp101",
+            "code": "HSP101",
+            "name": "Service Leadership"
+          },
+          {
+            "id": "htm105",
+            "code": "HTM105",
+            "name": "Hotel Front Office Operations and Management"
+          },
+          {
+            "id": "htm408",
+            "code": "HTM408",
+            "name": "Voluntourism and Sustainable Development"
+          },
+          {
+            "id": "sms202",
+            "code": "SMS202",
+            "name": "Business Computer Applications"
+          },
+          {
+            "id": "trv103",
+            "code": "TRV103",
+            "name": "Tourism Destination Exploration I"
+          },
+          {
+            "id": "trv106",
+            "code": "TRV106",
+            "name": "Business of Tourism"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "mrk233",
+            "code": "MRK233",
+            "name": "Services Marketing"
+          },
+          {
+            "id": "tac300",
+            "code": "TAC300",
+            "name": "Financial Accounting I"
+          },
+          {
+            "id": "trv202",
+            "code": "TRV202",
+            "name": "Leisure Travel Theory and Practice"
+          },
+          {
+            "id": "trv203",
+            "code": "TRV203",
+            "name": "Tourism Destination Exploration II"
+          },
+          {
+            "id": "trv204",
+            "code": "TRV204",
+            "name": "Tourism Design and Experiences"
+          },
+          {
+            "id": "wtp100",
+            "code": "WTP100",
+            "name": "Work Term Preparation"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "tis331",
+            "code": "TIS331",
+            "name": "Tourism - Services Management - Travel Services Specialization, Co-op"
+          }
+        ]
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "crm400",
+            "code": "CRM400",
+            "name": "CRM and Selling"
+          },
+          {
+            "id": "gcb400",
+            "code": "GCB400",
+            "name": "Global Cruise Business"
+          },
+          {
+            "id": "tea300",
+            "code": "TEA300",
+            "name": "Global Eco and Sustainable Tourism Practices"
+          },
+          {
+            "id": "trv302",
+            "code": "TRV302",
+            "name": "Travel Services Business Operations"
+          },
+          {
+            "id": "tsa200",
+            "code": "TSA200",
+            "name": "Sabre Reservation Specialist"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester5",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "hpl325",
+            "code": "HPL325",
+            "name": "Event and Meeting Management"
+          },
+          {
+            "id": "htm330",
+            "code": "HTM330",
+            "name": "Human Resource Management"
+          },
+          {
+            "id": "htm430",
+            "code": "HTM430",
+            "name": "Strategic Supervision and Management"
+          },
+          {
+            "id": "trv301",
+            "code": "TRV301",
+            "name": "Legal Liability and Risk Management"
+          },
+          {
+            "id": "trv402",
+            "code": "TRV402",
+            "name": "The Global Travel Professional"
+          },
+          {
+            "id": "tsa300",
+            "code": "TSA300",
+            "name": "Amadeus Reservation Specialist"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester6",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "trv299",
+            "code": "TRV299",
+            "name": "Professional Internship Preparation"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 2
+      },
+      {
+        "id": "semester7",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "tis200",
+            "code": "TIS200",
+            "name": "Professional Internship"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 2
+      }
+    ]
+  },
+  {
+    "programId": "TTO",
+    "programName": "Tourism – Travel Operations",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "hsp101",
+            "code": "HSP101",
+            "name": "Service Leadership"
+          },
+          {
+            "id": "htm408",
+            "code": "HTM408",
+            "name": "Voluntourism and Sustainable Development"
+          },
+          {
+            "id": "trv103",
+            "code": "TRV103",
+            "name": "Tourism Destination Exploration I"
+          },
+          {
+            "id": "trv106",
+            "code": "TRV106",
+            "name": "Business of Tourism"
+          },
+          {
+            "id": "trv202",
+            "code": "TRV202",
+            "name": "Leisure Travel Theory and Practice"
+          },
+          {
+            "id": "trv299",
+            "code": "TRV299",
+            "name": "Professional Internship Preparation"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "gcb400",
+            "code": "GCB400",
+            "name": "Global Cruise Business"
+          },
+          {
+            "id": "htm105",
+            "code": "HTM105",
+            "name": "Hotel Front Office Operations and Management"
+          },
+          {
+            "id": "tis200",
+            "code": "TIS200",
+            "name": "Professional Internship"
+          },
+          {
+            "id": "trv203",
+            "code": "TRV203",
+            "name": "Tourism Destination Exploration II"
+          },
+          {
+            "id": "trv204",
+            "code": "TRV204",
+            "name": "Tourism Design and Experiences"
+          },
+          {
+            "id": "trv302",
+            "code": "TRV302",
+            "name": "Travel Services Business Operations"
+          },
+          {
+            "id": "tsa200",
+            "code": "TSA200",
+            "name": "Sabre Reservation Specialist"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "VTA",
+    "programName": "Veterinary Assistant",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "boa112",
+            "code": "BOA112",
+            "name": "Behaviour of Animals"
+          },
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "ety100",
+            "code": "ETY100",
+            "name": "Veterinary Etymology"
+          },
+          {
+            "id": "vah100",
+            "code": "VAH100",
+            "name": "Animal Handling Introduction"
+          },
+          {
+            "id": "vap101",
+            "code": "VAP101",
+            "name": "Anatomy and Physiology"
+          },
+          {
+            "id": "vcr100",
+            "code": "VCR100",
+            "name": "Client Relations"
+          },
+          {
+            "id": "vlp100",
+            "code": "VLP100",
+            "name": "Laboratory Procedures and Techniques"
+          },
+          {
+            "id": "vmp100",
+            "code": "VMP100",
+            "name": "Math and Pharmacology"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "vac200",
+            "code": "VAC200",
+            "name": "Animal and Clinic Care"
+          },
+          {
+            "id": "vcp200",
+            "code": "VCP200",
+            "name": "Career Management and Field Placement"
+          },
+          {
+            "id": "vgh200",
+            "code": "VGH200",
+            "name": "Animal Handling, Therapeutic and Grooming Skills"
+          },
+          {
+            "id": "vin200",
+            "code": "VIN200",
+            "name": "Introduction to Animal Nutrition"
+          },
+          {
+            "id": "vll200",
+            "code": "VLL200",
+            "name": "Large and Laboratory Handling"
+          },
+          {
+            "id": "vsr200",
+            "code": "VSR200",
+            "name": "Surgical Assisting and Radiology"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 7
+      }
+    ]
+  },
+  {
+    "programId": "VTE",
+    "programName": "Veterinary Technician",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "apy112",
+            "code": "APY112",
+            "name": "Veterinary Comparative Anatomy and Physiology"
+          },
+          {
+            "id": "boa112",
+            "code": "BOA112",
+            "name": "Behaviour of Animals"
+          },
+          {
+            "id": "cca112",
+            "code": "CCA112",
+            "name": "Clinical Care of Animals I"
+          },
+          {
+            "id": "clp100",
+            "code": "CLP100",
+            "name": "Veterinary Clinical Laboratory Procedures I"
+          },
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "ety100",
+            "code": "ETY100",
+            "name": "Veterinary Etymology"
+          },
+          {
+            "id": "med101",
+            "code": "MED101",
+            "name": "Medical Clinics I"
+          },
+          {
+            "id": "vmt112",
+            "code": "VMT112",
+            "name": "Veterinary Pharmaceutical Mathematics I"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 9
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "bug200",
+            "code": "BUG200",
+            "name": "Parasitology"
+          },
+          {
+            "id": "cca212",
+            "code": "CCA212",
+            "name": "Clinical Care of Animals II"
+          },
+          {
+            "id": "clp200",
+            "code": "CLP200",
+            "name": "Veterinary Clinical Laboratory Procedures II"
+          },
+          {
+            "id": "med200",
+            "code": "MED200",
+            "name": "Medical Clinics II and Diseases"
+          },
+          {
+            "id": "noa212",
+            "code": "NOA212",
+            "name": "Nutrition of Animals I"
+          },
+          {
+            "id": "pmy200",
+            "code": "PMY200",
+            "name": "Pharmacology"
+          },
+          {
+            "id": "rad212",
+            "code": "RAD212",
+            "name": "Introductory Radiography"
+          },
+          {
+            "id": "vmt200",
+            "code": "VMT200",
+            "name": "Veterinary Pharmaceutical Mathematics"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 9
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "cca312",
+            "code": "CCA312",
+            "name": "Clinical Care of Animals III"
+          },
+          {
+            "id": "clp303",
+            "code": "CLP303",
+            "name": "Veterinary Clinical Laboratory Procedures III"
+          },
+          {
+            "id": "las312",
+            "code": "LAS312",
+            "name": "Large and Small Mammal Studies"
+          },
+          {
+            "id": "med300",
+            "code": "MED300",
+            "name": "Medical Clinics III: Dentistry"
+          },
+          {
+            "id": "rad312",
+            "code": "RAD312",
+            "name": "Advanced Radiography"
+          },
+          {
+            "id": "sgt312",
+            "code": "SGT312",
+            "name": "Veterinary Anaesthesia and Surgical Techniques"
+          },
+          {
+            "id": "vpl300",
+            "code": "VPL300",
+            "name": "Introduction to Clinical Field Placement"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 8
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "cca412",
+            "code": "CCA412",
+            "name": "Clinical Care of Animals IV"
+          },
+          {
+            "id": "clp400",
+            "code": "CLP400",
+            "name": "Veterinary Clinical Laboratory Procedures IV"
+          },
+          {
+            "id": "exo412",
+            "code": "EXO412",
+            "name": "Exotics"
+          },
+          {
+            "id": "geb312",
+            "code": "GEB312",
+            "name": "Genetics and Bioethics"
+          },
+          {
+            "id": "med400",
+            "code": "MED400",
+            "name": "Medical Clinics IV and Dentistry"
+          },
+          {
+            "id": "noa412",
+            "code": "NOA412",
+            "name": "Nutrition of Animals II"
+          },
+          {
+            "id": "sgt412",
+            "code": "SGT412",
+            "name": "Surgery II"
+          },
+          {
+            "id": "vpl400",
+            "code": "VPL400",
+            "name": "Field Placement"
+          },
+          {
+            "id": "vte400",
+            "code": "VTE400",
+            "name": "Hospital & Career Management"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "VCC",
+    "programName": "Visual Content Creation",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "vcc100",
+            "code": "VCC100",
+            "name": "Capture Lab - Photography"
+          },
+          {
+            "id": "vcc101",
+            "code": "VCC101",
+            "name": "Capture Lab - Video"
+          },
+          {
+            "id": "vcc102",
+            "code": "VCC102",
+            "name": "Content Editing I"
+          },
+          {
+            "id": "vcc103",
+            "code": "VCC103",
+            "name": "Creativity and Visual Communications"
+          },
+          {
+            "id": "vcc104",
+            "code": "VCC104",
+            "name": "Visual Foundation Professional Practices"
+          },
+          {
+            "id": "vcc105",
+            "code": "VCC105",
+            "name": "Reading Visual Culture"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "vcc200",
+            "code": "VCC200",
+            "name": "Capture Lab - Sound"
+          },
+          {
+            "id": "vcc201",
+            "code": "VCC201",
+            "name": "Capture Lab - Lighting"
+          },
+          {
+            "id": "vcc202",
+            "code": "VCC202",
+            "name": "Introduction to Business Practices"
+          },
+          {
+            "id": "vcc203",
+            "code": "VCC203",
+            "name": "Content Editing II"
+          },
+          {
+            "id": "vcc204",
+            "code": "VCC204",
+            "name": "Project Production"
+          },
+          {
+            "id": "vcc205",
+            "code": "VCC205",
+            "name": "Emerging and Alternate Technologies"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "vcc301",
+            "code": "VCC301",
+            "name": "Multi-Platform Strategy Design"
+          },
+          {
+            "id": "vcc302",
+            "code": "VCC302",
+            "name": "Content Editing III"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 3
+      }
+    ]
+  },
+  {
+    "programId": "VFT",
+    "programName": "Visual Effects for Film & Television",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "vft701",
+            "code": "VFT701",
+            "name": "2D and 3D Compositing"
+          },
+          {
+            "id": "vft710",
+            "code": "VFT710",
+            "name": "Maya Dynamics"
+          },
+          {
+            "id": "vft711",
+            "code": "VFT711",
+            "name": "Procedural Effects Animation"
+          },
+          {
+            "id": "vft712",
+            "code": "VFT712",
+            "name": "Matchmoving for VFX"
+          },
+          {
+            "id": "vft714",
+            "code": "VFT714",
+            "name": "Look Development for VFX"
+          },
+          {
+            "id": "vft715",
+            "code": "VFT715",
+            "name": "Asset Development for VFX"
+          },
+          {
+            "id": "vft716",
+            "code": "VFT716",
+            "name": "Introduction to Python Programming"
+          },
+          {
+            "id": "vft717",
+            "code": "VFT717",
+            "name": "Surfacing I for Visual Effects"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "vft801",
+            "code": "VFT801",
+            "name": "2D and 3D Compositing II"
+          },
+          {
+            "id": "vft810",
+            "code": "VFT810",
+            "name": "Maya Dynamics II"
+          },
+          {
+            "id": "vft811",
+            "code": "VFT811",
+            "name": "Procedural Effects Animation II"
+          },
+          {
+            "id": "vft814",
+            "code": "VFT814",
+            "name": "Look Development for VFX II"
+          },
+          {
+            "id": "vft815",
+            "code": "VFT815",
+            "name": "Asset Development for VFX II"
+          },
+          {
+            "id": "vft817",
+            "code": "VFT817",
+            "name": "Surfacing II for Visual Effects"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "programId": "VMA",
+    "programName": "Visual Merchandising Arts",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "ddv133",
+            "code": "DDV133",
+            "name": "Technical and Digital Design"
+          },
+          {
+            "id": "dsg133",
+            "code": "DSG133",
+            "name": "Design Fundamentals"
+          },
+          {
+            "id": "dsp131",
+            "code": "DSP131",
+            "name": "Display Basics"
+          },
+          {
+            "id": "fsh330",
+            "code": "FSH330",
+            "name": "Style and Trends"
+          },
+          {
+            "id": "nbs100",
+            "code": "NBS100",
+            "name": "Brand Strategies"
+          }
+        ]
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "dsp232",
+            "code": "DSP232",
+            "name": "Product Display and Showcases"
+          },
+          {
+            "id": "fps436",
+            "code": "FPS436",
+            "name": "Personal Branding"
+          },
+          {
+            "id": "fsm232",
+            "code": "FSM232",
+            "name": "Materials and Prop Construction"
+          },
+          {
+            "id": "fsm236",
+            "code": "FSM236",
+            "name": "Fashion Styling"
+          },
+          {
+            "id": "ncp200",
+            "code": "NCP200",
+            "name": "Creative Presentations"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "ddv301",
+            "code": "DDV301",
+            "name": "Digital Layout and Planogramming"
+          },
+          {
+            "id": "dsp333",
+            "code": "DSP333",
+            "name": "Concept Design and Installation"
+          },
+          {
+            "id": "fsm334",
+            "code": "FSM334",
+            "name": "Prop Design and Build"
+          },
+          {
+            "id": "nsm300",
+            "code": "NSM300",
+            "name": "Social Media and Portfolios"
+          },
+          {
+            "id": "psd335",
+            "code": "PSD335",
+            "name": "Photostyling"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "ddv401",
+            "code": "DDV401",
+            "name": "Capstone Design Concept"
+          },
+          {
+            "id": "dsp435",
+            "code": "DSP435",
+            "name": "Design Activations"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 3
+      }
+    ]
+  },
+  {
+    "programId": "WSP",
+    "programName": "Workplace Safety & Prevention",
+    "semesters": [
+      {
+        "id": "semester1",
+        "name": "Semester 1",
+        "courses": [
+          {
+            "id": "chm170",
+            "code": "CHM170",
+            "name": "Introduction to Chemistry"
+          },
+          {
+            "id": "com101",
+            "code": "COM101",
+            "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+          },
+          {
+            "id": "com470",
+            "code": "COM470",
+            "name": "Interpersonal Communication"
+          },
+          {
+            "id": "hra848",
+            "code": "HRA848",
+            "name": "Training Techniques and Practices"
+          },
+          {
+            "id": "ohs106",
+            "code": "OHS106",
+            "name": "Occupational Health and Safety"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 2,
+            "description": "General Education Course (2)"
+          }
+        ],
+        "totalCourses": 7
+      },
+      {
+        "id": "semester2",
+        "name": "Semester 2",
+        "courses": [
+          {
+            "id": "bio210",
+            "code": "BIO210",
+            "name": "Anatomy and Physiology of Wellness"
+          },
+          {
+            "id": "hra855",
+            "code": "HRA855",
+            "name": "The Legal Environment"
+          },
+          {
+            "id": "mgs521",
+            "code": "MGS521",
+            "name": "Business Ethics and Values"
+          },
+          {
+            "id": "ohs203",
+            "code": "OHS203",
+            "name": "OHS Management Systems"
+          },
+          {
+            "id": "ohs304",
+            "code": "OHS304",
+            "name": "Health and Wellness"
+          }
+        ],
+        "requirements": [
+          {
+            "type": "General Education Course",
+            "count": 1,
+            "description": "General Education Course (1)"
+          }
+        ],
+        "totalCourses": 6
+      },
+      {
+        "id": "semester3",
+        "name": "Semester 3",
+        "courses": [
+          {
+            "id": "ohs201",
+            "code": "OHS201",
+            "name": "Ergonomics"
+          },
+          {
+            "id": "ohs202",
+            "code": "OHS202",
+            "name": "Risk Management"
+          },
+          {
+            "id": "ohs204",
+            "code": "OHS204",
+            "name": "Accident Prevention and Invest"
+          },
+          {
+            "id": "ohs205",
+            "code": "OHS205",
+            "name": "Disability Management"
+          },
+          {
+            "id": "ohs501",
+            "code": "OHS501",
+            "name": "Field Placement"
+          }
+        ]
+      },
+      {
+        "id": "semester4",
+        "name": "Semester 4",
+        "courses": [
+          {
+            "id": "hra742",
+            "code": "HRA742",
+            "name": "Organizational Behaviour"
+          },
+          {
+            "id": "ohs300",
+            "code": "OHS300",
+            "name": "Industrial Hygiene and Toxicology"
+          },
+          {
+            "id": "ohs301",
+            "code": "OHS301",
+            "name": "Emergency Planning and Management"
+          },
+          {
+            "id": "ohs305",
+            "code": "OHS305",
+            "name": "Operational Safety"
+          },
+          {
+            "id": "ohs306",
+            "code": "OHS306",
+            "name": "Introduction to Process Safety"
+          },
+          {
+            "id": "ohs400",
+            "code": "OHS400",
+            "name": "Industrial Hygiene and Toxicology Lab"
+          },
+          {
+            "id": "ohs401",
+            "code": "OHS401",
+            "name": "Environmental Management"
+          }
+        ]
+      }
+    ]
+  }
+]

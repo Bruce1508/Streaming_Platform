@@ -1,0 +1,150 @@
+{
+  "programId": "GBG",
+  "programName": "Global Business Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "gbd110",
+          "code": "GBD110",
+          "name": "Services Marketing"
+        },
+        {
+          "id": "gbd130",
+          "code": "GBD130",
+          "name": "Responsible Global Communications"
+        },
+        {
+          "id": "gbm125",
+          "code": "GBM125",
+          "name": "Economics in Global Business Management"
+        },
+        {
+          "id": "gsl275",
+          "code": "GSL275",
+          "name": "Leading Global Business"
+        },
+        {
+          "id": "ibs801",
+          "code": "IBS801",
+          "name": "International Banking and Finance"
+        },
+        {
+          "id": "mgm721",
+          "code": "MGM721",
+          "name": "Seminar in Decision Theory"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "gbd205",
+          "code": "GBD205",
+          "name": "Data Analytics and Finance"
+        },
+        {
+          "id": "gsl225",
+          "code": "GSL225",
+          "name": "Leadership in Change Management"
+        },
+        {
+          "id": "hrm701",
+          "code": "HRM701",
+          "name": "Introduction to Human Resources Management"
+        },
+        {
+          "id": "ibs630",
+          "code": "IBS630",
+          "name": "Trade Research and Market Analysis"
+        },
+        {
+          "id": "ibs850",
+          "code": "IBS850",
+          "name": "Legal Environment of International Business"
+        },
+        {
+          "id": "opr725",
+          "code": "OPR725",
+          "name": "Project Management"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cap510",
+          "code": "CAP510",
+          "name": "Global Business Management: Career Planning"
+        },
+        {
+          "id": "gbd160",
+          "code": "GBD160",
+          "name": "Integrated Project I"
+        },
+        {
+          "id": "gbd220",
+          "code": "GBD220",
+          "name": "Global Procurement Management"
+        },
+        {
+          "id": "gbd225",
+          "code": "GBD225",
+          "name": "Global Investment"
+        },
+        {
+          "id": "gom240",
+          "code": "GOM240",
+          "name": "Strategic Management of Customer Relationships"
+        },
+        {
+          "id": "gsl200",
+          "code": "GSL200",
+          "name": "Sustainable Global Business Strategy"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "gbd210",
+          "code": "GBD210",
+          "name": "Global Sales Management Strategies"
+        },
+        {
+          "id": "gbd230",
+          "code": "GBD230",
+          "name": "Asset Planning Management"
+        },
+        {
+          "id": "gbd250",
+          "code": "GBD250",
+          "name": "Integrated Project II"
+        },
+        {
+          "id": "gbm420",
+          "code": "GBM420",
+          "name": "Global Marketing Strategy"
+        },
+        {
+          "id": "gsl300",
+          "code": "GSL300",
+          "name": "New Venture Creation and Innovation"
+        },
+        {
+          "id": "gsl350",
+          "code": "GSL350",
+          "name": "Leadership in Responsible and Sustainable Management"
+        }
+      ]
+    }
+  ]
+}

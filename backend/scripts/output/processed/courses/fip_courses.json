@@ -1,0 +1,78 @@
+{
+  "programId": "FIP",
+  "programName": "Financial Planning",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "csc101",
+          "code": "CSC101",
+          "name": "Canadian Securities Course I"
+        },
+        {
+          "id": "fip501",
+          "code": "FIP501",
+          "name": "Foundational Financial Planning and Financial Management"
+        },
+        {
+          "id": "fip502",
+          "code": "FIP502",
+          "name": "Planning for Retirement, Education and Individuals with a Disability"
+        },
+        {
+          "id": "fip503",
+          "code": "FIP503",
+          "name": "Income Tax Planning"
+        },
+        {
+          "id": "fip504",
+          "code": "FIP504",
+          "name": "Risk Management and Estate Planning"
+        },
+        {
+          "id": "pts101",
+          "code": "PTS101",
+          "name": "Personal Income Tax Planning Software"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "csc102",
+          "code": "CSC102",
+          "name": "Canadian Securities Course 2"
+        },
+        {
+          "id": "fip506",
+          "code": "FIP506",
+          "name": "Investment Planning"
+        },
+        {
+          "id": "fip507",
+          "code": "FIP507",
+          "name": "Advanced Financial Planning"
+        },
+        {
+          "id": "fip508",
+          "code": "FIP508",
+          "name": "Financial Planning Software"
+        },
+        {
+          "id": "fip509",
+          "code": "FIP509",
+          "name": "Financial Planning Behaviour"
+        },
+        {
+          "id": "fpl210",
+          "code": "FPL210",
+          "name": "Field Placement - Financial Planning"
+        }
+      ]
+    }
+  ]
+}

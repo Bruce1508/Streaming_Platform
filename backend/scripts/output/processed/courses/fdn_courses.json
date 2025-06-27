@@ -1,0 +1,78 @@
+{
+  "programId": "FDN",
+  "programName": "Floral Design",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "fsh330",
+          "code": "FSH330",
+          "name": "Evolution of Design"
+        },
+        {
+          "id": "rtf167",
+          "code": "RTF167",
+          "name": "Client Services"
+        },
+        {
+          "id": "rtf169",
+          "code": "RTF169",
+          "name": "Floral Design Lab"
+        },
+        {
+          "id": "rtf170",
+          "code": "RTF170",
+          "name": "Field Work Experience"
+        },
+        {
+          "id": "rtf172",
+          "code": "RTF172",
+          "name": "Floral Design Explorations"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "fdp100",
+          "code": "FDP100",
+          "name": "Floral Design Portfolio"
+        },
+        {
+          "id": "rtf262",
+          "code": "RTF262",
+          "name": "Botanicals"
+        },
+        {
+          "id": "rtf269",
+          "code": "RTF269",
+          "name": "Design for Special Events"
+        },
+        {
+          "id": "rtf270",
+          "code": "RTF270",
+          "name": "Field Work Experience II"
+        },
+        {
+          "id": "rtf275",
+          "code": "RTF275",
+          "name": "Floral Artistry"
+        },
+        {
+          "id": "rtf277",
+          "code": "RTF277",
+          "name": "Floral Design Concepts"
+        }
+      ]
+    }
+  ]
+}

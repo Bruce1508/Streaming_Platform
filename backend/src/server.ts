@@ -42,7 +42,9 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(express.json());
+// Increase body size limit for large imports
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Security middleware
 app.use(helmet());

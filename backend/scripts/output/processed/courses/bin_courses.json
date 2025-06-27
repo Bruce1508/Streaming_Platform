@@ -1,0 +1,170 @@
+{
+  "programId": "BIN",
+  "programName": "Business – Insurance",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bam101",
+          "code": "BAM101",
+          "name": "Introduction to Business Administration"
+        },
+        {
+          "id": "cip011",
+          "code": "CIP011",
+          "name": "Principles and Practices of Insurance"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "mbf100",
+          "code": "MBF100",
+          "name": "Mathematics of Business and FinanceMathematics of Business and Finance"
+        },
+        {
+          "id": "sdg101",
+          "code": "SDG101",
+          "name": "Introduction to Sustainable Business"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "acc106",
+          "code": "ACC106",
+          "name": "Accounting I"
+        },
+        {
+          "id": "cip012",
+          "code": "CIP012",
+          "name": "Insurance on Property"
+        },
+        {
+          "id": "cip014",
+          "code": "CIP014",
+          "name": "Automobile Insurance Part I"
+        },
+        {
+          "id": "fcs240",
+          "code": "FCS240",
+          "name": "Foundations of Customer Service"
+        },
+        {
+          "id": "mrk108",
+          "code": "MRK108",
+          "name": "Introduction to Marketing"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "bin331",
+          "code": "BIN331",
+          "name": "Business Insurance, Co-op"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "bus400",
+          "code": "BUS400",
+          "name": "Business Economics"
+        },
+        {
+          "id": "cip013",
+          "code": "CIP013",
+          "name": "Insurance Against Liability Part I"
+        },
+        {
+          "id": "cip120",
+          "code": "CIP120",
+          "name": "Underwriting Essentials"
+        },
+        {
+          "id": "eac594",
+          "code": "EAC594",
+          "name": "Business Communication for the Digital Workplace"
+        },
+        {
+          "id": "sms202",
+          "code": "SMS202",
+          "name": "Business Computer Applications"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "bin400",
+          "code": "BIN400",
+          "name": "Professional Issues in Insurance"
+        },
+        {
+          "id": "cip039",
+          "code": "CIP039",
+          "name": "Fraud Prevention and Awareness"
+        },
+        {
+          "id": "cip110",
+          "code": "CIP110",
+          "name": "Essentials of Loss Adjusting"
+        },
+        {
+          "id": "cip130",
+          "code": "CIP130",
+          "name": "Essential Skills for the Insurance Broker and Agent"
+        },
+        {
+          "id": "mgs350",
+          "code": "MGS350",
+          "name": "Management Studies: Canadian Business Law"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    }
+  ]
+}

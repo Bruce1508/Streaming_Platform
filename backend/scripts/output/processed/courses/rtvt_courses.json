@@ -1,0 +1,205 @@
+{
+  "programId": "RTVT",
+  "programName": "Broadcasting – Television",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "rtv102",
+          "code": "RTV102",
+          "name": "Media Studies"
+        },
+        {
+          "id": "rtv110",
+          "code": "RTV110",
+          "name": "Introduction to Camera and Lighting"
+        },
+        {
+          "id": "rtv116",
+          "code": "RTV116",
+          "name": "Audio Fundamentals"
+        },
+        {
+          "id": "rtv120",
+          "code": "RTV120",
+          "name": "Introduction to Editing"
+        },
+        {
+          "id": "rtv141",
+          "code": "RTV141",
+          "name": "Introduction to Media Writing"
+        },
+        {
+          "id": "rtv180",
+          "code": "RTV180",
+          "name": "Introduction to Television Graphics"
+        },
+        {
+          "id": "sca361",
+          "code": "SCA361",
+          "name": "Introduction Studio Production"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "rtv117",
+          "code": "RTV117",
+          "name": "Field Audio Production"
+        },
+        {
+          "id": "rtv142",
+          "code": "RTV142",
+          "name": "Script Writing"
+        },
+        {
+          "id": "rtv172",
+          "code": "RTV172",
+          "name": "Online and Mobile Content Creation"
+        },
+        {
+          "id": "rtv209",
+          "code": "RTV209",
+          "name": "Field Camera and Lighting"
+        },
+        {
+          "id": "rtv220",
+          "code": "RTV220",
+          "name": "Video Editing"
+        },
+        {
+          "id": "sca362",
+          "code": "SCA362",
+          "name": "Studio Operations"
+        },
+        {
+          "id": "sca971",
+          "code": "SCA971",
+          "name": "Production Planning"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 8
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "rtv118",
+          "code": "RTV118",
+          "name": "Audio Post-Production"
+        },
+        {
+          "id": "rtv300",
+          "code": "RTV300",
+          "name": "Video Post-Production"
+        },
+        {
+          "id": "rtv347",
+          "code": "RTV347",
+          "name": "Graphics for Video Production"
+        },
+        {
+          "id": "rtv500",
+          "code": "RTV500",
+          "name": "Advanced Camera and Lighting"
+        },
+        {
+          "id": "sca363",
+          "code": "SCA363",
+          "name": "Live Studio Production"
+        },
+        {
+          "id": "sca972",
+          "code": "SCA972",
+          "name": "Production Management"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "rtv551",
+          "code": "RTV551",
+          "name": "Advanced Audio"
+        },
+        {
+          "id": "rtv570",
+          "code": "RTV570",
+          "name": "Advanced Editing"
+        },
+        {
+          "id": "rtv600",
+          "code": "RTV600",
+          "name": "Cinematography"
+        },
+        {
+          "id": "sca364",
+          "code": "SCA364",
+          "name": "Television Production IV"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        },
+        {
+          "type": "Professional Options",
+          "count": 1,
+          "description": "Professional Options (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "rtv143",
+          "code": "RTV143",
+          "name": "Advanced Media Writing"
+        },
+        {
+          "id": "rtv441",
+          "code": "RTV441",
+          "name": "Marketing, Entrepreneurship and Career Development"
+        },
+        {
+          "id": "rtv447",
+          "code": "RTV447",
+          "name": "Computer Graphics for Television II"
+        }
+      ]
+    }
+  ]
+}

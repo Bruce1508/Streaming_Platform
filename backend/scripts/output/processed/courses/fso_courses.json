@@ -1,0 +1,207 @@
+{
+  "programId": "FSO",
+  "programName": "Flight Services – Operations & Cabin Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "fso110",
+          "code": "FSO110",
+          "name": "Flight Attendant Specific - Policies and Procedures"
+        },
+        {
+          "id": "fso115",
+          "code": "FSO115",
+          "name": "Flight Attendant Specific - Aircraft General Safety"
+        },
+        {
+          "id": "fso120",
+          "code": "FSO120",
+          "name": "Airline Destinations: Domestic and Transborder"
+        },
+        {
+          "id": "fso125",
+          "code": "FSO125",
+          "name": "Ground Operations"
+        },
+        {
+          "id": "hsp101",
+          "code": "HSP101",
+          "name": "Service Leadership"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "fso200",
+          "code": "FSO200",
+          "name": "Successful Flight Management"
+        },
+        {
+          "id": "fso210",
+          "code": "FSO210",
+          "name": "Creating the Customer Experience"
+        },
+        {
+          "id": "fso215",
+          "code": "FSO215",
+          "name": "Global Distribution Airline System"
+        },
+        {
+          "id": "fso220",
+          "code": "FSO220",
+          "name": "Aircraft Systems and Emergency Equipment"
+        },
+        {
+          "id": "fso225",
+          "code": "FSO225",
+          "name": "Aircraft Type: Airbus and Embraer"
+        },
+        {
+          "id": "fso230",
+          "code": "FSO230",
+          "name": "Aircraft Types: Boeing and Bombardier"
+        },
+        {
+          "id": "fso325",
+          "code": "FSO325",
+          "name": "Career Planning"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "fso310",
+          "code": "FSO310",
+          "name": "Inflight Emergency Procedures"
+        },
+        {
+          "id": "fso315",
+          "code": "FSO315",
+          "name": "Emergency Ground Procedures"
+        },
+        {
+          "id": "fso320",
+          "code": "FSO320",
+          "name": "Aviation Security"
+        },
+        {
+          "id": "fso330",
+          "code": "FSO330",
+          "name": "Airline Sales and Marketing"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 2,
+          "description": "General Education Course (2)"
+        },
+        {
+          "type": "Professional Options",
+          "count": 1,
+          "description": "Professional Options (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "fso400",
+          "code": "FSO400",
+          "name": "Theory of Flight Fundamentals"
+        },
+        {
+          "id": "fso410",
+          "code": "FSO410",
+          "name": "Emergency Evacuations"
+        },
+        {
+          "id": "fso415",
+          "code": "FSO415",
+          "name": "Airline Terminology - French"
+        },
+        {
+          "id": "fso420",
+          "code": "FSO420",
+          "name": "International Destinations"
+        },
+        {
+          "id": "fso425",
+          "code": "FSO425",
+          "name": "Career Placement"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cdl400",
+          "code": "CDL400",
+          "name": "Curating a Digital Landscape"
+        },
+        {
+          "id": "fso300",
+          "code": "FSO300",
+          "name": "Social Media Influences in the Airline Industry"
+        },
+        {
+          "id": "fso305",
+          "code": "FSO305",
+          "name": "Diversity and Inclusion"
+        },
+        {
+          "id": "fso335",
+          "code": "FSO335",
+          "name": "Aviation First Aid"
+        },
+        {
+          "id": "fso340",
+          "code": "FSO340",
+          "name": "Crew Resource Management"
+        },
+        {
+          "id": "mlt400",
+          "code": "MLT400",
+          "name": "Travel Experience"
+        },
+        {
+          "id": "mlt401",
+          "code": "MLT401",
+          "name": "Travel Experience Eastern Hemisphere"
+        },
+        {
+          "id": "mlt402",
+          "code": "MLT402",
+          "name": "Mobile Intensive Learning Experience - Western Hemisphere"
+        }
+      ]
+    }
+  ]
+}

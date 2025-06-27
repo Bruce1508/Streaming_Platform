@@ -1,0 +1,267 @@
+{
+  "programId": "BHAD",
+  "programName": "Honours Bachelor of Health Administration",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bab100",
+          "code": "BAB100",
+          "name": "Introduction to Canadian Business"
+        },
+        {
+          "id": "bhm177",
+          "code": "BHM177",
+          "name": "Mastering Business Administration in the Healthcare Sector"
+        },
+        {
+          "id": "bhm180",
+          "code": "BHM180",
+          "name": "Factors Influencing the Canadian Healthcare System"
+        },
+        {
+          "id": "bhm181",
+          "code": "BHM181",
+          "name": "Health Informatics: Information Technology"
+        },
+        {
+          "id": "eng106",
+          "code": "ENG106",
+          "name": "Writing Strategies"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "acc180",
+          "code": "ACC180",
+          "name": "Management Accounting"
+        },
+        {
+          "id": "bhm281",
+          "code": "BHM281",
+          "name": "Health Informatics: Health Information Management"
+        },
+        {
+          "id": "eng205",
+          "code": "ENG205",
+          "name": "Applied Communication for Business and Industry"
+        },
+        {
+          "id": "mrt183",
+          "code": "MRT183",
+          "name": "Marketing I"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "bhm280",
+          "code": "BHM280",
+          "name": "Cross-Cultural Health and Wellness"
+        },
+        {
+          "id": "bhm383",
+          "code": "BHM383",
+          "name": "Microeconomics and Macroeconomics"
+        },
+        {
+          "id": "bhm681",
+          "code": "BHM681",
+          "name": "Patient Safety and Quality of Care"
+        },
+        {
+          "id": "hst330",
+          "code": "HST330",
+          "name": "Business Finance"
+        },
+        {
+          "id": "lsp320",
+          "code": "LSP320",
+          "name": "Interpersonal Communications"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "bhm480",
+          "code": "BHM480",
+          "name": "Social and Economic Impact of Chronic Diseases and Mental Disorders"
+        },
+        {
+          "id": "bhm680",
+          "code": "BHM680",
+          "name": "Aging Populations and Healthcare: The Canadian Case"
+        },
+        {
+          "id": "bmt545",
+          "code": "BMT545",
+          "name": "Effective Selling"
+        },
+        {
+          "id": "lsp400",
+          "code": "LSP400",
+          "name": "Presentation Skills"
+        },
+        {
+          "id": "mgt191",
+          "code": "MGT191",
+          "name": "Management II"
+        }
+      ]
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "bhm580",
+          "code": "BHM580",
+          "name": "Health and Community Development"
+        },
+        {
+          "id": "bhm581",
+          "code": "BHM581",
+          "name": "Canadian Health and Business Laws"
+        },
+        {
+          "id": "bhm883",
+          "code": "BHM883",
+          "name": "Mediation and Negotiation Strategies"
+        },
+        {
+          "id": "hst430",
+          "code": "HST430",
+          "name": "Organizational Behaviour"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "bhm682",
+          "code": "BHM682",
+          "name": "Healthcare Research: Fundamentals of Epidemiology for Health Service Managers"
+        },
+        {
+          "id": "bmt855",
+          "code": "BMT855",
+          "name": "Leadership for Managers"
+        },
+        {
+          "id": "hst850",
+          "code": "HST850",
+          "name": "Human Resource Planning"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 4
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 7",
+      "courses": [
+        {
+          "id": "bab905",
+          "code": "BAB905",
+          "name": "Project Management"
+        },
+        {
+          "id": "bhm382",
+          "code": "BHM382",
+          "name": "Healthcare Program Planning and Evaluation"
+        },
+        {
+          "id": "res480",
+          "code": "RES480",
+          "name": "Research Designs and Methods"
+        },
+        {
+          "id": "wtp200",
+          "code": "WTP200",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 7",
+      "courses": [
+        {
+          "id": "bhm881",
+          "code": "BHM881",
+          "name": "Health Care Management, Work Term"
+        }
+      ]
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "bhm877",
+          "code": "BHM877",
+          "name": "Healthcare Management and Leadership"
+        },
+        {
+          "id": "bhm880",
+          "code": "BHM880",
+          "name": "Comparative Global Health"
+        },
+        {
+          "id": "bhm882",
+          "code": "BHM882",
+          "name": "Research Project"
+        },
+        {
+          "id": "bmt850",
+          "code": "BMT850",
+          "name": "Strategic Management"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    }
+  ]
+}

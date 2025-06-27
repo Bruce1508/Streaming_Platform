@@ -1,0 +1,151 @@
+{
+  "programId": "BHS",
+  "programName": "Behavioural Sciences",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bhs101",
+          "code": "BHS101",
+          "name": "Introduction to ABA I: History and Principles"
+        },
+        {
+          "id": "bhs102",
+          "code": "BHS102",
+          "name": "Behavior Theory I: Observation and Assessment"
+        },
+        {
+          "id": "bhs103",
+          "code": "BHS103",
+          "name": "Professional Pathways"
+        },
+        {
+          "id": "bhs120",
+          "code": "BHS120",
+          "name": "Interpersonal Communications: Behavioural Sciences"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "psy100",
+          "code": "PSY100",
+          "name": "Introduction to Psychology"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "bhs201",
+          "code": "BHS201",
+          "name": "Introduction to ABA II: Techniques & Applications"
+        },
+        {
+          "id": "bhs202",
+          "code": "BHS202",
+          "name": "Behavioural Theory II: Assessment & Data Analysis"
+        },
+        {
+          "id": "bhs203",
+          "code": "BHS203",
+          "name": "Ethics and Professionalism"
+        },
+        {
+          "id": "bhs204",
+          "code": "BHS204",
+          "name": "Autism and Developmental Disabilities"
+        },
+        {
+          "id": "bhs206",
+          "code": "BHS206",
+          "name": "Human Development: Behavioural Sciences"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "bhs301",
+          "code": "BHS301",
+          "name": "Legislation, Policy and Practice"
+        },
+        {
+          "id": "bhs302",
+          "code": "BHS302",
+          "name": "Interventions I: Strengths and Skills"
+        },
+        {
+          "id": "bhs303",
+          "code": "BHS303",
+          "name": "Forensics, Crime and Corrections"
+        },
+        {
+          "id": "bhs387",
+          "code": "BHS387",
+          "name": "Practicum Preparation"
+        },
+        {
+          "id": "psy206",
+          "code": "PSY206",
+          "name": "Psychological Disorders"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "bhs401",
+          "code": "BHS401",
+          "name": "Inclusive and Long-Term Community Practices"
+        },
+        {
+          "id": "bhs402",
+          "code": "BHS402",
+          "name": "Interventions II: Behaviour Reduction"
+        },
+        {
+          "id": "bhs403",
+          "code": "BHS403",
+          "name": "Acquired Brain Injury and Adult Services"
+        },
+        {
+          "id": "bhs487",
+          "code": "BHS487",
+          "name": "Practicum and Professional Development Portfolio"
+        },
+        {
+          "id": "bhs497",
+          "code": "BHS497",
+          "name": "Professional Practicum: Behavioural Sciences"
+        }
+      ]
+    }
+  ]
+}

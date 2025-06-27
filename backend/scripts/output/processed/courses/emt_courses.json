@@ -1,0 +1,188 @@
+{
+  "programId": "EMT",
+  "programName": "Environmental Technology",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bea101",
+          "code": "BEA101",
+          "name": "CAD Fundamentals"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "evp151",
+          "code": "EVP151",
+          "name": "Environmental Field Practices"
+        },
+        {
+          "id": "evs141",
+          "code": "EVS141",
+          "name": "Environmental Science"
+        },
+        {
+          "id": "gty171",
+          "code": "GTY171",
+          "name": "Geomorphology and Soils"
+        },
+        {
+          "id": "mta100",
+          "code": "MTA100",
+          "name": "Mathematics 100"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "che251",
+          "code": "CHE251",
+          "name": "Chemistry and the Environment"
+        },
+        {
+          "id": "dma251",
+          "code": "DMA251",
+          "name": "Data Management and Analysis"
+        },
+        {
+          "id": "fsc200",
+          "code": "FSC200",
+          "name": "Field School: Stream Assessment"
+        },
+        {
+          "id": "geo251",
+          "code": "GEO251",
+          "name": "Geospatial Data Collection and Techniques"
+        },
+        {
+          "id": "sar251",
+          "code": "SAR251",
+          "name": "Site Assessment and Remediation"
+        },
+        {
+          "id": "tec400",
+          "code": "TEC400",
+          "name": "Technical Communications"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 8
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "emt331",
+          "code": "EMT331",
+          "name": "Environmental Technology, Co-op"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "ate351",
+          "code": "ATE351",
+          "name": "Aquatic and Terrestrial Ecology"
+        },
+        {
+          "id": "gem351",
+          "code": "GEM351",
+          "name": "Soil Science and Geomechanic Principles"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 3
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "etr591",
+          "code": "ETR591",
+          "name": "Engineering Technical Report I"
+        },
+        {
+          "id": "gis551",
+          "code": "GIS551",
+          "name": "Advanced Environmental GIS"
+        },
+        {
+          "id": "plr643",
+          "code": "PLR643",
+          "name": "Planning"
+        },
+        {
+          "id": "wrm551",
+          "code": "WRM551",
+          "name": "Fundamentals of Water Resource Modeling"
+        },
+        {
+          "id": "wsm551",
+          "code": "WSM551",
+          "name": "Watershed Management"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "epm551",
+          "code": "EPM551",
+          "name": "Environmental Project Management"
+        },
+        {
+          "id": "etr592",
+          "code": "ETR592",
+          "name": "Engineering Technical Report II"
+        },
+        {
+          "id": "mpt651",
+          "code": "MPT651",
+          "name": "Municipal Engineering Systems"
+        },
+        {
+          "id": "ppe651",
+          "code": "PPE651",
+          "name": "Professional Practices and Ethics"
+        },
+        {
+          "id": "wmd651",
+          "code": "WMD651",
+          "name": "Water Management Systems Design"
+        }
+      ]
+    }
+  ]
+}

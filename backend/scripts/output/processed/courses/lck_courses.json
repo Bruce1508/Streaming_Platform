@@ -1,0 +1,169 @@
+{
+  "programId": "LCK",
+  "programName": "Law Clerk",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "lcp100",
+          "code": "LCP100",
+          "name": "Professional Communication for Law Clerks"
+        },
+        {
+          "id": "lgl140",
+          "code": "LGL140",
+          "name": "Canadian Legal System and Immigration Law"
+        },
+        {
+          "id": "lgl142",
+          "code": "LGL142",
+          "name": "Legal Contracts in Everyday Life and Social Media"
+        },
+        {
+          "id": "lxy150",
+          "code": "LXY150",
+          "name": "Legal Document Production"
+        },
+        {
+          "id": "lxy250",
+          "code": "LXY250",
+          "name": "Legal Office Procedures and Project Management"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "lxa300",
+          "code": "LXA300",
+          "name": "Criminal Law and Access to Justice in Canada"
+        },
+        {
+          "id": "lxc212",
+          "code": "LXC212",
+          "name": "Corporate and Commercial Law I"
+        },
+        {
+          "id": "lxd220",
+          "code": "LXD220",
+          "name": "Litigation I and Personal Injury"
+        },
+        {
+          "id": "lxm211",
+          "code": "LXM211",
+          "name": "Family Law I"
+        },
+        {
+          "id": "lxp215",
+          "code": "LXP215",
+          "name": "Professional Conduct and Career Development"
+        },
+        {
+          "id": "lxr216",
+          "code": "LXR216",
+          "name": "Real Estate I"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "fpl330",
+          "code": "FPL330",
+          "name": "Field Placement I"
+        },
+        {
+          "id": "lxc312",
+          "code": "LXC312",
+          "name": "Corporate and Commercial Law II"
+        },
+        {
+          "id": "lxd311",
+          "code": "LXD311",
+          "name": "Litigation II"
+        },
+        {
+          "id": "lxm322",
+          "code": "LXM322",
+          "name": "Family Law II"
+        },
+        {
+          "id": "lxr350",
+          "code": "LXR350",
+          "name": "Real Estate Law II and Technology"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "fpl430",
+          "code": "FPL430",
+          "name": "Field Placement II"
+        },
+        {
+          "id": "lgl411",
+          "code": "LGL411",
+          "name": "Legal Research"
+        },
+        {
+          "id": "lxe411",
+          "code": "LXE411",
+          "name": "Estates"
+        },
+        {
+          "id": "lxj432",
+          "code": "LXJ432",
+          "name": "Debtor Creditor"
+        },
+        {
+          "id": "lxy350",
+          "code": "LXY350",
+          "name": "Legal Software Applications I"
+        },
+        {
+          "id": "lxy450",
+          "code": "LXY450",
+          "name": "Legal Software Applications II"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    }
+  ]
+}

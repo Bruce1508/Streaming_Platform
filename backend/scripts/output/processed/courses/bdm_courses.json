@@ -1,0 +1,263 @@
+{
+  "programId": "BDM",
+  "programName": "Honours Bachelor of Information Technology Design and Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "dcn120",
+          "code": "DCN120",
+          "name": "Networking Technologies"
+        },
+        {
+          "id": "eng106",
+          "code": "ENG106",
+          "name": "Writing Strategies"
+        },
+        {
+          "id": "ism115",
+          "code": "ISM115",
+          "name": "Design Thinking"
+        },
+        {
+          "id": "ops105",
+          "code": "OPS105",
+          "name": "OS-Unix"
+        },
+        {
+          "id": "ops110",
+          "code": "OPS110",
+          "name": "OS-Windows"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "bab140",
+          "code": "BAB140",
+          "name": "Introduction to Financial Accounting"
+        },
+        {
+          "id": "btc240",
+          "code": "BTC240",
+          "name": "Interpersonal Communications in Organizations"
+        },
+        {
+          "id": "dcn220",
+          "code": "DCN220",
+          "name": "Traditional Networks"
+        },
+        {
+          "id": "ops205",
+          "code": "OPS205",
+          "name": "Open Systems Servers"
+        },
+        {
+          "id": "ops210",
+          "code": "OPS210",
+          "name": "Proprietary Server Administration"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "btb520",
+          "code": "BTB520",
+          "name": "Canadian Business Environment"
+        },
+        {
+          "id": "btc440",
+          "code": "BTC440",
+          "name": "Business and Technical Writing"
+        },
+        {
+          "id": "ops305",
+          "code": "OPS305",
+          "name": "Open Systems Application Server"
+        },
+        {
+          "id": "ops310",
+          "code": "OPS310",
+          "name": "Cloud Platform Management"
+        },
+        {
+          "id": "spr100",
+          "code": "SPR100",
+          "name": "Introduction to Security"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "bab210",
+          "code": "BAB210",
+          "name": "Business Statistics"
+        },
+        {
+          "id": "bab240",
+          "code": "BAB240",
+          "name": "Management Accounting"
+        },
+        {
+          "id": "ops405",
+          "code": "OPS405",
+          "name": "Open System Automation"
+        },
+        {
+          "id": "spr530",
+          "code": "SPR530",
+          "name": "Advanced Security Integration"
+        }
+      ]
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "bab235",
+          "code": "BAB235",
+          "name": "Introduction to Marketing"
+        },
+        {
+          "id": "dcn530",
+          "code": "DCN530",
+          "name": "Trends in Technology"
+        },
+        {
+          "id": "hst400",
+          "code": "HST400",
+          "name": "Operations Management"
+        },
+        {
+          "id": "lsp400",
+          "code": "LSP400",
+          "name": "Presentation Skills"
+        },
+        {
+          "id": "ops410",
+          "code": "OPS410",
+          "name": "Advanced Cloud Administration"
+        },
+        {
+          "id": "ris330",
+          "code": "RIS330",
+          "name": "Data Services and Management"
+        }
+      ]
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "bab905",
+          "code": "BAB905",
+          "name": "Project Management"
+        },
+        {
+          "id": "dcn630",
+          "code": "DCN630",
+          "name": "Network Design"
+        },
+        {
+          "id": "lsp700",
+          "code": "LSP700",
+          "name": "Applied Research Methodology"
+        },
+        {
+          "id": "srt411",
+          "code": "SRT411",
+          "name": "Digital Data Analytics"
+        },
+        {
+          "id": "wtp200",
+          "code": "WTP200",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 7",
+      "courses": [
+        {
+          "id": "bmt855",
+          "code": "BMT855",
+          "name": "Leadership for Managers"
+        },
+        {
+          "id": "hst430",
+          "code": "HST430",
+          "name": "Organizational Behaviour"
+        },
+        {
+          "id": "rea750",
+          "code": "REA750",
+          "name": "Research Project"
+        },
+        {
+          "id": "srt751",
+          "code": "SRT751",
+          "name": "Ethics and Law"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester10",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "bmt850",
+          "code": "BMT850",
+          "name": "Strategic Management"
+        },
+        {
+          "id": "btm800",
+          "code": "BTM800",
+          "name": "Technology Planning and Acquisition"
+        },
+        {
+          "id": "rea850",
+          "code": "REA850",
+          "name": "Research Project Implementation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 4
+    }
+  ]
+}

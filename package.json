@@ -19,7 +19,7 @@
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "scrape": "ts-node scripts/scrape-seneca.ts",
+    "scrape-programs": "ts-node scripts/scrape-seneca-programs.ts",
     "import-programs": "ts-node scripts/import-programs.ts"
   }
 }

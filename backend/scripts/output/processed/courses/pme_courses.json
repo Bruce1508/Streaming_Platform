@@ -1,0 +1,78 @@
+{
+  "programId": "PME",
+  "programName": "Project Management – Environmental",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "pme100",
+          "code": "PME100",
+          "name": "Applied Communications for Business and Industry"
+        },
+        {
+          "id": "pme101",
+          "code": "PME101",
+          "name": "The Sustainability Matrix"
+        },
+        {
+          "id": "pme104",
+          "code": "PME104",
+          "name": "Introduction to Internship"
+        },
+        {
+          "id": "pme170",
+          "code": "PME170",
+          "name": "Business Principles"
+        },
+        {
+          "id": "pme200",
+          "code": "PME200",
+          "name": "Project Management Fundamentals"
+        },
+        {
+          "id": "pme201",
+          "code": "PME201",
+          "name": "Planning and Controlling the Baseline"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "pme202",
+          "code": "PME202",
+          "name": "Geographic Information Systems and Data Management"
+        },
+        {
+          "id": "pme230",
+          "code": "PME230",
+          "name": "Environmental Law"
+        },
+        {
+          "id": "pme240",
+          "code": "PME240",
+          "name": "Civil Infrastructure"
+        },
+        {
+          "id": "pme400",
+          "code": "PME400",
+          "name": "Applied Project Management II"
+        },
+        {
+          "id": "pme707",
+          "code": "PME707",
+          "name": "Environmental Management Systems"
+        },
+        {
+          "id": "pme808",
+          "code": "PME808",
+          "name": "Environmental Risk Management"
+        }
+      ]
+    }
+  ]
+}

@@ -2,12 +2,6 @@ import mongoose, { Schema } from 'mongoose';
 import { IProgram, IProgramDocument } from '../types/Academic';
 
 const programSchema = new Schema<IProgramDocument>({
-    name: {
-        type: String,
-        required: [true, 'Program name is required'],
-        trim: true,
-        maxlength: [100, 'Program name cannot exceed 100 characters']
-    },
     code: {
         type: String,
         required: [true, 'Program code is required'],
@@ -16,78 +10,71 @@ const programSchema = new Schema<IProgramDocument>({
         trim: true,
         maxlength: [10, 'Program code cannot exceed 10 characters']
     },
+    name: {
+        type: String,
+        required: [true, 'Program name is required'],
+        trim: true,
+        maxlength: [200, 'Program name cannot exceed 200 characters']
+    },
+    description: {
+        type: String,
+        required: [true, 'Program description is required'],
+        trim: true,
+        maxlength: [2000, 'Description cannot exceed 2000 characters']
+    },
     school: {
-        type: Schema.Types.ObjectId,
-        ref: 'School',
-        required: [true, 'School is required']
+        type: String,
+        required: [true, 'School is required'],
+        trim: true,
+        maxlength: [200, 'School name cannot exceed 200 characters']
+    },
+    department: {
+        type: String,
+        trim: true,
+        maxlength: [200, 'Department cannot exceed 200 characters']
     },
     level: {
         type: String,
         enum: {
-            values: ['Certificate', 'Diploma', 'Advanced Diploma', 'Bachelor', 'Graduate Certificate'],
+            values: ['certificate', 'diploma', 'advanced_diploma', 'bachelor', 'graduate_certificate', 'master', 'phd'],
             message: '{VALUE} is not a valid program level'
         },
         required: [true, 'Program level is required']
     },
     duration: {
-        semesters: {
-            type: Number,
-            required: [true, 'Duration in semesters is required'],
-            min: [1, 'Duration must be at least 1 semester'],
-            max: [12, 'Duration cannot exceed 12 semesters']
-        },
-        years: {
-            type: Number,
-            required: [true, 'Duration in years is required'],
-            min: [0.5, 'Duration must be at least 0.5 years'],
-            max: [6, 'Duration cannot exceed 6 years']
-        }
+        type: Number,
+        required: [true, 'Duration is required'],
+        min: [1, 'Duration must be at least 1 semester'],
+        max: [12, 'Duration cannot exceed 12 semesters']
     },
-    description: {
+    totalCredits: {
+        type: Number,
+        required: [true, 'Total credits is required'],
+        min: [0, 'Total credits cannot be negative'],
+        max: [200, 'Total credits cannot exceed 200']
+    },
+    delivery: [{
         type: String,
-        trim: true,
-        maxlength: [1000, 'Description cannot exceed 1000 characters']
+        enum: ['in-person', 'online', 'hybrid'],
+        required: true
+    }],
+    language: {
+        type: String,
+        enum: ['english', 'french', 'bilingual'],
+        required: [true, 'Language is required']
     },
-    requirements: {
-        academic: [{
-            type: String,
-            trim: true
-        }],
-        english: {
-            type: String,
-            trim: true
-        },
-        other: [{
-            type: String,
-            trim: true
-        }]
-    },
+    startDates: [{
+        type: String,
+        trim: true
+    }],
+    admissionRequirements: [{
+        type: String,
+        trim: true
+    }],
     careerOutcomes: [{
         type: String,
         trim: true
     }],
-    totalCredits: {
-        type: Number,
-        required: [true, 'Total credits is required'],
-        min: [10, 'Total credits must be at least 10'],
-        max: [200, 'Total credits cannot exceed 200']
-    },
-    tuition: {
-        domestic: {
-            type: Number,
-            min: [0, 'Tuition cannot be negative']
-        },
-        international: {
-            type: Number,
-            min: [0, 'Tuition cannot be negative']
-        },
-        currency: {
-            type: String,
-            default: 'CAD',
-            uppercase: true,
-            maxlength: [3, 'Currency code cannot exceed 3 characters']
-        }
-    },
     isActive: {
         type: Boolean,
         default: true
@@ -98,15 +85,25 @@ const programSchema = new Schema<IProgramDocument>({
             default: 0,
             min: [0, 'Enrollment count cannot be negative']
         },
-        graduationRate: {
+        averageGrade: {
             type: Number,
-            min: [0, 'Graduation rate cannot be negative'],
-            max: [100, 'Graduation rate cannot exceed 100%']
+            min: [0, 'Average grade cannot be negative'],
+            max: [100, 'Average grade cannot exceed 100']
         },
-        employmentRate: {
+        passRate: {
             type: Number,
-            min: [0, 'Employment rate cannot be negative'],
-            max: [100, 'Employment rate cannot exceed 100%']
+            min: [0, 'Pass rate cannot be negative'],
+            max: [100, 'Pass rate cannot exceed 100%']
+        },
+        courseCount: {
+            type: Number,
+            default: 0,
+            min: [0, 'Course count cannot be negative']
+        },
+        materialCount: {
+            type: Number,
+            default: 0,
+            min: [0, 'Material count cannot be negative']
         }
     }
 }, {
@@ -116,7 +113,7 @@ const programSchema = new Schema<IProgramDocument>({
 });
 
 // Indexes
-// programSchema.index({ code: 1 });
+// code already has unique: true which creates index
 programSchema.index({ school: 1 });
 programSchema.index({ level: 1 });
 programSchema.index({ isActive: 1 });

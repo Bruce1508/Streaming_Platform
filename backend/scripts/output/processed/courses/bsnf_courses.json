@@ -1,0 +1,250 @@
+{
+  "programId": "BSNF",
+  "programName": "Honours Bachelor of Science – Nursing (Fast track)",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "anp100",
+          "code": "ANP100",
+          "name": "Anatomy and Physiology I"
+        },
+        {
+          "id": "bsn105",
+          "code": "BSN105",
+          "name": "Medication Calculations"
+        },
+        {
+          "id": "bsn110",
+          "code": "BSN110",
+          "name": "Nursing Profession I"
+        },
+        {
+          "id": "bsn111",
+          "code": "BSN111",
+          "name": "Professional Relationships"
+        },
+        {
+          "id": "eng106",
+          "code": "ENG106",
+          "name": "Writing Strategies"
+        },
+        {
+          "id": "psy113",
+          "code": "PSY113",
+          "name": "Introduction to Psychology I"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "anp200",
+          "code": "ANP200",
+          "name": "Anatomy and Physiology II"
+        },
+        {
+          "id": "bsn205",
+          "code": "BSN205",
+          "name": "Fundamental Nursing Skills"
+        },
+        {
+          "id": "bsn215",
+          "code": "BSN215",
+          "name": "Lifespan I - Health Promotion"
+        },
+        {
+          "id": "psy114",
+          "code": "PSY114",
+          "name": "Introduction to Psychology II"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "bsn305",
+          "code": "BSN305",
+          "name": "Complex Nursing Skills"
+        },
+        {
+          "id": "bsn306",
+          "code": "BSN306",
+          "name": "Physical Assessment"
+        },
+        {
+          "id": "bsn315",
+          "code": "BSN315",
+          "name": "Lifespan II - The Aging Population"
+        },
+        {
+          "id": "bsn325",
+          "code": "BSN325",
+          "name": "Professional Practicum I"
+        },
+        {
+          "id": "idi300",
+          "code": "IDI300",
+          "name": "Infectious Disease and Immunology"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "bsn400",
+          "code": "BSN400",
+          "name": "Pharmacology"
+        },
+        {
+          "id": "bsn410",
+          "code": "BSN410",
+          "name": "Nursing Profession II"
+        },
+        {
+          "id": "bsn420",
+          "code": "BSN420",
+          "name": "Client Centered Care I"
+        },
+        {
+          "id": "bsn425",
+          "code": "BSN425",
+          "name": "Professional Practicum II"
+        },
+        {
+          "id": "ppy400",
+          "code": "PPY400",
+          "name": "Pathophysiology I"
+        }
+      ]
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "bsn510",
+          "code": "BSN510",
+          "name": "Nursing Research"
+        },
+        {
+          "id": "bsn520",
+          "code": "BSN520",
+          "name": "Client Centered Care II"
+        },
+        {
+          "id": "bsn525",
+          "code": "BSN525",
+          "name": "Professional Practicum III"
+        },
+        {
+          "id": "ppy500",
+          "code": "PPY500",
+          "name": "Pathophysiology II"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "Liberal Studies Course",
+          "count": 1,
+          "description": "Liberal Studies Course (1)"
+        }
+      ],
+      "totalCourses": 5
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "bsn610",
+          "code": "BSN610",
+          "name": "Ethical Foundations of Nursing Practice"
+        },
+        {
+          "id": "bsn615",
+          "code": "BSN615",
+          "name": "Lifespan III - Childbearing Families"
+        },
+        {
+          "id": "bsn620",
+          "code": "BSN620",
+          "name": "Mental Health Nursing"
+        },
+        {
+          "id": "bsn625",
+          "code": "BSN625",
+          "name": "Professional Practicum IV"
+        },
+        {
+          "id": "sta683",
+          "code": "STA683",
+          "name": "Applied Statistics in Social Sciences"
+        }
+      ]
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 7",
+      "courses": [
+        {
+          "id": "bsn710",
+          "code": "BSN710",
+          "name": "Nursing Profession III"
+        },
+        {
+          "id": "bsn715",
+          "code": "BSN715",
+          "name": "Lifespan IV - Pediatric Nursing"
+        },
+        {
+          "id": "bsn716",
+          "code": "BSN716",
+          "name": "Community and Global Nursing"
+        },
+        {
+          "id": "bsn720",
+          "code": "BSN720",
+          "name": "Client Centered Care III"
+        },
+        {
+          "id": "bsn725",
+          "code": "BSN725",
+          "name": "Professional Practicum V"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 8",
+      "courses": [
+        {
+          "id": "bsn810",
+          "code": "BSN810",
+          "name": "Registration Exam Preparation"
+        },
+        {
+          "id": "bsn825",
+          "code": "BSN825",
+          "name": "Integrated Professional Practicum"
+        }
+      ]
+    }
+  ]
+}

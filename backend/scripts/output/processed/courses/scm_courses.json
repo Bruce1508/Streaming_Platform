@@ -1,0 +1,93 @@
+{
+  "programId": "SCM",
+  "programName": "Supply Chain Management – Global Logistics",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "scm820",
+          "code": "SCM820",
+          "name": "Business Processes I"
+        },
+        {
+          "id": "scm830",
+          "code": "SCM830",
+          "name": "Logistics and Supply Chain Management I"
+        },
+        {
+          "id": "scm840",
+          "code": "SCM840",
+          "name": "Business Analysis"
+        },
+        {
+          "id": "scm860",
+          "code": "SCM860",
+          "name": "Financial and Management Accounting"
+        },
+        {
+          "id": "scm870",
+          "code": "SCM870",
+          "name": "Scheduling and Inventory Management"
+        },
+        {
+          "id": "scm880",
+          "code": "SCM880",
+          "name": "International Purchasing and Supplier Management"
+        },
+        {
+          "id": "scm890",
+          "code": "SCM890",
+          "name": "Sustainability and CSR"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "scm850",
+          "code": "SCM850",
+          "name": "International Business Law"
+        },
+        {
+          "id": "scm920",
+          "code": "SCM920",
+          "name": "Business Processes IISupply Chain Sustainability"
+        },
+        {
+          "id": "scm930",
+          "code": "SCM930",
+          "name": "Transportation"
+        },
+        {
+          "id": "scm940",
+          "code": "SCM940",
+          "name": "Logistics and Supply Chain Management II"
+        },
+        {
+          "id": "scm960",
+          "code": "SCM960",
+          "name": "Project Management"
+        },
+        {
+          "id": "scm970",
+          "code": "SCM970",
+          "name": "Customs Process"
+        },
+        {
+          "id": "scm985",
+          "code": "SCM985",
+          "name": "Supply Chain Integrated Project"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ]
+    }
+  ]
+}

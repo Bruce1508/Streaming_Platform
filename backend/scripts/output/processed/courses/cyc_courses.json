@@ -1,0 +1,308 @@
+{
+  "programId": "CYC",
+  "programName": "Child & Youth Care",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "cyc100",
+          "code": "CYC100",
+          "name": "Foundation of Child Youth and Care"
+        },
+        {
+          "id": "cyc101",
+          "code": "CYC101",
+          "name": "Interpersonal Communication"
+        },
+        {
+          "id": "cyc102",
+          "code": "CYC102",
+          "name": "Anti-oppressive Practice"
+        },
+        {
+          "id": "cyc103",
+          "code": "CYC103",
+          "name": "Health and Wellness"
+        },
+        {
+          "id": "cyc104",
+          "code": "CYC104",
+          "name": "Child and Youth Care Practice"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cyc200",
+          "code": "CYC200",
+          "name": "Therapeutic Foundations and Methodologies"
+        },
+        {
+          "id": "cyc201",
+          "code": "CYC201",
+          "name": "Interviewing and Counseling"
+        },
+        {
+          "id": "cyc206",
+          "code": "CYC206",
+          "name": "Child and Adolescent Development"
+        },
+        {
+          "id": "cyc227",
+          "code": "CYC227",
+          "name": "Families in Change"
+        },
+        {
+          "id": "cyc247",
+          "code": "CYC247",
+          "name": "Field Placement Preparation"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "cyc300",
+          "code": "CYC300",
+          "name": "Child and Youth Care Methods"
+        },
+        {
+          "id": "cyc301",
+          "code": "CYC301",
+          "name": "Exceptionalities of Children and Youth"
+        },
+        {
+          "id": "cyc302",
+          "code": "CYC302",
+          "name": "Therapeutic Activities"
+        },
+        {
+          "id": "cyc347",
+          "code": "CYC347",
+          "name": "Field Placement Seminar"
+        },
+        {
+          "id": "cyc357",
+          "code": "CYC357",
+          "name": "Field Placement"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        },
+        {
+          "type": "Professional Options",
+          "count": 1,
+          "description": "Professional Options (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "cyc401",
+          "code": "CYC401",
+          "name": "Assessment and Recording in CYC Practice"
+        },
+        {
+          "id": "cyc402",
+          "code": "CYC402",
+          "name": "Crisis Interventions"
+        },
+        {
+          "id": "cyc403",
+          "code": "CYC403",
+          "name": "Group Work in CYC Practice"
+        },
+        {
+          "id": "cyc447",
+          "code": "CYC447",
+          "name": "Field Placement Seminar"
+        },
+        {
+          "id": "cyc457",
+          "code": "CYC457",
+          "name": "Field Placement"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "cyc502",
+          "code": "CYC502",
+          "name": "Family Work in CYC Practice"
+        },
+        {
+          "id": "cyc503",
+          "code": "CYC503",
+          "name": "Child and Adolescent Mental Health Disorders"
+        },
+        {
+          "id": "cyc547",
+          "code": "CYC547",
+          "name": "Field Placement Seminar"
+        },
+        {
+          "id": "cyc557",
+          "code": "CYC557",
+          "name": "Field Placement"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        },
+        {
+          "type": "Professional Options",
+          "count": 1,
+          "description": "Professional Options (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "cyc602",
+          "code": "CYC602",
+          "name": "Counselling Children and Youth Lab"
+        },
+        {
+          "id": "cyc604",
+          "code": "CYC604",
+          "name": "Specialization in Child and Youth Care"
+        },
+        {
+          "id": "cyc605",
+          "code": "CYC605",
+          "name": "Child Trauma and Abuse"
+        },
+        {
+          "id": "cyc647",
+          "code": "CYC647",
+          "name": "Field Placement Seminar"
+        },
+        {
+          "id": "cyc657",
+          "code": "CYC657",
+          "name": "Field Placement"
+        }
+      ]
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "bhs204",
+          "code": "BHS204",
+          "name": "Autism and Developmental Disabilities"
+        },
+        {
+          "id": "cyc376",
+          "code": "CYC376",
+          "name": "Human Sexuality"
+        },
+        {
+          "id": "cyc377",
+          "code": "CYC377",
+          "name": "Impact of Social Networking"
+        },
+        {
+          "id": "ssw371",
+          "code": "SSW371",
+          "name": "Selected Issues: Intimate Partner Abuse and Violence"
+        },
+        {
+          "id": "ssw372",
+          "code": "SSW372",
+          "name": "Selected Issues: Addictions"
+        },
+        {
+          "id": "ssw373",
+          "code": "SSW373",
+          "name": "Selected Issues: Mental Health"
+        },
+        {
+          "id": "ssw374",
+          "code": "SSW374",
+          "name": "Selected Issues: Child Welfare"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "bhs204",
+          "code": "BHS204",
+          "name": "Autism and Developmental Disabilities"
+        },
+        {
+          "id": "cyc376",
+          "code": "CYC376",
+          "name": "Human Sexuality"
+        },
+        {
+          "id": "cyc377",
+          "code": "CYC377",
+          "name": "Impact of Social Networking"
+        },
+        {
+          "id": "ssw371",
+          "code": "SSW371",
+          "name": "Selected Issues: Intimate Partner Abuse and Violence"
+        },
+        {
+          "id": "ssw372",
+          "code": "SSW372",
+          "name": "Selected Issues: Addictions"
+        },
+        {
+          "id": "ssw373",
+          "code": "SSW373",
+          "name": "Selected Issues: Mental Health"
+        },
+        {
+          "id": "ssw374",
+          "code": "SSW374",
+          "name": "Selected Issues: Child Welfare"
+        }
+      ]
+    }
+  ]
+}

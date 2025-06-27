@@ -1,0 +1,114 @@
+{
+  "programId": "PRA",
+  "programName": "Professional Accounting Practice",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bab140",
+          "code": "BAB140",
+          "name": "Introduction to Financial Accounting"
+        },
+        {
+          "id": "bab210",
+          "code": "BAB210",
+          "name": "Business Statistics"
+        },
+        {
+          "id": "bab231",
+          "code": "BAB231",
+          "name": "Introduction to Business Law"
+        },
+        {
+          "id": "iaf330",
+          "code": "IAF330",
+          "name": "Finance"
+        },
+        {
+          "id": "iaf340",
+          "code": "IAF340",
+          "name": "Business Information Systems"
+        },
+        {
+          "id": "lsp240",
+          "code": "LSP240",
+          "name": "Micro Economics - Theory and Practice"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "bab240",
+          "code": "BAB240",
+          "name": "Management Accounting"
+        },
+        {
+          "id": "iaf310",
+          "code": "IAF310",
+          "name": "Intermediate Financial Accounting I"
+        },
+        {
+          "id": "iaf320",
+          "code": "IAF320",
+          "name": "Income Tax I"
+        },
+        {
+          "id": "iaf520",
+          "code": "IAF520",
+          "name": "Auditing"
+        },
+        {
+          "id": "iaf620",
+          "code": "IAF620",
+          "name": "Financial Management"
+        },
+        {
+          "id": "lsp340",
+          "code": "LSP340",
+          "name": "Macroeconomics - Theory and Practice"
+        }
+      ]
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "iaf410",
+          "code": "IAF410",
+          "name": "Intermediate Financial Accounting II"
+        },
+        {
+          "id": "iaf420",
+          "code": "IAF420",
+          "name": "Income Tax II"
+        },
+        {
+          "id": "iaf530",
+          "code": "IAF530",
+          "name": "Management Accounting - Intermediate"
+        },
+        {
+          "id": "iaf640",
+          "code": "IAF640",
+          "name": "Business Cases I"
+        },
+        {
+          "id": "iaf710",
+          "code": "IAF710",
+          "name": "Advanced Financial Accounting"
+        },
+        {
+          "id": "iaf831",
+          "code": "IAF831",
+          "name": "International Strategic Management"
+        }
+      ]
+    }
+  ]
+}

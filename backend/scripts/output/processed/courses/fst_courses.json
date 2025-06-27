@@ -1,0 +1,73 @@
+{
+  "programId": "FST",
+  "programName": "Fashion Studies",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "fst101",
+          "code": "FST101",
+          "name": "Design Concepts and Studio I"
+        },
+        {
+          "id": "fst110",
+          "code": "FST110",
+          "name": "Colour and Fashion Trends"
+        },
+        {
+          "id": "fst120",
+          "code": "FST120",
+          "name": "Fashion Illustration"
+        },
+        {
+          "id": "rbc155",
+          "code": "RBC155",
+          "name": "Business Communications I"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "fca454",
+          "code": "FCA454",
+          "name": "Fashion and CAD"
+        },
+        {
+          "id": "fsh200",
+          "code": "FSH200",
+          "name": "Evolution of Fashion"
+        },
+        {
+          "id": "fst201",
+          "code": "FST201",
+          "name": "Design Concepts and Studio II"
+        },
+        {
+          "id": "fst230",
+          "code": "FST230",
+          "name": "Sustainable Fashion"
+        },
+        {
+          "id": "fst250",
+          "code": "FST250",
+          "name": "Portfolio and Presentations"
+        },
+        {
+          "id": "txf212",
+          "code": "TXF212",
+          "name": "Textiles I"
+        }
+      ]
+    }
+  ]
+}

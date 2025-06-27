@@ -1,0 +1,64 @@
+{
+  "programId": "BSCS",
+  "programName": "Bachelor of Science – Cosmetic Science",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "bio115",
+          "code": "BIO115",
+          "name": "Biology I"
+        },
+        {
+          "id": "chm105",
+          "code": "CHM105",
+          "name": "Introduction to General Chemistry"
+        },
+        {
+          "id": "csp155",
+          "code": "CSP155",
+          "name": "Lab Operations I"
+        },
+        {
+          "id": "eng106",
+          "code": "ENG106",
+          "name": "Writing Strategies"
+        },
+        {
+          "id": "mth055",
+          "code": "MTH055",
+          "name": "Math I"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "lsp105",
+          "code": "LSP105",
+          "name": "Computers and Data"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "lsp305",
+          "code": "LSP305",
+          "name": "Research and Statistics"
+        },
+        {
+          "id": "wtp200",
+          "code": "WTP200",
+          "name": "Work Term Preparation"
+        }
+      ]
+    }
+  ]
+}

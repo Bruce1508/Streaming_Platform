@@ -1,0 +1,184 @@
+{
+  "programId": "APP",
+  "programName": "Accounting & Payroll",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "acc120",
+          "code": "ACC120",
+          "name": "Accounting Basics I"
+        },
+        {
+          "id": "bam101",
+          "code": "BAM101",
+          "name": "Introduction to Business Administration"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "mbf100",
+          "code": "MBF100",
+          "name": "Mathematics of Business and FinanceMathematics of Business and Finance"
+        },
+        {
+          "id": "sdg101",
+          "code": "SDG101",
+          "name": "Introduction to Sustainable Business"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "acc220",
+          "code": "ACC220",
+          "name": "Accounting Basics II"
+        },
+        {
+          "id": "app300",
+          "code": "APP300",
+          "name": "Payroll Compliance Legislation"
+        },
+        {
+          "id": "hra701",
+          "code": "HRA701",
+          "name": "Introduction to Human Resources Management"
+        },
+        {
+          "id": "obr250",
+          "code": "OBR250",
+          "name": "Organizational Behaviour"
+        },
+        {
+          "id": "sms216",
+          "code": "SMS216",
+          "name": "Systems Studies I"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "acc400",
+          "code": "ACC400",
+          "name": "Taxation"
+        },
+        {
+          "id": "acc427",
+          "code": "ACC427",
+          "name": "PC Applications and Accounting Software"
+        },
+        {
+          "id": "app301",
+          "code": "APP301",
+          "name": "Payroll Fundamentals I"
+        },
+        {
+          "id": "eac594",
+          "code": "EAC594",
+          "name": "Business Communication for the Digital Workplace"
+        },
+        {
+          "id": "hra831",
+          "code": "HRA831",
+          "name": "Design and Administration of Compensation Plans"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "acc425",
+          "code": "ACC425",
+          "name": "Managerial Accounting"
+        },
+        {
+          "id": "app302",
+          "code": "APP302",
+          "name": "Payroll Fundamentals II"
+        },
+        {
+          "id": "app303",
+          "code": "APP303",
+          "name": "Call Centre Operations - Accounting and Payroll"
+        },
+        {
+          "id": "app304",
+          "code": "APP304",
+          "name": "Payroll Accounting and Technology Practicum"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "app441",
+          "code": "APP441",
+          "name": "Accounting and Payroll, Work Term"
+        }
+      ]
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "cap500",
+          "code": "CAP500",
+          "name": "Career Planning"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 2
+    }
+  ]
+}

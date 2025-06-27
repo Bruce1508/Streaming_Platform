@@ -1,0 +1,93 @@
+{
+  "programId": "ICM",
+  "programName": "Immigration Case Management",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "icm101",
+          "code": "ICM101",
+          "name": "The Canadian Immigration System"
+        },
+        {
+          "id": "icm103",
+          "code": "ICM103",
+          "name": "Temporary Entry"
+        },
+        {
+          "id": "icm104",
+          "code": "ICM104",
+          "name": "Case File Management"
+        },
+        {
+          "id": "icm106",
+          "code": "ICM106",
+          "name": "Ethics and Professional Relationships"
+        },
+        {
+          "id": "icm107",
+          "code": "ICM107",
+          "name": "Human Resource Management"
+        },
+        {
+          "id": "icm201",
+          "code": "ICM201",
+          "name": "Permanent Entry and Citizenship"
+        },
+        {
+          "id": "icm205",
+          "code": "ICM205",
+          "name": "Legal Document Production"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "icm102",
+          "code": "ICM102",
+          "name": "Immigration Admissibility"
+        },
+        {
+          "id": "icm105",
+          "code": "ICM105",
+          "name": "Legal Office Management"
+        },
+        {
+          "id": "icm202",
+          "code": "ICM202",
+          "name": "Administrative Law and Tribunal Governance"
+        },
+        {
+          "id": "icm203",
+          "code": "ICM203",
+          "name": "The Canadian Refugee Determination System"
+        },
+        {
+          "id": "icm204",
+          "code": "ICM204",
+          "name": "Legal Research and Professional Communication"
+        },
+        {
+          "id": "icm206",
+          "code": "ICM206",
+          "name": "Interviewing Skills and Principles"
+        },
+        {
+          "id": "icm207",
+          "code": "ICM207",
+          "name": "Dispute Resolution and Client Service Strategies"
+        },
+        {
+          "id": "icm208",
+          "code": "ICM208",
+          "name": "Career Planning"
+        }
+      ]
+    }
+  ]
+}

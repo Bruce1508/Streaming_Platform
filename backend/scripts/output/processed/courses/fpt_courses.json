@@ -1,0 +1,292 @@
+{
+  "programId": "FPT",
+  "programName": "Fire Protection Engineering Technology",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "alg191",
+          "code": "ALG191",
+          "name": "Fire Analytics I"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "fpf190",
+          "code": "FPF190",
+          "name": "Fire Protection Fundamentals"
+        },
+        {
+          "id": "fss190",
+          "code": "FSS190",
+          "name": "Fire Sprinkler Systems - Applied I"
+        },
+        {
+          "id": "obc190",
+          "code": "OBC190",
+          "name": "Building Construction and The Effects of Fire"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "cad290",
+          "code": "CAD290",
+          "name": "Computer Aided Design I"
+        },
+        {
+          "id": "fas290",
+          "code": "FAS290",
+          "name": "Electricity and Electronics for Fire Systems"
+        },
+        {
+          "id": "fss290",
+          "code": "FSS290",
+          "name": "Fire Sprinkler Systems - Applied II"
+        },
+        {
+          "id": "mth290",
+          "code": "MTH290",
+          "name": "Fire Analytics II"
+        },
+        {
+          "id": "ofc395",
+          "code": "OFC395",
+          "name": "Ontario Fire Code - General"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "afs390",
+          "code": "AFS390",
+          "name": "Alternative Fire Suppression Systems"
+        },
+        {
+          "id": "cad390",
+          "code": "CAD390",
+          "name": "Computer-Aided Design II"
+        },
+        {
+          "id": "fas390",
+          "code": "FAS390",
+          "name": "Fire Alarm Systems - Design"
+        },
+        {
+          "id": "fws390",
+          "code": "FWS390",
+          "name": "Fire Protection Water Supplies"
+        },
+        {
+          "id": "obc395",
+          "code": "OBC395",
+          "name": "Ontario Building Code - Fire Protection I"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "fdy493",
+          "code": "FDY493",
+          "name": "Fire Dynamics - Heat Transfer"
+        },
+        {
+          "id": "fss390",
+          "code": "FSS390",
+          "name": "Fire Sprinkler Systems - Design I"
+        },
+        {
+          "id": "hom390",
+          "code": "HOM390",
+          "name": "NFPA 1072 - Hazardous Materials"
+        },
+        {
+          "id": "ofc590",
+          "code": "OFC590",
+          "name": "Ontario Fire Code - Part 9 Retrofit"
+        },
+        {
+          "id": "tec400",
+          "code": "TEC400",
+          "name": "Technical Communications"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "fpt331",
+          "code": "FPT331",
+          "name": "Fire Protection Engineering Technology, Co-op"
+        }
+      ]
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "fdy593",
+          "code": "FDY593",
+          "name": "Fire Dynamics - Advanced Principles"
+        },
+        {
+          "id": "fss490",
+          "code": "FSS490",
+          "name": "Fire Sprinkler System - Design II"
+        },
+        {
+          "id": "ofc690",
+          "code": "OFC690",
+          "name": "Ontario Fire Code: FPPA Inspections, Legal and Courtroom Procedures"
+        }
+      ]
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "ffi693",
+          "code": "FFI693",
+          "name": "Fundamentals of Fire Investigation"
+        },
+        {
+          "id": "fls590",
+          "code": "FLS590",
+          "name": "NFPA 1035 Level I - Fire and Life Safety Educator"
+        },
+        {
+          "id": "fss590",
+          "code": "FSS590",
+          "name": "Fire Sprinkler Systems - Design III"
+        },
+        {
+          "id": "hbf693",
+          "code": "HBF693",
+          "name": "Human Behaviour During Fire Emergencies"
+        }
+      ]
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "cad490",
+          "code": "CAD490",
+          "name": "Computer-Aided Design III"
+        },
+        {
+          "id": "stk593",
+          "code": "STK593",
+          "name": "Stocklisting and Materials Management"
+        }
+      ]
+    },
+    {
+      "id": "semester9",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "fas490",
+          "code": "FAS490",
+          "name": "Fire Alarms - Troubleshooting"
+        },
+        {
+          "id": "fss690",
+          "code": "FSS690",
+          "name": "Fire Sprinkler Systems - Design IV"
+        }
+      ]
+    },
+    {
+      "id": "semester10",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "fpp693",
+          "code": "FPP693",
+          "name": "Fire Prevention Officer Career Preparation"
+        },
+        {
+          "id": "ofc490",
+          "code": "OFC490",
+          "name": "Ontario Fire Code - Part IV Flammable and Combustible Liquids"
+        }
+      ]
+    },
+    {
+      "id": "semester12",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "ins590",
+          "code": "INS590",
+          "name": "Insurance - Introduction to the Industry"
+        },
+        {
+          "id": "prm693",
+          "code": "PRM693",
+          "name": "Project Management"
+        }
+      ]
+    },
+    {
+      "id": "semester13",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "ins690",
+          "code": "INS690",
+          "name": "Insurance - Risk Management"
+        }
+      ]
+    }
+  ]
+}

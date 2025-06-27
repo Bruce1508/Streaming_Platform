@@ -1,0 +1,156 @@
+{
+  "programId": "IPS",
+  "programName": "Independent Songwriting & Performance",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "imp122",
+          "code": "IMP122",
+          "name": "Business I"
+        },
+        {
+          "id": "imp310",
+          "code": "IMP310",
+          "name": "Live Sound"
+        },
+        {
+          "id": "ips101",
+          "code": "IPS101",
+          "name": "Songwriting I"
+        },
+        {
+          "id": "ips102",
+          "code": "IPS102",
+          "name": "Lyric Writing I"
+        },
+        {
+          "id": "ips115",
+          "code": "IPS115",
+          "name": "Performance I"
+        },
+        {
+          "id": "ips121",
+          "code": "IPS121",
+          "name": "Major Instrument I"
+        },
+        {
+          "id": "ips123",
+          "code": "IPS123",
+          "name": "Studio Prep I"
+        },
+        {
+          "id": "ips124",
+          "code": "IPS124",
+          "name": "Music Publishing"
+        },
+        {
+          "id": "ips132",
+          "code": "IPS132",
+          "name": "Music Theory I"
+        },
+        {
+          "id": "ips151",
+          "code": "IPS151",
+          "name": "Master Class I"
+        },
+        {
+          "id": "ips201",
+          "code": "IPS201",
+          "name": "Songwriting II"
+        },
+        {
+          "id": "ips202",
+          "code": "IPS202",
+          "name": "Lyric Writing II"
+        },
+        {
+          "id": "ips203",
+          "code": "IPS203",
+          "name": "Vocal Skills I"
+        },
+        {
+          "id": "ips212",
+          "code": "IPS212",
+          "name": "Ear Training I"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "ips145",
+          "code": "IPS145",
+          "name": "Performance II"
+        },
+        {
+          "id": "ips221",
+          "code": "IPS221",
+          "name": "Major Instrument II"
+        },
+        {
+          "id": "ips251",
+          "code": "IPS251",
+          "name": "Master Class II"
+        },
+        {
+          "id": "ips303",
+          "code": "IPS303",
+          "name": "Vocal Skills II"
+        },
+        {
+          "id": "ips311",
+          "code": "IPS311",
+          "name": "Touring I"
+        },
+        {
+          "id": "ips323",
+          "code": "IPS323",
+          "name": "Studio Prep II"
+        },
+        {
+          "id": "ips400",
+          "code": "IPS400",
+          "name": "Major Project Mentoring"
+        },
+        {
+          "id": "ips411",
+          "code": "IPS411",
+          "name": "Touring II"
+        },
+        {
+          "id": "ips412",
+          "code": "IPS412",
+          "name": "Ear Training II"
+        },
+        {
+          "id": "ips413",
+          "code": "IPS413",
+          "name": "Musical Collaboration"
+        },
+        {
+          "id": "ips432",
+          "code": "IPS432",
+          "name": "Music Theory II"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 12
+    }
+  ]
+}

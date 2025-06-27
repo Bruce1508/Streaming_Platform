@@ -1,0 +1,169 @@
+{
+  "programId": "PLE",
+  "programName": "Paralegal",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "lgl151",
+          "code": "LGL151",
+          "name": "Introduction to the Legal System for Paralegals"
+        },
+        {
+          "id": "lgl152",
+          "code": "LGL152",
+          "name": "Contracts and Torts for Paralegals"
+        },
+        {
+          "id": "lgl153",
+          "code": "LGL153",
+          "name": "Legal Entities and Relationships"
+        },
+        {
+          "id": "lgl154",
+          "code": "LGL154",
+          "name": "Computer Applications for Paralegals I"
+        },
+        {
+          "id": "lgl160",
+          "code": "LGL160",
+          "name": "Legal Drafting and Communication"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "lgl156",
+          "code": "LGL156",
+          "name": "Administrative Law for Paralegals"
+        },
+        {
+          "id": "lgl225",
+          "code": "LGL225",
+          "name": "Immigration Law"
+        },
+        {
+          "id": "lgl250",
+          "code": "LGL250",
+          "name": "Legal Research for Paralegals"
+        },
+        {
+          "id": "lgl251",
+          "code": "LGL251",
+          "name": "Employment Law For Paralegals"
+        },
+        {
+          "id": "lgl252",
+          "code": "LGL252",
+          "name": "Residential Landlord and Tenant Law for Paralegals"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester3",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "pla350",
+          "code": "PLA350",
+          "name": "Legal Accounting"
+        },
+        {
+          "id": "ple351",
+          "code": "PLE351",
+          "name": "Evidence and the Litigation Process"
+        },
+        {
+          "id": "plo352",
+          "code": "PLO352",
+          "name": "Criminal Law/Summary Conviction Procedure"
+        },
+        {
+          "id": "plr311",
+          "code": "PLR311",
+          "name": "Refugee Law for Paralegals"
+        },
+        {
+          "id": "plt353",
+          "code": "PLT353",
+          "name": "Tribunal Practice and Procedure"
+        },
+        {
+          "id": "ply354",
+          "code": "PLY354",
+          "name": "Computer Applications for Paralegals II"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "plc450",
+          "code": "PLC450",
+          "name": "Small Claims Court - Practice and Procedure"
+        },
+        {
+          "id": "pld451",
+          "code": "PLD451",
+          "name": "Advocacy"
+        },
+        {
+          "id": "ple452",
+          "code": "PLE452",
+          "name": "Ethics and Professional Responsibility"
+        },
+        {
+          "id": "pln455",
+          "code": "PLN455",
+          "name": "Alternative Dispute Resolution"
+        },
+        {
+          "id": "plo453",
+          "code": "PLO453",
+          "name": "Provincial Offences/ Motor Vehicle Offences"
+        },
+        {
+          "id": "plp454",
+          "code": "PLP454",
+          "name": "Practice Management and Business Communications"
+        }
+      ]
+    }
+  ]
+}

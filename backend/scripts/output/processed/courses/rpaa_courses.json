@@ -1,0 +1,123 @@
+{
+  "programId": "RPAA",
+  "programName": "Real Property Administration (Assessment & Appraisal) (Accelerated)",
+  "semesters": [
+    {
+      "id": "semester1",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "csp201",
+          "code": "CSP201",
+          "name": "Communication Skills for Public Administration"
+        },
+        {
+          "id": "fpl355",
+          "code": "FPL355",
+          "name": "Field Placement I"
+        },
+        {
+          "id": "rpa107",
+          "code": "RPA107",
+          "name": "Spreadsheet Analysis I"
+        },
+        {
+          "id": "rpa112",
+          "code": "RPA112",
+          "name": "The Appraisal of Real Estate"
+        },
+        {
+          "id": "rpa115",
+          "code": "RPA115",
+          "name": "Mortgage Underwriting"
+        },
+        {
+          "id": "rpa120",
+          "code": "RPA120",
+          "name": "Principles of Microeconomics"
+        },
+        {
+          "id": "rpa304",
+          "code": "RPA304",
+          "name": "Advanced Real Property Assessment I"
+        },
+        {
+          "id": "rpa306",
+          "code": "RPA306",
+          "name": "Construction and Cost Techniques"
+        },
+        {
+          "id": "rpa307",
+          "code": "RPA307",
+          "name": "Statistical and Computer Applications in Valuation"
+        },
+        {
+          "id": "rpa323",
+          "code": "RPA323",
+          "name": "Assessment Appeals"
+        }
+      ]
+    },
+    {
+      "id": "semester2",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "fpl455",
+          "code": "FPL455",
+          "name": "Field Placement II"
+        },
+        {
+          "id": "rpa208",
+          "code": "RPA208",
+          "name": "Canadian Real Property Law and Real Estate Ethics"
+        },
+        {
+          "id": "rpa210",
+          "code": "RPA210",
+          "name": "Municipal Tax Administration"
+        },
+        {
+          "id": "rpa212",
+          "code": "RPA212",
+          "name": "Real Estate Investment Analysis and Adv. Income App."
+        },
+        {
+          "id": "rpa220",
+          "code": "RPA220",
+          "name": "Ethical Guide for the Assessor"
+        },
+        {
+          "id": "rpa407",
+          "code": "RPA407",
+          "name": "Spreadsheet Analysis II"
+        },
+        {
+          "id": "rpa414",
+          "code": "RPA414",
+          "name": "Alternative Dispute Resolution"
+        },
+        {
+          "id": "rpa415",
+          "code": "RPA415",
+          "name": "Professional Issues in the Assessment Industry"
+        },
+        {
+          "id": "rpa422",
+          "code": "RPA422",
+          "name": "Residential Data Collection"
+        },
+        {
+          "id": "rpa423",
+          "code": "RPA423",
+          "name": "Appeals in Practice"
+        },
+        {
+          "id": "rpa426",
+          "code": "RPA426",
+          "name": "Income Properties"
+        }
+      ]
+    }
+  ]
+}

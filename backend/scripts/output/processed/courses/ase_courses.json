@@ -1,0 +1,247 @@
+{
+  "programId": "ASE",
+  "programName": "Aviation Safety",
+  "semesters": [
+    {
+      "id": "semester3",
+      "name": "Semester 1",
+      "courses": [
+        {
+          "id": "aca121",
+          "code": "ACA121",
+          "name": "Aviation Computer Applications"
+        },
+        {
+          "id": "aer121",
+          "code": "AER121",
+          "name": "Aeronautics I"
+        },
+        {
+          "id": "avm121",
+          "code": "AVM121",
+          "name": "Aviation Management I"
+        },
+        {
+          "id": "avs121",
+          "code": "AVS121",
+          "name": "Aviation Studies I - History and Standards"
+        },
+        {
+          "id": "com101",
+          "code": "COM101",
+          "name": "Communicating Across ContextsCommunicating Across Contexts (Enriched)"
+        },
+        {
+          "id": "mth120",
+          "code": "MTH120",
+          "name": "AVO/ASE Math BridgeMathematics"
+        }
+      ]
+    },
+    {
+      "id": "semester4",
+      "name": "Semester 2",
+      "courses": [
+        {
+          "id": "fdp221",
+          "code": "FDP221",
+          "name": "Flight Dispatch I"
+        },
+        {
+          "id": "flp221",
+          "code": "FLP221",
+          "name": "Flight Planning I"
+        },
+        {
+          "id": "met321",
+          "code": "MET321",
+          "name": "Meteorology"
+        },
+        {
+          "id": "mth221",
+          "code": "MTH221",
+          "name": "Mathematics"
+        },
+        {
+          "id": "sms221",
+          "code": "SMS221",
+          "name": "Safety Mgmt. System I - Documentation & Implementation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester5",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "aso321",
+          "code": "ASO321",
+          "name": "Airside Operations"
+        },
+        {
+          "id": "avm321",
+          "code": "AVM321",
+          "name": "Aviation Management II"
+        },
+        {
+          "id": "fpd321",
+          "code": "FPD321",
+          "name": "Flight Planning and Dispatch"
+        },
+        {
+          "id": "has321",
+          "code": "HAS321",
+          "name": "Health and Safety"
+        },
+        {
+          "id": "tec400",
+          "code": "TEC400",
+          "name": "Technical Communications"
+        },
+        {
+          "id": "wtp100",
+          "code": "WTP100",
+          "name": "Work Term Preparation"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 7
+    },
+    {
+      "id": "semester6",
+      "name": "Semester 3",
+      "courses": [
+        {
+          "id": "ase331",
+          "code": "ASE331",
+          "name": "Aviation Safety, Co-op"
+        }
+      ]
+    },
+    {
+      "id": "semester7",
+      "name": "Semester 4",
+      "courses": [
+        {
+          "id": "alo421",
+          "code": "ALO421",
+          "name": "Airline Operations"
+        },
+        {
+          "id": "epp421",
+          "code": "EPP421",
+          "name": "Emergency Planning and Preparedness"
+        },
+        {
+          "id": "sec421",
+          "code": "SEC421",
+          "name": "Aviation Security"
+        },
+        {
+          "id": "sms421",
+          "code": "SMS421",
+          "name": "Safety Mgmt. System II - Quality Control and Assurance"
+        },
+        {
+          "id": "tpl421",
+          "code": "TPL421",
+          "name": "Transport Logistics - International Customs & Freight"
+        }
+      ],
+      "requirements": [
+        {
+          "type": "General Education Course",
+          "count": 1,
+          "description": "General Education Course (1)"
+        }
+      ],
+      "totalCourses": 6
+    },
+    {
+      "id": "semester8",
+      "name": "Semester 5",
+      "courses": [
+        {
+          "id": "ale521",
+          "code": "ALE521",
+          "name": "Aviation Leadership and Ethics"
+        },
+        {
+          "id": "avm521",
+          "code": "AVM521",
+          "name": "Aviation Management III"
+        },
+        {
+          "id": "ddm521",
+          "code": "DDM521",
+          "name": "Database Development and Management"
+        },
+        {
+          "id": "hum521",
+          "code": "HUM521",
+          "name": "Human and Organizational Factors"
+        },
+        {
+          "id": "mth521",
+          "code": "MTH521",
+          "name": "Mathematics III - Statistics"
+        },
+        {
+          "id": "sms521",
+          "code": "SMS521",
+          "name": "Safety Management Systems III Program Development"
+        }
+      ]
+    },
+    {
+      "id": "semester10",
+      "name": "Semester 6",
+      "courses": [
+        {
+          "id": "aii621",
+          "code": "AII621",
+          "name": "Accident and Incident Investigation"
+        },
+        {
+          "id": "avp621",
+          "code": "AVP621",
+          "name": "Aviation Project Course"
+        },
+        {
+          "id": "has621",
+          "code": "HAS621",
+          "name": "Health and Safety"
+        },
+        {
+          "id": "ppm621",
+          "code": "PPM621",
+          "name": "Project and Finance Management in Aviation"
+        },
+        {
+          "id": "saf621",
+          "code": "SAF621",
+          "name": "Airport Operations and Safety"
+        },
+        {
+          "id": "sms621",
+          "code": "SMS621",
+          "name": "Safety Management System IV : Risk Assessment"
+        }
+      ]
+    }
+  ]
+}
