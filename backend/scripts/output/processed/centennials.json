@@ -1,0 +1,2992 @@
+[
+    {
+        "id": "academic-career-entrance-ace",
+        "code": "ACE",
+        "name": "Academic and Career Entrance (ACE) – Certificate",
+        "overview": "",
+        "duration": "1, 2 or 3 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "College Preparation",
+        "school": ""
+    },
+    {
+        "id": "career-college-transition",
+        "code": "CCT",
+        "name": "Career and College Transition",
+        "overview": "",
+        "duration": "1, 2 or 3 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "College Preparation",
+        "school": ""
+    },
+    {
+        "id": "english-academic-purposes-eap",
+        "code": "EAP",
+        "name": "English for Academic Purposes (EAP) - General Arts and Science",
+        "overview": "",
+        "duration": "1, 2 or 3 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "english-language-learning-ell",
+        "code": "ELL1",
+        "name": "English Language Learning (ELL)",
+        "overview": "",
+        "duration": "2 years/ 5 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Recognition of Achievement Certificate",
+        "school": ""
+    },
+    {
+        "id": "english-language-learning-ell-online",
+        "code": "ELL2",
+        "name": "English Language Learning (ELL) (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Recognition of Achievement Certificate",
+        "school": ""
+    },
+    {
+        "id": "general-arts",
+        "code": "GA1",
+        "name": "General Arts",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "liberal-arts",
+        "code": "LA1",
+        "name": "Liberal Arts",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "liberal-arts-trent-university",
+        "code": "LATU",
+        "name": "Liberal Arts to Trent University (Durham GTA and Peterborough Campuses)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "liberal-arts-university-toronto-scarborough",
+        "code": "LAUTS",
+        "name": "Liberal Arts to University of Toronto Scarborough",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "liberal-arts-york-university",
+        "code": "LAYU",
+        "name": "Liberal Arts to York University",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "aerospace-manufacturing-engineering-technician",
+        "code": "AMET1",
+        "name": "Aerospace Manufacturing Engineering Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Downsview Campus: Bombardier Centre for Aerospace and Aviation"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "aerospace-manufacturing-engineering-technology",
+        "code": "AMETO1",
+        "name": "Aerospace Manufacturing Engineering Technology (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Downsview Campus: Bombardier Centre for Aerospace and Aviation"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "automation-robotics-electro-mechanical-technician",
+        "code": "AREMT1",
+        "name": "Automation and Robotics - Electro-Mechanical Engineering Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "automation-robotics-electro-mechanical-technician-fast-track",
+        "code": "AREMT2",
+        "name": "Automation and Robotics - Electro-Mechanical Engineering Technician (Fast-Track)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "automation-robotics-electro-mechanical-technology-fast-track",
+        "code": "AREMET1",
+        "name": "Automation and Robotics - Electro-Mechanical Engineering Technology (Fast-Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "automation-robotics-electro-mechanical-technology",
+        "code": "AREMET2",
+        "name": "Automation and Robotics - Electro-Mechanical Engineering Technology (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "biomedical-engineering-technology",
+        "code": "BET1",
+        "name": "Biomedical Engineering Technology (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "electrical-engineering-technician",
+        "code": "EET1",
+        "name": "Electrical Engineering Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "electrical-engineering-technician-fast-track",
+        "code": "EET2",
+        "name": "Electrical Engineering Technician (Fast-Track)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "electrical-engineering-technology-fast-track",
+        "code": "EETO1",
+        "name": "Electrical Engineering Technology (Fast-Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "electrical-engineering-technology",
+        "code": "EETO2",
+        "name": "Electrical Engineering Technology (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "electrical-techniques",
+        "code": "ET1",
+        "name": "Electrical Techniques",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "electrician-construction-maintenance",
+        "code": "ECM",
+        "name": "Electrician, Construction Maintenance",
+        "overview": "",
+        "duration": "4 levels (basic, intermediate, advanced)",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "electronics-engineering-technician-fast-track",
+        "code": "ELEET1",
+        "name": "Electronics Engineering Technician (Fast-Track)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "electronics-engineering-technology-fast-track",
+        "code": "ELEETO1",
+        "name": "Electronics Engineering Technology (Fast-Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "heating-refrigeration-air-conditioning-technician",
+        "code": "HRACT",
+        "name": "Heating, Refrigeration and Air Conditioning Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "mechanical-engineering-technician-design",
+        "code": "METD1",
+        "name": "Mechanical Engineering Technician – Design",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "mechanical-engineering-technician-design-fast-track",
+        "code": "METD2",
+        "name": "Mechanical Engineering Technician – Design (Fast-Track)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "mechanical-engineering-technology-design-fast-track",
+        "code": "METO1",
+        "name": "Mechanical Engineering Technology - Design (Fast Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "mechanical-engineering-technology-design",
+        "code": "METO2",
+        "name": "Mechanical Engineering Technology - Design (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "mechanical-engineering-technology-industrial-fast-track",
+        "code": "METI1",
+        "name": "Mechanical Engineering Technology - Industrial (Fast Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "mechanical-engineering-technology-industrial",
+        "code": "METI2",
+        "name": "Mechanical Engineering Technology - Industrial (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "refrigeration-air-conditioning-mechanic",
+        "code": "RACM",
+        "name": "Refrigeration and Air Conditioning Mechanic (Co-op)",
+        "overview": "",
+        "duration": "2 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "advertising-creative-digital-strategy",
+        "code": "ACDS",
+        "name": "Advertising - Creative and Digital Strategy",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "interactive-media-management",
+        "code": "IMM",
+        "name": "Interactive Media Management",
+        "overview": "",
+        "duration": "1 year/ 3 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "marketing-corporate-account-management-online",
+        "code": "MCAM1",
+        "name": "Marketing - Corporate Account Management (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "marketing-digital-engagement-strategy",
+        "code": "MDES",
+        "name": "Marketing - Digital Engagement Strategy (Optional Co-op)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "marketing-management-online",
+        "code": "MM1",
+        "name": "Marketing Management (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "aerospace-manufacturing-engineering-technician-2",
+        "code": "AMET2",
+        "name": "Aerospace Manufacturing Engineering Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Downsview Campus: Bombardier Centre for Aerospace and Aviation"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "aerospace-manufacturing-engineering-technology-2",
+        "code": "AMETO2",
+        "name": "Aerospace Manufacturing Engineering Technology (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Downsview Campus: Bombardier Centre for Aerospace and Aviation"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "aircraft-maintenance-aviation-technician",
+        "code": "AMAT",
+        "name": "Aircraft Maintenance - Aviation Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Downsview Campus: Bombardier Centre for Aerospace and Aviation"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "airframe-assembly",
+        "code": "AA",
+        "name": "Airframe Assembly",
+        "overview": "",
+        "duration": "12 weeks",
+        "campus": [
+            "Downsview Campus: Bombardier Centre for Aerospace and Aviation"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "avionics-maintenance-aviation-technician",
+        "code": "AVMAT",
+        "name": "Avionics Maintenance - Aviation Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Downsview Campus: Bombardier Centre for Aerospace and Aviation"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "canadian-integrated-airline-transport-pilot-licence",
+        "code": "CIATPL",
+        "name": "Canadian Integrated Airline Transport Pilot Licence",
+        "overview": "",
+        "duration": "2 years/3 semesters",
+        "campus": [
+            "Oshawa Airport (Toronto Airways' Canadian Flight Academy facility)"
+        ],
+        "delivery": "In-person",
+        "credential": "Centennial College Certificate",
+        "school": ""
+    },
+    {
+        "id": "alignment-brakes-technician",
+        "code": "ABT",
+        "name": "Alignment and Brakes Technician",
+        "overview": "",
+        "duration": "In-school session, 8-week block release",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "auto-body-collision-damage-repairer-apprenticeship",
+        "code": "ABCDRA",
+        "name": "Auto Body and Collision Damage Repairer - Apprenticeship Training",
+        "overview": "",
+        "duration": "In-school session of 8 weeks",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "auto-body-repair-technician",
+        "code": "ABRT",
+        "name": "Auto Body Repair Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "auto-body-repair-techniques",
+        "code": "ABRTE",
+        "name": "Auto Body Repair Techniques",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "automotive-motive-power-technician",
+        "code": "AMPT",
+        "name": "Automotive - Motive Power Technician (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "automotive-foundations",
+        "code": "AF",
+        "name": "Automotive Foundations",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "automotive-fundamentals",
+        "code": "AFU",
+        "name": "Automotive Fundamentals",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "automotive-service-technician-apprenticeship",
+        "code": "ASTA",
+        "name": "Automotive Service Technician - Apprenticeship Training",
+        "overview": "",
+        "duration": "In-school session options include 8 week block, 1 day per week for 36 weeks, or 2 nights a week for 40 weeks",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "automotive-service-technician-toyota",
+        "code": "ASTT",
+        "name": "Automotive Service Technician - Toyota",
+        "overview": "",
+        "duration": "32 week in-class",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "automotive-service-technician-canadian-tire",
+        "code": "ASTCT",
+        "name": "Automotive Service Technician Canadian Tire",
+        "overview": "",
+        "duration": "32 week in-class",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "automotive-service-technician-coop-mvro-fca",
+        "code": "ASTMF",
+        "name": "Automotive Service Technician Co-op partnered with MVRO and FCA",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "automotive-service-technician-ford-asset",
+        "code": "ASTFA",
+        "name": "Automotive Service Technician Ford ASSET",
+        "overview": "",
+        "duration": "32 week in-class",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "automotive-service-technician-gm-asep",
+        "code": "ASTGMA",
+        "name": "Automotive Service Technician General Motors of Canada ASEP",
+        "overview": "",
+        "duration": "32 week in-class",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "automotive-service-technician-honda-ahap",
+        "code": "ASTHA",
+        "name": "Automotive Service Technician Honda AHAP",
+        "overview": "",
+        "duration": "32 week in-class",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "automotive-service-technician-pre-apprenticeship",
+        "code": "ASTPA",
+        "name": "Automotive Service Technician Pre-Apprenticeship",
+        "overview": "",
+        "duration": "33 Weeks",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "motorcycle-powersports-product-repair-techniques",
+        "code": "MPPRT",
+        "name": "Motorcycle and Powersports Product Repair Techniques",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "motorcycle-technician-apprenticeship",
+        "code": "MTA",
+        "name": "Motorcycle Technician - Apprenticeship Training",
+        "overview": "",
+        "duration": "In-school session of 8 weeks",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "parts-technician-apprenticeship",
+        "code": "PTA",
+        "name": "Parts Technician - Apprenticeship Training",
+        "overview": "",
+        "duration": "1 day/week (Thursday) / 2 years (36 weeks)",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Centennial College Certificate",
+        "school": ""
+    },
+    {
+        "id": "art-design-fundamentals-online",
+        "code": "ADFO",
+        "name": "Art and Design Fundamentals (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "game-development-online",
+        "code": "GDO1",
+        "name": "Game - Development (Online)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "game-art",
+        "code": "GA2",
+        "name": "Game – Art",
+        "overview": "",
+        "duration": "2 years/ 4 semesters (16 months continuous)",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "game-development",
+        "code": "GD1",
+        "name": "Game – Development",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "graphic-design",
+        "code": "GD2",
+        "name": "Graphic Design",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "graphic-design-online",
+        "code": "GDO2",
+        "name": "Graphic Design (Online)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "museum-cultural-management",
+        "code": "MCM",
+        "name": "Museum and Cultural Management",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "music-industry-arts-performance",
+        "code": "MIAP",
+        "name": "Music Industry Arts and Performance",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Performing Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "performing-arts-fundamentals",
+        "code": "PAF",
+        "name": "Performing Arts Fundamentals",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Performing Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "biomedical-engineering-technology-fast-track",
+        "code": "BET2",
+        "name": "Biomedical Engineering Technology (Fast-Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "biotechnology",
+        "code": "BT1",
+        "name": "Biotechnology",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "biotechnology-advanced-fast-track",
+        "code": "BTA1",
+        "name": "Biotechnology - Advanced (Fast-Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "biotechnology-advanced",
+        "code": "BTA2",
+        "name": "Biotechnology - Advanced (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "biotechnology-fast-track",
+        "code": "BT2",
+        "name": "Biotechnology (Fast-Track)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "environmental-technician-fast-track",
+        "code": "ET2",
+        "name": "Environmental Technician (Fast-Track)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "environmental-technology-fast-track",
+        "code": "ENVT1",
+        "name": "Environmental Technology (Fast-Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "food-science-technology-fast-track",
+        "code": "FST1",
+        "name": "Food Science Technology (Fast Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "bookkeeping",
+        "code": "BK1",
+        "name": "Bookkeeping",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "business",
+        "code": "BUS1",
+        "name": "Business",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "business-accounting-online",
+        "code": "BA1",
+        "name": "Business - Accounting (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "business-supply-chain-operations",
+        "code": "BSCO1",
+        "name": "Business - Supply Chain and Operations",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "business-human-resources",
+        "code": "BHR1",
+        "name": "Business – Human Resources (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "business-marketing",
+        "code": "BM1",
+        "name": "Business – Marketing",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "business-marketing-online",
+        "code": "BM2",
+        "name": "Business – Marketing (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "business-online",
+        "code": "BUS2",
+        "name": "Business (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "business-accounting",
+        "code": "BA2",
+        "name": "Business Accounting",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "business-administration-supply-chain-operations",
+        "code": "BASCO1",
+        "name": "Business Administration - Supply Chain and Operations Management (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "business-administration-accounting",
+        "code": "BAA1",
+        "name": "Business Administration – Accounting (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "financial-services",
+        "code": "FS1",
+        "name": "Financial Services",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "financial-services-online",
+        "code": "FS2",
+        "name": "Financial Services (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "human-resources-management-online",
+        "code": "HRM1",
+        "name": "Human Resources Management (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "insurance-management",
+        "code": "IM1",
+        "name": "Insurance Management",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "international-business-management-online",
+        "code": "IBM1",
+        "name": "International Business Management (Online)",
+        "overview": "",
+        "duration": "1 year/ 3 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "law-clerk",
+        "code": "LC1",
+        "name": "Law Clerk",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "marketing-corporate-account-management-online-2",
+        "code": "MCAM2",
+        "name": "Marketing - Corporate Account Management (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "marketing-digital-engagement-strategy-2",
+        "code": "MDES2",
+        "name": "Marketing - Digital Engagement Strategy (Optional Co-op)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "marketing-management-online-2",
+        "code": "MM2",
+        "name": "Marketing Management (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "occupational-health-safety-management",
+        "code": "OHSM1",
+        "name": "Occupational Health and Safety Management",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "office-administration-executive",
+        "code": "OAE1",
+        "name": "Office Administration – Executive",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "office-administration-executive-online",
+        "code": "OAE2",
+        "name": "Office Administration – Executive (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "office-administration-general",
+        "code": "OAG1",
+        "name": "Office Administration – General",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "office-administration-general-online",
+        "code": "OAG2",
+        "name": "Office Administration – General (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "office-administration-health-services",
+        "code": "OAHS1",
+        "name": "Office Administration – Health Services",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "office-administration-health-services-online",
+        "code": "OAHS2",
+        "name": "Office Administration – Health Services (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "office-administration-legal",
+        "code": "OAL1",
+        "name": "Office Administration – Legal",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "office-administration-legal-online",
+        "code": "OAL2",
+        "name": "Office Administration – Legal (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "paralegal",
+        "code": "PL1",
+        "name": "Paralegal",
+        "overview": "",
+        "duration": "1 year/ 3 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "paralegal-court-tribunal-agent",
+        "code": "PLCTA1",
+        "name": "Paralegal - Court and Tribunal Agent",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "project-management-online",
+        "code": "PM1",
+        "name": "Project Management (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "strategic-management-accounting-specialization-online",
+        "code": "SMAS1",
+        "name": "Strategic Management – Accounting Specialization (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "supply-chain-management-logistics",
+        "code": "SCML1",
+        "name": "Supply Chain Management - Logistics (Optional Co-op)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "addiction-mental-health-worker",
+        "code": "AMHW1",
+        "name": "Addiction and Mental Health Worker",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "child-youth-care",
+        "code": "CYC1",
+        "name": "Child and Youth Care",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "child-youth-care-online",
+        "code": "CYC2",
+        "name": "Child and Youth Care (Online)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "community-child-studies-foundations",
+        "code": "CCSF1",
+        "name": "Community and Child Studies Foundations",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "community-justice-services",
+        "code": "CJS1",
+        "name": "Community and Justice Services",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "developmental-services-worker",
+        "code": "DSW1",
+        "name": "Developmental Services Worker",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "developmental-services-worker-online",
+        "code": "DSW2",
+        "name": "Developmental Services Worker (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "early-childhood-education-ashtonbee",
+        "code": "ECE1",
+        "name": "Early Childhood Education (Ashtonbee Campus)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "early-childhood-education-progress",
+        "code": "ECE2",
+        "name": "Early Childhood Education (Progress Campus)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "social-service-worker",
+        "code": "SSW1",
+        "name": "Social Service Worker",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "emergency-management-community-support-preparedness",
+        "code": "EMCSP",
+        "name": "Emergency Management – Community Support and Preparedness",
+        "overview": "",
+        "duration": "2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "firefighter-pre-service-education-training",
+        "code": "FPSET",
+        "name": "Firefighter - Pre-Service Education and Training",
+        "overview": "",
+        "duration": "1 year/ 3 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "law-clerk-2",
+        "code": "LC2",
+        "name": "Law Clerk",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "paralegal-2",
+        "code": "PL2",
+        "name": "Paralegal",
+        "overview": "",
+        "duration": "1 year/ 3 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "paralegal-court-tribunal-agent-2",
+        "code": "PLCTA2",
+        "name": "Paralegal - Court and Tribunal Agent",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "paramedic",
+        "code": "PARA",
+        "name": "Paramedic",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "police-public-safety-foundations",
+        "code": "PPSF",
+        "name": "Police and Public Safety Foundations",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "baking-pastry-arts-management",
+        "code": "BPAM1",
+        "name": "Baking and Pastry Arts Management",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "baking-pastry-arts-management-online",
+        "code": "BPAM2",
+        "name": "Baking and Pastry Arts Management (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "baking-skills",
+        "code": "BS1",
+        "name": "Baking Skills",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "baking-skills-online",
+        "code": "BS2",
+        "name": "Baking Skills (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "culinary-management",
+        "code": "CM1",
+        "name": "Culinary Management",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "culinary-management-online",
+        "code": "CM2",
+        "name": "Culinary Management (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "culinary-skills",
+        "code": "CS1",
+        "name": "Culinary Skills",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "culinary-skills-online",
+        "code": "CS2",
+        "name": "Culinary Skills (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "food-media",
+        "code": "FM1",
+        "name": "Food Media",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "bachelor-science-nursing-bscn-collaborative-fall",
+        "code": "BSCN1",
+        "name": "Bachelor of Science in Nursing (BScN) Collaborative Nursing Degree Fall",
+        "overview": "",
+        "duration": "4 years/ 8 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Bachelor Degree",
+        "school": ""
+    },
+    {
+        "id": "bridging-university-nursing-ien",
+        "code": "BUNIEN",
+        "name": "Bridging to University Nursing for Internationally Educated Nurses (IEN)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "bridging-university-nursing-rpn",
+        "code": "BUNRPN1",
+        "name": "Bridging to University Nursing for Registered Practical Nurses (RPNs)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "bridging-university-nursing-rpn-flexible",
+        "code": "BUNRPN2",
+        "name": "Bridging to University Nursing for Registered Practical Nurses (RPNs) - Flexible",
+        "overview": "",
+        "duration": "1 year/ 3 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "esthetician",
+        "code": "EST1",
+        "name": "Esthetician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "fitness-health-promotion",
+        "code": "FHP1",
+        "name": "Fitness and Health Promotion",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "health-studies-communications-skills",
+        "code": "HSCS",
+        "name": "Health Studies and Communications Skills",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "massage-therapy",
+        "code": "MT1",
+        "name": "Massage Therapy",
+        "overview": "",
+        "duration": "3 years/ 6 semesters (24 months continuous)",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "medical-laboratory-technician",
+        "code": "MLT1",
+        "name": "Medical Laboratory Technician",
+        "overview": "",
+        "duration": "1 year/ 3 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "nutrition-food-service-management",
+        "code": "NFSM",
+        "name": "Nutrition and Food Service Management",
+        "overview": "",
+        "duration": "2 years/ 4 semesters (16 months continuous)",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "occupational-therapist-assistant-physiotherapist-assistant",
+        "code": "OTAPA",
+        "name": "Occupational Therapist Assistant & Physiotherapist Assistant",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "personal-support-worker",
+        "code": "PSW1",
+        "name": "Personal Support Worker",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "pharmacy-technician",
+        "code": "PT1",
+        "name": "Pharmacy Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "practical-nursing",
+        "code": "PN1",
+        "name": "Practical Nursing",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "practical-nursing-flexible",
+        "code": "PN2",
+        "name": "Practical Nursing (Flexible)",
+        "overview": "",
+        "duration": "2 years/ 6 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "practical-nursing-ien-fast-track",
+        "code": "PNIEN",
+        "name": "Practical Nursing for Internationally Educated Nurses (IEN) (Fast-Track)",
+        "overview": "",
+        "duration": "1 year/ 3 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "pre-health-sciences-pathway",
+        "code": "PHSP",
+        "name": "Pre-Health Sciences Pathway to Certificates and Diplomas",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "rpn-bscn-bridging-university-hybrid-online",
+        "code": "RPNBSCN",
+        "name": "RPN to BScN Bridging to University Program Hybrid (Online)",
+        "overview": "",
+        "duration": "2 years/ 6 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "College Preparation",
+        "school": ""
+    },
+    {
+        "id": "workplace-wellness-health-promotion-morningside",
+        "code": "WWHP1",
+        "name": "Workplace Wellness and Health Promotion (Morningside Campus)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "automotive-foundations-2",
+        "code": "AF2",
+        "name": "Automotive Foundations",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "heavy-duty-equipment-technician",
+        "code": "HDET",
+        "name": "Heavy Duty Equipment Technician (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "parts-technician-apprenticeship-2",
+        "code": "PTA2",
+        "name": "Parts Technician - Apprenticeship Training",
+        "overview": "",
+        "duration": "1 day/week (Thursday) / 2 years (36 weeks)",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Centennial College Certificate",
+        "school": ""
+    },
+    {
+        "id": "truck-coach-pre-apprenticeship",
+        "code": "TCPA",
+        "name": "Truck and Coach Pre-Apprenticeship",
+        "overview": "",
+        "duration": "33 Weeks",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "truck-coach-technician-volvo-mack",
+        "code": "TCTVM",
+        "name": "Truck and Coach Technician – Volvo/Mack",
+        "overview": "",
+        "duration": "1 year",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "truck-coach-technician",
+        "code": "TCT1",
+        "name": "Truck and Coach Technician (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "truck-coach-technician-ats",
+        "code": "TCTATS",
+        "name": "Truck and Coach Technician ATS",
+        "overview": "",
+        "duration": "1 year",
+        "campus": [
+            "Ashtonbee Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "event-management",
+        "code": "EM1",
+        "name": "Event Management",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "event-management-online",
+        "code": "EM2",
+        "name": "Event Management (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "event-planning-online",
+        "code": "EP1",
+        "name": "Event Planning (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "food-beverage-management-restaurant-operations",
+        "code": "FBMRO",
+        "name": "Food and Beverage Management - Restaurant Operations",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "hospitality-hotel-operations-management",
+        "code": "HHOM1",
+        "name": "Hospitality - Hotel Operations Management",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "hospitality-hotel-operations-management-online",
+        "code": "HHOM2",
+        "name": "Hospitality - Hotel Operations Management (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "artificial-intelligence-software-engineering-technology-fast-track",
+        "code": "AISET1",
+        "name": "Artificial Intelligence - Software Engineering Technology (Fast-Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "artificial-intelligence-software-engineering-technology-fast-track-online",
+        "code": "AISET2",
+        "name": "Artificial Intelligence - Software Engineering Technology (Fast-Track) (Optional Co-op) (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "artificial-intelligence-software-engineering-technology",
+        "code": "AISET3",
+        "name": "Artificial Intelligence - Software Engineering Technology (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "artificial-intelligence-software-engineering-technology-online",
+        "code": "AISET4",
+        "name": "Artificial Intelligence - Software Engineering Technology (Optional Co-op) (Online)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "bachelor-information-technology-computer-communication-networks-honours",
+        "code": "BITCCN",
+        "name": "Bachelor of Information Technology (Computer and Communication Networks), Honours",
+        "overview": "",
+        "duration": "4 years/ 9 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Honours Bachelor Degree",
+        "school": ""
+    },
+    {
+        "id": "computer-repair-maintenance",
+        "code": "CRM1",
+        "name": "Computer Repair and Maintenance",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "computer-systems-technician-networking",
+        "code": "CSTN1",
+        "name": "Computer Systems Technician - Networking",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "computer-systems-technician-networking-fast-track",
+        "code": "CSTN2",
+        "name": "Computer Systems Technician - Networking (Fast-Track)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "computer-systems-technology-networking-fast-track",
+        "code": "CSTO1",
+        "name": "Computer Systems Technology - Networking (Fast Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "computer-systems-technology-networking",
+        "code": "CSTO2",
+        "name": "Computer Systems Technology - Networking (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "cybersecurity",
+        "code": "CS3",
+        "name": "Cybersecurity",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "cybersecurity-online",
+        "code": "CS4",
+        "name": "Cybersecurity (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "game-programming",
+        "code": "GP1",
+        "name": "Game - Programming (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "game-programming-online",
+        "code": "GP2",
+        "name": "Game - Programming (Optional Co-op) (Online)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "game-programming-fast-track",
+        "code": "GP3",
+        "name": "Game – Programming (Optional Co-op) (Fast Track)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "game-programming-fast-track-online",
+        "code": "GP4",
+        "name": "Game – Programming (Fast Track) (Optional Co-op) (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "health-informatics-technology-fast-track-online",
+        "code": "HIT1",
+        "name": "Health Informatics Technology (Fast-Track) (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "health-informatics-technology-fast-track",
+        "code": "HIT2",
+        "name": "Health Informatics Technology (Fast-Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "health-informatics-technology",
+        "code": "HIT3",
+        "name": "Health Informatics Technology (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "internet-of-things-system-architecture-integration",
+        "code": "IOTSAI",
+        "name": "Internet of Things - System Architecture and Integration",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "mobile-applications-development",
+        "code": "MAD1",
+        "name": "Mobile Applications Development",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "mobile-applications-development-online",
+        "code": "MAD2",
+        "name": "Mobile Applications Development (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "software-engineering-technician",
+        "code": "SET1",
+        "name": "Software Engineering Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "software-engineering-technician-fast-track",
+        "code": "SET2",
+        "name": "Software Engineering Technician (Fast-Track)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "software-engineering-technician-fast-track-online",
+        "code": "SET3",
+        "name": "Software Engineering Technician (Fast-Track) (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "software-engineering-technician-online",
+        "code": "SET4",
+        "name": "Software Engineering Technician (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "software-engineering-technology-fast-track",
+        "code": "SETO1",
+        "name": "Software Engineering Technology (Fast-Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "software-engineering-technology-fast-track-online",
+        "code": "SETO2",
+        "name": "Software Engineering Technology (Fast-Track) (Optional Co-op) (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "software-engineering-technology",
+        "code": "SETO3",
+        "name": "Software Engineering Technology (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "software-engineering-technology-online",
+        "code": "SETO4",
+        "name": "Software Engineering Technology (Optional Co-op) (Online)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "advertising-creative-digital-strategy-2",
+        "code": "ACDS2",
+        "name": "Advertising - Creative and Digital Strategy",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "broadcasting-film-television-digital-media-radio",
+        "code": "BFTDR",
+        "name": "Broadcasting - Film, Television, Digital Media and Radio",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "childrens-media",
+        "code": "CM3",
+        "name": "Children's Media",
+        "overview": "",
+        "duration": "1 year/ 3 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "contemporary-journalism",
+        "code": "CJ1",
+        "name": "Contemporary Journalism",
+        "overview": "",
+        "duration": "1 year/ 3 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "food-media-2",
+        "code": "FM2",
+        "name": "Food Media",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "interactive-media-management-2",
+        "code": "IMM2",
+        "name": "Interactive Media Management",
+        "overview": "",
+        "duration": "1 year/ 3 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "lifestyle-media-content-creation",
+        "code": "LMCC",
+        "name": "Lifestyle Media – Content Creation",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "museum-cultural-management-2",
+        "code": "MCM2",
+        "name": "Museum and Cultural Management",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "publishing-book-magazine-electronic-online",
+        "code": "PBME",
+        "name": "Publishing - Book, Magazine and Electronic (Online)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "sports-journalism",
+        "code": "SJ1",
+        "name": "Sports Journalism",
+        "overview": "",
+        "duration": "1 year/ 3 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "storytelling-with-data",
+        "code": "SWD",
+        "name": "Storytelling with Data",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Story Arts Centre"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Graduate Certificate",
+        "school": ""
+    },
+    {
+        "id": "architectural-technician",
+        "code": "AT1",
+        "name": "Architectural Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "architectural-technician-online",
+        "code": "AT2",
+        "name": "Architectural Technician (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "architectural-technology-fast-track-online",
+        "code": "ATO1",
+        "name": "Architectural Technology (Fast-Track) (Optional Co-op) (Online)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "architectural-technology-fast-track",
+        "code": "ATO2",
+        "name": "Architectural Technology (Fast-Track)(Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "architectural-technology",
+        "code": "ATO3",
+        "name": "Architectural Technology (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Morningside Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "architectural-technology-online",
+        "code": "ATO4",
+        "name": "Architectural Technology (Optional Co-op) (Online)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Online"
+        ],
+        "delivery": "Online",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "electrical-engineering-technician-3",
+        "code": "EET3",
+        "name": "Electrical Engineering Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "electrical-engineering-technician-fast-track-2",
+        "code": "EET4",
+        "name": "Electrical Engineering Technician (Fast-Track)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "electrical-engineering-technology-fast-track-2",
+        "code": "EETO3",
+        "name": "Electrical Engineering Technology (Fast-Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "electrical-engineering-technology-2",
+        "code": "EETO4",
+        "name": "Electrical Engineering Technology (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "electrical-techniques-2",
+        "code": "ET3",
+        "name": "Electrical Techniques",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    },
+    {
+        "id": "energy-systems-engineering-technician",
+        "code": "ESET1",
+        "name": "Energy Systems Engineering Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "energy-systems-engineering-technician-fast-track",
+        "code": "ESET2",
+        "name": "Energy Systems Engineering Technician (Fast-Track)",
+        "overview": "",
+        "duration": "1 year/ 2 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "energy-systems-engineering-technology-fast-track",
+        "code": "ESETO1",
+        "name": "Energy Systems Engineering Technology (Fast Track) (Optional Co-op)",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "energy-systems-engineering-technology",
+        "code": "ESETO2",
+        "name": "Energy Systems Engineering Technology (Optional Co-op)",
+        "overview": "",
+        "duration": "3 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Advanced Diploma",
+        "school": ""
+    },
+    {
+        "id": "heating-refrigeration-air-conditioning-technician-2",
+        "code": "HRACT2",
+        "name": "Heating, Refrigeration and Air Conditioning Technician",
+        "overview": "",
+        "duration": "2 years/ 4 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "refrigeration-air-conditioning-mechanic-2",
+        "code": "RACM2",
+        "name": "Refrigeration and Air Conditioning Mechanic (Co-op)",
+        "overview": "",
+        "duration": "2 years/ 6 semesters",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Diploma",
+        "school": ""
+    },
+    {
+        "id": "refrigeration-air-conditioning-systems-mechanic",
+        "code": "RACSM",
+        "name": "Refrigeration and Air Conditioning Systems Mechanic",
+        "overview": "",
+        "duration": "3 levels (basic, intermediate and advanced)",
+        "campus": [
+            "Progress Campus"
+        ],
+        "delivery": "In-person",
+        "credential": "Ontario College Certificate",
+        "school": ""
+    }
+]

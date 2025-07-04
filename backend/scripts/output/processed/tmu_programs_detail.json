@@ -1,0 +1,538 @@
+[
+  {
+    "name": "Accounting & Finance - BComm (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/accounting-finance/",
+    "degree": "Bachelor of Commerce (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Aerospace Engineering - BEng",
+    "url": "https://www.torontomu.ca/programs/undergraduate/aerospace-engineering/",
+    "degree": "Bachelor of Engineering",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Architectural Science - BArchSc (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/architectural-science/",
+    "degree": "Bachelor of Architectural Science (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Arts and Contemporary Studies - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/arts-contemporary-studies/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Capstone course(s) available",
+    "full_time_formats": "",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Biology - BSc (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/biology/",
+    "degree": "Bachelor of Science (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Biomedical Engineering - BEng",
+    "url": "https://www.torontomu.ca/programs/undergraduate/biomedical-engineering/",
+    "degree": "Bachelor of Engineering",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Biomedical Sciences - BSc (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/biomedical-sciences/",
+    "degree": "Bachelor of Science (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Business Management - BComm (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/business-management/",
+    "degree": "Bachelor of Commerce (Honours)",
+    "experiential_learning": "",
+    "full_time_formats": "4 Year | Direct Entry to Third Year | 5-Year Co-op",
+    "part_time_formats": "First-Year Entry | Direct Entry to Third Year"
+  },
+  {
+    "name": "Business Technology Management - BComm (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/business-technology-management/",
+    "degree": "Bachelor of Commerce (Honours)",
+    "experiential_learning": "",
+    "full_time_formats": "4 Year | Degree Completion | 5-Year Co-op",
+    "part_time_formats": "First-Year Entry | Degree Completion"
+  },
+  {
+    "name": "Chemical Engineering Co-op - BEng",
+    "url": "https://www.torontomu.ca/programs/undergraduate/chemical-engineering-co-op/",
+    "degree": "Bachelor of Engineering",
+    "experiential_learning": "Co-op mandatory",
+    "full_time_formats": " 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Chemistry - BSc (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/chemistry/",
+    "degree": "Bachelor of Science (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Child and Youth Care - BA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/child-youth-care/",
+    "degree": "Bachelor of Arts",
+    "experiential_learning": "Internship mandatory",
+    "full_time_formats": "4 Year | Direct Entry to Third Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Civil Engineering - BEng",
+    "url": "https://www.torontomu.ca/programs/undergraduate/civil-engineering/",
+    "degree": "Bachelor of Engineering",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Computer Engineering - BEng",
+    "url": "https://www.torontomu.ca/programs/undergraduate/computer-engineering/",
+    "degree": "Bachelor of Engineering",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Computer Science - BSc (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/computer-science/",
+    "degree": "Bachelor of Science (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Creative Industries - BA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/creative-industries/",
+    "degree": "Bachelor of Arts Faculty: The Creative School",
+    "experiential_learning": "Internship mandatory",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Criminology - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/criminology/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Disability Studies - BA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/disability-studies/",
+    "degree": "Bachelor of Arts",
+    "experiential_learning": "Capstone Course(s) available",
+    "full_time_formats": "",
+    "part_time_formats": "Degree Completion"
+  },
+  {
+    "name": "Early Childhood Studies - BA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/early-childhood-studies/",
+    "degree": "Bachelor of Arts",
+    "experiential_learning": "Placement mandatory",
+    "full_time_formats": "4 Year | Direct Entry to Third Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Economics and Finance - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/international-economics-finance/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Co-op available | Internship available",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Electrical Engineering - BEng",
+    "url": "https://www.torontomu.ca/programs/undergraduate/electrical-engineering/",
+    "degree": "Bachelor of Engineering",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "English - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/english/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Environment and Urban Sustainability - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/environment-urban-sustainability/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Internship available",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Fashion - BDes",
+    "url": "https://www.torontomu.ca/programs/undergraduate/fashion/",
+    "degree": "Bachelor of Design",
+    "experiential_learning": "Internship mandatory",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Financial Mathematics - BSc (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/financial-mathematics/",
+    "degree": "Bachelor of Science (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Geographic Analysis Co-op - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/geographic-analysis-co-op/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Co-op mandatory",
+    "full_time_formats": "5 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Graphic Communications Management - BTech",
+    "url": "https://www.torontomu.ca/programs/undergraduate/graphic-communications/",
+    "degree": "Bachelor of Technology",
+    "experiential_learning": "Internship mandatory",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Health Administration - BHA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/health-administration/",
+    "degree": "Bachelor of Health Administration",
+    "experiential_learning": "Practicum mandatory",
+    "full_time_formats": "",
+    "part_time_formats": "Part-Time Degree Completion"
+  },
+  {
+    "name": "History - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/history/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Hospitality and Tourism Management - BComm (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/hospitality-tourism-management/",
+    "degree": "Bachelor of Commerce (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Image Arts: Film - BFA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/film/",
+    "degree": "Bachelor of Fine Arts",
+    "experiential_learning": "Internship available",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Image Arts: Photography Media Arts - BFA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/photography-media-arts/",
+    "degree": "Bachelor of Fine Arts",
+    "experiential_learning": "Internship available",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Industrial Engineering - BEng",
+    "url": "https://www.torontomu.ca/programs/undergraduate/industrial-engineering/",
+    "degree": "Bachelor of Engineering",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Interior Design - BFA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/interior-design/",
+    "degree": "Bachelor of Fine Arts",
+    "experiential_learning": "Co-op available | Internship mandatory",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Journalism - BJourn",
+    "url": "https://www.torontomu.ca/programs/undergraduate/journalism/",
+    "degree": "Bachelor of Journalism",
+    "experiential_learning": "Internship available",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Language and Intercultural Relations - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/language-intercultural-relations/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Law - JD (Lincoln Alexander School of Law)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/juris-doctor/",
+    "degree": "",
+    "experiential_learning": "",
+    "full_time_formats": "minimum of 3 years of study",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Mathematics and Its Applications - BSc (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/mathematics-applications/",
+    "degree": "Bachelor of Science (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Mechanical Engineering - BEng",
+    "url": "https://www.torontomu.ca/programs/undergraduate/mechanical-engineering/",
+    "degree": "Bachelor of Engineering",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Mechatronics Engineering - BEng",
+    "url": "https://www.torontomu.ca/programs/undergraduate/mechatronics-engineering/",
+    "degree": "Bachelor of Engineering",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Media Production - BA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/media-production/",
+    "degree": "Bachelor of Arts",
+    "experiential_learning": "Internship available",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Medical Physics - BSc (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/medical-physics/",
+    "degree": "Bachelor of Science (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Medicine - MD (TMU School of Medicine)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/school-of-medicine/",
+    "degree": "",
+    "experiential_learning": "",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Midwifery - BHSc",
+    "url": "https://www.torontomu.ca/programs/undergraduate/midwifery/",
+    "degree": "Bachelor of Health Sciences",
+    "experiential_learning": "Placement mandatory",
+    "full_time_formats": "4 Year | Post-Baccalaureate option available",
+    "part_time_formats": ""
+  },
+  {
+    "name": "New Media - BFA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/new-media/",
+    "degree": "Bachelor of Fine Arts",
+    "experiential_learning": "Internship available",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Nursing - BScN (4-Year Collaborative Program: TMU, Centennial, George Brown)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/nursing-collaborative/",
+    "degree": "Bachelor of Science in Nursing",
+    "experiential_learning": "Placements mandatory",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Nursing - BScN (Post Diploma)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/nursing-post-diploma/",
+    "degree": "Bachelor of Science in Nursing",
+    "experiential_learning": "Placement mandatory",
+    "full_time_formats": "Post-Diploma Degree Completion",
+    "part_time_formats": "Post-Diploma Degree Completion "
+  },
+  {
+    "name": "Nutrition and Food - BASc",
+    "url": "https://www.torontomu.ca/programs/undergraduate/nutrition-food/",
+    "degree": "Bachelor of Applied Science",
+    "experiential_learning": "Research project available",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Occupational Health and Safety - BASc",
+    "url": "https://www.torontomu.ca/programs/undergraduate/occupational-health-safety/",
+    "degree": "Bachelor of Applied Science",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Performance: Acting - BFA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/acting/",
+    "degree": "Bachelor of Fine Arts Faculty: The Creative School",
+    "experiential_learning": "Studio course(s) available",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Performance: Dance - BFA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/dance/",
+    "degree": "Bachelor of Fine Arts Faculty: The Creative School",
+    "experiential_learning": "Studio course(s) available",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Performance: Design and Production - BFA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/production/",
+    "degree": "Bachelor of Fine Arts",
+    "experiential_learning": "Studio course(s) available",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Philosophy - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/philosophy/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Politics and Governance - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/politics-governance/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Primary Health Care Nurse Practitioner Certificate - PHCNP",
+    "url": "https://www.torontomu.ca/programs/undergraduate/primary-health-care-nurse-practitioner/",
+    "degree": "",
+    "experiential_learning": "",
+    "full_time_formats": "3 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Professional Communication - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/professional-communication/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Internship available",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Professional Music - BFA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/professional-music/",
+    "degree": "Bachelor of Fine Arts (Honours)",
+    "experiential_learning": "Internship mandatory",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Psychology - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/psychology/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Public Administration and Governance - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/public-administration-governance/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Practicum available",
+    "full_time_formats": "",
+    "part_time_formats": "First-Year Entry"
+  },
+  {
+    "name": "Public Health - BASc",
+    "url": "https://www.torontomu.ca/programs/undergraduate/public-health/",
+    "degree": "Bachelor of Applied Science",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op | 2-Year program for university graduates",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Retail Management - BComm (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/retail-management/",
+    "degree": "Bachelor of Commerce (Honours)",
+    "experiential_learning": "",
+    "full_time_formats": "4 Year | Direct Entry to Second Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Social Work - BSW",
+    "url": "https://www.torontomu.ca/programs/undergraduate/social-work/",
+    "degree": "Bachelor of Social Work",
+    "experiential_learning": "Placements mandatory",
+    "full_time_formats": "4 Year | Advanced Standing to second year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Sociology - BA (Hons)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/sociology/",
+    "degree": "Bachelor of Arts (Honours)",
+    "experiential_learning": "Co-op available",
+    "full_time_formats": "4 Year | 5-Year Co-op",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Sport Media - BA",
+    "url": "https://www.torontomu.ca/programs/undergraduate/sport-media/",
+    "degree": "Bachelor of Arts",
+    "experiential_learning": "Internship mandatory",
+    "full_time_formats": "4 Year",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Undeclared Arts (First-Year Studies Only)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/undeclared-arts/",
+    "degree": "N/A",
+    "experiential_learning": "N/A",
+    "full_time_formats": "First-Year Studies Only",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Undeclared Engineering (First Semester Studies Only)",
+    "url": "https://www.torontomu.ca/programs/undergraduate/undeclared-engineering/",
+    "degree": "N/A",
+    "experiential_learning": "N/A",
+    "full_time_formats": "First Semester Studies Only",
+    "part_time_formats": ""
+  },
+  {
+    "name": "Urban and Regional Planning - BURPI",
+    "url": "https://www.torontomu.ca/programs/undergraduate/urban-regional-planning/",
+    "degree": "Bachelor of Urban and Regional Planning",
+    "experiential_learning": "Optional field placement",
+    "full_time_formats": "4 Year | 2-Year Post-Baccalaureate | 2-Year Degree Completion",
+    "part_time_formats": ""
+  }
+]
