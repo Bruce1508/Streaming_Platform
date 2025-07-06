@@ -74,7 +74,6 @@ export const getStudyMaterialById = async (req: Request, res: Response): Promise
             .populate('author', 'fullName profilePic email')
             .populate('academic.school', 'name location')
             .populate('academic.program', 'name code')
-            .populate('academic.course', 'code name')
             .populate('comments.user', 'fullName profilePic')
             .exec();
 
@@ -200,7 +199,6 @@ export const getStudyMaterials = async (req: Request, res: Response): Promise<Re
                 .populate('author', 'fullName profilePic')
                 .populate('academic.school', 'name location')
                 .populate('academic.program', 'name code')
-                .populate('academic.course', 'code name')
                 .sort(sortObj)
                 .limit(limitNum)
                 .skip(skip)
@@ -374,13 +372,20 @@ export const createStudyMaterial = async (req: Request, res: Response): Promise<
             });
         }
 
-        // Validate ObjectIds
+        // Validate ObjectIds (except course which is now string)
         if (!mongoose.Types.ObjectId.isValid(school) ||
-            !mongoose.Types.ObjectId.isValid(program) ||
-            !mongoose.Types.ObjectId.isValid(course)) {
+            !mongoose.Types.ObjectId.isValid(program)) {
             return res.status(400).json({
                 success: false,
-                message: "Invalid school, program, or course ID"
+                message: "Invalid school or program ID"
+            });
+        }
+
+        // Validate course is not empty string
+        if (!course || course.trim().length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Course is required"
             });
         }
 
@@ -405,7 +410,7 @@ export const createStudyMaterial = async (req: Request, res: Response): Promise<
             academic: {
                 school: new mongoose.Types.ObjectId(school),
                 program: new mongoose.Types.ObjectId(program),
-                course: new mongoose.Types.ObjectId(course),
+                course: course,
                 semester: {
                     term: semester.term,
                     year: parseInt(semester.year)
@@ -444,8 +449,7 @@ export const createStudyMaterial = async (req: Request, res: Response): Promise<
         await savedMaterial.populate([
             { path: 'author', select: 'fullName profilePic email' },
             { path: 'academic.school', select: 'name location' },
-            { path: 'academic.program', select: 'name code' },
-            { path: 'academic.course', select: 'code name' }
+            { path: 'academic.program', select: 'name code' }
         ]);
 
         console.log('✅ Study material created:', {
@@ -879,7 +883,6 @@ export const getUserUploadedMaterials = async (req: Request, res: Response): Pro
 
         const materials = await StudyMaterial.find(filter)
             .populate('author', 'fullName profilePic')
-            .populate('academic.course', 'code name')
             .populate('academic.program', 'name')
             .sort({ createdAt: -1 })
             .limit(limitNum)
@@ -960,8 +963,7 @@ export const updateStudyMaterial = async (req: Request, res: Response): Promise<
         ).populate([
             { path: 'author', select: 'fullName profilePic' },
             { path: 'academic.school', select: 'name location' },
-            { path: 'academic.program', select: 'name code' },
-            { path: 'academic.course', select: 'code name' }
+            { path: 'academic.program', select: 'name code' }
         ]);
 
         return res.json({
@@ -1046,10 +1048,11 @@ export const getMaterialsByCourse = async (req: Request, res: Response): Promise
         const { courseId } = req.params;
         const { limit = '20', sort = 'newest' } = req.query as StudyMaterialQuery;
 
-        if (!mongoose.Types.ObjectId.isValid(courseId)) {
+        // Validate course is not empty string (course is now string, not ObjectId)
+        if (!courseId || courseId.trim().length === 0) {
             return res.status(400).json({
                 success: false,
-                message: 'Invalid course ID'
+                message: 'Course ID is required'
             });
         }
 

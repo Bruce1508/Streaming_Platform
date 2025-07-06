@@ -16,6 +16,3 @@ export interface FilterOptions {
     location: string;
 }
 
-export interface FriendRequestStatus {
-    [userId: string]: 'none' | 'sent' | 'received' | 'friends';
-}

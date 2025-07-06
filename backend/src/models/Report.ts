@@ -3,60 +3,60 @@ import mongoose, { Document, Schema, Model } from 'mongoose';
 export interface IReport extends Document {
     reporter: mongoose.Types.ObjectId;
     reportedUser?: mongoose.Types.ObjectId; // If reporting a user
-    
+
     // What's being reported
     targetType: 'StudyMaterial' | 'User' | 'Comment';
     targetId: mongoose.Types.ObjectId;
-    
+
     // Report details
-    reason: 'inappropriate-content' | 'copyright-violation' | 'spam' | 
-           'harassment' | 'fake-information' | 'academic-dishonesty' | 
-           'privacy-violation' | 'other';
-    
+    reason: 'inappropriate-content' | 'copyright-violation' | 'spam' |
+    'harassment' | 'fake-information' | 'academic-dishonesty' |
+    'privacy-violation' | 'other';
+
     category: 'content' | 'behavior' | 'technical' | 'legal';
     description: string;
     severity: 'low' | 'medium' | 'high' | 'critical';
-    
+
     // Evidence/Context
     evidence?: {
         screenshots?: string[]; // URLs to uploaded screenshots
         urls?: string[]; // Related URLs
         additionalInfo?: string;
     };
-    
+
     // Report status and handling
     status: 'pending' | 'under-review' | 'resolved' | 'dismissed' | 'escalated';
     priority: 'low' | 'medium' | 'high' | 'urgent';
-    
+
     // Moderation details
     assignedTo?: mongoose.Types.ObjectId; // Admin/moderator handling this
     reviewedAt?: Date;
     resolvedAt?: Date;
-    
+
     // Resolution details
     resolution?: {
-        action: 'no-action' | 'warning-sent' | 'content-removed' | 
-                'user-suspended' | 'user-banned' | 'content-modified' | 'other';
+        action: 'no-action' | 'warning-sent' | 'content-removed' |
+        'user-suspended' | 'user-banned' | 'content-modified' | 'other';
         notes: string;
         resolvedBy: mongoose.Types.ObjectId;
         followUpRequired: boolean;
     };
-    
+
     // Administrative notes
     internalNotes?: {
         note: string;
         addedBy: mongoose.Types.ObjectId;
         addedAt: Date;
     }[];
-    
+
     // Related reports (for patterns)
     relatedReports?: mongoose.Types.ObjectId[];
-    
+
     // Metadata
     isAnonymous: boolean;
     reporterIpAddress?: string;
     userAgent?: string;
-    
+
     createdAt: Date;
     updatedAt: Date;
 }
@@ -76,12 +76,12 @@ const reportSchema = new Schema<IReport>({
         ref: 'User',
         required: [true, 'Reporter is required']
     },
-    
+
     reportedUser: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    
+
     targetType: {
         type: String,
         enum: {
@@ -90,12 +90,12 @@ const reportSchema = new Schema<IReport>({
         },
         required: [true, 'Target type is required']
     },
-    
+
     targetId: {
         type: Schema.Types.ObjectId,
         required: [true, 'Target ID is required']
     },
-    
+
     reason: {
         type: String,
         enum: {
@@ -108,7 +108,7 @@ const reportSchema = new Schema<IReport>({
         },
         required: [true, 'Reason is required']
     },
-    
+
     category: {
         type: String,
         enum: {
@@ -117,7 +117,7 @@ const reportSchema = new Schema<IReport>({
         },
         required: [true, 'Category is required']
     },
-    
+
     description: {
         type: String,
         required: [true, 'Description is required'],
@@ -125,7 +125,7 @@ const reportSchema = new Schema<IReport>({
         minlength: [10, 'Description must be at least 10 characters'],
         maxlength: [1000, 'Description cannot exceed 1000 characters']
     },
-    
+
     severity: {
         type: String,
         enum: {
@@ -134,12 +134,12 @@ const reportSchema = new Schema<IReport>({
         },
         required: [true, 'Severity is required']
     },
-    
+
     evidence: {
         screenshots: [{
             type: String,
             validate: {
-                validator: function(v: string) {
+                validator: function (v: string) {
                     return /^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i.test(v);
                 },
                 message: 'Invalid screenshot URL'
@@ -148,7 +148,7 @@ const reportSchema = new Schema<IReport>({
         urls: [{
             type: String,
             validate: {
-                validator: function(v: string) {
+                validator: function (v: string) {
                     return /^https?:\/\/.+/.test(v);
                 },
                 message: 'Invalid URL format'
@@ -159,7 +159,7 @@ const reportSchema = new Schema<IReport>({
             maxlength: [500, 'Additional info cannot exceed 500 characters']
         }
     },
-    
+
     status: {
         type: String,
         enum: {
@@ -168,7 +168,7 @@ const reportSchema = new Schema<IReport>({
         },
         default: 'pending'
     },
-    
+
     priority: {
         type: String,
         enum: {
@@ -177,20 +177,20 @@ const reportSchema = new Schema<IReport>({
         },
         default: 'medium'
     },
-    
+
     assignedTo: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    
+
     reviewedAt: {
         type: Date
     },
-    
+
     resolvedAt: {
         type: Date
     },
-    
+
     resolution: {
         action: {
             type: String,
@@ -215,7 +215,7 @@ const reportSchema = new Schema<IReport>({
             default: false
         }
     },
-    
+
     internalNotes: [{
         note: {
             type: String,
@@ -232,32 +232,32 @@ const reportSchema = new Schema<IReport>({
             default: Date.now
         }
     }],
-    
+
     relatedReports: [{
         type: Schema.Types.ObjectId,
         ref: 'Report'
     }],
-    
+
     isAnonymous: {
         type: Boolean,
         default: false
     },
-    
+
     reporterIpAddress: {
         type: String,
         validate: {
-            validator: function(v: string) {
+            validator: function (v: string) {
                 return !v || /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$|^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/.test(v);
             },
             message: 'Invalid IP address format'
         }
     },
-    
+
     userAgent: {
         type: String,
         maxlength: [500, 'User agent cannot exceed 500 characters']
     }
-    
+
 }, {
     timestamps: true,
     toJSON: { virtuals: true },
@@ -277,34 +277,34 @@ reportSchema.index({ createdAt: -1 });
 reportSchema.index({ status: 1, severity: 1, priority: 1 });
 
 // Virtual for resolution time
-reportSchema.virtual('resolutionTimeHours').get(function(this: IReport) {
+reportSchema.virtual('resolutionTimeHours').get(function (this: IReport) {
     if (!this.resolvedAt) return null;
     const diffTime = this.resolvedAt.getTime() - this.createdAt.getTime();
     return Math.round(diffTime / (1000 * 60 * 60) * 10) / 10; // Round to 1 decimal
 });
 
 // Virtual for time since reported
-reportSchema.virtual('ageInHours').get(function(this: IReport) {
+reportSchema.virtual('ageInHours').get(function (this: IReport) {
     const diffTime = Date.now() - this.createdAt.getTime();
     return Math.round(diffTime / (1000 * 60 * 60) * 10) / 10;
 });
 
 // Virtual for is overdue (based on priority)
-reportSchema.virtual('isOverdue').get(function(this: IReport) {
+reportSchema.virtual('isOverdue').get(function (this: IReport) {
     if (this.status === 'resolved' || this.status === 'dismissed') return false;
-    
+
     const hoursLimit = {
         'urgent': 2,
         'high': 24,
         'medium': 72,
         'low': 168 // 1 week
     };
-    
+
     return this.get('ageInHours') > hoursLimit[this.priority];
 });
 
 // Pre-save middleware to auto-assign priority based on severity and reason
-reportSchema.pre<IReport>('save', function(next) {
+reportSchema.pre<IReport>('save', function (next) {
     if (this.isNew) {
         // Auto-escalate certain reasons
         const criticalReasons = ['harassment', 'academic-dishonesty', 'copyright-violation'];
@@ -313,12 +313,12 @@ reportSchema.pre<IReport>('save', function(next) {
         } else if (this.severity === 'high') {
             this.priority = 'high';
         }
-        
+
         // Set reviewed timestamp when status changes to under-review
         if (this.status === 'under-review' && !this.reviewedAt) {
             this.reviewedAt = new Date();
         }
-        
+
         // Set resolved timestamp when status changes to resolved
         if ((this.status === 'resolved' || this.status === 'dismissed') && !this.resolvedAt) {
             this.resolvedAt = new Date();
@@ -328,11 +328,11 @@ reportSchema.pre<IReport>('save', function(next) {
 });
 
 // Pre-save middleware to update material report count
-reportSchema.pre<IReport>('save', async function(next) {
+reportSchema.pre<IReport>('save', async function (next) {
     if (this.isNew && this.targetType === 'StudyMaterial') {
         await mongoose.model('StudyMaterial').findByIdAndUpdate(
             this.targetId,
-            { 
+            {
                 $inc: { reportCount: 1 },
                 $set: { isReported: true }
             }
@@ -342,21 +342,21 @@ reportSchema.pre<IReport>('save', async function(next) {
 });
 
 // Static methods
-reportSchema.statics.findPending = function(
+reportSchema.statics.findPending = function (
     options: any = {}
 ): Promise<IReport[]> {
     const query: any = {
         status: { $in: ['pending', 'under-review'] }
     };
-    
+
     if (options.priority) {
         query.priority = options.priority;
     }
-    
+
     if (options.category) {
         query.category = options.category;
     }
-    
+
     return this.find(query)
         .populate('reporter', 'fullName email')
         .populate('reportedUser', 'fullName email')
@@ -365,7 +365,7 @@ reportSchema.statics.findPending = function(
         .limit(options.limit || 50);
 };
 
-reportSchema.statics.findByTarget = function(
+reportSchema.statics.findByTarget = function (
     targetType: string,
     targetId: string
 ): Promise<IReport[]> {
@@ -374,7 +374,7 @@ reportSchema.statics.findByTarget = function(
         .sort({ createdAt: -1 });
 };
 
-reportSchema.statics.findByReporter = function(
+reportSchema.statics.findByReporter = function (
     reporterId: string
 ): Promise<IReport[]> {
     return this.find({ reporter: reporterId })
@@ -382,7 +382,7 @@ reportSchema.statics.findByReporter = function(
         .sort({ createdAt: -1 });
 };
 
-reportSchema.statics.getReportStats = function() {
+reportSchema.statics.getReportStats = function () {
     return this.aggregate([
         {
             $group: {
@@ -407,12 +407,12 @@ reportSchema.statics.getReportStats = function() {
     ]);
 };
 
-reportSchema.statics.findSimilarReports = function(
+reportSchema.statics.findSimilarReports = function (
     reportId: string
 ): Promise<IReport[]> {
     return this.findById(reportId).then((report: IReport | null) => {
         if (!report) return [];
-        
+
         return this.find({
             _id: { $ne: reportId },
             $or: [
@@ -421,13 +421,13 @@ reportSchema.statics.findSimilarReports = function(
                 { reason: report.reason, targetType: report.targetType }
             ]
         })
-        .populate('reporter', 'fullName')
-        .sort({ createdAt: -1 })
-        .limit(10);
+            .populate('reporter', 'fullName')
+            .sort({ createdAt: -1 })
+            .limit(10);
     });
 };
 
-reportSchema.statics.escalateReport = function(
+reportSchema.statics.escalateReport = function (
     reportId: string,
     reason: string
 ): Promise<IReport | null> {
@@ -451,17 +451,17 @@ reportSchema.statics.escalateReport = function(
 };
 
 // Instance methods
-reportSchema.methods.assign = function(this: IReport, adminId: mongoose.Types.ObjectId) {
+reportSchema.methods.assign = function (this: IReport, adminId: mongoose.Types.ObjectId) {
     this.assignedTo = adminId;
     this.status = 'under-review';
     this.reviewedAt = new Date();
-    return this.save(); 
+    return this.save();
 };
 
-reportSchema.methods.resolve = function(
-    this: IReport, 
-    action: string, 
-    notes: string, 
+reportSchema.methods.resolve = function (
+    this: IReport,
+    action: string,
+    notes: string,
     resolvedBy: mongoose.Types.ObjectId
 ) {
     this.status = 'resolved';
@@ -475,9 +475,9 @@ reportSchema.methods.resolve = function(
     return this.save();
 };
 
-reportSchema.methods.addInternalNote = function(
-    this: IReport, 
-    note: string, 
+reportSchema.methods.addInternalNote = function (
+    this: IReport,
+    note: string,
     addedBy: mongoose.Types.ObjectId
 ) {
     this.internalNotes = this.internalNotes || [];

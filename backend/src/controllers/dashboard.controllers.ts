@@ -26,7 +26,7 @@ import { logger } from '../utils/logger.utils';
 // Import models
 import User from '../models/User';
 import StudyMaterial from '../models/StudyMaterial';
-import {Course} from '../models/Course';
+import {ProgramCourses} from '../models/ProgramCourses';
 import Enrollment from '../models/Enrollment';
 
 /**
@@ -53,7 +53,7 @@ export const getDashboard = asyncHandler(async (req: AuthRequest, res: Response)
 
     try {
         // ✅ Get comprehensive stats using utils
-        const models = { User, Material: StudyMaterial, Course, Enrollment };
+        const models = { User, Material: StudyMaterial, Course: ProgramCourses, Enrollment };
         const dashboardData = await getDashboardStats(models);
 
         if (!dashboardData) {
@@ -236,7 +236,7 @@ export const getCourseAnalytics = asyncHandler(async (req: AuthRequest, res: Res
 
     try {
         // ✅ Get course statistics
-        const courseStats = await getCourseStats(Course, Enrollment, programId as string);
+        const courseStats = await getCourseStats(ProgramCourses, Enrollment, programId as string);
 
         if (!courseStats) {
             return res.status(500).json(
@@ -408,7 +408,7 @@ export const getSystemHealth = asyncHandler(async (req: AuthRequest, res: Respon
         const [userCount, materialCount, courseCount, enrollmentCount] = await Promise.all([
             User.countDocuments({ isActive: true }),
             StudyMaterial.countDocuments({ status: 'published' }),
-            Course.countDocuments({ isActive: true }),
+            ProgramCourses.countDocuments(),
             Enrollment.countDocuments({})
         ]);
 

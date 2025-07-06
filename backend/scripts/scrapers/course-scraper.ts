@@ -7,26 +7,42 @@ interface Course {
     id: string;             // Generated from code
     code: string;           // "APS145" - from div
     name: string;           // "Applied Problem Solving" - from div > a
+    credits?: number;
+    description?: string;
 }
 
 interface CourseRequirement {
-    type: string;           // "General Education Course", "Professional Options"
-    count: number;          // 1, 2, etc.
-    description: string;    // "General Education Course (1)"
+    id: string;
+    type: 'general_education' | 'professional_options' | 'electives' | 'other';
+    title: string;
+    description: string;
+    selectCount: number;    // Số môn cần chọn
+    availableCourses: Course[];
+    isRequired: boolean;
+    category?: string;
+    externalLinks?: string[]; // For General Education external links
 }
 
 interface Semester {
-    id: string;             // "semester1", "semester2"
-    name: string;           // "Semester 1", "Semester 2"  
-    courses: Course[];
-    requirements?: CourseRequirement[];  // Additional course requirements
-    totalCourses?: number;  // Total courses including requirements
+    id: string;             // "semester1", "semester2", "work_integrated_learning_1"
+    name: string;           // "Semester 1", "Work-Integrated Learning Term"  
+    type: 'regular' | 'work_integrated_learning' | 'coop';
+    order: number;
+    coreCourses: Course[];
+    requirements: CourseRequirement[];
+    totalCredits?: number;
+    prerequisites?: string[];
+    notes?: string;
+    isOptional?: boolean;   // For Work-Integrated Learning terms
 }
 
 interface ProgramCourses {
     programId: string;      // "CPA"
     programName: string;    // "Computer Programming & Analysis"
     semesters: Semester[];
+    totalSemesters: number;
+    totalCredits?: number;
+    hasWorkIntegratedLearning?: boolean;
 }
 
 interface Program {
@@ -162,11 +178,15 @@ class SenecaCourseScraper {
                     await this.saveCourses(programCourses, path.join(this.outputDir, 'processed/courses'));
                     this.stats.success++;
                     
-                    const totalCourses = programCourses.semesters.reduce((sum, sem) => sum + sem.courses.length, 0);
+                    const totalCourses = programCourses.semesters.reduce((sum, sem) => sum + sem.coreCourses.length, 0);
                     const totalRequirements = programCourses.semesters.reduce((sum, sem) => 
-                        sum + (sem.requirements ? sem.requirements.reduce((reqSum, req) => reqSum + req.count, 0) : 0), 0);
+                        sum + sem.requirements.reduce((reqSum, req) => reqSum + req.selectCount, 0), 0);
                     
                     console.log(`✅ Success: ${programCourses.semesters.length} semesters, ${totalCourses} courses, ${totalRequirements} requirements`);
+                    
+                    if (programCourses.hasWorkIntegratedLearning) {
+                        console.log(`🏢 Work-Integrated Learning program detected`);
+                    }
                 } else {
                     console.log(`⚠️  No courses found - might be a non-course program`);
                     this.stats.skipped++;
@@ -200,24 +220,22 @@ class SenecaCourseScraper {
             completedBatches: batchNumber,
             stats: this.stats
         };
-        
         await fs.writeJson(progressPath, progress, { spaces: 2 });
     }
 
     private async printFinalSummary(): Promise<void> {
-        console.log('\n' + '='.repeat(60));
-        console.log('🎉 MASS COURSE SCRAPING COMPLETED!');
-        console.log('='.repeat(60));
+        console.log('\n🎉 SCRAPING COMPLETED!');
+        console.log('==========================================');
         console.log(`📊 Total programs: ${this.stats.total}`);
-        console.log(`✅ Successfully scraped: ${this.stats.success}`);
-        console.log(`⏭️  Skipped (already processed): ${this.stats.skipped}`);
+        console.log(`✅ Successful: ${this.stats.success}`);
+        console.log(`⏭️  Skipped: ${this.stats.skipped}`);
         console.log(`❌ Failed: ${this.stats.failed}`);
         console.log(`📈 Success rate: ${((this.stats.success / this.stats.total) * 100).toFixed(1)}%`);
-
+        
         if (this.stats.errors.length > 0) {
             console.log('\n❌ Errors encountered:');
-            this.stats.errors.slice(0, 10).forEach((error, index) => {
-                console.log(`   ${index + 1}. ${error}`);
+            this.stats.errors.slice(0, 10).forEach(error => {
+                console.log(`   - ${error}`);
             });
             if (this.stats.errors.length > 10) {
                 console.log(`   ... and ${this.stats.errors.length - 10} more errors`);
@@ -232,8 +250,8 @@ class SenecaCourseScraper {
             errors: this.stats.errors
         }, { spaces: 2 });
 
-        console.log(`\n💾 Full summary saved to: ${summaryPath}`);
-        console.log('='.repeat(60));
+        console.log(`\n💾 Final summary saved to: ${summaryPath}`);
+        console.log('==========================================');
     }
 
     private delay(ms: number): Promise<void> {
@@ -241,32 +259,31 @@ class SenecaCourseScraper {
     }
 
     async testScrapeOneProgram(): Promise<void> {
-        console.log('🧪 Testing enhanced course scraper with CPA program...');
-
-        const testUrl = 'https://www.senecapolytechnic.ca/programs/fulltime/CPA/courses.html';
-        const testCode = 'CPA';
+        console.log('🧪 Testing course scraper with CSN program...');
 
         try {
-            const programCourses = await this.scrapeProgramCourses(testUrl, testCode);
+            const testUrl = `${this.baseUrl}/programs/fulltime/CSN/courses.html`;
+            const programCourses = await this.scrapeProgramCourses(testUrl, 'CSN');
 
-            console.log('\n📋 Enhanced extraction results:');
-            console.log('Program:', programCourses.programName);
-            console.log('Semesters:', programCourses.semesters.length);
+            console.log(`\n📚 Program: ${programCourses.programName}`);
+            console.log(`📊 Total semesters: ${programCourses.semesters.length}`);
             
-            programCourses.semesters.forEach(semester => {
-                console.log(`\n  ${semester.name}:`);
-                console.log(`    - Fixed courses: ${semester.courses.length}`);
+            if (programCourses.hasWorkIntegratedLearning) {
+                console.log(`🏢 Has Work-Integrated Learning: Yes`);
+            }
+
+            programCourses.semesters.forEach((semester, index) => {
+                console.log(`\n📅 ${semester.name} (${semester.type}):`);
+                console.log(`    - Core courses: ${semester.coreCourses.length}`);
+                console.log(`    - Requirements: ${semester.requirements.length}`);
                 
-                if (semester.requirements && semester.requirements.length > 0) {
-                    console.log(`    - Requirements:`);
-                    semester.requirements.forEach(req => {
-                        console.log(`      • ${req.description}`);
-                    });
+                if (semester.isOptional) {
+                    console.log(`    - Optional: Yes`);
                 }
                 
-                if (semester.totalCourses) {
-                    console.log(`    - Total courses needed: ${semester.totalCourses}`);
-                }
+                semester.requirements.forEach(req => {
+                    console.log(`    - ${req.title}: Select ${req.selectCount} from ${req.availableCourses.length} options`);
+                });
             });
 
             await this.saveCourses(programCourses, path.join(this.outputDir, 'raw'));
@@ -288,9 +305,19 @@ class SenecaCourseScraper {
         const $ = cheerio.load(response.data);
         
         const programName = this.extractProgramName($);
-        const semesters = this.extractSemesters($);
+        const semesters = this.extractSemesters($, programName);
+        
+        const hasWorkIntegratedLearning = semesters.some(sem => 
+            sem.type === 'work_integrated_learning' || sem.type === 'coop'
+        );
 
-        return { programId, programName, semesters };
+        return { 
+            programId, 
+            programName, 
+            semesters,
+            totalSemesters: semesters.length,
+            hasWorkIntegratedLearning
+        };
     }
 
     private extractProgramName($: cheerio.CheerioAPI): string {
@@ -303,8 +330,10 @@ class SenecaCourseScraper {
         return programName;
     }
 
-    private extractSemesters($: cheerio.CheerioAPI): Semester[] {
+    private extractSemesters($: cheerio.CheerioAPI, programName: string): Semester[] {
         const semesters: Semester[] = [];
+        let semesterOrder = 1;
+        let workIntegratedLearningCount = 1;
         
         $('table').each((tableIndex, table) => {
             const $table = $(table);
@@ -315,27 +344,53 @@ class SenecaCourseScraper {
                 
                 const result = this.extractFromTable($table, $);
                 
-                if (result.courses.length > 0) {
-                    const precedingText = $table.prevAll().text();
-                    let semesterName = `Semester ${tableIndex + 1}`;
+                if (result.courses.length > 0 || result.requirements.length > 0) {
+                    const precedingText = $table.prevAll().text().toLowerCase();
                     
-                    const semesterMatch = precedingText.match(/semester\s+(\d+)/i);
-                    if (semesterMatch) {
-                        semesterName = `Semester ${semesterMatch[1]}`;
+                    // Determine semester type and name
+                    let semesterType: 'regular' | 'work_integrated_learning' | 'coop' = 'regular';
+                    let semesterName = `Semester ${semesterOrder}`;
+                    let isOptional = false;
+                    let semesterId = `semester${semesterOrder}`;
+                    
+                    // Check for Work-Integrated Learning Term or Co-op
+                    if (precedingText.includes('work-integrated learning') || 
+                        precedingText.includes('co-op') ||
+                        programName.toLowerCase().includes('co-op')) {
+                        
+                        semesterType = 'work_integrated_learning';
+                        semesterName = `Work-Integrated Learning Term ${workIntegratedLearningCount}`;
+                        semesterId = `work_integrated_learning_${workIntegratedLearningCount}`;
+                        isOptional = true;
+                        workIntegratedLearningCount++;
+                        
+                        console.log(`🏢 Detected Work-Integrated Learning Term`);
+                    } else {
+                        // Regular semester - try to extract semester number
+                        const semesterMatch = precedingText.match(/semester\s+(\d+)/i);
+                        if (semesterMatch) {
+                            const semNum = parseInt(semesterMatch[1]);
+                            semesterName = `Semester ${semNum}`;
+                            semesterId = `semester${semNum}`;
+                            semesterOrder = Math.max(semesterOrder, semNum + 1);
+                        } else {
+                            semesterOrder++;
+                        }
                     }
                     
-                    const totalRequiredCourses = result.requirements.reduce((sum, req) => sum + req.count, 0);
-                    const totalCourses = result.courses.length + totalRequiredCourses;
-                    
                     semesters.push({
-                        id: `semester${tableIndex + 1}`,
+                        id: semesterId,
                         name: semesterName,
-                        courses: result.courses,
-                        requirements: result.requirements.length > 0 ? result.requirements : undefined,
-                        totalCourses: totalCourses > result.courses.length ? totalCourses : undefined
+                        type: semesterType,
+                        order: semesterType === 'work_integrated_learning' ? 999 : semesterOrder - 1,
+                        coreCourses: result.courses,
+                        requirements: result.requirements,
+                        isOptional,
+                        notes: semesterType === 'work_integrated_learning' ? 
+                            'Work-Integrated Learning Term - Optional practical work experience' : undefined
                     });
                     
-                    console.log(`✅ Table ${tableIndex + 1}: ${result.courses.length} courses, ${result.requirements.length} requirements`);
+                    console.log(`✅ Table ${tableIndex + 1}: ${result.courses.length} courses, ${result.requirements.length} requirements (${semesterType})`);
                 }
             }
         });
@@ -359,7 +414,7 @@ class SenecaCourseScraper {
                 const requirement = this.extractRequirement($row, $);
                 if (requirement) {
                     requirements.push(requirement);
-                    console.log(`📋 Found: ${requirement.description}`);
+                    console.log(`📋 Found: ${requirement.title} (Select ${requirement.selectCount})`);
                 }
             }
         });
@@ -407,13 +462,36 @@ class SenecaCourseScraper {
         const match = rowText.match(/plus:\s*(.+?)\s*\((\d+)\)/i);
         
         if (match) {
-            const type = match[1].trim();
-            const count = parseInt(match[2]);
+            const title = match[1].trim();
+            const selectCount = parseInt(match[2]);
+            
+            // Determine requirement type
+            let type: 'general_education' | 'professional_options' | 'electives' | 'other' = 'other';
+            const titleLower = title.toLowerCase();
+            
+            if (titleLower.includes('general education')) {
+                type = 'general_education';
+            } else if (titleLower.includes('professional option')) {
+                type = 'professional_options';
+            } else if (titleLower.includes('elective')) {
+                type = 'electives';
+            }
+            
+            // For General Education, add external links
+            const externalLinks: string[] = [];
+            if (type === 'general_education') {
+                externalLinks.push('https://www.senecapolytechnic.ca/school/els.html');
+            }
             
             return {
-                type: type,
-                count: count,
-                description: `${type} (${count})`
+                id: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                type,
+                title,
+                description: `${title} (${selectCount})`,
+                selectCount,
+                availableCourses: [], // Will be populated later if found in same page
+                isRequired: true,
+                externalLinks: externalLinks.length > 0 ? externalLinks : undefined
             };
         }
         
@@ -430,13 +508,17 @@ class SenecaCourseScraper {
         
         console.log(`💾 Saved to: ${filepath}`);
         
-        const totalCourses = programCourses.semesters.reduce((sum, sem) => sum + sem.courses.length, 0);
+        const totalCoreCourses = programCourses.semesters.reduce((sum, sem) => sum + sem.coreCourses.length, 0);
         const totalRequirements = programCourses.semesters.reduce((sum, sem) => 
-            sum + (sem.requirements ? sem.requirements.reduce((reqSum, req) => reqSum + req.count, 0) : 0), 0);
+            sum + sem.requirements.reduce((reqSum, req) => reqSum + req.selectCount, 0), 0);
         
-        console.log(`📊 Fixed courses: ${totalCourses}`);
-        console.log(`📊 Required courses: ${totalRequirements}`);
-        console.log(`📊 Total courses: ${totalCourses + totalRequirements}`);
+        console.log(`📊 Core courses: ${totalCoreCourses}`);
+        console.log(`📊 Required electives: ${totalRequirements}`);
+        console.log(`📊 Total courses needed: ${totalCoreCourses + totalRequirements}`);
+        
+        if (programCourses.hasWorkIntegratedLearning) {
+            console.log(`🏢 Work-Integrated Learning: Yes`);
+        }
     }
 }
 
@@ -455,7 +537,7 @@ async function main() {
     } else {
         // Default - show usage
         console.log('🔧 Seneca Course Scraper Usage:');
-        console.log('  npm run scrape:test  - Test with single program (CPA)');
+        console.log('  npm run scrape:test  - Test with single program (CSN)');
         console.log('  npm run scrape:all   - Scrape all 195 programs');
         console.log('');
         console.log('  Or use directly:');

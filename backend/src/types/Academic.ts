@@ -60,27 +60,34 @@ export interface ICourseDocument extends ICourse, Document {
 
 // ===== PROGRAM INTERFACES =====
 export interface IProgram {
+    programId: string;
     code: string;
     name: string;
-    description: string;
+    overview: string;
+    duration: string; // e.g., "2 Semesters (8 Months)"
+    campus: string[];
+    delivery?: string;
+    credential: string;
     school: string;
-    department?: string;
-    level: 'certificate' | 'diploma' | 'advanced_diploma' | 'bachelor' | 'graduate_certificate' | 'master' | 'phd';
-    duration: number; // in semesters
-    totalCredits: number;
-    delivery: ('in-person' | 'online' | 'hybrid')[];
-    language: 'english' | 'french' | 'bilingual';
-    startDates: string[]; // e.g., ['Fall', 'Winter', 'Summer']
-    admissionRequirements: string[];
-    careerOutcomes: string[];
+    // Derived/computed fields
+    level: 'Certificate' | 'Diploma' | 'Advanced Diploma' | 'Bachelor' | 'Graduate Certificate' | 'Honours Bachelor Degree' | 'Honours Bachelor' | 'Seneca Certificate of Standing' | 'Certificate of Apprenticeship, Ontario College Certificate';
     isActive: boolean;
+    description?: string;
     stats: {
         enrollmentCount: number;
-        averageGrade?: number;
-        passRate?: number;
-        courseCount: number;
-        materialCount: number;
+        graduationRate?: number;
+        employmentRate?: number;
     };
+    // Semester and course structure for imported data
+    semesters?: {
+        id?: string;
+        name?: string;
+        courses?: {
+            id?: string;
+            code?: string;
+            name?: string;
+        }[];
+    }[];
 }
 
 export interface IProgramDocument extends IProgram, Document {}

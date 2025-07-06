@@ -8,7 +8,7 @@ export default function HomePage() {
     <div className="bg-white">
       <LandingNavBar />
       <main>
-        <HeroSection />
+          <HeroSection />
 
         {/* Trusted By Universities Section */}
         <div className="bg-[#F6F9FC] py-20">

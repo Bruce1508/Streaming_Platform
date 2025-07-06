@@ -157,7 +157,9 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
                     isOnboarded: newUser.isOnboarded,
                     isVerified: newUser.isVerified
                 },
-                tokens
+                token: tokens.accessToken, // Frontend expects data.token
+                refreshToken: tokens.refreshToken,
+                tokens // Keep for backward compatibility
             }
         });
 
@@ -245,7 +247,9 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
                     isVerified: user.isVerified,
                     isActive: user.isActive
                 },
-                tokens
+                token: tokens.accessToken, // Frontend expects data.token
+                refreshToken: tokens.refreshToken,
+                tokens // Keep for backward compatibility
             }
         });
 
@@ -902,6 +906,20 @@ export const handleOAuth = async (req: Request, res: Response): Promise<void> =>
         res.json({
             success: true,
             message: "OAuth authentication successful",
+            data: {
+                user: {
+                    _id: user._id,
+                    fullName: user.fullName,
+                    email: user.email,
+                    role: user.role,
+                    profilePic: user.profilePic,
+                    isOnboarded: user.isOnboarded,
+                    isVerified: user.isVerified,
+                    isActive: user.isActive,
+                    authProvider: user.authProvider
+                },
+                token: tokens.accessToken // NextAuth expects data.token
+            },
             user: {
                 _id: user._id,
                 fullName: user.fullName,
@@ -913,7 +931,7 @@ export const handleOAuth = async (req: Request, res: Response): Promise<void> =>
                 isActive: user.isActive,
                 authProvider: user.authProvider
             },
-            token: tokens.accessToken // Return access token for NextAuth
+            token: tokens.accessToken // Backward compatibility
         });
 
     } catch (error: any) {

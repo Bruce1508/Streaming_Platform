@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
-    {"offset": {"line": 36, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Bruce%20Vo/Documents/project/linguex/Streaming_Platform/frontend/app/%28protected%29/%28dashBoard%29/test/page.tsx"],"sourcesContent":["// app/(protected)/(dashboard)/test/page.tsx\r\nexport default function TestPage() {\r\n    return (\r\n        <div>\r\n            <h1 style={{ fontSize: \"100px\", color: \"red\", backgroundColor: \"white\" }}>\r\n                TEST PAGE WORKS\r\n            </h1>\r\n        </div>\r\n    );\r\n}"],"names":[],"mappings":"AAAA,4CAA4C;;;;;;AAC7B,SAAS;IACpB,qBACI,8OAAC;kBACG,cAAA,8OAAC;YAAG,OAAO;gBAAE,UAAU;gBAAS,OAAO;gBAAO,iBAAiB;YAAQ;sBAAG;;;;;;;;;;;AAKtF","debugId":null}}]
-}

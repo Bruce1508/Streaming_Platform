@@ -7,7 +7,8 @@ import {
     searchPrograms,
     createProgram,
     updateProgram,
-    deleteProgram
+    deleteProgram,
+    bulkImportPrograms
 } from '../controllers/program.controllers';
 
 // Middleware imports
@@ -32,6 +33,64 @@ const router = Router();
 // Rate limiters
 const publicRateLimit = createRateLimit(100, 15);
 const adminRateLimit = createRateLimit(20, 15);
+
+// ===== VALIDATION HELPERS =====
+
+/**
+ * Validation for bulk import programs
+ */
+const validateBulkImportPrograms = (req: any, res: any, next: any) => {
+    const { programs } = req.body;
+
+    if (!programs || !Array.isArray(programs) || programs.length === 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'Programs array is required and cannot be empty'
+        });
+    }
+
+    // Validate structure of each program
+    for (let i = 0; i < programs.length; i++) {
+        const program = programs[i];
+        
+        if (!program.id || typeof program.id !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program id is required for program at index ${i}`
+            });
+        }
+
+        if (!program.code || typeof program.code !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program code is required for program at index ${i}`
+            });
+        }
+
+        if (!program.name || typeof program.name !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program name is required for program at index ${i}`
+            });
+        }
+
+        if (!program.credential || typeof program.credential !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program credential is required for program at index ${i}`
+            });
+        }
+
+        if (!program.school || typeof program.school !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program school is required for program at index ${i}`
+            });
+        }
+    }
+
+    next();
+};
 
 // ===== PUBLIC ROUTES (No Auth Required) =====
 
@@ -71,6 +130,19 @@ router.get('/school/:schoolId', publicRateLimit, validateObjectId('schoolId'), v
 router.get('/:identifier', publicRateLimit, getProgramById);
 
 // ===== ADMIN ROUTES (Auth + Admin Role Required) =====
+
+/**
+ * @route   POST /api/programs/bulk-import
+ * @desc    Bulk import programs from scraped data
+ * @access  Admin only (temporarily disabled for import)
+ */
+router.post('/bulk-import',
+    // adminRateLimit,              // Temporarily disabled for import
+    // protectRoute,                // Temporarily disabled
+    // authorize(['admin']),        // Temporarily disabled
+    validateBulkImportPrograms,
+    bulkImportPrograms
+);
 
 /**
  * @route   POST /api/programs

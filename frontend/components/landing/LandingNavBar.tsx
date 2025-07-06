@@ -57,7 +57,7 @@ const LandingNavBar = () => {
                 {/* Left Side: Logo */}
                 <div className="flex items-center">
                     <Link href="/" className="flex items-center gap-2.5">
-                        <span className="text-3xl md:text-4xl font-bold">
+                        <span className="text-2xl md:text-3xl font-bold">
                             StudyBuddy
                         </span>
                     </Link>

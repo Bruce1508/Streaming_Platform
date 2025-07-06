@@ -1,0 +1,24 @@
+import { Request, Response } from 'express';
+export declare const getStudyMaterialById: (req: Request, res: Response) => Promise<Response | any>;
+export declare const getStudyMaterials: (req: Request, res: Response) => Promise<Response | any>;
+export declare const searchMaterials: (req: Request, res: Response) => Promise<Response | any>;
+export declare const createStudyMaterial: (req: Request, res: Response) => Promise<any>;
+export declare const getMaterialsByCategory: (req: Request, res: Response) => Promise<Response | any>;
+export declare const saveMaterial: (req: Request, res: Response) => Promise<Response | any>;
+export declare const removeSavedMaterial: (req: Request, res: Response) => Promise<Response | any>;
+export declare const rateMaterial: (req: Request, res: Response) => Promise<Response | any>;
+export declare const addComment: (req: Request, res: Response) => Promise<Response | any>;
+export declare const getUserSavedMaterials: (req: Request, res: Response) => Promise<Response | any>;
+export declare const getUserUploadedMaterials: (req: Request, res: Response) => Promise<Response | any>;
+export declare const updateStudyMaterial: (req: Request, res: Response) => Promise<Response | any>;
+export declare const deleteStudyMaterial: (req: Request, res: Response) => Promise<Response | any>;
+export declare const getMaterialsByCourse: (req: Request, res: Response) => Promise<Response | any>;
+export declare const getFeaturedMaterials: (req: Request, res: Response) => Promise<Response | any>;
+export declare const getPopularMaterials: (req: Request, res: Response) => Promise<Response | any>;
+export declare const getMaterialsByProgram: (req: Request, res: Response) => Promise<Response | any>;
+export declare const removeRating: (req: Request, res: Response) => Promise<Response | any>;
+export declare const deleteComment: (req: Request, res: Response) => Promise<Response | any>;
+export declare const updateComment: (req: Request, res: Response) => Promise<Response | any>;
+export declare const reportMaterial: (req: Request, res: Response) => Promise<Response | any>;
+export declare const getMaterialStats: (req: Request, res: Response) => Promise<Response | any>;
+//# sourceMappingURL=material.controllers.d.ts.map

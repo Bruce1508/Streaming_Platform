@@ -81,11 +81,6 @@ export const userAPI = {
     getRecommended: () => api.get('/users/recommended'),
     searchUsers: (query: string) => api.get(`/users/search?search=${encodeURIComponent(query)}`),
     getFriends: () => api.get('/users/friends'),
-    getFriendRequests: () => api.get('/users/friend-requests'),
-    sendFriendRequest: (userId: string) => api.post(`/users/friend-request/${userId}`),
-    acceptFriendRequest: (requestId: string) => api.put(`/users/friend-request/${requestId}/accept`),
-    rejectFriendRequest: (requestId: string) => api.delete(`/users/friend-request/${requestId}/reject`),
-    cancelFriendRequest: (userId: string) => api.delete(`/users/friend-request/${userId}/cancel`),
     getProfile: () => api.get('/users/profile'),
     updateProfile: (data: any) => api.put('/users/profile', data),
     completeOnBoarding: (data: any) => api.put('/users/onboarding', data),
@@ -115,7 +110,19 @@ export const uploadAPI = {
 // ===== PROGRAM APIs =====
 export const programAPI = {
     getPrograms: (params?: any) => {
-        const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
+        // Filter out undefined values
+        const cleanParams: Record<string, string> = {};
+        if (params) {
+            Object.keys(params).forEach(key => {
+                if (params[key] !== undefined && params[key] !== null && params[key] !== '') {
+                    cleanParams[key] = params[key];
+                }
+            });
+        }
+        
+        const queryString = Object.keys(cleanParams).length > 0 
+            ? `?${new URLSearchParams(cleanParams).toString()}` 
+            : '';
         return api.get(`/programs${queryString}`);
     },
     getProgramById: (id: string) => api.get(`/programs/${id}`),
@@ -124,9 +131,56 @@ export const programAPI = {
     getProgramLevels: () => api.get('/programs/levels'),
 };
 
+// ===== COURSE APIs =====
+export const courseAPI = {
+    getProgramCourses: (programId: string) => api.get(`/courses/program-courses/${programId}`),
+    searchCourses: (params?: any) => {
+        const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
+        return api.get(`/courses/program-courses/search${queryString}`);
+    },
+    getCourseStats: () => api.get('/courses/program-courses/stats'),
+};
+
+// ===== PROGRAM REVIEW APIs =====
+export const programReviewAPI = {
+    getProgramReviews: (programId: string, params?: any) => {
+        const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
+        return api.get(`/program-reviews/program/${programId}${queryString}`);
+    },
+    getUserReviewForProgram: (programId: string) => api.get(`/program-reviews/user/${programId}`),
+    createReview: (data: {
+        programId: string;
+        year: number;
+        criteriaRatings: {
+            TeachingQuality: number;
+            FacultySupport: number;
+            LearningEnvironment: number;
+            LibraryResources: number;
+            StudentSupport: number;
+            CampusLife: number;
+            OverallExperience: number;
+        };
+        comment?: string;
+    }) => api.post('/program-reviews', data),
+    updateReview: (reviewId: string, data: any) => api.put(`/program-reviews/${reviewId}`, data),
+    deleteReview: (reviewId: string) => api.delete(`/program-reviews/${reviewId}`),
+    likeReview: (reviewId: string, action: 'like' | 'dislike') => api.post(`/program-reviews/${reviewId}/${action}`),
+};
+
 // ===== CHAT APIs =====
 export const chatAPI = {
     getStreamToken: () => api.get('/chat/token'),
+};
+
+// ===== NOTIFICATION API =====
+const notificationAPI = {
+    getNotifications: (params?: { page?: number; limit?: number; unreadOnly?: boolean }) => {
+        const queryString = params ? `?${new URLSearchParams(params as any).toString()}` : '';
+        return api.get(`/notifications${queryString}`);
+    },
+    markAsRead: (notificationId: string) => api.put(`/notifications/${notificationId}/read`),
+    markAllAsRead: () => api.put('/notifications/read-all'),
+    deleteNotification: (notificationId: string) => api.delete(`/notifications/${notificationId}`)
 };
 
 // ===== LEGACY EXPORTS (Để tương thích với code cũ) =====
@@ -135,15 +189,16 @@ export const signIn = authAPI.signIn;
 export const getAuthUser = authAPI.getMe;
 export const getUserFriends = userAPI.getFriends;
 export const getRecommendedUsers = userAPI.getRecommended;
-export const getFriendRequests = userAPI.getFriendRequests;
-export const sendFriendRequest = userAPI.sendFriendRequest;
-export const acceptFriendRequest = userAPI.acceptFriendRequest;
-export const rejectFriendRequest = userAPI.rejectFriendRequest;
-export const cancelFriendRequest = userAPI.cancelFriendRequest;
 export const getMyProfile = userAPI.getProfile;
 export const updateMyProfile = userAPI.updateProfile;
 export const searchUsers = userAPI.searchUsers;
 export const getStreamToken = chatAPI.getStreamToken;
 export const completeOnBoarding = userAPI.completeOnBoarding;
+
+// Export notification functions
+export const getNotifications = notificationAPI.getNotifications;
+export const markNotificationAsRead = notificationAPI.markAsRead;
+export const markAllNotificationsAsRead = notificationAPI.markAllAsRead;
+export const deleteNotification = notificationAPI.deleteNotification;
 
 export default apiClient; 

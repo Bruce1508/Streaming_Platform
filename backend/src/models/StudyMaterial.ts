@@ -34,7 +34,7 @@ export interface IComment {
 export interface IAcademicContext {
     school: mongoose.Types.ObjectId; // Required for academic materials
     program: mongoose.Types.ObjectId; // Required
-    course: mongoose.Types.ObjectId; // Required
+    course: string; // Changed from ObjectId to string
     semester: {
         term: 'fall' | 'winter' | 'summer';
         year: number;
@@ -160,9 +160,10 @@ const studyMaterialSchema = new Schema<IStudyMaterial, IStudyMaterialModel>({
             required: [true, 'Program is required']
         },
         course: {
-            type: Schema.Types.ObjectId,
-            ref: 'Course',
-            required: [true, 'Course is required']
+            type: String,
+            required: [true, 'Course is required'],
+            trim: true,
+            maxlength: [100, 'Course name cannot exceed 100 characters']
         },
         semester: {
             term: {
@@ -459,7 +460,7 @@ studyMaterialSchema.pre<IStudyMaterial>('save', function (next) {
     next();
 });
 
-// Focused static methods
+// Static methods
 studyMaterialSchema.statics.findByCategory = function (
     category: string,
     options: any = {}
@@ -471,7 +472,6 @@ studyMaterialSchema.statics.findByCategory = function (
         ...options.filter
     })
         .populate('author', 'fullName profilePic')
-        .populate('academic.course', 'code name')
         .populate('academic.program', 'name')
         .sort(options.sort || { averageRating: -1, createdAt: -1 })
         .limit(options.limit || 20);
@@ -488,7 +488,6 @@ studyMaterialSchema.statics.findByCourse = function (
         ...options.filter
     })
         .populate('author', 'fullName profilePic')
-        .populate('academic.course', 'code name')
         .sort(options.sort || { averageRating: -1, createdAt: -1 })
         .limit(options.limit || 20);
 };
@@ -504,7 +503,6 @@ studyMaterialSchema.statics.findByProgram = function (
         ...options.filter
     })
         .populate('author', 'fullName profilePic')
-        .populate('academic.course', 'code name')
         .populate('academic.program', 'name')
         .sort(options.sort || { averageRating: -1, createdAt: -1 })
         .limit(options.limit || 20);
@@ -519,7 +517,6 @@ studyMaterialSchema.statics.findFeatured = function (
         isPublic: true
     })
         .populate('author', 'fullName profilePic')
-        .populate('academic.course', 'code name')
         .sort({ averageRating: -1, views: -1 })
         .limit(limit);
 };
@@ -533,8 +530,7 @@ studyMaterialSchema.statics.getPopularMaterials = function (
     })
         .sort({ views: -1, averageRating: -1 })
         .limit(limit)
-        .populate('author', 'fullName profilePic')
-        .populate('academic.course', 'code name');
+        .populate('author', 'fullName profilePic');
 };
 
 // Instance methods

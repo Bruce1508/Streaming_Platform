@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ProgramCourses, IProgramCourses } from '../models/Course';
+import { ProgramCourses, IProgramCourses } from '../models/ProgramCourses';
 import { ApiError } from '../utils/ApiError';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
@@ -69,6 +69,7 @@ export const getProgramCourses = asyncHandler(async (req: Request, res: Response
     const {
         search,
         programId,
+        hasWorkIntegratedLearning,
         sortBy = 'programId',
         sortOrder = 'asc'
     } = req.query;
@@ -87,6 +88,10 @@ export const getProgramCourses = asyncHandler(async (req: Request, res: Response
 
     if (programId) {
         filter.programId = programId.toString().toUpperCase();
+    }
+
+    if (hasWorkIntegratedLearning !== undefined) {
+        filter.hasWorkIntegratedLearning = hasWorkIntegratedLearning === 'true';
     }
 
     // Build sort object
@@ -135,21 +140,34 @@ export const getProgramCoursesByProgramId = asyncHandler(async (req: Request, re
         throw new ApiError(404, `Program courses not found for program: ${programId}`);
     }
 
-    // Calculate statistics
-    const totalFixedCourses = programCourses.semesters.reduce((total, sem) => total + sem.courses.length, 0);
+    // Calculate statistics with new schema
+    const totalCoreCourses = programCourses.semesters.reduce((total, sem) => total + sem.coreCourses.length, 0);
     const totalRequirements = programCourses.semesters.reduce((total, sem) => 
-        total + (sem.requirements?.reduce((reqTotal, req) => reqTotal + req.count, 0) || 0), 0);
+        total + sem.requirements.reduce((reqTotal, req) => reqTotal + req.selectCount, 0), 0);
+    
+    // Count Work-Integrated Learning semesters
+    const workIntegratedSemesters = programCourses.semesters.filter(sem => 
+        sem.type === 'work_integrated_learning' || sem.type === 'coop'
+    );
+    
+    // Separate regular and work-integrated semesters
+    const regularSemesters = programCourses.semesters.filter(sem => sem.type === 'regular');
 
     const stats = {
         totalSemesters: programCourses.semesters.length,
-        totalFixedCourses,
+        regularSemesters: regularSemesters.length,
+        workIntegratedSemesters: workIntegratedSemesters.length,
+        totalCoreCourses,
         totalRequirements,
-        totalCourses: totalFixedCourses + totalRequirements,
+        totalCourses: totalCoreCourses + totalRequirements,
+        hasWorkIntegratedLearning: programCourses.hasWorkIntegratedLearning,
         coursesPerSemester: programCourses.semesters.map(sem => ({
             semester: sem.name,
-            fixedCourses: sem.courses.length,
-            requirements: sem.requirements?.reduce((reqTotal, req) => reqTotal + req.count, 0) || 0,
-            totalCourses: sem.totalCourses || sem.courses.length
+            type: sem.type,
+            coreCourses: sem.coreCourses.length,
+            requirements: sem.requirements.reduce((reqTotal, req) => reqTotal + req.selectCount, 0),
+            totalCourses: sem.coreCourses.length + sem.requirements.reduce((reqTotal, req) => reqTotal + req.selectCount, 0),
+            isOptional: sem.isOptional || false
         }))
     };
 
@@ -179,43 +197,44 @@ export const searchCoursesAcrossPrograms = asyncHandler(async (req: Request, res
 
     const { page, limit, skip } = extractPagination(req);
 
-    // Build match conditions
+    // Build match conditions for coreCourses
     const matchConditions: any = {};
 
     if (courseCode) {
-        matchConditions['semesters.courses.code'] = { 
+        matchConditions['semesters.coreCourses.code'] = { 
             $regex: courseCode.toString(), 
             $options: 'i' 
         };
     }
 
     if (courseName) {
-        matchConditions['semesters.courses.name'] = { 
+        matchConditions['semesters.coreCourses.name'] = { 
             $regex: courseName.toString(), 
             $options: 'i' 
         };
     }
 
-    // Simple aggregation pipeline
+    // Updated aggregation pipeline for new schema
     const results = await ProgramCourses.aggregate([
         { $match: matchConditions },
         { $unwind: '$semesters' },
-        { $unwind: '$semesters.courses' },
+        { $unwind: '$semesters.coreCourses' },
         {
             $match: {
-                ...(courseCode && { 'semesters.courses.code': { $regex: courseCode.toString(), $options: 'i' } }),
-                ...(courseName && { 'semesters.courses.name': { $regex: courseName.toString(), $options: 'i' } })
+                ...(courseCode && { 'semesters.coreCourses.code': { $regex: courseCode.toString(), $options: 'i' } }),
+                ...(courseName && { 'semesters.coreCourses.name': { $regex: courseName.toString(), $options: 'i' } })
             }
         },
         {
             $group: {
-                _id: '$semesters.courses.code',
-                course: { $first: '$semesters.courses' },
+                _id: '$semesters.coreCourses.code',
+                course: { $first: '$semesters.coreCourses' },
                 programs: {
                     $push: {
                         programId: '$programId',
                         programName: '$programName',
-                        semester: '$semesters.name'
+                        semester: '$semesters.name',
+                        semesterType: '$semesters.type'
                     }
                 }
             }
@@ -237,16 +256,16 @@ export const searchCoursesAcrossPrograms = asyncHandler(async (req: Request, res
     const totalResults = await ProgramCourses.aggregate([
         { $match: matchConditions },
         { $unwind: '$semesters' },
-        { $unwind: '$semesters.courses' },
+        { $unwind: '$semesters.coreCourses' },
         {
             $match: {
-                ...(courseCode && { 'semesters.courses.code': { $regex: courseCode.toString(), $options: 'i' } }),
-                ...(courseName && { 'semesters.courses.name': { $regex: courseName.toString(), $options: 'i' } })
+                ...(courseCode && { 'semesters.coreCourses.code': { $regex: courseCode.toString(), $options: 'i' } }),
+                ...(courseName && { 'semesters.coreCourses.name': { $regex: courseName.toString(), $options: 'i' } })
             }
         },
         {
             $group: {
-                _id: '$semesters.courses.code'
+                _id: '$semesters.coreCourses.code'
             }
         },
         { $count: 'total' }
@@ -273,52 +292,111 @@ export const searchCoursesAcrossPrograms = asyncHandler(async (req: Request, res
 export const getProgramCoursesStats = asyncHandler(async (req: Request, res: Response) => {
     logApiRequest(req as any);
 
-    // Get basic stats
+    // Get basic stats with Work-Integrated Learning info
     const basicStats = await ProgramCourses.aggregate([
         {
             $group: {
                 _id: null,
                 totalPrograms: { $sum: 1 },
-                totalSemesters: { $sum: { $size: '$semesters' } }
-            }
-        }
-    ]);
-
-    // Get course counts
-    const courseStats = await ProgramCourses.aggregate([
-        { $unwind: '$semesters' },
-        {
-            $group: {
-                _id: null,
-                totalFixedCourses: { $sum: { $size: '$semesters.courses' } },
-                totalRequirements: {
-                    $sum: {
-                        $reduce: {
-                            input: { $ifNull: ['$semesters.requirements', []] },
-                            initialValue: 0,
-                            in: { $add: ['$$value', '$$this.count'] }
-                        }
-                    }
+                totalSemesters: { 
+                    $sum: { 
+                        $cond: [
+                            { $isArray: '$semesters' }, 
+                            { $size: '$semesters' }, 
+                            0
+                        ] 
+                    } 
+                },
+                workIntegratedPrograms: { 
+                    $sum: { $cond: [{ $eq: ['$hasWorkIntegratedLearning', true] }, 1, 0] } 
                 }
             }
         }
     ]);
 
-    // Get unique course codes
-    const uniqueCourses = await ProgramCourses.aggregate([
+    // Get course counts with new schema
+    const courseStats = await ProgramCourses.aggregate([
+        { $match: { semesters: { $exists: true, $type: 'array' } } },
         { $unwind: '$semesters' },
-        { $unwind: '$semesters.courses' },
-        { $group: { _id: '$semesters.courses.code' } },
+        {
+            $group: {
+                _id: null,
+                totalCoreCourses: { 
+                    $sum: { 
+                        $cond: [
+                            { $isArray: '$semesters.coreCourses' }, 
+                            { $size: '$semesters.coreCourses' }, 
+                            0
+                        ] 
+                    } 
+                },
+                totalRequirements: {
+                    $sum: {
+                        $cond: [
+                            { $isArray: '$semesters.requirements' },
+                            {
+                                $reduce: {
+                                    input: '$semesters.requirements',
+                                    initialValue: 0,
+                                    in: { $add: ['$$value', '$$this.selectCount'] }
+                                }
+                            },
+                            0
+                        ]
+                    }
+                },
+                regularSemesters: {
+                    $sum: { $cond: [{ $eq: ['$semesters.type', 'regular'] }, 1, 0] }
+                },
+                workIntegratedSemesters: {
+                    $sum: { $cond: [{ $in: ['$semesters.type', ['work_integrated_learning', 'coop']] }, 1, 0] }
+                }
+            }
+        }
+    ]);
+
+    // Get unique course codes from coreCourses
+    const uniqueCourses = await ProgramCourses.aggregate([
+        { $match: { semesters: { $exists: true, $type: 'array' } } },
+        { $unwind: '$semesters' },
+        { $match: { 'semesters.coreCourses': { $exists: true, $type: 'array' } } },
+        { $unwind: '$semesters.coreCourses' },
+        { $group: { _id: '$semesters.coreCourses.code' } },
         { $count: 'uniqueCourses' }
+    ]);
+
+    // Get requirement type breakdown
+    const requirementStats = await ProgramCourses.aggregate([
+        { $match: { semesters: { $exists: true, $type: 'array' } } },
+        { $unwind: '$semesters' },
+        { $match: { 'semesters.requirements': { $exists: true, $type: 'array' } } },
+        { $unwind: '$semesters.requirements' },
+        {
+            $group: {
+                _id: '$semesters.requirements.type',
+                count: { $sum: 1 },
+                totalSelectCount: { $sum: '$semesters.requirements.selectCount' }
+            }
+        }
     ]);
 
     const result = {
         totalPrograms: basicStats[0]?.totalPrograms || 0,
+        workIntegratedPrograms: basicStats[0]?.workIntegratedPrograms || 0,
         totalSemesters: basicStats[0]?.totalSemesters || 0,
-        totalFixedCourses: courseStats[0]?.totalFixedCourses || 0,
+        regularSemesters: courseStats[0]?.regularSemesters || 0,
+        workIntegratedSemesters: courseStats[0]?.workIntegratedSemesters || 0,
+        totalCoreCourses: courseStats[0]?.totalCoreCourses || 0,
         totalRequirements: courseStats[0]?.totalRequirements || 0,
         uniqueCourses: uniqueCourses[0]?.uniqueCourses || 0,
-        totalCourses: (courseStats[0]?.totalFixedCourses || 0) + (courseStats[0]?.totalRequirements || 0)
+        totalCourses: (courseStats[0]?.totalCoreCourses || 0) + (courseStats[0]?.totalRequirements || 0),
+        requirementBreakdown: requirementStats.reduce((acc, item) => {
+            acc[item._id] = {
+                count: item.count,
+                totalSelectCount: item.totalSelectCount
+            };
+            return acc;
+        }, {} as any)
     };
 
     res.status(200).json(

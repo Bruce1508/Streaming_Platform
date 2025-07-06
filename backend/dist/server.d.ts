@@ -1,0 +1,13 @@
+import "./models/User";
+import "./models/School";
+import "./models/Program";
+import "./models/Course";
+import "./models/StudyMaterial";
+import "./models/BookMark";
+import "./models/Enrollment";
+import "./models/File";
+import "./models/Notification";
+import "./models/Report";
+import "./models/UserSession";
+import "./models/friendRequest";
+//# sourceMappingURL=server.d.ts.map

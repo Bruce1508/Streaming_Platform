@@ -16,6 +16,7 @@ import {
 } from '../utils/Cache.utils';
 import { logger } from '../utils/logger.utils';
 import mongoose from 'mongoose';
+import { AuthRequest } from '../middleware/auth.middleware';
 
 // ===== INTERFACE DEFINITIONS =====
 interface ProgramQuery {
@@ -27,6 +28,37 @@ interface ProgramQuery {
     isActive?: boolean;
     sortBy?: string;
     sortOrder?: 'asc' | 'desc';
+}
+
+interface RawProgram {
+    id: string;
+    code: string;
+    name: string;
+    overview: string;
+    duration: string;
+    campus: string[];
+    delivery: string;
+    credential: string;
+    school: string;
+}
+
+interface TransformedProgram {
+    programId: string;
+    code: string;
+    name: string;
+    overview: string;
+    duration: string;
+    campus: string[];
+    delivery?: string;
+    credential: string;
+    school: string;
+    level: string;
+    isActive: boolean;
+    stats: {
+        enrollmentCount: number;
+        graduationRate?: number;
+        employmentRate?: number;
+    };
 }
 
 // ===== PROGRAM CONTROLLERS =====
@@ -90,10 +122,10 @@ export const getPrograms = asyncHandler(async (req: Request, res: Response) => {
     if (level) filter.level = level;
 
     try {
-        // Execute query with school population
+        // Execute query without school population since school is a string
         const [programs, total] = await Promise.all([
             Program.find(filter)
-                .populate('school', 'name code type province')
+                // .populate('school', 'name code type province') // Removed - school is string
                 .sort(sortOptions)
                 .skip(skip)
                 .limit(limit)
@@ -163,7 +195,7 @@ export const getProgramsBySchool = asyncHandler(async (req: Request, res: Respon
     try {
         const programs = await Program.find(filter)
             .select('name code level duration totalCredits description')
-            .populate('school', 'name code')
+            // .populate('school', 'name code') // Removed - school is string
             .sort({ name: 1 })
             .limit(parseInt(limit as string))
             .lean();
@@ -201,51 +233,88 @@ export const getProgramsBySchool = asyncHandler(async (req: Request, res: Respon
  * @access  Public
  */
 export const getProgramById = asyncHandler(async (req: Request, res: Response) => {
-    // ✅ Log API request
-    logApiRequest(req as any);
-
     const { identifier } = req.params;
 
-    // ✅ Try cache first
-    const cacheKey = generateCacheKey('program_detail', identifier);
-    const cached = await getCachedPrograms(cacheKey);
-    
-    if (cached) {
-        return res.status(200).json(cached);
+    try {
+        logger.info('=== Program API Call ===', {
+            identifier,
+            timestamp: new Date().toISOString(),
+            method: req.method,
+            url: req.url
+        });
+
+        let program;
+
+        // Check if identifier is ObjectId or code
+        if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
+            // It's an ObjectId
+            logger.info('Searching by ObjectId:', identifier);
+            program = await Program.findById(identifier).lean();
+        } else {
+            // It's a code
+            logger.info('Searching by code:', identifier.toUpperCase());
+            program = await Program.findOne({ code: identifier.toUpperCase() }).lean();
+        }
+
+        if (!program) {
+            logger.warn('Program not found:', identifier);
+            throw new ApiError(404, 'Program not found');
+        }
+
+        // Type assertion for accessing potentially dynamic fields
+        const programData = program as any;
+
+        logger.info('Program found:', {
+            _id: programData._id,
+            code: programData.code,
+            name: programData.name,
+            hasSemesters: !!programData.semesters,
+            semestersCount: programData.semesters ? programData.semesters.length : 0
+        });
+
+        // Ensure semesters data is properly formatted if it exists
+        if (programData.semesters && Array.isArray(programData.semesters)) {
+            // Sort semesters by name/id if needed
+            programData.semesters = programData.semesters.sort((a: any, b: any) => {
+                const nameA = a.name || a.id || '';
+                const nameB = b.name || b.id || '';
+                return nameA.localeCompare(nameB);
+            });
+            
+            logger.info('Semesters processed:', {
+                count: programData.semesters.length,
+                semesters: programData.semesters.map((s: any) => ({
+                    id: s.id,
+                    name: s.name,
+                    coursesCount: s.courses ? s.courses.length : 0
+                }))
+            });
+        }
+
+        const response = new ApiResponse(200, programData, 'Program retrieved successfully');
+        
+        logger.info('=== API Response Success ===', {
+            identifier,
+            success: true,
+            dataKeys: Object.keys(programData)
+        });
+        
+        res.status(200).json(response);
+
+    } catch (error: any) {
+        logger.error('=== API Error ===', {
+            identifier,
+            error: error.message,
+            stack: error.stack,
+            isApiError: error instanceof ApiError
+        });
+        
+        if (error instanceof ApiError) {
+            throw error;
+        }
+        
+        throw new ApiError(500, 'Failed to retrieve program details');
     }
-
-    let program;
-
-    // Check if identifier is ObjectId or code
-    if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
-        // It's an ObjectId
-        program = await Program.findById(identifier)
-            .populate('school', 'name code type province website')
-            .populate('courses', 'name code credits level')
-            .lean();
-    } else {
-        // It's a code
-        program = await Program.findOne({ code: identifier.toUpperCase() })
-            .populate('school', 'name code type province website')
-            .populate('courses', 'name code credits level')
-            .lean();
-    }
-
-    if (!program) {
-        throw new ApiError(404, 'Program not found');
-    }
-
-    const response = new ApiResponse(200, program, 'Program retrieved successfully');
-
-    // ✅ Cache the program (10 minutes)
-    await cachePrograms(cacheKey, response, 600);
-
-    logger.info('Program retrieved by identifier', {
-        identifier,
-        programName: program.name
-    });
-
-    res.status(200).json(response);
 });
 
 /**
@@ -337,7 +406,7 @@ export const searchPrograms = asyncHandler(async (req: Request, res: Response) =
     try {
         const programs = await Program.find(filter)
             .select('name code level school')
-            .populate('school', 'name code')
+            // .populate('school', 'name code') // Removed - school is string
             .sort({ name: 1 })
             .limit(parseInt(limit as string))
             .lean();
@@ -406,7 +475,6 @@ export const createProgram = asyncHandler(async (req: Request, res: Response) =>
     });
 
     const savedProgram = await program.save();
-    await savedProgram.populate('school', 'name code');
 
     logger.info('New program created', {
         programId: savedProgram._id,
@@ -440,7 +508,7 @@ export const updateProgram = asyncHandler(async (req: Request, res: Response) =>
         id,
         { ...updates, updatedAt: new Date() },
         { new: true, runValidators: true }
-    ).populate('school', 'name code');
+    );
 
     if (!program) {
         throw new ApiError(404, 'Program not found');
@@ -488,5 +556,125 @@ export const deleteProgram = asyncHandler(async (req: Request, res: Response) =>
 
     res.status(200).json(
         new ApiResponse(200, program, 'Program deleted successfully')
+    );
+});
+
+// ===== BULK IMPORT HELPERS =====
+
+/**
+ * Function to map credential to level
+ */
+function mapCredentialToLevel(credential: string): string {
+    const credentialLower = credential.toLowerCase();
+    
+    if (credentialLower.includes('certificate') && credentialLower.includes('graduate')) {
+        return 'Graduate Certificate';
+    }
+    if (credentialLower.includes('honours bachelor')) {
+        return 'Honours Bachelor Degree';
+    }
+    if (credentialLower.includes('bachelor')) {
+        return 'Bachelor';
+    }
+    if (credentialLower.includes('advanced diploma')) {
+        return 'Advanced Diploma';
+    }
+    if (credentialLower.includes('diploma')) {
+        return 'Diploma';
+    }
+    if (credentialLower.includes('certificate')) {
+        return 'Certificate';
+    }
+    if (credentialLower.includes('seneca certificate')) {
+        return 'Seneca Certificate of Standing';
+    }
+    if (credentialLower.includes('apprenticeship')) {
+        return 'Certificate of Apprenticeship, Ontario College Certificate';
+    }
+    
+    // Default fallback
+    return 'Certificate';
+}
+
+/**
+ * Function to transform raw program data
+ */
+function transformProgram(rawProgram: RawProgram): TransformedProgram {
+    return {
+        programId: rawProgram.id.toLowerCase(),
+        code: rawProgram.code.toUpperCase(),
+        name: rawProgram.name,
+        overview: rawProgram.overview,
+        duration: rawProgram.duration,
+        campus: rawProgram.campus || [],
+        delivery: rawProgram.delivery === 'program delivery options' ? undefined : rawProgram.delivery,
+        credential: rawProgram.credential,
+        school: rawProgram.school,
+        level: mapCredentialToLevel(rawProgram.credential),
+        isActive: true,
+        stats: {
+            enrollmentCount: 0,
+            graduationRate: undefined,
+            employmentRate: undefined
+        }
+    };
+}
+
+/**
+ * @desc    Bulk import programs from scraped data
+ * @route   POST /api/programs/bulk-import
+ * @access  Admin only
+ */
+export const bulkImportPrograms = asyncHandler(async (req: AuthRequest, res: Response) => {
+    logApiRequest(req);
+
+    const { programs }: { programs: RawProgram[] } = req.body;
+
+    if (!Array.isArray(programs) || programs.length === 0) {
+        throw new ApiError(400, 'Programs array is required');
+    }
+
+    logger.info(`Starting bulk import of ${programs.length} programs`);
+
+    let successCount = 0;
+    let errorCount = 0;
+    const errors: string[] = [];
+
+    // Transform programs first
+    const transformedPrograms = programs.map(transformProgram);
+
+    for (const programData of transformedPrograms) {
+        try {
+            await Program.findOneAndUpdate(
+                { 
+                    $or: [
+                        { programId: programData.programId },
+                        { code: programData.code }
+                    ]
+                },
+                programData,
+                { 
+                    upsert: true, 
+                    new: true,
+                    runValidators: true
+                }
+            );
+            successCount++;
+        } catch (error: any) {
+            errorCount++;
+            errors.push(`${programData.programId} (${programData.code}): ${error.message}`);
+            logger.error(`Error importing program ${programData.programId}:`, error);
+        }
+    }
+
+    logger.info(`Bulk import completed: ${successCount} successful, ${errorCount} failed`);
+
+    res.status(200).json(
+        new ApiResponse(200, {
+            successCount,
+            errorCount,
+            errors: errors.slice(0, 10), // Only return first 10 errors
+            totalProcessed: programs.length
+        }, `Bulk import completed: ${successCount} successful, ${errorCount} failed`)
     );
 }); 

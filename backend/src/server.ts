@@ -16,7 +16,9 @@ import { ApiError } from "./utils/ApiError";
 import courseRoutes from "./routes/course.routes";
 import schoolRoutes from "./routes/school.routes";
 import programRoutes from "./routes/program.routes";
+import programReviewRoutes from "./routes/programReview.routes";
 import onboardingRoutes from "./routes/onboarding.routes";
+import notificationRoutes from "./routes/notification.routes";
 import { errorHandler, notFound } from "./middleware/error.middleware";
 import { logger } from "./utils/logger.utils";
 
@@ -24,7 +26,8 @@ import { logger } from "./utils/logger.utils";
 import "./models/User";
 import "./models/School";
 import "./models/Program";
-import "./models/Course";
+import "./models/ProgramReviews";
+// import "./models/Course"; // Commented out - Course model doesn't exist, only ProgramCourses
 import "./models/StudyMaterial";
 import "./models/BookMark";
 import "./models/Enrollment";
@@ -32,7 +35,7 @@ import "./models/File";
 import "./models/Notification";
 import "./models/Report";
 import "./models/UserSession";
-import "./models/friendRequest";
+
 
 const app = express();
 
@@ -67,7 +70,9 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/schools", schoolRoutes);
 app.use("/api/programs", programRoutes);
+app.use("/api/program-reviews", programReviewRoutes);
 app.use("/api/onboarding", onboardingRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // Handle undefined routes
 app.all('/{*any}', notFound);

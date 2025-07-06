@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
-    {"offset": {"line": 36, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Bruce%20Vo/Documents/project/linguex/Streaming_Platform/frontend/app/%28protected%29/%28DashBoard%29/page.tsx"],"sourcesContent":["export default function HomePage() {\r\n    console.log(\"🏠 HomePage component loaded!\");\r\n    \r\n    return (\r\n        <div style={{ padding: \"20px\", backgroundColor: \"red\", color: \"white\" }}>\r\n            <h1 style={{ fontSize: \"48px\" }}>TEST HOME PAGE</h1>\r\n            <p>If you see this RED box, the page is working!</p>\r\n        </div>\r\n    );\r\n}"],"names":[],"mappings":";;;;;AAAe,SAAS;IACpB,QAAQ,GAAG,CAAC;IAEZ,qBACI,8OAAC;QAAI,OAAO;YAAE,SAAS;YAAQ,iBAAiB;YAAO,OAAO;QAAQ;;0BAClE,8OAAC;gBAAG,OAAO;oBAAE,UAAU;gBAAO;0BAAG;;;;;;0BACjC,8OAAC;0BAAE;;;;;;;;;;;;AAGf","debugId":null}}]
-}

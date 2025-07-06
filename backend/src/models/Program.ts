@@ -2,6 +2,13 @@ import mongoose, { Schema } from 'mongoose';
 import { IProgram, IProgramDocument } from '../types/Academic';
 
 const programSchema = new Schema<IProgramDocument>({
+    programId: {
+        type: String,
+        required: [true, 'Program ID is required'],
+        unique: true,
+        trim: true,
+        lowercase: true
+    },
     code: {
         type: String,
         required: [true, 'Program code is required'],
@@ -16,11 +23,32 @@ const programSchema = new Schema<IProgramDocument>({
         trim: true,
         maxlength: [200, 'Program name cannot exceed 200 characters']
     },
-    description: {
+    overview: {
         type: String,
-        required: [true, 'Program description is required'],
+        required: [true, 'Program overview is required'],
         trim: true,
-        maxlength: [2000, 'Description cannot exceed 2000 characters']
+        maxlength: [2000, 'Overview cannot exceed 2000 characters']
+    },
+    duration: {
+        type: String,
+        required: [true, 'Duration is required'],
+        trim: true,
+        maxlength: [100, 'Duration cannot exceed 100 characters']
+    },
+    campus: [{
+        type: String,
+        trim: true
+    }],
+    delivery: {
+        type: String,
+        trim: true,
+        maxlength: [200, 'Delivery cannot exceed 200 characters']
+    },
+    credential: {
+        type: String,
+        required: [true, 'Credential is required'],
+        trim: true,
+        maxlength: [100, 'Credential cannot exceed 100 characters']
     },
     school: {
         type: String,
@@ -28,56 +56,29 @@ const programSchema = new Schema<IProgramDocument>({
         trim: true,
         maxlength: [200, 'School name cannot exceed 200 characters']
     },
-    department: {
-        type: String,
-        trim: true,
-        maxlength: [200, 'Department cannot exceed 200 characters']
-    },
     level: {
         type: String,
-        enum: {
-            values: ['certificate', 'diploma', 'advanced_diploma', 'bachelor', 'graduate_certificate', 'master', 'phd'],
-            message: '{VALUE} is not a valid program level'
-        },
+        enum: [
+            'Certificate', 
+            'Diploma', 
+            'Advanced Diploma', 
+            'Bachelor', 
+            'Graduate Certificate', 
+            'Honours Bachelor Degree', 
+            'Honours Bachelor', 
+            'Seneca Certificate of Standing', 
+            'Certificate of Apprenticeship, Ontario College Certificate'
+        ],
         required: [true, 'Program level is required']
     },
-    duration: {
-        type: Number,
-        required: [true, 'Duration is required'],
-        min: [1, 'Duration must be at least 1 semester'],
-        max: [12, 'Duration cannot exceed 12 semesters']
-    },
-    totalCredits: {
-        type: Number,
-        required: [true, 'Total credits is required'],
-        min: [0, 'Total credits cannot be negative'],
-        max: [200, 'Total credits cannot exceed 200']
-    },
-    delivery: [{
-        type: String,
-        enum: ['in-person', 'online', 'hybrid'],
-        required: true
-    }],
-    language: {
-        type: String,
-        enum: ['english', 'french', 'bilingual'],
-        required: [true, 'Language is required']
-    },
-    startDates: [{
-        type: String,
-        trim: true
-    }],
-    admissionRequirements: [{
-        type: String,
-        trim: true
-    }],
-    careerOutcomes: [{
-        type: String,
-        trim: true
-    }],
     isActive: {
         type: Boolean,
         default: true
+    },
+    description: {
+        type: String,
+        trim: true,
+        maxlength: [1000, 'Description cannot exceed 1000 characters']
     },
     stats: {
         enrollmentCount: {
@@ -85,27 +86,43 @@ const programSchema = new Schema<IProgramDocument>({
             default: 0,
             min: [0, 'Enrollment count cannot be negative']
         },
-        averageGrade: {
+        graduationRate: {
             type: Number,
-            min: [0, 'Average grade cannot be negative'],
-            max: [100, 'Average grade cannot exceed 100']
+            min: [0, 'Graduation rate cannot be negative'],
+            max: [100, 'Graduation rate cannot exceed 100%']
         },
-        passRate: {
+        employmentRate: {
             type: Number,
-            min: [0, 'Pass rate cannot be negative'],
-            max: [100, 'Pass rate cannot exceed 100%']
-        },
-        courseCount: {
-            type: Number,
-            default: 0,
-            min: [0, 'Course count cannot be negative']
-        },
-        materialCount: {
-            type: Number,
-            default: 0,
-            min: [0, 'Material count cannot be negative']
+            min: [0, 'Employment rate cannot be negative'],
+            max: [100, 'Employment rate cannot exceed 100%']
         }
-    }
+    },
+    // Semester and course structure for imported data
+    semesters: [{
+        id: {
+            type: String,
+            trim: true
+        },
+        name: {
+            type: String,
+            trim: true
+        },
+        courses: [{
+            id: {
+                type: String,
+                trim: true
+            },
+            code: {
+                type: String,
+                uppercase: true,
+                trim: true
+            },
+            name: {
+                type: String,
+                trim: true
+            }
+        }]
+    }]
 }, {
     timestamps: true,
     toJSON: { virtuals: true },
@@ -113,17 +130,17 @@ const programSchema = new Schema<IProgramDocument>({
 });
 
 // Indexes
-// code already has unique: true which creates index
+// Note: programId and code already have unique indexes from field definitions
 programSchema.index({ school: 1 });
 programSchema.index({ level: 1 });
 programSchema.index({ isActive: 1 });
-programSchema.index({ name: 'text', description: 'text' });
+programSchema.index({ name: 'text', overview: 'text', description: 'text' });
 
-// Virtual for courses
-programSchema.virtual('courses', {
-    ref: 'Course',
-    localField: '_id',
-    foreignField: 'programs.program'
-});
+// Virtual for courses - commented out until Course model is properly implemented
+// programSchema.virtual('courses', {
+//     ref: 'Course',
+//     localField: '_id',
+//     foreignField: 'programs.program'
+// });
 
 export const Program = mongoose.model<IProgramDocument>('Program', programSchema);

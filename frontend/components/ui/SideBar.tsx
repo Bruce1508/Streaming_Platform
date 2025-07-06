@@ -26,7 +26,7 @@ const Sidebar = () => {
         { icon: BookOpenIcon, label: "Materials", href: "/materials" },
         { icon: FolderIcon, label: "My Files", href: "/files" },
         { icon: UsersIcon, label: "Friends", href: "/friends" },
-        { icon: BellIcon, label: "Notifications", href: "/notifications" },
+        { icon: BellIcon, label: "Notifications", href: "/dashboard/notifications" },
         { icon: UserIcon, label: "Profile", href: "/profile" },
     ];
 

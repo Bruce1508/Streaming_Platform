@@ -5,7 +5,7 @@ import { SearchIcon } from "lucide-react";
 
 const HeroSection = () => {
     return (
-        <div className="relative h-[600px] w-full flex items-center justify-center text-white">
+        <section className="min-h-screen w-full flex flex-col justify-center items-center">
             {/* Background Image */}
             <div
                 className="absolute inset-0 bg-cover bg-center z-0"
@@ -54,7 +54,7 @@ const HeroSection = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 

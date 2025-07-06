@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/tranh/OneDrive%20-%20Seneca/Documents/VSCODE/project/Streaming_Platform/frontend/app/test/page.tsx"],"sourcesContent":["'use client'\r\n\r\nimport { useQuery } from \"@tanstack/react-query\";\r\nimport { axiosInstance } from \"@/lib/axiosInstance\";\r\n\r\nexport default function TestPage() {\r\n    \r\n    \r\n    if (isLoading) return <div>Loading...</div>;\r\n    if (error) return <div>Error: {error.message}</div>;\r\n\r\n    return (\r\n        <div className=\"p-4\">\r\n            <h1 className=\"text-2xl font-bold mb-4\">Test TanStack Query</h1>\r\n            <pre>{JSON.stringify(data?.slice(0, 5), null, 2)}</pre>\r\n        </div>\r\n    );\r\n}"],"names":[],"mappings":";;;;AAAA;;AAKe,SAAS;IAGpB,IAAI,WAAW,qBAAO,6LAAC;kBAAI;;;;;;IAC3B,IAAI,OAAO,qBAAO,6LAAC;;YAAI;YAAQ,MAAM,OAAO;;;;;;;IAE5C,qBACI,6LAAC;QAAI,WAAU;;0BACX,6LAAC;gBAAG,WAAU;0BAA0B;;;;;;0BACxC,6LAAC;0BAAK,KAAK,SAAS,CAAC,MAAM,MAAM,GAAG,IAAI,MAAM;;;;;;;;;;;;AAG1D;KAZwB","debugId":null}}]
-}

@@ -1,0 +1,13 @@
+export declare const generateRandomString: (length?: number, charset?: string) => string;
+export declare const generateRandomNumber: (min?: number, max?: number) => number;
+export declare const generateRandomColor: () => string;
+export declare const generateSecureToken: (bytes?: number) => string;
+export declare const generateUUID: () => string;
+export declare const generateRandomPassword: (length?: number) => string;
+export declare const generateCourseCode: (prefix?: string) => string;
+export declare const generateStudentId: (year?: number) => string;
+export declare const generateRandomFileName: (extension?: string) => string;
+export declare const shuffleArray: <T>(array: T[]) => T[];
+export declare const pickRandom: <T>(array: T[]) => T;
+export declare const pickRandomMultiple: <T>(array: T[], count: number) => T[];
+//# sourceMappingURL=Random.utils.d.ts.map

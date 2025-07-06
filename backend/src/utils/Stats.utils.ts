@@ -208,7 +208,7 @@ export const getDashboardStats = async (models: any) => {
 // Get trending materials
 export const getTrendingMaterials = async (MaterialModel: any, days: number = 7, limit: number = 10) => {
     try {
-        const cacheKey = generateCacheKey('trending_materials', days, limit);
+        const cacheKey = generateCacheKey('trending_materials', days.toString(), limit.toString());
         const cached = cache.get(cacheKey);
         if (cached) return cached;
 
@@ -280,7 +280,7 @@ export const getTrendingMaterials = async (MaterialModel: any, days: number = 7,
 // Get user activity stats
 export const getUserActivityStats = async (models: any, userId: string, days: number = 30) => {
     try {
-        const cacheKey = generateCacheKey('user_activity', userId, days);
+        const cacheKey = generateCacheKey('user_activity', userId, days.toString());
         const cached = cache.get(cacheKey);
         if (cached) return cached;
 
@@ -371,7 +371,7 @@ export const calculateGrowthMetrics = async (Model: any, field: string = 'create
 // Get top performers
 export const getTopPerformers = async (models: any, metric: string = 'downloads', limit: number = 10) => {
     try {
-        const cacheKey = generateCacheKey('top_performers', metric, limit);
+        const cacheKey = generateCacheKey('top_performers', metric, limit.toString());
         const cached = cache.get(cacheKey);
         if (cached) return cached;
 

@@ -23,7 +23,7 @@ export const generateTokenPair = (userId: string, sessionId: string): TokenPair 
     const accessToken = jwt.sign(
         { userId, sessionId, type: 'access' },
         process.env.JWT_SECRET!,
-        { expiresIn: '15m' }
+        { expiresIn: '30d' } // Development: 30 days instead of 15 minutes
     );
 
     const refreshToken = jwt.sign(
@@ -58,8 +58,6 @@ export const isTokenBlacklisted = async (token: string): Promise<boolean> => {
         return false;
     }
 };
-
-// ===== NEW FUNCTIONS TO ADD =====
 
 /**
  * Validate token type and return decoded payload

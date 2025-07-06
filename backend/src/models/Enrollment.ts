@@ -18,7 +18,7 @@ export interface IEnrollment extends Document {
     
     // Course enrollments
     courses: {
-        course: mongoose.Types.ObjectId;
+        course: string;
         semester: number;
         year: number;
         term: 'fall' | 'winter' | 'summer';
@@ -122,9 +122,10 @@ const enrollmentSchema = new Schema<IEnrollment>({
     
     courses: [{
         course: {
-            type: Schema.Types.ObjectId,
-            ref: 'Course',
-            required: true
+            type: String,
+            required: true,
+            trim: true,
+            maxlength: [100, 'Course name cannot exceed 100 characters']
         },
         semester: {
             type: Number,
@@ -249,7 +250,6 @@ enrollmentSchema.statics.findByUser = function(
     return this.find({ user: userId })
         .populate('school', 'name shortName')
         .populate('program', 'name code duration')
-        .populate('courses.course', 'name code credits')
         .sort({ createdAt: -1 });
 };
 

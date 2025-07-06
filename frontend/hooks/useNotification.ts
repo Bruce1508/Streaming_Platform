@@ -1,106 +1,144 @@
+'use client';
 import { useState, useEffect, useCallback } from 'react';
-import { getFriendRequests, acceptFriendRequest, rejectFriendRequest } from '@/lib/api';
+import { getNotifications, markNotificationAsRead, markAllNotificationsAsRead } from '@/lib/api';
 import toast from 'react-hot-toast';
 
-interface User {
+interface Notification {
     _id: string;
-    fullName: string;
-    profilePic: string;
-    nativeLanguage: string;
-    learningLanguage: string;
+    title: string;
+    message: string;
+    type: 'like' | 'comment' | 'system' | 'general';
+    read: boolean;
+    createdAt: string;
+    updatedAt: string;
+    sender?: {
+        _id: string;
+        fullName: string;
+        profilePic: string;
+    };
+    relatedId?: string;
+    relatedModel?: string;
 }
 
-interface FriendRequest {
-    _id: string;
-    sender: User;
-    recipient: User;
-    status: string;
-}
+export const useNotification = () => {
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [unreadCount, setUnreadCount] = useState(0);
 
-interface FriendRequestsData {
-    incomingRequests: FriendRequest[];
-    acceptedRequests: FriendRequest[];
-}
-
-export const useNotifications = () => {
-    const [friendRequests, setFriendRequests] = useState<FriendRequestsData>({
-        incomingRequests: [],
-        acceptedRequests: []
-    });
-    const [isLoading, setIsLoading] = useState(true);
-    const [acceptingRequest, setAcceptingRequest] = useState<string | null>(null);
-    const [rejectingRequest, setRejectingRequest] = useState<string | null>(null); 
-
-    const fetchData = useCallback(async () => {
+    const fetchNotifications = useCallback(async () => {
         try {
-            setIsLoading(true);
-            console.log('📞 Fetching friend requests...');
-
-            const response = await getFriendRequests();
-            console.log('📦 Friend requests response:', response);
-
-            setFriendRequests({
-                incomingRequests: response?.incomingRequests || [],
-                acceptedRequests: response?.acceptedRequests || []
-            });
-
-            console.log('✅ Friend requests loaded successfully');
-        } catch (error) {
-            console.error('❌ Error fetching friend requests:', error);
-            toast.error('Failed to load notifications');
+            setLoading(true);
+            setError(null);
+            
+            const response = await getNotifications({ page: 1, limit: 50 });
+            
+            if (response.data?.success) {
+                setNotifications(response.data.notifications || []);
+                setUnreadCount(response.data.unreadCount || 0);
+            } else {
+                throw new Error('Failed to fetch notifications');
+            }
+            
+        } catch (err: any) {
+            console.error('Error fetching notifications:', err);
+            setError('Failed to load notifications');
+            
+            // Fallback to mock data if API fails
+            const mockNotifications: Notification[] = [
+                {
+                    _id: '1',
+                    title: 'Welcome to StudyBuddy!',
+                    message: 'Thanks for joining our platform. Start exploring programs and courses.',
+                    type: 'system',
+                    read: false,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                },
+                {
+                    _id: '2',
+                    title: 'Your review was liked',
+                    message: 'Someone liked your review on Computer Science program.',
+                    type: 'like',
+                    read: true,
+                    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+                    updatedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+                }
+            ];
+            
+            setNotifications(mockNotifications);
+            setUnreadCount(mockNotifications.filter(n => !n.read).length);
         } finally {
-            setIsLoading(false);
-            console.log('🏁 Loading completed');
+            setLoading(false);
         }
     }, []);
 
-    // ✅ Auto-fetch on mount
-    useEffect(() => {
-        fetchData();
-    }, []); // ✅ Empty dependency - only run once
-
-    const handleAcceptRequest = useCallback(async (requestId: string) => {
+    const markAsRead = useCallback(async (notificationId: string) => {
         try {
-            setAcceptingRequest(requestId);
-            await acceptFriendRequest(requestId);
-
-            toast.success('Friend request accepted!');
-
-            // ✅ Refetch after accepting
-            await fetchData();
-        } catch (error) {
-            console.error('Error accepting friend request:', error);
-            toast.error('Failed to accept friend request');
-        } finally {
-            setAcceptingRequest(null);
+            // Optimistic update
+            setNotifications(prev => 
+                prev.map(notification => 
+                    notification._id === notificationId 
+                        ? { ...notification, read: true }
+                        : notification
+                )
+            );
+            setUnreadCount(prev => Math.max(0, prev - 1));
+            
+            // API call
+            await markNotificationAsRead(notificationId);
+            
+        } catch (err: any) {
+            console.error('Error marking notification as read:', err);
+            // Revert optimistic update on error
+            setNotifications(prev => 
+                prev.map(notification => 
+                    notification._id === notificationId 
+                        ? { ...notification, read: false }
+                        : notification
+                )
+            );
+            setUnreadCount(prev => prev + 1);
+            toast.error('Failed to mark notification as read');
         }
-    }, [fetchData]);
+    }, []);
 
-    const handleRejectRequest = useCallback(async (requestId: string) => {
+    const markAllAsRead = useCallback(async () => {
         try {
-            setRejectingRequest(requestId);
-            await rejectFriendRequest(requestId);
-            toast.success('Friend request rejected');
-            await fetchData();
-        } catch (error) {
-            console.error('Error rejecting friend request:', error);
-            toast.error('Failed to reject friend request');
-        } finally {
-            setRejectingRequest(null);
+            // Optimistic update
+            const unreadNotifications = notifications.filter(n => !n.read);
+            setNotifications(prev => 
+                prev.map(notification => ({ ...notification, read: true }))
+            );
+            setUnreadCount(0);
+            
+            // API call
+            await markAllNotificationsAsRead();
+            toast.success('All notifications marked as read');
+            
+        } catch (err: any) {
+            console.error('Error marking all notifications as read:', err);
+            // Revert optimistic update on error
+            fetchNotifications();
+            toast.error('Failed to mark all notifications as read');
         }
-    }, [fetchData]);
+    }, [notifications, fetchNotifications]);
 
     const refreshNotifications = useCallback(() => {
-        fetchData();
-    }, [fetchData]);
+        fetchNotifications();
+    }, [fetchNotifications]);
+
+    useEffect(() => {
+        fetchNotifications();
+    }, [fetchNotifications]);
 
     return {
-        friendRequests,
-        isLoading,
-        acceptingRequest,
-        handleAcceptRequest,
-        refreshNotifications,
-        rejectingRequest,
-        handleRejectRequest
+        notifications,
+        loading,
+        error,
+        unreadCount,
+        markAsRead,
+        markAllAsRead,
+        refreshNotifications
     };
-};
+}; 

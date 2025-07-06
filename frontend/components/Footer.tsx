@@ -8,7 +8,7 @@ export default function Footer() {
             <div className="flex flex-col md:flex-row items-center justify-between mb-30 max-w-7xl mx-auto w-full">
                 {/* Left: Big text and button */}
                 <div className="flex-1 flex flex-col items-center justify-center mb-10 md:mb-0 w-full">
-                    <h1 className="whitespace-nowrap text-4xl md:text-5xl lg:text-[6rem] 2xl:text-[8rem] font-bold text-center mb-15 bg-gradient-to-r from-[#FFBF00] via-[#f2e8e6] to-[#CC6666] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(59,130,246,0.5)] bg-[length:200%_100%] animate-[gradient_5s_ease-in-out_infinite] w-full flex justify-center">Try StudyBuddy Now</h1>
+                    <h1 className="whitespace-nowrap text-3xl md:text-4xl lg:text-[5rem] 2xl:text-[7rem] font-bold text-center mb-15 bg-gradient-to-r from-[#FFBF00] via-[#f2e8e6] to-[#CC6666] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(59,130,246,0.5)] bg-[length:200%_100%] animate-[gradient_5s_ease-in-out_infinite] w-full flex justify-center">Try StudyBuddy Now</h1>
                     <Link href="/dashboard" className="flex items-center justify-center gap-2 sm:gap-3 bg-[#FFFFF0] text-black font-bold rounded-lg px-4 py-2 sm:px-6 sm:py-3 md:px-5 md:py-2 text-base sm:text-lg md:text-base shadow-lg hover:shadow-xl hover:bg-gray-300 transition-all duration-300 transform hover:scale-105 mx-auto">
                         Get Started
                     </Link>

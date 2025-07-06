@@ -2,19 +2,19 @@
 
 import { useState, useEffect } from "react";
 import { BellIcon } from "lucide-react";
-import { useNotifications } from "@/hooks/useNotification";
+import { useNotification } from "@/hooks/useNotification";
 import Link from "next/link";
 
 export default function NotificationBell() {
-    const { friendRequests } = useNotifications();
+    const { notifications } = useNotification();
     const [hasUnread, setHasUnread] = useState(false);
 
     useEffect(() => {
-        setHasUnread(friendRequests.incomingRequests.length > 0);
-    }, [friendRequests]);
+        setHasUnread(notifications.some(n => !n.read));
+    }, [notifications]);
 
     return (
-        <Link href="/notifications">
+        <Link href="/dashboard/notifications">
             <button className="relative p-2 hover:bg-base-200 rounded-lg transition-colors">
                 <BellIcon className="w-6 h-6" />
                 {hasUnread && (

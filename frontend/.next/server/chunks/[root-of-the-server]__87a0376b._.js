@@ -180,23 +180,25 @@ var { g: global, __dirname } = __turbopack_context__;
 {
 // lib/api.ts - SECURE CENTRALIZED API CLIENT
 __turbopack_context__.s({
-    "acceptFriendRequest": (()=>acceptFriendRequest),
     "api": (()=>api),
     "authAPI": (()=>authAPI),
-    "cancelFriendRequest": (()=>cancelFriendRequest),
     "chatAPI": (()=>chatAPI),
     "completeOnBoarding": (()=>completeOnBoarding),
+    "courseAPI": (()=>courseAPI),
     "default": (()=>__TURBOPACK__default__export__),
+    "deleteNotification": (()=>deleteNotification),
     "getAuthUser": (()=>getAuthUser),
-    "getFriendRequests": (()=>getFriendRequests),
     "getMyProfile": (()=>getMyProfile),
+    "getNotifications": (()=>getNotifications),
     "getRecommendedUsers": (()=>getRecommendedUsers),
     "getStreamToken": (()=>getStreamToken),
     "getUserFriends": (()=>getUserFriends),
+    "markAllNotificationsAsRead": (()=>markAllNotificationsAsRead),
+    "markNotificationAsRead": (()=>markNotificationAsRead),
     "materialAPI": (()=>materialAPI),
-    "rejectFriendRequest": (()=>rejectFriendRequest),
+    "programAPI": (()=>programAPI),
+    "programReviewAPI": (()=>programReviewAPI),
     "searchUsers": (()=>searchUsers),
-    "sendFriendRequest": (()=>sendFriendRequest),
     "signIn": (()=>signIn),
     "signUp": (()=>signUp),
     "updateMyProfile": (()=>updateMyProfile),
@@ -264,11 +266,6 @@ const userAPI = {
     getRecommended: ()=>api.get('/users/recommended'),
     searchUsers: (query)=>api.get(`/users/search?search=${encodeURIComponent(query)}`),
     getFriends: ()=>api.get('/users/friends'),
-    getFriendRequests: ()=>api.get('/users/friend-requests'),
-    sendFriendRequest: (userId)=>api.post(`/users/friend-request/${userId}`),
-    acceptFriendRequest: (requestId)=>api.put(`/users/friend-request/${requestId}/accept`),
-    rejectFriendRequest: (requestId)=>api.delete(`/users/friend-request/${requestId}/reject`),
-    cancelFriendRequest: (userId)=>api.delete(`/users/friend-request/${userId}/cancel`),
     getProfile: ()=>api.get('/users/profile'),
     updateProfile: (data)=>api.put('/users/profile', data),
     completeOnBoarding: (data)=>api.put('/users/onboarding', data)
@@ -294,24 +291,71 @@ const uploadAPI = {
         }),
     getUserFiles: ()=>api.get('/upload/files')
 };
+const programAPI = {
+    getPrograms: (params)=>{
+        // Filter out undefined values
+        const cleanParams = {};
+        if (params) {
+            Object.keys(params).forEach((key)=>{
+                if (params[key] !== undefined && params[key] !== null && params[key] !== '') {
+                    cleanParams[key] = params[key];
+                }
+            });
+        }
+        const queryString = Object.keys(cleanParams).length > 0 ? `?${new URLSearchParams(cleanParams).toString()}` : '';
+        return api.get(`/programs${queryString}`);
+    },
+    getProgramById: (id)=>api.get(`/programs/${id}`),
+    searchPrograms: (query)=>api.get(`/programs/search?q=${encodeURIComponent(query)}`),
+    getProgramsBySchool: (schoolId)=>api.get(`/programs/school/${schoolId}`),
+    getProgramLevels: ()=>api.get('/programs/levels')
+};
+const courseAPI = {
+    getProgramCourses: (programId)=>api.get(`/courses/program-courses/${programId}`),
+    searchCourses: (params)=>{
+        const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
+        return api.get(`/courses/program-courses/search${queryString}`);
+    },
+    getCourseStats: ()=>api.get('/courses/program-courses/stats')
+};
+const programReviewAPI = {
+    getProgramReviews: (programId, params)=>{
+        const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
+        return api.get(`/program-reviews/program/${programId}${queryString}`);
+    },
+    getUserReviewForProgram: (programId)=>api.get(`/program-reviews/user/${programId}`),
+    createReview: (data)=>api.post('/program-reviews', data),
+    updateReview: (reviewId, data)=>api.put(`/program-reviews/${reviewId}`, data),
+    deleteReview: (reviewId)=>api.delete(`/program-reviews/${reviewId}`),
+    likeReview: (reviewId, action)=>api.post(`/program-reviews/${reviewId}/${action}`)
+};
 const chatAPI = {
     getStreamToken: ()=>api.get('/chat/token')
+};
+// ===== NOTIFICATION API =====
+const notificationAPI = {
+    getNotifications: (params)=>{
+        const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
+        return api.get(`/notifications${queryString}`);
+    },
+    markAsRead: (notificationId)=>api.put(`/notifications/${notificationId}/read`),
+    markAllAsRead: ()=>api.put('/notifications/read-all'),
+    deleteNotification: (notificationId)=>api.delete(`/notifications/${notificationId}`)
 };
 const signUp = authAPI.signUp;
 const signIn = authAPI.signIn;
 const getAuthUser = authAPI.getMe;
 const getUserFriends = userAPI.getFriends;
 const getRecommendedUsers = userAPI.getRecommended;
-const getFriendRequests = userAPI.getFriendRequests;
-const sendFriendRequest = userAPI.sendFriendRequest;
-const acceptFriendRequest = userAPI.acceptFriendRequest;
-const rejectFriendRequest = userAPI.rejectFriendRequest;
-const cancelFriendRequest = userAPI.cancelFriendRequest;
 const getMyProfile = userAPI.getProfile;
 const updateMyProfile = userAPI.updateProfile;
 const searchUsers = userAPI.searchUsers;
 const getStreamToken = chatAPI.getStreamToken;
 const completeOnBoarding = userAPI.completeOnBoarding;
+const getNotifications = notificationAPI.getNotifications;
+const markNotificationAsRead = notificationAPI.markAsRead;
+const markAllNotificationsAsRead = notificationAPI.markAllAsRead;
+const deleteNotification = notificationAPI.deleteNotification;
 const __TURBOPACK__default__export__ = apiClient;
 }}),
 "[project]/app/api/auth/[...nextauth]/route.ts [app-route] (ecmascript)": ((__turbopack_context__) => {

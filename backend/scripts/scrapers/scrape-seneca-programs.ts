@@ -568,3 +568,5 @@ async function main() {
 
 // Run script
 main().catch(console.error);
+
+export { SenecaProgramScraper };

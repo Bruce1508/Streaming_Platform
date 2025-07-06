@@ -130,9 +130,10 @@ const userSchema = new mongoose.Schema({
         default: "",
         validate: {
             validator: function(v: string) {
-                return !v || /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i.test(v);
+                // Allow empty string or valid HTTPS/HTTP URLs (including Google, GitHub, etc.)
+                return !v || /^https?:\/\/.+/.test(v);
             },
-            message: 'Profile picture must be a valid image URL'
+            message: 'Profile picture must be a valid URL'
         }
     },
     location: {

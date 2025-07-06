@@ -155,7 +155,7 @@ function Footer() {
                     className: "flex-1 flex flex-col items-center justify-center mb-10 md:mb-0 w-full",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                            className: "whitespace-nowrap text-4xl md:text-5xl lg:text-[6rem] 2xl:text-[8rem] font-bold text-center mb-15 bg-gradient-to-r from-[#FFBF00] via-[#f2e8e6] to-[#CC6666] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(59,130,246,0.5)] bg-[length:200%_100%] animate-[gradient_5s_ease-in-out_infinite] w-full flex justify-center",
+                            className: "whitespace-nowrap text-3xl md:text-4xl lg:text-[5rem] 2xl:text-[7rem] font-bold text-center mb-15 bg-gradient-to-r from-[#FFBF00] via-[#f2e8e6] to-[#CC6666] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(59,130,246,0.5)] bg-[length:200%_100%] animate-[gradient_5s_ease-in-out_infinite] w-full flex justify-center",
                             children: "Try StudyBuddy Now"
                         }, void 0, false, {
                             fileName: "[project]/components/Footer.tsx",
@@ -476,7 +476,7 @@ function HomePage() {
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$landing$2f$HeroSection$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/app/page.tsx",
                         lineNumber: 11,
-                        columnNumber: 9
+                        columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "bg-[#F6F9FC] py-20",
