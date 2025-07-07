@@ -8,7 +8,13 @@ import {
     createProgram,
     updateProgram,
     deleteProgram,
-    bulkImportPrograms
+    bulkImportPrograms,
+    bulkImportCentennialPrograms,
+    bulkImportGeorgeBrownPrograms,
+    bulkImportHumberPrograms,
+    bulkImportTMUPrograms,
+    bulkImportYorkPrograms,
+    bulkImportSenecaPrograms
 } from '../controllers/program.controllers';
 
 // Middleware imports
@@ -92,6 +98,210 @@ const validateBulkImportPrograms = (req: any, res: any, next: any) => {
     next();
 };
 
+/**
+ * Validation for Centennial College bulk import
+ */
+const validateCentennialBulkImport = (req: any, res: any, next: any) => {
+    const { programs } = req.body;
+
+    if (!programs || !Array.isArray(programs) || programs.length === 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'Centennial programs array is required and cannot be empty'
+        });
+    }
+
+    for (let i = 0; i < programs.length; i++) {
+        const program = programs[i];
+        
+        if (!program.name || typeof program.name !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program name is required for program at index ${i}`
+            });
+        }
+
+        if (!program.credential || typeof program.credential !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program credential is required for program at index ${i}`
+            });
+        }
+    }
+
+    next();
+};
+
+/**
+ * Validation for George Brown College bulk import
+ */
+const validateGeorgeBrownBulkImport = (req: any, res: any, next: any) => {
+    const { programs } = req.body;
+
+    if (!programs || !Array.isArray(programs) || programs.length === 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'George Brown programs array is required and cannot be empty'
+        });
+    }
+
+    for (let i = 0; i < programs.length; i++) {
+        const program = programs[i];
+        
+        if (!program.name || typeof program.name !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program name is required for program at index ${i}`
+            });
+        }
+
+        if (!program.credential || typeof program.credential !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program credential is required for program at index ${i}`
+            });
+        }
+    }
+
+    next();
+};
+
+/**
+ * Validation for Humber College bulk import
+ */
+const validateHumberBulkImport = (req: any, res: any, next: any) => {
+    const { programs } = req.body;
+
+    if (!programs || !Array.isArray(programs) || programs.length === 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'Humber programs array is required and cannot be empty'
+        });
+    }
+
+    for (let i = 0; i < programs.length; i++) {
+        const program = programs[i];
+        
+        if (!program.name || typeof program.name !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program name is required for program at index ${i}`
+            });
+        }
+
+        if (!program.credential || typeof program.credential !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program credential is required for program at index ${i}`
+            });
+        }
+    }
+
+    next();
+};
+
+/**
+ * Validation for TMU bulk import
+ */
+const validateTMUBulkImport = (req: any, res: any, next: any) => {
+    const { programs } = req.body;
+
+    if (!programs || !Array.isArray(programs) || programs.length === 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'TMU programs array is required and cannot be empty'
+        });
+    }
+
+    for (let i = 0; i < programs.length; i++) {
+        const program = programs[i];
+        
+        if (!program.name || typeof program.name !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program name is required for program at index ${i}`
+            });
+        }
+    }
+
+    next();
+};
+
+/**
+ * Validation for York University bulk import
+ */
+const validateYorkBulkImport = (req: any, res: any, next: any) => {
+    const { programs } = req.body;
+
+    if (!programs || !Array.isArray(programs) || programs.length === 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'York programs array is required and cannot be empty'
+        });
+    }
+
+    for (let i = 0; i < programs.length; i++) {
+        const program = programs[i];
+        
+        if (!program.name || typeof program.name !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program name is required for program at index ${i}`
+            });
+        }
+    }
+
+    next();
+};
+
+/**
+ * Validation for Seneca College bulk import
+ */
+const validateSenecaBulkImport = (req: any, res: any, next: any) => {
+    const { programs } = req.body;
+
+    if (!programs || !Array.isArray(programs) || programs.length === 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'Seneca programs array is required and cannot be empty'
+        });
+    }
+
+    for (let i = 0; i < programs.length; i++) {
+        const program = programs[i];
+        
+        if (!program.name || typeof program.name !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program name is required for program at index ${i}`
+            });
+        }
+
+        if (!program.credential || typeof program.credential !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program credential is required for program at index ${i}`
+            });
+        }
+
+        if (!program.id || typeof program.id !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program id is required for program at index ${i}`
+            });
+        }
+
+        if (!program.code || typeof program.code !== 'string') {
+            return res.status(400).json({
+                success: false,
+                message: `Program code is required for program at index ${i}`
+            });
+        }
+    }
+
+    next();
+};
+
 // ===== PUBLIC ROUTES (No Auth Required) =====
 
 /**
@@ -142,6 +352,84 @@ router.post('/bulk-import',
     // authorize(['admin']),        // Temporarily disabled
     validateBulkImportPrograms,
     bulkImportPrograms
+);
+
+/**
+ * @route   POST /api/programs/bulk-import/centennial
+ * @desc    Bulk import Centennial College programs
+ * @access  Admin only (temporarily disabled for import)
+ */
+router.post('/bulk-import/centennial',
+    // adminRateLimit,              // Temporarily disabled for import
+    // protectRoute,                // Temporarily disabled
+    // authorize(['admin']),        // Temporarily disabled
+    validateCentennialBulkImport,
+    bulkImportCentennialPrograms
+);
+
+/**
+ * @route   POST /api/programs/bulk-import/george-brown
+ * @desc    Bulk import George Brown College programs
+ * @access  Admin only (temporarily disabled for import)
+ */
+router.post('/bulk-import/george-brown',
+    // adminRateLimit,              // Temporarily disabled for import
+    // protectRoute,                // Temporarily disabled
+    // authorize(['admin']),        // Temporarily disabled
+    validateGeorgeBrownBulkImport,
+    bulkImportGeorgeBrownPrograms
+);
+
+/**
+ * @route   POST /api/programs/bulk-import/humber
+ * @desc    Bulk import Humber College programs
+ * @access  Admin only (temporarily disabled for import)
+ */
+router.post('/bulk-import/humber',
+    // adminRateLimit,              // Temporarily disabled for import
+    // protectRoute,                // Temporarily disabled
+    // authorize(['admin']),        // Temporarily disabled
+    validateHumberBulkImport,
+    bulkImportHumberPrograms
+);
+
+/**
+ * @route   POST /api/programs/bulk-import/tmu
+ * @desc    Bulk import TMU programs
+ * @access  Admin only (temporarily disabled for import)
+ */
+router.post('/bulk-import/tmu',
+    // adminRateLimit,              // Temporarily disabled for import
+    // protectRoute,                // Temporarily disabled
+    // authorize(['admin']),        // Temporarily disabled
+    validateTMUBulkImport,
+    bulkImportTMUPrograms
+);
+
+/**
+ * @route   POST /api/programs/bulk-import/york
+ * @desc    Bulk import York University programs
+ * @access  Admin only (temporarily disabled for import)
+ */
+router.post('/bulk-import/york',
+    // adminRateLimit,              // Temporarily disabled for import
+    // protectRoute,                // Temporarily disabled
+    // authorize(['admin']),        // Temporarily disabled
+    validateYorkBulkImport,
+    bulkImportYorkPrograms
+);
+
+/**
+ * @route   POST /api/programs/bulk-import/seneca
+ * @desc    Bulk import Seneca College programs
+ * @access  Admin only (temporarily disabled for import)
+ */
+router.post('/bulk-import/seneca',
+    // adminRateLimit,              // Temporarily disabled for import
+    // protectRoute,                // Temporarily disabled
+    // authorize(['admin']),        // Temporarily disabled
+    validateSenecaBulkImport,
+    bulkImportSenecaPrograms
 );
 
 /**

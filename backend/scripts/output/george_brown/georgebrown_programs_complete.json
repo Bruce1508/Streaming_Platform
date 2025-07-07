@@ -1,0 +1,1710 @@
+[
+  {
+    "name": "Applied A.I. Solutions Development (Postgraduate) (T431)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "242296"
+  },
+  {
+    "name": "Artificial Intelligence for Robotics (Postgraduate) (T426)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "245716"
+  },
+  {
+    "name": "Blockchain Development (Postgraduate) (T475)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "242316"
+  },
+  {
+    "name": "Cloud Computing Technologies (Postgraduate) (T465)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 Semesters)",
+    "programId": "242311"
+  },
+  {
+    "name": "Computer Programming (T186)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years",
+    "programId": "242206"
+  },
+  {
+    "name": "Computer Programming and Analysis (T177)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242186"
+  },
+  {
+    "name": "Computer Programming and Analysis (Online) (T197)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "No",
+    "duration": "3 years (6 semesters)",
+    "programId": "242231"
+  },
+  {
+    "name": "Computer Programming - Low Code (T189)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years",
+    "programId": "242216"
+  },
+  {
+    "name": "Computer Systems Technician (Online) (T191)",
+    "credential": "Ontario College Diploma",
+    "international": "No",
+    "duration": "2 years (4 semesters)",
+    "programId": "242221"
+  },
+  {
+    "name": "Computer Systems Technician (T141)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "242106"
+  },
+  {
+    "name": "Computer Systems Technology (Online) (T187)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "No",
+    "duration": "3 years (6 semesters)",
+    "programId": "242211"
+  },
+  {
+    "name": "Computer Systems Technology (T147)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242116"
+  },
+  {
+    "name": "Cyber Security (Postgraduate) (T433)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "242301"
+  },
+  {
+    "name": "Digital Product Management (Postgraduate) (T428)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "245896"
+  },
+  {
+    "name": "Game – Programming (Online) (T193)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "No",
+    "duration": "3 years (6 semesters)",
+    "programId": "242226"
+  },
+  {
+    "name": "Game – Programming (T163)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242146"
+  },
+  {
+    "name": "Health Informatics (Postgraduate) (T402)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "242266"
+  },
+  {
+    "name": "Information Systems Business Analysis (with experiential learning capstone) (Postgraduate) (T405)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "242276"
+  },
+  {
+    "name": "Internet of Things - System Design and Implementation (Postgraduate) (T427)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "245756"
+  },
+  {
+    "name": "Mobile Application Development and Strategy (Postgraduate) (T440)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "242306"
+  },
+  {
+    "name": "Wireless Networking (Postgraduate) (T411)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "242286"
+  },
+  {
+    "name": "Art and Design Foundation (G108)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semester)",
+    "programId": "241681"
+  },
+  {
+    "name": "Concept Art for Entertainment (Postgraduate) (G407)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "241736"
+  },
+  {
+    "name": "Design Management (Postgraduate) (G401)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241726"
+  },
+  {
+    "name": "Digital Design – Game Design (Postgraduate) (G405)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "241731"
+  },
+  {
+    "name": "Game – Art (G119)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241691"
+  },
+  {
+    "name": "Graphic Design (G102)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241676"
+  },
+  {
+    "name": "Honours Bachelor of Brand Design (G304)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (8 semesters) plus 1 Co-op Work Term",
+    "programId": "241711"
+  },
+  {
+    "name": "Honours Bachelor of Brand Design (Bridge) (G305)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "5 semesters plus 1 Co-op Work Term",
+    "programId": "251571"
+  },
+  {
+    "name": "Honours Bachelor of Digital Experience Design (G301)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (8 semesters) plus 1 Co-op Work Term",
+    "programId": "241696"
+  },
+  {
+    "name": "Honours Bachelor of Digital Experience Design Year 3 Bridge (G302)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "5 semesters plus 1 co-op work term",
+    "programId": "241701"
+  },
+  {
+    "name": "Interaction Design (G113)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years",
+    "programId": "241686"
+  },
+  {
+    "name": "Interactive Media Management (Postgraduate) (G412)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "241741"
+  },
+  {
+    "name": "Web Development – Front-End Design (Postgraduate) (G418)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "241746"
+  },
+  {
+    "name": "Apparel Fit Technician (F116)",
+    "credential": "George Brown College Certificate",
+    "international": "No",
+    "duration": "1 semester (16 weeks)",
+    "programId": "241661"
+  },
+  {
+    "name": "Fashion Business Industry (F112)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241641"
+  },
+  {
+    "name": "Fashion Management (F102)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241621"
+  },
+  {
+    "name": "Fashion Techniques and Design (F113)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241646"
+  },
+  {
+    "name": "Gemmology (F105)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241626"
+  },
+  {
+    "name": "Industrial Power Sewing (F115)",
+    "credential": "George Brown College Certificate",
+    "international": "No",
+    "duration": "1 semester (16 weeks)",
+    "programId": "241656"
+  },
+  {
+    "name": "International Fashion Management (Postgraduate) (F412)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241671"
+  },
+  {
+    "name": "Jewellery Arts (F114)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241651"
+  },
+  {
+    "name": "Jewellery Essentials (F111)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241636"
+  },
+  {
+    "name": "Jewellery Methods (F110)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241631"
+  },
+  {
+    "name": "Women in Fashion Technology (F117)",
+    "credential": "George Brown College Certificate",
+    "international": "No",
+    "duration": "3 semesters (10 weeks, 15 weeks, 15 weeks)",
+    "programId": "241666"
+  },
+  {
+    "name": "Acting for Media (P107)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241881"
+  },
+  {
+    "name": "Advanced Social Media Production – Auteurism (Postgraduate) (P411)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year, 2 semesters",
+    "programId": "241936"
+  },
+  {
+    "name": "Animation – 3D for Extended Reality (P113)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241901"
+  },
+  {
+    "name": "Commercial Dance (P106)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "241876"
+  },
+  {
+    "name": "Dance Performance (P105)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241871"
+  },
+  {
+    "name": "Dance Performance Preparation (P101)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241861"
+  },
+  {
+    "name": "Film Production – Directing for Extended Reality (P114)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years, 4 semesters",
+    "programId": "241906"
+  },
+  {
+    "name": "Media Foundation (P111)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241891"
+  },
+  {
+    "name": "Screenwriting & Narrative Design (Postgraduate) (P400)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "241916"
+  },
+  {
+    "name": "Screenwriting & Narrative Design (Online) (Postgraduate) (P410)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "241931"
+  },
+  {
+    "name": "Social Media Foundations – Content Creation (P115)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year, 2 semesters",
+    "programId": "241911"
+  },
+  {
+    "name": "Social Media Production – Culture-Based Creativity (P116)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years, 4 semesters",
+    "programId": "243851"
+  },
+  {
+    "name": "Sound Design & Production (Postgraduate) (P409)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "241926"
+  },
+  {
+    "name": "Theatre Arts – Performance (P104)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241866"
+  },
+  {
+    "name": "Theatre Arts-Preparation (P108)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241886"
+  },
+  {
+    "name": "Video Design & Production (P112)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241896"
+  },
+  {
+    "name": "Visual Effects (Postgraduate) (P408)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "241921"
+  },
+  {
+    "name": "Visual Effects (Online) (Postgraduate) (P418)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "241941"
+  },
+  {
+    "name": "Business – Accounting (B103)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "240741"
+  },
+  {
+    "name": "Business Administration – Accounting (B107)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "240746"
+  },
+  {
+    "name": "Business Administration – Accounting (with work experience) (B157)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters in-class, 2 semesters work experience)",
+    "programId": "240766"
+  },
+  {
+    "name": "Business Administration – Finance (B130)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "240751"
+  },
+  {
+    "name": "Business Administration – Finance (with work experience) (B150)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters in class, 2 semesters work experience)",
+    "programId": "240761"
+  },
+  {
+    "name": "Business – Finance (B133)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "240756"
+  },
+  {
+    "name": "Financial Planning (Postgraduate) (B407)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "8 months (2 semesters)",
+    "programId": "241406"
+  },
+  {
+    "name": "Financial Planning (Postgraduate) (Online) (B427)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "1 year (2 semesters)",
+    "programId": "277386"
+  },
+  {
+    "name": "Financial Services - Compliance and Risk (Postgraduate) (B434)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241476"
+  },
+  {
+    "name": "Financial Services - Investment Analysis (Postgraduate) (B417)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241436"
+  },
+  {
+    "name": "Honours Bachelor of Commerce (Financial Services) (B302)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (8 semesters in-class plus 1 Integrated Work Experience Term)",
+    "programId": "240771"
+  },
+  {
+    "name": "Wealth Management – Client Management (B191)",
+    "credential": "Certificate of Completion",
+    "international": "No",
+    "duration": "1 year (2 semesters)",
+    "programId": "241356"
+  },
+  {
+    "name": "Wealth Management – Financial Operations Management (B190)",
+    "credential": "Certificate of Completion",
+    "international": "No",
+    "duration": "1 year (2 semesters)",
+    "programId": "241351"
+  },
+  {
+    "name": "Business Administration – Human Resources (B144)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241311"
+  },
+  {
+    "name": "Business Administration – Human Resources (with work experience) (B154)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters in-class, 2 semesters work experience)",
+    "programId": "241321"
+  },
+  {
+    "name": "Business – Human Resources (B134)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241306"
+  },
+  {
+    "name": "Human Resources Management (Postgraduate) (B408)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "12 months (2 semesters in-class, 1 semester work experience)",
+    "programId": "241411"
+  },
+  {
+    "name": "Human Resources Management (Online) (Postgraduate) (B428)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "12 months (2 semesters in-class, 1 semester work experience)",
+    "programId": "241456"
+  },
+  {
+    "name": "People Analytics (Postgraduate) (B430)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year - 2 semesters plus work term",
+    "programId": "241466"
+  },
+  {
+    "name": "Analytics for Business Decision Making (Postgraduate) (B412)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "8 months (2 semesters)",
+    "programId": "241421"
+  },
+  {
+    "name": "Analytics for Business Decision-Making (Online) (Postgraduate) (B422)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "8 months (2 semesters)",
+    "programId": "241441"
+  },
+  {
+    "name": "Bachelor of Business Administration (Trades Management) (Honours) (Pathway Building Renovation Technology) (B304)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "No",
+    "duration": "5 semesters (with up to 8 years for completion part-time)",
+    "programId": "241366"
+  },
+  {
+    "name": "Bachelor of Business Administration (Trades Management) (Honours) (Pathway Business Trades) (B305)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "No",
+    "duration": "5 semesters (with up to 8 years for completion part-time)",
+    "programId": "241371"
+  },
+  {
+    "name": "Bachelor of Business Administration (Trades Management) (Honours) (Pathway Electrician) (B307)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "No",
+    "duration": "5 semesters (with up to 8 years for completion part-time)",
+    "programId": "241381"
+  },
+  {
+    "name": "Bachelor of Business Administration (Trades Management) (Honours) (Pathway Motive Power Technician) (B306)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "No",
+    "duration": "5 semesters (with up to 8 years for completion part-time)",
+    "programId": "241376"
+  },
+  {
+    "name": "Business (B125)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241291"
+  },
+  {
+    "name": "Business Administration (B145)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241316"
+  },
+  {
+    "name": "Business Administration (with work experience) (B155)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters in-class, 2 semesters work experience)",
+    "programId": "241326"
+  },
+  {
+    "name": "Business Administration – International Business (B131)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241301"
+  },
+  {
+    "name": "Business Administration – International Business (with work experience) (B161)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters in-class, 2 semesters work experience)",
+    "programId": "241341"
+  },
+  {
+    "name": "Business Administration – Project Management (B126)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241296"
+  },
+  {
+    "name": "Business Administration – Project Management (with work experience) (B156)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters in-class, 2 semesters work experience)",
+    "programId": "241331"
+  },
+  {
+    "name": "Business Administration – Supply Chain and Operations Management (B122)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241286"
+  },
+  {
+    "name": "Business Administration – Supply Chain and Operations Management (with work experience) (B162)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters in-class, 2 semesters work experience)",
+    "programId": "241346"
+  },
+  {
+    "name": "Customs and Trade (Postgraduate) (Online) (B421)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "1 year (2 semesters)",
+    "programId": "278271"
+  },
+  {
+    "name": "Entrepreneurship Management (Postgraduate) (B416)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "8 months (2 semesters)",
+    "programId": "241431"
+  },
+  {
+    "name": "Honours Bachelor of Business Administration (Business Analytics) (B303)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (8 semesters) plus 1 Co-op Work Term",
+    "programId": "241361"
+  },
+  {
+    "name": "Honours Bachelor of Business Administration (Management) (B308)",
+    "credential": "Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (8 semesters) plus 1 Co-op Work Term",
+    "programId": "247671"
+  },
+  {
+    "name": "Honours Bachelor of Commerce (Supply Chain Management) (B310)",
+    "credential": "Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (8 semesters plus 1 Co-op Work Term)",
+    "programId": "241386"
+  },
+  {
+    "name": "Project Management (Postgraduate) (B415)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "8 months (2 semesters)",
+    "programId": "241426"
+  },
+  {
+    "name": "Project Management (Online) (Postgraduate) (B425)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "8 months (2 semesters)",
+    "programId": "241451"
+  },
+  {
+    "name": "Supply Chain Management (Postgraduate) (B429)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "2 semesters",
+    "programId": "241461"
+  },
+  {
+    "name": "Business Administration – Marketing (B108)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241276"
+  },
+  {
+    "name": "Business Administration – Marketing (with work experience) (B158)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters in-class, 2 semesters work experience)",
+    "programId": "241336"
+  },
+  {
+    "name": "Business – Marketing (B120)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241281"
+  },
+  {
+    "name": "Customer Experience (Relationship) Marketing and Analytics (Online) (Postgraduate) (B419)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "12 months (2 semesters in-class, 1 semester work experience)",
+    "programId": "272746"
+  },
+  {
+    "name": "Honours Bachelor of Commerce (Digital Marketing) (B312)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (8 semesters) plus 1 co-op work term",
+    "programId": "241391"
+  },
+  {
+    "name": "Marketing Management (Online) (Postgraduate) (B426)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "12 months (2 semesters in-class, 1 semester Work Experience)",
+    "programId": "272736"
+  },
+  {
+    "name": "Marketing Management – Digital Media (Online) (Postgraduate) (B423)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "12 months (2 semesters in-class, 1 semester work experience)",
+    "programId": "241446"
+  },
+  {
+    "name": "Marketing Management – Digital Media (Postgraduate) (B433)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "12 months (2 semesters in-class, 1 semester work experience)",
+    "programId": "241471"
+  },
+  {
+    "name": "Marketing Management – Financial Services (Postgraduate) (B406)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "12 months (2 semesters in-class, 1 semester Work Experience)",
+    "programId": "241401"
+  },
+  {
+    "name": "Sport and Event Marketing (Postgraduate) (B400)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "12 months (2 semesters in-class, 1 semester work experience)",
+    "programId": "241396"
+  },
+  {
+    "name": "Strategic Relationship Marketing (Postgraduate) (B409)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "12 months (2 semesters in-class, 1 semester work experience)",
+    "programId": "241416"
+  },
+  {
+    "name": "American Sign Language and Deaf Studies (Online) (C144)",
+    "credential": "Ontario College Certificate",
+    "international": "No",
+    "duration": "1 year (2 semesters)",
+    "programId": "273211"
+  },
+  {
+    "name": "Deafblind & Intervenor Studies (C158)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241571"
+  },
+  {
+    "name": "Honours Bachelor of Interpretation (American Sign Language – English) (C302)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (8 semesters) + 420-hour internship experience (equivalent to a 14-week term) (unpaid)",
+    "programId": "241581"
+  },
+  {
+    "name": "Advanced Studies in Inclusive Early Childhood (C915)",
+    "credential": "Ontario College Certificate",
+    "international": "No",
+    "duration": "1 semester",
+    "programId": "241616"
+  },
+  {
+    "name": "Bachelor of Early Childhood Education – Honours (Degree Completion) (C305)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241586"
+  },
+  {
+    "name": "Child Development Practitioner (C602)",
+    "credential": "George Brown College Certificate",
+    "international": "No",
+    "duration": "2.5-3 years",
+    "programId": "241601"
+  },
+  {
+    "name": "Early Childhood Education (C910)",
+    "credential": "Ontario College Diploma",
+    "international": "No",
+    "duration": "3-5 years",
+    "programId": "241606"
+  },
+  {
+    "name": "Early Childhood Education (C100)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters, September start) or 16 months continuous with summer classes (January, May start)",
+    "programId": "241481"
+  },
+  {
+    "name": "Early Childhood Education (Consecutive Diploma/Degree) (C118)",
+    "credential": "Toronto Metropolitan University Bachelor's Degree, Ontario College Diploma",
+    "international": "Yes",
+    "duration": "4 years (8 semesters)",
+    "programId": "241501"
+  },
+  {
+    "name": "Early Childhood Education (Fast-Track) (C130)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "10 months plus completion of a two-week orientation course",
+    "programId": "241511"
+  },
+  {
+    "name": "Early Childhood Education (Consecutive Diploma/GBC Degree) (C148)",
+    "credential": "George Brown College Bachelor's Degree, Ontario College Diploma",
+    "international": "Yes",
+    "duration": "4 years (8 semesters) 2 years diploma / 2 years degree C305",
+    "programId": "241551"
+  },
+  {
+    "name": "Early Childhood Education (C150)",
+    "credential": "Ontario College Diploma",
+    "international": "No",
+    "duration": "16 continuous months",
+    "programId": "268856"
+  },
+  {
+    "name": "Early Childhood Education (Accelerated) (C160)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "16 months continuous with Summer classes (4 consecutive semesters)",
+    "programId": "241576"
+  },
+  {
+    "name": "Early Childhood Management Certificate (C914)",
+    "credential": "George Brown College Certificate",
+    "international": "No",
+    "duration": "1 semester",
+    "programId": "241611"
+  },
+  {
+    "name": "Assaulted Women's and Children's Counsellor/ Advocate (C147)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "5 weeks, 8 months (3 semesters) full-time",
+    "programId": "241546"
+  },
+  {
+    "name": "Assaulted Women's and Children's Counsellor/Advocate (AWCCA) (C137)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241531"
+  },
+  {
+    "name": "Career Development Practitioner (Postgraduate) (C406)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "241596"
+  },
+  {
+    "name": "Career Development Practitioner (Online) (Postgraduate) (C416)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "1 year (3 semesters)",
+    "programId": "280076"
+  },
+  {
+    "name": "Child and Youth Care (C133)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241521"
+  },
+  {
+    "name": "Child and Youth Care (Accelerated) (C153)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "12 consecutive months",
+    "programId": "241561"
+  },
+  {
+    "name": "Community Worker (C101)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241486"
+  },
+  {
+    "name": "Community Worker (Accelerated) (C131)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "5 weeks, 8 months (3 semesters) full-time",
+    "programId": "241516"
+  },
+  {
+    "name": "Social Service Worker (C119)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241506"
+  },
+  {
+    "name": "Social Service Worker (Accelerated) (C135)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "6 weeks, 8 months (3 semesters)",
+    "programId": "241526"
+  },
+  {
+    "name": "Building Information Modeling Management (BIM) (Postgraduate) (T412)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "242291"
+  },
+  {
+    "name": "Civil Engineering Technology (T164)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242151"
+  },
+  {
+    "name": "Construction Engineering Technician (T161)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "242136"
+  },
+  {
+    "name": "Construction Engineering Technology (T105)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242086"
+  },
+  {
+    "name": "Construction Management (Postgraduate) (T403)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "242271"
+  },
+  {
+    "name": "Honours Bachelor of Technology (Construction Management) (T312)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (1 field placement semester)",
+    "programId": "242236"
+  },
+  {
+    "name": "Honours Bachelor of Technology (Construction Management) (Bridging) (T314)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "5 semesters (plus 1 Field Experience semester)",
+    "programId": "242241"
+  },
+  {
+    "name": "Honours Bachelor of Technology (Construction Management) (Bridging) (T316)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "5 semesters (Plus 1 Field Experience semester)",
+    "programId": "242246"
+  },
+  {
+    "name": "Honours Bachelor of Technology (Construction Management) (Bridging) (T317)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "5 semesters (plus 1 Field Experience semester)",
+    "programId": "242251"
+  },
+  {
+    "name": "Honours Bachelor of Technology (Construction Management) (Bridging) (T318)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "2 years (5 semesters plus 1 Field Experience semester)",
+    "programId": "242256"
+  },
+  {
+    "name": "Residential Construction Management (Postgraduate) (T408)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "2 semesters",
+    "programId": "242281"
+  },
+  {
+    "name": "Building Renovation Technology (T148)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242121"
+  },
+  {
+    "name": "Carpentry and Renovation Technician (T180)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "242196"
+  },
+  {
+    "name": "Construction Techniques (T176)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "242181"
+  },
+  {
+    "name": "Electrical Techniques (T167)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "242166"
+  },
+  {
+    "name": "Heating, Refrigeration, and Air Conditioning Technician (T160)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "242131"
+  },
+  {
+    "name": "Heating, Refrigeration, and Air Conditioning Technology (T162)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242141"
+  },
+  {
+    "name": "Plumbing Techniques (T165)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "242156"
+  },
+  {
+    "name": "Welding Techniques (T166)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "242161"
+  },
+  {
+    "name": "Architectural Technician (T132)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "242101"
+  },
+  {
+    "name": "Architectural Technology (T109)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242091"
+  },
+  {
+    "name": "Bachelor of Interior Design (Honours) (T320)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "1 year - 3 semesters",
+    "programId": "242261"
+  },
+  {
+    "name": "Interior Design (T178)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242191"
+  },
+  {
+    "name": "Automation Technician (Distance Education) (T950)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "32 weeks (approximately)",
+    "programId": "242346"
+  },
+  {
+    "name": "Electric Vehicle (EV) Technician (T951)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "32 weeks",
+    "programId": "242351"
+  },
+  {
+    "name": "Electromechanical Engineering Technician (T146)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "242111"
+  },
+  {
+    "name": "Electromechanical Engineering Technology – Building Automation (T171)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242171"
+  },
+  {
+    "name": "Electromechanical Engineering Technology - Power and Control (T182)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242201"
+  },
+  {
+    "name": "Electromechanical Technician (Distance Education) (T902)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "34 weeks (approximately)",
+    "programId": "242326"
+  },
+  {
+    "name": "Electronics Technician (Distance Education) (T901)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "32 weeks (approximately)",
+    "programId": "242321"
+  },
+  {
+    "name": "Mechanical Engineering Technology – Design (T121)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242096"
+  },
+  {
+    "name": "Mechanical Technician – CNC and Precision Machining (T173)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters and 1 co-op term)",
+    "programId": "242176"
+  },
+  {
+    "name": "Mechanical Techniques (Fast-Track) (T149)",
+    "credential": "Ontario College Certificate",
+    "international": "No",
+    "duration": "14 weeks (2 semesters)",
+    "programId": "242126"
+  },
+  {
+    "name": "Programmable Logic Controllers (PLC) Technician (Distance Education) (T903)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "32 weeks (approximately)",
+    "programId": "242331"
+  },
+  {
+    "name": "Programmable Logic Controllers (PLC) Technician II (Distance Education) (T949)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "32 weeks (approximately)",
+    "programId": "242341"
+  },
+  {
+    "name": "Robotics Technician (Distance Education) (T948)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "28 weeks (approximately)",
+    "programId": "242336"
+  },
+  {
+    "name": "Solar Energy Technician (T953)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "24 weeks",
+    "programId": "279491"
+  },
+  {
+    "name": "Solar Panel Installer (T954)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "14",
+    "programId": "279481"
+  },
+  {
+    "name": "Wind Turbine Technician (T952)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "32 weeks",
+    "programId": "242356"
+  },
+  {
+    "name": "Dental Assisting (Levels I and II) (S113)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters), September to June",
+    "programId": "241996"
+  },
+  {
+    "name": "Dental Hygiene (S134)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242026"
+  },
+  {
+    "name": "Dental Office Administration (S115)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "242001"
+  },
+  {
+    "name": "Dental Technology (S100)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241981"
+  },
+  {
+    "name": "Denturism (S101)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "241986"
+  },
+  {
+    "name": "Honours Bachelor of Science (Dental Hygiene) (S305)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "No",
+    "duration": "3 Semesters",
+    "programId": "242046"
+  },
+  {
+    "name": "Restorative Dental Hygiene (Postgraduate) (S400)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "2 semesters, September to April",
+    "programId": "242051"
+  },
+  {
+    "name": "Autism and Behavioural Science (Postgraduate) (C405)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241591"
+  },
+  {
+    "name": "Behavioural Science Technician (C146)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241541"
+  },
+  {
+    "name": "Behavioural Science Technician (Accelerated) (C156)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "1 year (3 semesters)",
+    "programId": "241566"
+  },
+  {
+    "name": "Clinical Methods in Orthotics/Prosthetics (Postgraduate) (S407)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "2 years (4 semesters)",
+    "programId": "242066"
+  },
+  {
+    "name": "Hearing Instrument Specialist (S117)",
+    "credential": "Ontario College Advanced Diploma",
+    "international": "Yes",
+    "duration": "3 years (6 semesters)",
+    "programId": "242006"
+  },
+  {
+    "name": "Honours Bachelor of Behaviour Analysis (S302)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (8 semesters) + 14-Week Field Experience Term (unpaid)",
+    "programId": "242036"
+  },
+  {
+    "name": "Honours Bachelor of Behaviour Analysis (Year 3 Bridge) (S303)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "5 semesters + 14 week Field Experience term (Unpaid)",
+    "programId": "242041"
+  },
+  {
+    "name": "Orthotic / Prosthetic Technician (S102)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241991"
+  },
+  {
+    "name": "Recreation Management in Gerontology (C152)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241556"
+  },
+  {
+    "name": "Health Information Management (C139)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters) September to May",
+    "programId": "241536"
+  },
+  {
+    "name": "Office Administration – Health Services (S135)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "242031"
+  },
+  {
+    "name": "Bachelor of Science in Nursing (B.Sc.N.) (S118)",
+    "credential": "Toronto Metropolitan University Bachelor's Degree",
+    "international": "No",
+    "duration": "4 years (8 semesters)",
+    "programId": "242011"
+  },
+  {
+    "name": "Personal Support Worker (PSW) (C112)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "2 semesters",
+    "programId": "241491"
+  },
+  {
+    "name": "Personal Support Worker Pathway to Practical Nursing (S119)",
+    "credential": "George Brown College Certificate",
+    "international": "No",
+    "duration": "14 weeks (1 semester)",
+    "programId": "242016"
+  },
+  {
+    "name": "Practical Nursing (PN) (S121)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "242021"
+  },
+  {
+    "name": "Registered Nurse – Critical Care Nursing (Postgraduate) (S402)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "1 semester",
+    "programId": "242056"
+  },
+  {
+    "name": "Registered Nurse – Operating Room Perioperative Nursing (Postgraduate) (S414)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "1 semester",
+    "programId": "242071"
+  },
+  {
+    "name": "Registered Nurse – Perinatal Intensive Care Nursing (Postgraduate) (S404)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "15 weeks (1 semester)",
+    "programId": "242061"
+  },
+  {
+    "name": "Registered Practical Nursing - Perioperative (Postgraduate) (S425)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "1 semester (14 weeks)",
+    "programId": "242076"
+  },
+  {
+    "name": "RPN Bridge to BScN (Postgraduate) (S442)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "No",
+    "duration": "2 semesters",
+    "programId": "242081"
+  },
+  {
+    "name": "Advanced French Patisserie (Postgraduate) (H413)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "3 semesters",
+    "programId": "241846"
+  },
+  {
+    "name": "Baking and Pastry Arts Management (H113)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters, non-consecutive)",
+    "programId": "241761"
+  },
+  {
+    "name": "Baking and Pastry Foundations (H128)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241776"
+  },
+  {
+    "name": "Baker / Patissier Apprentice (H600)",
+    "credential": "George Brown College Certificate",
+    "international": "No",
+    "duration": "2–5 years",
+    "programId": "241851"
+  },
+  {
+    "name": "Cook Apprentice (H601)",
+    "credential": "George Brown College Certificate",
+    "international": "No",
+    "duration": "2–5 years",
+    "programId": "241856"
+  },
+  {
+    "name": "Culinary Arts – Italian (Postgraduate) (H411)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "3 semesters",
+    "programId": "241841"
+  },
+  {
+    "name": "Culinary Management (H100)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241751"
+  },
+  {
+    "name": "Culinary Management (Integrated Learning) (H116)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 consecutive semesters)",
+    "programId": "241766"
+  },
+  {
+    "name": "Culinary Management – Nutrition (H119)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241771"
+  },
+  {
+    "name": "Culinary Skills (H134)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241796"
+  },
+  {
+    "name": "Food and Nutrition Management (Postgraduate) (H402)",
+    "credential": "Ontario College Graduate Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters) September to May",
+    "programId": "241836"
+  },
+  {
+    "name": "Honours Bachelor of Commerce (Culinary Management) (H315)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (8 semesters)",
+    "programId": "241816"
+  },
+  {
+    "name": "Honours Bachelor of Commerce (Culinary Management) (Bridging) (H316)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "2 years (5 semesters)",
+    "programId": "241821"
+  },
+  {
+    "name": "Honours Bachelor of Food Studies (H317)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (8 semesters)",
+    "programId": "241826"
+  },
+  {
+    "name": "Honours Bachelor of Food Studies (Bridging) (H318)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "5 semesters",
+    "programId": "241831"
+  },
+  {
+    "name": "Event Planning (H141)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241801"
+  },
+  {
+    "name": "Food and Beverage Management – Restaurant Management (H132)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241786"
+  },
+  {
+    "name": "Honours Bachelor of Business Administration (Hospitality) (Fast-Track) (H312)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "5 semesters* plus 1 co-op term",
+    "programId": "241811"
+  },
+  {
+    "name": "Honours Bachelor of Business Administration (Hospitality) (H311)",
+    "credential": "Honours Bachelor's Degree",
+    "international": "Yes",
+    "duration": "4 years (8 semesters plus 2 co-op terms)",
+    "programId": "241806"
+  },
+  {
+    "name": "Hospitality – Hotel Operations Management (H133)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241791"
+  },
+  {
+    "name": "Hospitality Services (H101)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241756"
+  },
+  {
+    "name": "Tourism and Hospitality Management (H130)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241781"
+  },
+  {
+    "name": "Continuing Education ESL Pathway to George Brown College Certificates and Diplomas (R903)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "Must complete the program within three consecutive academic years.",
+    "programId": "241976"
+  },
+  {
+    "name": "English as a Second Language (ESL) (R901)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "Must complete the program within three consecutive academic years.",
+    "programId": "241966"
+  },
+  {
+    "name": "English for Professional Success (EPS) (R902)",
+    "credential": "George Brown College Certificate",
+    "international": "Yes",
+    "duration": "Must complete the program within three consecutive academic years.",
+    "programId": "241971"
+  },
+  {
+    "name": "General Arts and Science – English for Academic Purposes (for International Students) (R115)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "3 semesters Levels 1-9 depending on initial placement test.",
+    "programId": "241961"
+  },
+  {
+    "name": "General Arts and Science – English for Academic Purposes (R105)",
+    "credential": "Ontario College Certificate",
+    "international": "No",
+    "duration": "3 semesters Levels 1–9 depending on initial placement test",
+    "programId": "241956"
+  },
+  {
+    "name": "General Arts and Science (Diploma) (R101)",
+    "credential": "Ontario College Diploma",
+    "international": "Yes",
+    "duration": "2 years (4 semesters)",
+    "programId": "241946"
+  },
+  {
+    "name": "General Arts and Science – One-Year (Certificate) (R104)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241951"
+  },
+  {
+    "name": "Academic Upgrading (A751)",
+    "credential": "George Brown College Certificate",
+    "international": "No",
+    "duration": "1 to 3 semesters depending on student’s goals",
+    "programId": "242571"
+  },
+  {
+    "name": "Academic Upgrading Program for Deaf and Hard of Hearing Adults (A752)",
+    "credential": "George Brown College Certificate",
+    "international": "No",
+    "duration": "1 to 5 semesters depending on student’s goal",
+    "programId": "242576"
+  },
+  {
+    "name": "College Vocational (A101)",
+    "credential": "Ontario College Certificate",
+    "international": "No",
+    "duration": "1 year (2 semesters)",
+    "programId": "241186"
+  },
+  {
+    "name": "Construction Craft Worker Foundations (A106)",
+    "credential": "Ontario College Certificate",
+    "international": "No",
+    "duration": "18 weeks",
+    "programId": "240816"
+  },
+  {
+    "name": "Culinary Skills (Preparatory Training) (A110)",
+    "credential": "Ontario College Certificate",
+    "international": "No",
+    "duration": "2 semesters",
+    "programId": "242546"
+  },
+  {
+    "name": "Human Services Foundations (A113)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241271"
+  },
+  {
+    "name": "Pre-Health Sciences Pathway to Advanced Diplomas and Degrees (A108)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241261"
+  },
+  {
+    "name": "Pre-Health Sciences Pathway to Certificates and Diplomas (A109)",
+    "credential": "Ontario College Certificate",
+    "international": "Yes",
+    "duration": "1 year (2 semesters)",
+    "programId": "241266"
+  },
+  {
+    "name": "Transitions to Post-Secondary Education (A107)",
+    "credential": "Ontario College Certificate",
+    "international": "No",
+    "duration": "12 months (3 semesters)",
+    "programId": "240821"
+  }
+]

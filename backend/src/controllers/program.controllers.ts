@@ -47,10 +47,10 @@ interface TransformedProgram {
     code: string;
     name: string;
     overview: string;
-    duration: string;
+    duration?: string;
     campus: string[];
     delivery?: string;
-    credential: string;
+    credential?: string;
     school: string;
     level: string;
     isActive: boolean;
@@ -59,6 +59,17 @@ interface TransformedProgram {
         graduationRate?: number;
         employmentRate?: number;
     };
+}
+
+interface CentennialProgram {
+    id: string;
+    code: string;
+    name: string;
+    overview: string;
+    duration: string;
+    campus: string[];
+    delivery: string;
+    credential: string;
 }
 
 // ===== PROGRAM CONTROLLERS =====
@@ -565,6 +576,11 @@ export const deleteProgram = asyncHandler(async (req: Request, res: Response) =>
  * Function to map credential to level
  */
 function mapCredentialToLevel(credential: string): string {
+    // Handle empty or undefined credential
+    if (!credential || credential.trim() === '') {
+        return 'Certificate';
+    }
+    
     const credentialLower = credential.toLowerCase();
     
     if (credentialLower.includes('certificate') && credentialLower.includes('graduate')) {
@@ -677,4 +693,601 @@ export const bulkImportPrograms = asyncHandler(async (req: AuthRequest, res: Res
             totalProcessed: programs.length
         }, `Bulk import completed: ${successCount} successful, ${errorCount} failed`)
     );
-}); 
+});
+
+// ===== SCHOOL-SPECIFIC BULK IMPORT CONTROLLERS =====
+
+/**
+ * Interface for George Brown College program data
+ */
+interface GeorgeBrownProgram {
+    name: string;
+    credential: string;
+    international: string;
+    duration: string;
+    programId: string;
+}
+
+/**
+ * Interface for Humber College program data
+ */
+interface HumberProgram {
+    name: string;
+    length: string;
+    credential: string;
+    location: string;
+}
+
+/**
+ * Interface for TMU program data
+ */
+interface TMUProgram {
+    name: string;
+    degree: string;
+    full_time_formats?: string;
+    part_time_formats?: string;
+}
+
+/**
+ * Interface for York University program data
+ */
+interface YorkProgram {
+    name: string;
+    degree: string;
+    offeredBy: string;
+    campus: string;
+    experientialEducation: string;
+    url: string;
+}
+
+/**
+ * Interface for Seneca College program data
+ */
+interface SenecaProgram {
+    id: string;
+    code: string;
+    name: string;
+    overview: string;
+    duration: string;
+    campus: string[];
+    delivery: string;
+    credential: string;
+    school: string;
+}
+
+/**
+ * Transform Centennial College program data
+ */
+function transformCentennialProgram(program: CentennialProgram): TransformedProgram {
+    // Use existing code and id from JSON, with consistent school prefix
+    const programId = `CENTENNIAL-${program.id || program.code}`;
+    
+    return {
+        programId,
+        code: program.code,
+        name: program.name,
+        overview: program.overview || `${program.name} program offered at Centennial College.`,
+        duration: program.duration && program.duration.length <= 100 ? program.duration : undefined,
+        campus: program.campus,
+        delivery: program.delivery,
+        credential: program.credential,
+        school: 'Centennial College',
+        level: mapCredentialToLevel(program.credential),
+        isActive: true,
+        stats: {
+            enrollmentCount: 0,
+            graduationRate: 85,
+            employmentRate: 78
+        }
+    };
+}
+
+/**
+ * Transform George Brown College program data
+ */
+function transformGeorgeBrownProgram(program: GeorgeBrownProgram): TransformedProgram {
+    // Generate consistent code and programId
+    const code = program.programId || generateCodeFromName(program.name);
+    const programId = `GEORGE_BROWN-${code}`;
+    
+    return {
+        programId,
+        code: code.length <= 50 ? code : code.substring(0, 50),
+        name: program.name,
+        overview: `${program.name} program offered at George Brown College.`,
+        duration: program.duration && program.duration.length <= 100 ? program.duration : undefined,
+        campus: ['George Brown College'],
+        credential: program.credential,
+        school: 'George Brown College',
+        level: mapCredentialToLevel(program.credential),
+        isActive: true,
+        stats: {
+            enrollmentCount: 0,
+            graduationRate: 82,
+            employmentRate: 76
+        }
+    };
+}
+
+/**
+ * Transform Humber College program data
+ */
+function transformHumberProgram(program: HumberProgram): TransformedProgram {
+    // Generate consistent code and programId
+    const code = generateCodeFromName(program.name);
+    const programId = `HUMBER-${code}`;
+    
+    return {
+        programId,
+        code: code.length <= 50 ? code : code.substring(0, 50),
+        name: program.name,
+        overview: `${program.name} program offered at Humber College.`,
+        duration: program.length && program.length.length <= 100 ? program.length : undefined,
+        campus: program.location ? [program.location] : ['Humber College'],
+        credential: program.credential,
+        school: 'Humber College',
+        level: mapCredentialToLevel(program.credential),
+        isActive: true,
+        stats: {
+            enrollmentCount: 0,
+            graduationRate: 80,
+            employmentRate: 74
+        }
+    };
+}
+
+/**
+ * Transform TMU program data
+ */
+function transformTMUProgram(program: TMUProgram): TransformedProgram {
+    // Generate consistent code and programId
+    const code = generateCodeFromName(program.name);
+    const programId = `TMU-${code}`;
+    const duration = program.full_time_formats || program.part_time_formats;
+    
+    return {
+        programId,
+        code: code.length <= 50 ? code : code.substring(0, 50),
+        name: program.name,
+        overview: `${program.name} program offered at Toronto Metropolitan University.`,
+        duration: duration && duration.length <= 100 ? duration : undefined,
+        campus: ['Toronto Metropolitan University'],
+        credential: undefined, // TMU doesn't have credential field
+        school: 'Toronto Metropolitan University',
+        level: mapCredentialToLevel(program.degree || ''),
+        isActive: true,
+        stats: {
+            enrollmentCount: 0,
+            graduationRate: 88,
+            employmentRate: 82
+        }
+    };
+}
+
+/**
+ * Transform York University program data
+ */
+function transformYorkProgram(program: YorkProgram): TransformedProgram {
+    // Generate consistent code and programId
+    const code = generateCodeFromName(program.name);
+    const programId = `YORK-${code}`;
+    const overview = program.experientialEducation || `${program.name} program offered at York University.`;
+    
+    return {
+        programId,
+        code: code.length <= 50 ? code : code.substring(0, 50),
+        name: program.name,
+        overview: overview.length > 2000 ? overview.substring(0, 1997) + '...' : overview,
+        duration: undefined, // York doesn't have duration field
+        campus: program.campus ? [program.campus] : ['York University'],
+        credential: undefined, // York doesn't have credential field
+        school: 'York University',
+        level: mapCredentialToLevel(program.degree || ''),
+        isActive: true,
+        stats: {
+            enrollmentCount: 0,
+            graduationRate: 86,
+            employmentRate: 79
+        }
+    };
+}
+
+// Helper function to generate consistent codes
+function generateCodeFromName(name: string): string {
+    // Remove common words and get first letters
+    const commonWords = ['the', 'and', 'of', 'in', 'to', 'for', 'with', 'a', 'an'];
+    const words = name.split(/[\s\-–—]+/)
+        .filter(word => word.length > 0 && !commonWords.includes(word.toLowerCase()));
+    
+    let code = '';
+    for (const word of words) {
+        if (word.length > 0) {
+            code += word.charAt(0).toUpperCase();
+        }
+    }
+    
+    // If code is too short, add more characters
+    if (code.length < 3) {
+        code = name.substring(0, 20).replace(/[^\w]/g, '').toUpperCase();
+    }
+    
+    return code.length <= 50 ? code : code.substring(0, 50);
+}
+
+function transformSenecaProgram(program: SenecaProgram): TransformedProgram {
+    // Use existing code and id from JSON, with consistent school prefix
+    const programId = `SENECA-${program.id}`;
+    
+    return {
+        programId,
+        code: program.code,
+        name: program.name,
+        overview: program.overview || `${program.name} program offered at Seneca College.`,
+        duration: program.duration && program.duration.length <= 100 ? program.duration : undefined,
+        campus: program.campus,
+        delivery: program.delivery,
+        credential: program.credential,
+        school: 'Seneca College',
+        level: mapCredentialToLevel(program.credential),
+        isActive: true,
+        stats: {
+            enrollmentCount: 0,
+            graduationRate: 84,
+            employmentRate: 77
+        }
+    };
+}
+
+/**
+ * @desc    Bulk import Centennial College programs
+ * @route   POST /api/programs/bulk-import/centennial
+ * @access  Admin only
+ */
+export const bulkImportCentennialPrograms = asyncHandler(async (req: AuthRequest, res: Response) => {
+    logApiRequest(req);
+
+    const { programs }: { programs: CentennialProgram[] } = req.body;
+
+    if (!Array.isArray(programs) || programs.length === 0) {
+        throw new ApiError(400, 'Centennial programs array is required');
+    }
+
+    logger.info(`Starting bulk import of ${programs.length} Centennial College programs`);
+
+    let successCount = 0;
+    let errorCount = 0;
+    const errors: string[] = [];
+
+    const transformedPrograms = programs.map(transformCentennialProgram);
+
+    for (const programData of transformedPrograms) {
+        try {
+            await Program.findOneAndUpdate(
+                { 
+                    $or: [
+                        { programId: programData.programId },
+                        { code: programData.code }
+                    ]
+                },
+                programData,
+                { 
+                    upsert: true, 
+                    new: true,
+                    runValidators: true
+                }
+            );
+            successCount++;
+        } catch (error: any) {
+            errorCount++;
+            errors.push(`${programData.programId}: ${error.message}`);
+            logger.error(`Error importing Centennial program ${programData.programId}:`, error);
+        }
+    }
+
+    logger.info(`Centennial bulk import completed: ${successCount} successful, ${errorCount} failed`);
+
+    res.status(200).json(
+        new ApiResponse(200, {
+            successCount,
+            errorCount,
+            errors: errors.slice(0, 10),
+            totalProcessed: programs.length,
+            school: 'Centennial College'
+        }, `Centennial bulk import completed: ${successCount} successful, ${errorCount} failed`)
+    );
+});
+
+/**
+ * @desc    Bulk import George Brown College programs
+ * @route   POST /api/programs/bulk-import/george-brown
+ * @access  Admin only
+ */
+export const bulkImportGeorgeBrownPrograms = asyncHandler(async (req: AuthRequest, res: Response) => {
+    logApiRequest(req);
+
+    const { programs }: { programs: GeorgeBrownProgram[] } = req.body;
+
+    if (!Array.isArray(programs) || programs.length === 0) {
+        throw new ApiError(400, 'George Brown programs array is required');
+    }
+
+    logger.info(`Starting bulk import of ${programs.length} George Brown College programs`);
+
+    let successCount = 0;
+    let errorCount = 0;
+    const errors: string[] = [];
+
+    const transformedPrograms = programs.map(transformGeorgeBrownProgram);
+
+    for (const programData of transformedPrograms) {
+        try {
+            await Program.findOneAndUpdate(
+                { 
+                    $or: [
+                        { programId: programData.programId },
+                        { code: programData.code }
+                    ]
+                },
+                programData,
+                { 
+                    upsert: true, 
+                    new: true,
+                    runValidators: true
+                }
+            );
+            successCount++;
+        } catch (error: any) {
+            errorCount++;
+            errors.push(`${programData.programId}: ${error.message}`);
+            logger.error(`Error importing George Brown program ${programData.programId}:`, error);
+        }
+    }
+
+    logger.info(`George Brown bulk import completed: ${successCount} successful, ${errorCount} failed`);
+
+    res.status(200).json(
+        new ApiResponse(200, {
+            successCount,
+            errorCount,
+            errors: errors.slice(0, 10),
+            totalProcessed: programs.length,
+            school: 'George Brown College'
+        }, `George Brown bulk import completed: ${successCount} successful, ${errorCount} failed`)
+    );
+});
+
+/**
+ * @desc    Bulk import Humber College programs
+ * @route   POST /api/programs/bulk-import/humber
+ * @access  Admin only
+ */
+export const bulkImportHumberPrograms = asyncHandler(async (req: AuthRequest, res: Response) => {
+    logApiRequest(req);
+
+    const { programs }: { programs: HumberProgram[] } = req.body;
+
+    if (!Array.isArray(programs) || programs.length === 0) {
+        throw new ApiError(400, 'Humber programs array is required');
+    }
+
+    logger.info(`Starting bulk import of ${programs.length} Humber College programs`);
+
+    let successCount = 0;
+    let errorCount = 0;
+    const errors: string[] = [];
+
+    const transformedPrograms = programs.map(transformHumberProgram);
+
+    for (const programData of transformedPrograms) {
+        try {
+            await Program.findOneAndUpdate(
+                { 
+                    $or: [
+                        { programId: programData.programId },
+                        { code: programData.code }
+                    ]
+                },
+                programData,
+                { 
+                    upsert: true, 
+                    new: true,
+                    runValidators: true
+                }
+            );
+            successCount++;
+        } catch (error: any) {
+            errorCount++;
+            errors.push(`${programData.programId}: ${error.message}`);
+            logger.error(`Error importing Humber program ${programData.programId}:`, error);
+        }
+    }
+
+    logger.info(`Humber bulk import completed: ${successCount} successful, ${errorCount} failed`);
+
+    res.status(200).json(
+        new ApiResponse(200, {
+            successCount,
+            errorCount,
+            errors: errors.slice(0, 10),
+            totalProcessed: programs.length,
+            school: 'Humber College'
+        }, `Humber bulk import completed: ${successCount} successful, ${errorCount} failed`)
+    );
+});
+
+/**
+ * @desc    Bulk import TMU programs
+ * @route   POST /api/programs/bulk-import/tmu
+ * @access  Admin only
+ */
+export const bulkImportTMUPrograms = asyncHandler(async (req: AuthRequest, res: Response) => {
+    logApiRequest(req);
+
+    const { programs }: { programs: TMUProgram[] } = req.body;
+
+    if (!Array.isArray(programs) || programs.length === 0) {
+        throw new ApiError(400, 'TMU programs array is required');
+    }
+
+    logger.info(`Starting bulk import of ${programs.length} TMU programs`);
+
+    let successCount = 0;
+    let errorCount = 0;
+    const errors: string[] = [];
+
+    const transformedPrograms = programs.map(transformTMUProgram);
+
+    for (const programData of transformedPrograms) {
+        try {
+            await Program.findOneAndUpdate(
+                { 
+                    $or: [
+                        { programId: programData.programId },
+                        { code: programData.code }
+                    ]
+                },
+                programData,
+                { 
+                    upsert: true, 
+                    new: true,
+                    runValidators: true
+                }
+            );
+            successCount++;
+        } catch (error: any) {
+            errorCount++;
+            errors.push(`${programData.programId}: ${error.message}`);
+            logger.error(`Error importing TMU program ${programData.programId}:`, error);
+        }
+    }
+
+    logger.info(`TMU bulk import completed: ${successCount} successful, ${errorCount} failed`);
+
+    res.status(200).json(
+        new ApiResponse(200, {
+            successCount,
+            errorCount,
+            errors: errors.slice(0, 10),
+            totalProcessed: programs.length,
+            school: 'Toronto Metropolitan University'
+        }, `TMU bulk import completed: ${successCount} successful, ${errorCount} failed`)
+    );
+});
+
+/**
+ * @desc    Bulk import York University programs
+ * @route   POST /api/programs/bulk-import/york
+ * @access  Admin only
+ */
+export const bulkImportYorkPrograms = asyncHandler(async (req: AuthRequest, res: Response) => {
+    logApiRequest(req);
+
+    const { programs }: { programs: YorkProgram[] } = req.body;
+
+    if (!Array.isArray(programs) || programs.length === 0) {
+        throw new ApiError(400, 'York programs array is required');
+    }
+
+    logger.info(`Starting bulk import of ${programs.length} York University programs`);
+
+    let successCount = 0;
+    let errorCount = 0;
+    const errors: string[] = [];
+
+    const transformedPrograms = programs.map(transformYorkProgram);
+
+    for (const programData of transformedPrograms) {
+        try {
+            await Program.findOneAndUpdate(
+                { 
+                    $or: [
+                        { programId: programData.programId },
+                        { code: programData.code }
+                    ]
+                },
+                programData,
+                { 
+                    upsert: true, 
+                    new: true,
+                    runValidators: true
+                }
+            );
+            successCount++;
+        } catch (error: any) {
+            errorCount++;
+            errors.push(`${programData.programId}: ${error.message}`);
+            logger.error(`Error importing York program ${programData.programId}:`, error);
+        }
+    }
+
+    logger.info(`York bulk import completed: ${successCount} successful, ${errorCount} failed`);
+
+    res.status(200).json(
+        new ApiResponse(200, {
+            successCount,
+            errorCount,
+            errors: errors.slice(0, 10),
+            totalProcessed: programs.length,
+            school: 'York University'
+        }, `York bulk import completed: ${successCount} successful, ${errorCount} failed`)
+    );
+});
+
+/**
+ * @desc    Bulk import Seneca College programs
+ * @route   POST /api/programs/bulk-import/seneca
+ * @access  Admin only
+ */
+export const bulkImportSenecaPrograms = asyncHandler(async (req: AuthRequest, res: Response) => {
+    logApiRequest(req);
+
+    const { programs }: { programs: SenecaProgram[] } = req.body;
+
+    if (!Array.isArray(programs) || programs.length === 0) {
+        throw new ApiError(400, 'Seneca programs array is required');
+    }
+
+    logger.info(`Starting bulk import of ${programs.length} Seneca College programs`);
+
+    let successCount = 0;
+    let errorCount = 0;
+    const errors: string[] = [];
+
+    const transformedPrograms = programs.map(transformSenecaProgram);
+
+    for (const programData of transformedPrograms) {
+        try {
+            await Program.findOneAndUpdate(
+                { 
+                    $or: [
+                        { programId: programData.programId },
+                        { code: programData.code }
+                    ]
+                },
+                programData,
+                { 
+                    upsert: true, 
+                    new: true,
+                    runValidators: true
+                }
+            );
+            successCount++;
+        } catch (error: any) {
+            errorCount++;
+            errors.push(`${programData.programId}: ${error.message}`);
+            logger.error(`Error importing Seneca program ${programData.programId}:`, error);
+        }
+    }
+
+    logger.info(`Seneca bulk import completed: ${successCount} successful, ${errorCount} failed`);
+
+    res.status(200).json(
+        new ApiResponse(200, {
+            successCount,
+            errorCount,
+            errors: errors.slice(0, 10),
+            totalProcessed: programs.length,
+            school: 'Seneca College'
+        }, `Seneca bulk import completed: ${successCount} successful, ${errorCount} failed`)
+    );
+});

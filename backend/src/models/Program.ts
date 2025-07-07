@@ -15,7 +15,7 @@ const programSchema = new Schema<IProgramDocument>({
         unique: true,
         uppercase: true,
         trim: true,
-        maxlength: [10, 'Program code cannot exceed 10 characters']
+        maxlength: [50, 'Program code cannot exceed 50 characters']
     },
     name: {
         type: String,
@@ -25,13 +25,13 @@ const programSchema = new Schema<IProgramDocument>({
     },
     overview: {
         type: String,
-        required: [true, 'Program overview is required'],
+        required: false,
         trim: true,
         maxlength: [2000, 'Overview cannot exceed 2000 characters']
     },
     duration: {
         type: String,
-        required: [true, 'Duration is required'],
+        required: false,
         trim: true,
         maxlength: [100, 'Duration cannot exceed 100 characters']
     },
@@ -46,7 +46,7 @@ const programSchema = new Schema<IProgramDocument>({
     },
     credential: {
         type: String,
-        required: [true, 'Credential is required'],
+        required: false,
         trim: true,
         maxlength: [100, 'Credential cannot exceed 100 characters']
     },

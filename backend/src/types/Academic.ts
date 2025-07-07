@@ -64,10 +64,10 @@ export interface IProgram {
     code: string;
     name: string;
     overview: string;
-    duration: string; // e.g., "2 Semesters (8 Months)"
+    duration?: string; // e.g., "2 Semesters (8 Months)" - now optional
     campus: string[];
     delivery?: string;
-    credential: string;
+    credential?: string; // now optional
     school: string;
     // Derived/computed fields
     level: 'Certificate' | 'Diploma' | 'Advanced Diploma' | 'Bachelor' | 'Graduate Certificate' | 'Honours Bachelor Degree' | 'Honours Bachelor' | 'Seneca Certificate of Standing' | 'Certificate of Apprenticeship, Ontario College Certificate';
