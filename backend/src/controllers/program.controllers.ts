@@ -25,6 +25,7 @@ interface ProgramQuery {
     search?: string;
     school?: string;
     level?: string;
+    credential?: string;
     isActive?: boolean;
     sortBy?: string;
     sortOrder?: 'asc' | 'desc';
@@ -87,6 +88,7 @@ export const getPrograms = asyncHandler(async (req: Request, res: Response) => {
         search,
         school,
         level,
+        credential,
         isActive = true,
         sortBy = 'name',
         sortOrder = 'asc'
@@ -121,16 +123,18 @@ export const getPrograms = asyncHandler(async (req: Request, res: Response) => {
     }
 
     if (school) {
-        // Support both ObjectId and school code
+        // School is stored as string (school name), so filter by exact match or regex
         if (mongoose.Types.ObjectId.isValid(school)) {
             filter.school = school;
         } else {
-            // Need to lookup school by code first - will implement populate alternative
-            filter['school.code'] = school.toUpperCase();
+            // Filter by school name (case-insensitive)
+            filter.school = { $regex: school, $options: 'i' };
         }
     }
     
     if (level) filter.level = level;
+    
+    if (credential) filter.credential = { $regex: credential, $options: 'i' };
 
     try {
         // Execute query without school population since school is a string
@@ -160,7 +164,7 @@ export const getPrograms = asyncHandler(async (req: Request, res: Response) => {
             total,
             page,
             limit,
-            filters: { search, school, level, isActive }
+            filters: { search, school, level, credential, isActive }
         });
 
         res.status(200).json(response);
@@ -256,11 +260,15 @@ export const getProgramById = asyncHandler(async (req: Request, res: Response) =
 
         let program;
 
-        // Check if identifier is ObjectId or code
+        // Check if identifier is ObjectId, programId, or code
         if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
             // It's an ObjectId
             logger.info('Searching by ObjectId:', identifier);
             program = await Program.findById(identifier).lean();
+        } else if (identifier.includes('-') || identifier.includes('_')) {
+            // It's likely a programId (e.g., SENECA-DAN, GEORGE_BROWN-242576)
+            logger.info('Searching by programId:', identifier);
+            program = await Program.findOne({ programId: identifier }).lean();
         } else {
             // It's a code
             logger.info('Searching by code:', identifier.toUpperCase());

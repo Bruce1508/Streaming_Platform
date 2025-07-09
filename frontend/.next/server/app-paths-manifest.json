@@ -1,9 +1,6 @@
 {
-  "/(protected)/dashboard/notifications/page": "app/(protected)/dashboard/notifications/page.js",
-  "/(protected)/profile/page": "app/(protected)/profile/page.js",
   "/(protected)/programs/[id]/page": "app/(protected)/programs/[id]/page.js",
   "/(protected)/programs/page": "app/(protected)/programs/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js"

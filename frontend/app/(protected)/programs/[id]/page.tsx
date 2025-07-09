@@ -112,62 +112,81 @@ const ProgramDetailPage = () => {
     const [loading, setLoading] = useState(true);
     const [coursesLoading, setCoursesLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [retryCount, setRetryCount] = useState(0);
     const [openSemesterIndex, setOpenSemesterIndex] = useState(0);
 
-    useEffect(() => {
-        const fetchProgramData = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-                const programId = params.id as string;
-                
-                console.log('Fetching program with ID:', programId);
-                
-                // Fetch program basic info
-                const programResponse = await programAPI.getProgramById(programId.toUpperCase());
-                
-                console.log('Program API Response:', programResponse);
-                
-                if (programResponse.success && programResponse.data) {
-                    setProgram(programResponse.data);
-                    
-                    // Fetch program courses
-                    setCoursesLoading(true);
-                    try {
-                        console.log('Fetching courses for program:', programId.toUpperCase());
-                        const coursesResponse = await courseAPI.getProgramCourses(programId.toUpperCase());
-                        console.log('Courses API Response:', coursesResponse);
-                        
-                        if (coursesResponse.success && coursesResponse.data) {
-                            setProgramCourses(coursesResponse.data);
-                            console.log('Program courses data:', coursesResponse.data);
-                        } else {
-                            console.warn('No courses found for program:', programId);
-                        }
-                    } catch (coursesError: any) {
-                        console.warn('Failed to fetch courses:', coursesError);
-                        // Don't set error - courses are optional
-                    } finally {
-                        setCoursesLoading(false);
-                    }
-                } else {
-                    console.error('Program not found in response:', programResponse);
-                    setError('Program not found');
-                }
-            } catch (err: any) {
-                console.error('Error fetching program:', err);
-                console.error('Error details:', {
-                    message: err.message,
-                    response: err.response,
-                    status: err.response?.status,
-                    data: err.response?.data
-                });
-                setError('Failed to load program details');
-            } finally {
-                setLoading(false);
-            }
-        };
+    // Retry function for failed API calls
+    const retryFetch = () => {
+        setRetryCount(prev => prev + 1);
+        setError(null);
+        fetchProgramData();
+    };
 
+    const fetchProgramData = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const programId = params.id as string;
+            
+            console.log('Fetching program with ID:', programId, 'Retry count:', retryCount);
+            
+            // Fetch program basic info
+            const programResponse = await programAPI.getProgramById(programId.toUpperCase());
+            
+            console.log('Program API Response:', programResponse);
+            
+            if (programResponse.success && programResponse.data) {
+                setProgram(programResponse.data);
+                
+                // Fetch program courses
+                setCoursesLoading(true);
+                try {
+                    console.log('Fetching courses for program:', programId.toUpperCase());
+                    const coursesResponse = await courseAPI.getProgramCourses(programId.toUpperCase());
+                    console.log('Courses API Response:', coursesResponse);
+                    
+                    if (coursesResponse.success && coursesResponse.data) {
+                        setProgramCourses(coursesResponse.data);
+                        console.log('Program courses data:', coursesResponse.data);
+                    } else {
+                        console.warn('No courses found for program:', programId);
+                        // Don't set this as error - courses might not be available for all programs
+                    }
+                } catch (coursesError: any) {
+                    console.warn('Failed to fetch courses:', coursesError);
+                    // Don't set error - courses are optional
+                } finally {
+                    setCoursesLoading(false);
+                }
+            } else {
+                console.error('Program not found in response:', programResponse);
+                setError('Program not found. Please check the program ID or try again.');
+            }
+        } catch (err: any) {
+            console.error('Error fetching program:', err);
+            console.error('Error details:', {
+                message: err.message,
+                response: err.response,
+                status: err.response?.status,
+                data: err.response?.data
+            });
+            
+            // More specific error messages
+            if (err.response?.status === 404) {
+                setError('Program not found. This program may have been removed or the ID is incorrect.');
+            } else if (err.response?.status === 500) {
+                setError('Server error occurred. Please try again later.');
+            } else if (err.code === 'NETWORK_ERROR' || !navigator.onLine) {
+                setError('Network connection error. Please check your internet connection and try again.');
+            } else {
+                setError('Failed to load program details. Please try again.');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         if (params.id) {
             fetchProgramData();
         }
@@ -217,6 +236,138 @@ const ProgramDetailPage = () => {
         }
     };
 
+    // Dynamic Apply Now URL based on school
+    const getApplyNowUrl = (school: string, programCode: string): string => {
+        const schoolName = school.toLowerCase();
+        
+        switch (schoolName) {
+            case 'seneca college':
+            case 'seneca polytechnic':
+            case 'seneca':
+                return `https://www.senecapolytechnic.ca/programs/fulltime/${programCode}/apply-now.html#menu`;
+            
+            case 'george brown college':
+            case 'george brown':
+                return `https://www.georgebrown.ca/programs/${programCode}/apply`;
+            
+            case 'humber college':
+            case 'humber':
+                return `https://applynow.humber.ca/`;
+            
+            case 'centennial college':
+            case 'centennial':
+                return `https://www.centennialcollege.ca/admissions/how-to-apply/`;
+            
+            case 'toronto metropolitan university':
+            case 'tmu':
+            case 'ryerson':
+                return `https://www.torontomu.ca/admissions/undergraduate/apply/`;
+            
+            case 'york university':
+            case 'york':
+                return `https://futurestudents.yorku.ca/apply`;
+            
+            default:
+                return '#'; // Fallback for unknown schools
+        }
+    };
+
+    // Dynamic Apply Now button text based on school
+    const getApplyButtonText = (school: string): string => {
+        const schoolName = school.toLowerCase();
+        
+        switch (schoolName) {
+            case 'seneca college':
+            case 'seneca polytechnic':
+            case 'seneca':
+                return 'Apply Now at Seneca';
+            
+            case 'george brown college':
+            case 'george brown':
+                return 'Apply Now at George Brown';
+            
+            case 'humber college':
+            case 'humber':
+                return 'Apply Now at Humber';
+            
+            case 'centennial college':
+            case 'centennial':
+                return 'Apply Now at Centennial';
+            
+            case 'toronto metropolitan university':
+            case 'tmu':
+            case 'ryerson':
+                return 'Apply Now at TMU';
+            
+            case 'york university':
+            case 'york':
+                return 'Apply Now at York';
+            
+            default:
+                return 'Apply Now';
+        }
+    };
+
+    // School-specific program features
+    const getSchoolSpecificFeatures = (school: string) => {
+        const schoolName = school.toLowerCase();
+        
+        switch (schoolName) {
+            case 'seneca college':
+            case 'seneca polytechnic':
+            case 'seneca':
+                return {
+                    showWorkIntegratedLearning: true,
+                    showCoopPrograms: true,
+                    showIndustryPartnerships: true,
+                };
+            
+            case 'george brown college':
+            case 'george brown':
+                return {
+                    showCulinaryPrograms: true,
+                    showHealthPrograms: true,
+                    showHospitalityPrograms: true,
+                };
+            
+            case 'humber college':
+            case 'humber':
+                return {
+                    showBusinessPrograms: true,
+                    showMediaPrograms: true,
+                    showTechnologyPrograms: true,
+                };
+            
+            case 'centennial college':
+            case 'centennial':
+                return {
+                    showEngineeringPrograms: true,
+                    showHealthPrograms: true,
+                    showBusinessPrograms: true,
+                };
+            
+            case 'toronto metropolitan university':
+            case 'tmu':
+            case 'ryerson':
+                return {
+                    showUniversityPrograms: true,
+                    showResearchPrograms: true,
+                    showInnovationPrograms: true,
+                };
+            
+            case 'york university':
+            case 'york':
+                return {
+                    showUniversityPrograms: true,
+                    showLiberalArtsPrograms: true,
+                    showResearchPrograms: true,
+                };
+            
+            default:
+                return {};
+        }
+    };
+
     if (loading) {
         return <PageLoader />;
     }
@@ -230,17 +381,35 @@ const ProgramDetailPage = () => {
                 <div className="h-20" />
                 <div className="max-w-6xl mx-auto px-6 py-20 text-center">
                     <div className="text-6xl mb-4">😔</div>
-                    <h1 className="text-4xl font-bold text-gray-300 mb-4">Program Not Found</h1>
-                    <p className="text-gray-400 mb-8">
-                        The program you're looking for doesn't exist or has been moved.
+                    <h1 className="text-4xl font-bold text-gray-300 mb-4">
+                        {error?.includes('not found') ? 'Program Not Found' : 'Error Loading Program'}
+                    </h1>
+                    <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+                        {error || 'The program you\'re looking for doesn\'t exist or has been moved.'}
                     </p>
-                    <Button
-                        onClick={() => router.push('/programs')}
-                        className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
-                    >
-                        <ArrowLeft className="w-4 h-4 mr-2" />
-                        Back to Programs
-                    </Button>
+                    <div className="flex gap-4 justify-center">
+                        <Button
+                            onClick={() => router.push('/programs')}
+                            variant="outline"
+                            className="border-[#36454F] text-gray-300 hover:bg-[#36454F]"
+                        >
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Back to Programs
+                        </Button>
+                        {error && !error.includes('not found') && retryCount < 3 && (
+                            <Button
+                                onClick={retryFetch}
+                                className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
+                            >
+                                Try Again {retryCount > 0 && `(${retryCount}/3)`}
+                            </Button>
+                        )}
+                    </div>
+                    {retryCount >= 3 && (
+                        <p className="text-red-400 text-sm mt-4">
+                            Maximum retry attempts reached. Please try again later.
+                        </p>
+                    )}
                 </div>
             </div>
         );
@@ -311,6 +480,138 @@ const ProgramDetailPage = () => {
                         <p className="text-lg text-gray-300 leading-relaxed text-center max-w-4xl mx-auto">
                             {program.overview}
                         </p>
+                    </div>
+                </section>
+
+                {/* School-Specific Highlights */}
+                <section className="mb-16">
+                    <h2 className="text-3xl font-bold mb-8 text-center">School Highlights</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {/* Seneca College Highlights */}
+                        {program.school.toLowerCase().includes('seneca') && (
+                            <>
+                                <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/20 rounded-xl p-6 border border-blue-600/30">
+                                    <Briefcase className="w-8 h-8 text-blue-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Work-Integrated Learning</h3>
+                                    <p className="text-gray-300 text-sm">Gain real-world experience through co-op placements and industry partnerships.</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-green-600/20 to-green-700/20 rounded-xl p-6 border border-green-600/30">
+                                    <Building className="w-8 h-8 text-green-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Industry Connections</h3>
+                                    <p className="text-gray-300 text-sm">Strong partnerships with leading employers in the Greater Toronto Area.</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-purple-600/20 to-purple-700/20 rounded-xl p-6 border border-purple-600/30">
+                                    <Star className="w-8 h-8 text-purple-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Applied Learning</h3>
+                                    <p className="text-gray-300 text-sm">Hands-on education with state-of-the-art labs and equipment.</p>
+                                </div>
+                            </>
+                        )}
+
+                        {/* George Brown College Highlights */}
+                        {program.school.toLowerCase().includes('george brown') && (
+                            <>
+                                <div className="bg-gradient-to-br from-orange-600/20 to-orange-700/20 rounded-xl p-6 border border-orange-600/30">
+                                    <MapPin className="w-8 h-8 text-orange-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Downtown Location</h3>
+                                    <p className="text-gray-300 text-sm">Located in the heart of Toronto with easy access to internships and jobs.</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-red-600/20 to-red-700/20 rounded-xl p-6 border border-red-600/30">
+                                    <Award className="w-8 h-8 text-red-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Industry Recognition</h3>
+                                    <p className="text-gray-300 text-sm">Programs designed with input from industry leaders and professionals.</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-teal-600/20 to-teal-700/20 rounded-xl p-6 border border-teal-600/30">
+                                    <Users className="w-8 h-8 text-teal-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Small Class Sizes</h3>
+                                    <p className="text-gray-300 text-sm">Personalized attention with low student-to-faculty ratios.</p>
+                                </div>
+                            </>
+                        )}
+
+                        {/* Humber College Highlights */}
+                        {program.school.toLowerCase().includes('humber') && (
+                            <>
+                                <div className="bg-gradient-to-br from-indigo-600/20 to-indigo-700/20 rounded-xl p-6 border border-indigo-600/30">
+                                    <BookOpen className="w-8 h-8 text-indigo-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Innovative Programs</h3>
+                                    <p className="text-gray-300 text-sm">Cutting-edge curriculum that adapts to industry changes.</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-pink-600/20 to-pink-700/20 rounded-xl p-6 border border-pink-600/30">
+                                    <Star className="w-8 h-8 text-pink-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Modern Facilities</h3>
+                                    <p className="text-gray-300 text-sm">State-of-the-art labs, studios, and learning spaces.</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-yellow-600/20 to-yellow-700/20 rounded-xl p-6 border border-yellow-600/30">
+                                    <TrendingUp className="w-8 h-8 text-yellow-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Career Services</h3>
+                                    <p className="text-gray-300 text-sm">Comprehensive career support and job placement assistance.</p>
+                                </div>
+                            </>
+                        )}
+
+                        {/* TMU Highlights */}
+                        {(program.school.toLowerCase().includes('tmu') || program.school.toLowerCase().includes('toronto metropolitan')) && (
+                            <>
+                                <div className="bg-gradient-to-br from-red-600/20 to-red-700/20 rounded-xl p-6 border border-red-600/30">
+                                    <GraduationCap className="w-8 h-8 text-red-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">University Education</h3>
+                                    <p className="text-gray-300 text-sm">Bachelor's and graduate degree programs with research opportunities.</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/20 rounded-xl p-6 border border-blue-600/30">
+                                    <Building className="w-8 h-8 text-blue-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Urban Campus</h3>
+                                    <p className="text-gray-300 text-sm">Modern campus in downtown Toronto with excellent transit access.</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-purple-600/20 to-purple-700/20 rounded-xl p-6 border border-purple-600/30">
+                                    <Star className="w-8 h-8 text-purple-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Innovation Focus</h3>
+                                    <p className="text-gray-300 text-sm">Emphasis on innovation, entrepreneurship, and technology.</p>
+                                </div>
+                            </>
+                        )}
+
+                        {/* York University Highlights */}
+                        {program.school.toLowerCase().includes('york') && (
+                            <>
+                                <div className="bg-gradient-to-br from-indigo-600/20 to-indigo-700/20 rounded-xl p-6 border border-indigo-600/30">
+                                    <GraduationCap className="w-8 h-8 text-indigo-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Comprehensive University</h3>
+                                    <p className="text-gray-300 text-sm">Wide range of undergraduate and graduate programs across multiple faculties.</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-green-600/20 to-green-700/20 rounded-xl p-6 border border-green-600/30">
+                                    <Users className="w-8 h-8 text-green-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Diverse Community</h3>
+                                    <p className="text-gray-300 text-sm">Multicultural campus with students from around the world.</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-orange-600/20 to-orange-700/20 rounded-xl p-6 border border-orange-600/30">
+                                    <BookOpen className="w-8 h-8 text-orange-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Research Excellence</h3>
+                                    <p className="text-gray-300 text-sm">Opportunities to participate in cutting-edge research projects.</p>
+                                </div>
+                            </>
+                        )}
+
+                        {/* Centennial College Highlights */}
+                        {program.school.toLowerCase().includes('centennial') && (
+                            <>
+                                <div className="bg-gradient-to-br from-orange-600/20 to-orange-700/20 rounded-xl p-6 border border-orange-600/30">
+                                    <Briefcase className="w-8 h-8 text-orange-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Hands-On Learning</h3>
+                                    <p className="text-gray-300 text-sm">Practical education with industry-standard equipment and facilities.</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-teal-600/20 to-teal-700/20 rounded-xl p-6 border border-teal-600/30">
+                                    <Star className="w-8 h-8 text-teal-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Industry Partnerships</h3>
+                                    <p className="text-gray-300 text-sm">Strong connections with employers and professional organizations.</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/20 rounded-xl p-6 border border-blue-600/30">
+                                    <MapPin className="w-8 h-8 text-blue-400 mb-4" />
+                                    <h3 className="text-lg font-semibold text-white mb-2">Multiple Locations</h3>
+                                    <p className="text-gray-300 text-sm">Campuses across the GTA with convenient transportation access.</p>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </section>
 
@@ -530,13 +831,76 @@ const ProgramDetailPage = () => {
                         <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
                             Take the next step in your career journey. Apply now to secure your spot in this program.
                         </p>
+                        
+                        {/* School-specific additional info */}
+                        {program.school.toLowerCase().includes('seneca') && (
+                            <div className="mb-6 p-4 bg-blue-600/10 border border-blue-600/30 rounded-lg max-w-2xl mx-auto">
+                                <p className="text-blue-300 text-sm">
+                                    🎓 Seneca offers work-integrated learning opportunities and industry partnerships to enhance your career prospects.
+                                </p>
+                            </div>
+                        )}
+                        
+                        {program.school.toLowerCase().includes('george brown') && (
+                            <div className="mb-6 p-4 bg-green-600/10 border border-green-600/30 rounded-lg max-w-2xl mx-auto">
+                                <p className="text-green-300 text-sm">
+                                    🏢 George Brown College is located in downtown Toronto with strong industry connections.
+                                </p>
+                            </div>
+                        )}
+                        
+                        {program.school.toLowerCase().includes('humber') && (
+                            <div className="mb-6 p-4 bg-purple-600/10 border border-purple-600/30 rounded-lg max-w-2xl mx-auto">
+                                <p className="text-purple-300 text-sm">
+                                    🌟 Humber College offers hands-on learning with state-of-the-art facilities.
+                                </p>
+                            </div>
+                        )}
+                        
+                        {(program.school.toLowerCase().includes('tmu') || program.school.toLowerCase().includes('toronto metropolitan')) && (
+                            <div className="mb-6 p-4 bg-red-600/10 border border-red-600/30 rounded-lg max-w-2xl mx-auto">
+                                <p className="text-red-300 text-sm">
+                                    🏛️ TMU offers university-level programs with research opportunities in the heart of Toronto.
+                                </p>
+                            </div>
+                        )}
+                        
+                        {program.school.toLowerCase().includes('york') && (
+                            <div className="mb-6 p-4 bg-indigo-600/10 border border-indigo-600/30 rounded-lg max-w-2xl mx-auto">
+                                <p className="text-indigo-300 text-sm">
+                                    🌍 York University offers diverse programs with a global perspective and extensive research opportunities.
+                                </p>
+                            </div>
+                        )}
+                        
+                        {program.school.toLowerCase().includes('centennial') && (
+                            <div className="mb-6 p-4 bg-orange-600/10 border border-orange-600/30 rounded-lg max-w-2xl mx-auto">
+                                <p className="text-orange-300 text-sm">
+                                    🔧 Centennial College focuses on practical, hands-on learning with industry-standard equipment.
+                                </p>
+                            </div>
+                        )}
+                        
                         <Button
-                            onClick={() => window.open(`https://www.senecapolytechnic.ca/programs/fulltime/${program.code}/apply-now.html#menu`, '_blank')}
+                            onClick={() => {
+                                const url = getApplyNowUrl(program.school, program.code);
+                                if (url !== '#') {
+                                    window.open(url, '_blank');
+                                } else {
+                                    // Show a message for schools without direct apply links
+                                    alert(`Please visit ${program.school}'s official website to apply for this program.`);
+                                }
+                            }}
                             className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-8 py-4 text-lg font-semibold"
                         >
                             <ExternalLink className="w-5 h-5 mr-2" />
-                            Apply Now at Seneca
+                            {getApplyButtonText(program.school)}
                         </Button>
+                        
+                        {/* Additional application info */}
+                        <div className="mt-6 text-sm text-gray-400">
+                            <p>💡 Tip: Make sure to check admission requirements and application deadlines on the school's website.</p>
+                        </div>
                     </div>
                 </section>
             </div>
