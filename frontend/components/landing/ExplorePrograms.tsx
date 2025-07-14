@@ -1,7 +1,6 @@
 "use client"
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import { Marquee } from "@/components/magicui/marquee";
 import { AcademicCapIcon, CodeBracketIcon, BeakerIcon, GlobeAltIcon, CalculatorIcon, ChartBarIcon, BookOpenIcon, HeartIcon, MusicalNoteIcon, PaintBrushIcon, WrenchScrewdriverIcon, BuildingLibraryIcon, CpuChipIcon, ShieldCheckIcon, BuildingOffice2Icon, LanguageIcon, TruckIcon, SparklesIcon, FilmIcon, PencilIcon, UserGroupIcon, GlobeAmericasIcon } from '@heroicons/react/24/outline';
 
 const programs = [
@@ -139,52 +138,58 @@ const programs = [
     }
 ];
 
+// Component for individual program card
+const ProgramCard = ({ program }: { program: typeof programs[0] }) => {
+    return (
+        <div className="bg-[#FAF9F6] rounded-xl border border-gray-200 min-h-[200px] w-[400px] flex flex-col justify-between transition-all cursor-pointer duration-300 hover:shadow-2xl hover:border-2 hover:bg-white/95 flex-shrink-0 mx-4"
+            style={{ 
+                boxShadow: '0 8px 32px 0 rgba(16,30,54,0.08), 0 1.5px 3px 0 rgba(16,30,54,0.03), 0 0 0 1px rgba(0,0,0,0.05), 0 4px 8px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1), 0 16px 32px rgba(0,0,0,0.1)' 
+            }}
+        >
+            <div className="h-5 w-full bg-slate-500 rounded-t-xl" />
+            <div className="p-8 pb-6">
+                <div className="mb-6 flex items-center gap-3">{program.icon}</div>
+                <h3 className="text-xl font-extrabold text-gray-900 mb-4">{program.name}</h3>
+                <p className="text-gray-600 text-base mb-6">{program.desc}</p>
+                {/* <a href="#" className="inline-flex items-center text-indigo-600 font-semibold hover:underline text-sm">
+                    Learn more <span className="ml-1">→</span>
+                </a> */}
+            </div>
+            <div className="border-t border-gray-200 px-6 py-3 flex gap-4 items-center min-h-[50px] justify-center">
+                {program.partners.map((partner, i) => (
+                    <span key={i} className="text-xs text-gray-400 font-semibold tracking-wide uppercase whitespace-nowrap">
+                        {partner}
+                    </span>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 export default function ExplorePrograms() {
     return (
-        <section className="pt-30 pb-40 bg-[#F6F9FC] w-full border-t border-gray-200 overflow-visible">
-            <div className="w-full max-w-full mx-auto overflow-visible">
-            <h2 className="text-4xl sm:text-6xl font-extrabold mb-6 text-center tracking-tight">
-                <span className="text-gray-300">Discover.</span>{' '}
-                <span className="text-gray-500">Learn.</span>{' '}
-                <span className="text-[#301934]">Succeed</span>
-            </h2>
-            <p className="text-[#899499] text-md mb-10 text-center max-w-3xl mx-auto font-semibold">Select a program to unlock resources shared by students like you.</p>
-                <div className="w-full overflow-visible">
-                    <Swiper
-                        spaceBetween={100}
-                        slidesPerView={1.2}
-                        breakpoints={{
-                            640: { slidesPerView: 2, spaceBetween: 20 },
-                            1024: { slidesPerView: 3.1, spaceBetween: 50 },
-                            1440: { slidesPerView: 4.1, spaceBetween: 50 },
-                            1920: { slidesPerView: 5, spaceBetween: 100 },
-                            2560: { slidesPerView: 6, spaceBetween: 120 },
-                            3840: { slidesPerView: 8, spaceBetween: 150 },
-                            4096: { slidesPerView: 12, spaceBetween: 200 },
-                        }}
-                        className="pb-8 overflow-visible"
-                        style={{ width: '100%' }}
-                        grabCursor={true}
-                    >
+        <section className="pt-30 pb-40 bg-[#FAF9F6] w-full border-t border-gray-200 overflow-hidden">
+            <div className="w-full max-w-full mx-auto">
+                <h2 className="text-4xl sm:text-6xl font-bold mb-6 text-center tracking-tight">
+                    <span className="text-[#191970]">Discover.</span>{' '}
+                    <span className="text-[#301934]">Learn.</span>{' '}
+                    <span className="text-[#191970]">Succeed</span>
+                </h2>
+                <p className="text-[#899499] text-md mb-10 text-center max-w-3xl mx-auto font-semibold">
+                    Select a program to unlock resources shared by students like you.
+                </p>
+                
+                {/* MagicUI Marquee */}
+                <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+                    <Marquee pauseOnHover className="[--duration:60s]">
                         {programs.map((program, idx) => (
-                            <SwiperSlide key={idx} className="overflow-visible">
-                                <div className="bg-[#FAF9F6] rounded-xl border border-gray-200 min-h-[500px] w-[480px] flex flex-col justify-between transition-all duration-300 hover:z-30 origin-center hover:scale-105 hover:shadow-2xl hover:border-2 hover:bg-white/95" style={{ boxShadow: '0 8px 32px 0 rgba(16,30,54,0.08), 0 1.5px 3px 0 rgba(16,30,54,0.03), 0 0 0 1px rgba(0,0,0,0.05), 0 4px 8px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1), 0 16px 32px rgba(0,0,0,0.1)' }}>
-                                    <div className="h-2 w-full bg-slate-500 rounded-t-xl" />
-                                    <div className="p-14 pb-8">
-                                        <div className="mb-6 flex items-center gap-3">{program.icon}</div>
-                                        <h3 className="text-2xl font-extrabold text-gray-900 mb-4">{program.name}</h3>
-                                        <p className="text-gray-600 text-lg mb-8">{program.desc}</p>
-                                        <a href="#" className="inline-flex items-center text-indigo-600 font-semibold hover:underline text-base">Learn more <span className="ml-1">→</span></a>
-                                    </div>
-                                    <div className="border-t border-gray-200 px-10 py-4 flex gap-8 items-center min-h-[60px] justify-center">
-                                        {(program.partners ?? []).map((partner, i) => (
-                                            <span key={i} className="text-sm text-gray-400 font-semibold tracking-wide uppercase whitespace-nowrap pb-2">{partner}</span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </SwiperSlide>
+                            <ProgramCard key={idx} program={program} />
                         ))}
-                    </Swiper>
+                    </Marquee>
+                    
+                    {/* Fade overlays */}
+                    <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[#FAF9F6]"></div>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-[#FAF9F6]"></div>
                 </div>
             </div>
         </section>

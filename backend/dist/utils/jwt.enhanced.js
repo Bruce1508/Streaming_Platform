@@ -19,7 +19,8 @@ const ioredis_1 = __importDefault(require("ioredis"));
 const redis = new ioredis_1.default(process.env.REDIS_URL || 'redis://localhost:6379');
 // ===== EXISTING FUNCTIONS (You already have these) =====
 const generateTokenPair = (userId, sessionId) => {
-    const accessToken = jsonwebtoken_1.default.sign({ userId, sessionId, type: 'access' }, process.env.JWT_SECRET, { expiresIn: '15m' });
+    const accessToken = jsonwebtoken_1.default.sign({ userId, sessionId, type: 'access' }, process.env.JWT_SECRET, { expiresIn: '30d' } // Development: 30 days instead of 15 minutes
+    );
     const refreshToken = jsonwebtoken_1.default.sign({ userId, sessionId, type: 'refresh' }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
     return { accessToken, refreshToken };
 };
@@ -50,7 +51,6 @@ const isTokenBlacklisted = (token) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.isTokenBlacklisted = isTokenBlacklisted;
-// ===== NEW FUNCTIONS TO ADD =====
 /**
  * Validate token type and return decoded payload
  */

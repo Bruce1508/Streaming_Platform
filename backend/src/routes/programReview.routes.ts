@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { param } from 'express-validator';
 import {
     createReview,
     getProgramReviews,
@@ -24,32 +25,62 @@ const reviewRateLimit = createRateLimit(5, 15); // 5 reviews per 15 minutes per 
 const publicRateLimit = createRateLimit(100, 15); // 100 requests per 15 minutes
 
 // ===== VALIDATION MIDDLEWARE =====
+
+// Validate program code format (e.g., "3MAVEP3JF", "CPA", etc.)
+const validateProgramCode = (paramName: string = 'programId') => [
+    param(paramName)
+        .trim()
+        .notEmpty()
+        .withMessage(`${paramName} is required`)
+        .isLength({ min: 2, max: 15 })
+        .withMessage(`${paramName} must be 2-15 characters`)
+        .matches(/^[A-Z0-9]+$/i)
+        .withMessage(`${paramName} can only contain letters and numbers`),
+    handleValidationErrors
+];
+
 const validateReviewData = (req: any, res: any, next: any) => {
-    const { year, criteriaRatings } = req.body;
+    const { currentSemester, ratings, takeTheCourseAgain } = req.body;
     
-    // Validate year
-    if (year && (year < 2000 || year > new Date().getFullYear() + 2)) {
+    // Validate currentSemester
+    if (currentSemester && typeof currentSemester !== 'string') {
         return res.status(400).json({
             success: false,
-            message: 'Year must be between 2000 and next year'
+            message: 'Current semester must be a string'
         });
     }
 
-    // Validate criteriaRatings structure
-    if (criteriaRatings) {
-        const requiredCriteria = [
-            'TeachingQuality', 'FacultySupport', 'LearningEnvironment',
-            'LibraryResources', 'StudentSupport', 'CampusLife', 'OverallExperience'
-        ];
+    // Validate takeTheCourseAgain
+    if (takeTheCourseAgain !== undefined && typeof takeTheCourseAgain !== 'boolean') {
+        return res.status(400).json({
+            success: false,
+            message: 'takeTheCourseAgain must be a boolean'
+        });
+    }
 
-        for (const criteria of requiredCriteria) {
-            const rating = criteriaRatings[criteria];
-            if (rating !== undefined && (typeof rating !== 'number' || rating < 1 || rating > 5)) {
-                return res.status(400).json({
-                    success: false,
-                    message: `${criteria} must be a number between 1 and 5`
-                });
-            }
+    // Validate ratings structure
+    if (ratings) {
+        const { instructorRating, contentQualityRating, practicalValueRating } = ratings;
+
+        if (instructorRating !== undefined && (typeof instructorRating !== 'number' || instructorRating < 0 || instructorRating > 100)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Instructor rating must be a number between 0 and 100'
+            });
+        }
+
+        if (contentQualityRating !== undefined && (typeof contentQualityRating !== 'number' || contentQualityRating < 0 || contentQualityRating > 100)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Content quality rating must be a number between 0 and 100'
+            });
+        }
+
+        if (practicalValueRating !== undefined && (typeof practicalValueRating !== 'number' || practicalValueRating < 0 || practicalValueRating > 100)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Practical value rating must be a number between 0 and 100'
+            });
         }
     }
 
@@ -65,8 +96,7 @@ const validateReviewData = (req: any, res: any, next: any) => {
  */
 router.get('/program/:programId', 
     publicRateLimit,
-    validateObjectId('programId'),
-    handleValidationErrors,
+    ...validateProgramCode('programId'),
     getProgramReviews
 );
 
@@ -92,8 +122,7 @@ router.post('/',
  */
 router.get('/user/:programId',
     protectRoute,
-    validateObjectId('programId'),
-    handleValidationErrors,
+    ...validateProgramCode('programId'),
     getUserReviewForProgram
 );
 

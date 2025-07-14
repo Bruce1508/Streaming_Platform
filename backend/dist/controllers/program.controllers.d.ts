@@ -24,11 +24,29 @@ export declare const getProgramById: (req: Request, res: Response, next: import(
  */
 export declare const getProgramLevels: (req: Request, res: Response, next: import("express").NextFunction) => void;
 /**
+ * @desc    Get available schools
+ * @route   GET /api/programs/schools
+ * @access  Public
+ */
+export declare const getProgramSchools: (req: Request, res: Response, next: import("express").NextFunction) => void;
+/**
+ * @desc    Get available credentials
+ * @route   GET /api/programs/credentials
+ * @access  Public
+ */
+export declare const getProgramCredentials: (req: Request, res: Response, next: import("express").NextFunction) => void;
+/**
  * @desc    Search programs for onBoarding autocomplete
  * @route   GET /api/programs/search
  * @access  Public
  */
 export declare const searchPrograms: (req: Request, res: Response, next: import("express").NextFunction) => void;
+/**
+ * @desc    Get program suggestions for autocomplete
+ * @route   GET /api/programs/suggestions
+ * @access  Public
+ */
+export declare const getProgramSuggestions: (req: Request, res: Response, next: import("express").NextFunction) => void;
 /**
  * @desc    Create new program (Admin only)
  * @route   POST /api/programs
@@ -48,9 +66,9 @@ export declare const updateProgram: (req: Request, res: Response, next: import("
  */
 export declare const deleteProgram: (req: Request, res: Response, next: import("express").NextFunction) => void;
 /**
- * @desc    Bulk import programs from scraped data
+ * @desc    Universal bulk import for standardized programs
  * @route   POST /api/programs/bulk-import
- * @access  Admin only
+ * @access  Admin
  */
-export declare const bulkImportPrograms: (req: Request, res: Response, next: import("express").NextFunction) => void;
+export declare const bulkImportStandardizedPrograms: (req: Request, res: Response, next: import("express").NextFunction) => void;
 //# sourceMappingURL=program.controllers.d.ts.map

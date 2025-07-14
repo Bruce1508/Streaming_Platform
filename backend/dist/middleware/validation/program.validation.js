@@ -7,19 +7,28 @@ const common_validation_1 = require("./common.validation");
 exports.validateProgramQuery = [
     (0, express_validator_1.query)('school')
         .optional()
-        .custom((value) => {
-        // Accept both ObjectId and school code
-        const isObjectId = /^[0-9a-fA-F]{24}$/.test(value);
-        const isCode = /^[A-Z0-9]{2,10}$/.test(value);
-        if (!isObjectId && !isCode) {
-            throw new Error('School must be a valid ObjectId or school code');
-        }
-        return true;
-    }),
+        .trim()
+        .isLength({ min: 1, max: 200 })
+        .withMessage('School name must be 1-200 characters'),
     (0, express_validator_1.query)('level')
         .optional()
-        .isIn(['Certificate', 'Diploma', 'Advanced Diploma', 'Bachelor', 'Graduate Certificate'])
-        .withMessage('Level must be Certificate, Diploma, Advanced Diploma, Bachelor, or Graduate Certificate'),
+        .isIn([
+        'Certificate',
+        'Diploma',
+        'Advanced Diploma',
+        'Bachelor',
+        'Graduate Certificate',
+        'Honours Bachelor Degree',
+        'Honours Bachelor',
+        'Seneca Certificate of Standing',
+        'Certificate of Apprenticeship, Ontario College Certificate'
+    ])
+        .withMessage('Level must be one of the supported program levels'),
+    (0, express_validator_1.query)('credential')
+        .optional()
+        .trim()
+        .isLength({ min: 1, max: 200 })
+        .withMessage('Credential must be 1-200 characters'),
     (0, express_validator_1.query)('isActive')
         .optional()
         .isBoolean()

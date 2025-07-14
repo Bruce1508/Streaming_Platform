@@ -19,13 +19,16 @@ const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const course_routes_1 = __importDefault(require("./routes/course.routes"));
 const school_routes_1 = __importDefault(require("./routes/school.routes"));
 const program_routes_1 = __importDefault(require("./routes/program.routes"));
+const programReview_routes_1 = __importDefault(require("./routes/programReview.routes"));
 const onboarding_routes_1 = __importDefault(require("./routes/onboarding.routes"));
+const notification_routes_1 = __importDefault(require("./routes/notification.routes"));
 const error_middleware_1 = require("./middleware/error.middleware");
 // ✅ Import all models to register schemas
 require("./models/User");
 require("./models/School");
 require("./models/Program");
-require("./models/Course");
+require("./models/ProgramReviews");
+// import "./models/Course"; // Commented out - Course model doesn't exist, only ProgramCourses
 require("./models/StudyMaterial");
 require("./models/BookMark");
 require("./models/Enrollment");
@@ -33,7 +36,6 @@ require("./models/File");
 require("./models/Notification");
 require("./models/Report");
 require("./models/UserSession");
-require("./models/friendRequest");
 const app = (0, express_1.default)();
 // ✅ Single CORS configuration
 app.use((0, cors_1.default)({
@@ -62,7 +64,9 @@ app.use("/api/upload", upload_routes_1.default);
 app.use("/api/courses", course_routes_1.default);
 app.use("/api/schools", school_routes_1.default);
 app.use("/api/programs", program_routes_1.default);
+app.use("/api/program-reviews", programReview_routes_1.default);
 app.use("/api/onboarding", onboarding_routes_1.default);
+app.use("/api/notifications", notification_routes_1.default);
 // Handle undefined routes
 app.all('/{*any}', error_middleware_1.notFound);
 // ✅ Global error handler

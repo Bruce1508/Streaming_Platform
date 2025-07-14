@@ -2,17 +2,16 @@ import mongoose, { Schema } from 'mongoose';
 import { IProgram, IProgramDocument } from '../types/Academic';
 
 const programSchema = new Schema<IProgramDocument>({
-    programId: {
+    // Simplified schema with standardized fields
+    id: {
         type: String,
         required: [true, 'Program ID is required'],
         unique: true,
-        trim: true,
-        lowercase: true
+        trim: true
     },
     code: {
         type: String,
         required: [true, 'Program code is required'],
-        unique: true,
         uppercase: true,
         trim: true,
         maxlength: [50, 'Program code cannot exceed 50 characters']
@@ -22,12 +21,6 @@ const programSchema = new Schema<IProgramDocument>({
         required: [true, 'Program name is required'],
         trim: true,
         maxlength: [200, 'Program name cannot exceed 200 characters']
-    },
-    overview: {
-        type: String,
-        required: false,
-        trim: true,
-        maxlength: [2000, 'Overview cannot exceed 2000 characters']
     },
     duration: {
         type: String,
@@ -39,20 +32,32 @@ const programSchema = new Schema<IProgramDocument>({
         type: String,
         trim: true
     }],
+    credential: {
+        type: String,
+        required: [true, 'Credential is required'],
+        enum: ['bachelor', 'diploma', 'advanced diploma', 'certificate'],
+        lowercase: true
+    },
+    
+    // Optional legacy fields for backward compatibility
+    programId: {
+        type: String,
+        trim: true,
+        lowercase: true
+    },
+    overview: {
+        type: String,
+        required: false,
+        trim: true,
+        maxlength: [2000, 'Overview cannot exceed 2000 characters']
+    },
     delivery: {
         type: String,
         trim: true,
         maxlength: [200, 'Delivery cannot exceed 200 characters']
     },
-    credential: {
-        type: String,
-        required: false,
-        trim: true,
-        maxlength: [100, 'Credential cannot exceed 100 characters']
-    },
     school: {
         type: String,
-        required: [true, 'School is required'],
         trim: true,
         maxlength: [200, 'School name cannot exceed 200 characters']
     },
@@ -68,8 +73,7 @@ const programSchema = new Schema<IProgramDocument>({
             'Honours Bachelor', 
             'Seneca Certificate of Standing', 
             'Certificate of Apprenticeship, Ontario College Certificate'
-        ],
-        required: [true, 'Program level is required']
+        ]
     },
     isActive: {
         type: Boolean,

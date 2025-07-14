@@ -39,21 +39,22 @@ const notificationSchema = new mongoose_1.Schema({
     recipient: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'User',
-        required: [true, 'Recipient is required']
+        required: true
     },
     sender: {
         type: mongoose_1.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: false // For system notifications
     },
     title: {
         type: String,
-        required: [true, 'Title is required'],
+        required: true,
         trim: true,
         maxlength: [100, 'Title cannot exceed 100 characters']
     },
     message: {
         type: String,
-        required: [true, 'Message is required'],
+        required: true,
         trim: true,
         maxlength: [500, 'Message cannot exceed 500 characters']
     },
@@ -63,16 +64,16 @@ const notificationSchema = new mongoose_1.Schema({
             values: [
                 'comment', 'rating', 'material-approved', 'material-rejected',
                 'new-material', 'course-update', 'reminder', 'system',
-                'enrollment', 'achievement', 'report-resolved'
+                'enrollment', 'achievement', 'report-resolved', 'like', 'general'
             ],
             message: 'Invalid notification type'
         },
-        required: [true, 'Type is required']
+        required: true
     },
     relatedModel: {
         type: String,
         enum: {
-            values: ['StudyMaterial', 'Course', 'Program', 'User', 'Enrollment'],
+            values: ['StudyMaterial', 'Course', 'Program', 'User', 'Enrollment', 'ProgramReview', 'Comment', 'Material'],
             message: 'Invalid related model'
         }
     },
@@ -83,7 +84,7 @@ const notificationSchema = new mongoose_1.Schema({
         course: {
             id: {
                 type: mongoose_1.Schema.Types.ObjectId,
-                ref: 'Course'
+                // ref: 'Course'  // Commented out - Course model doesn't exist
             },
             name: String,
             code: String

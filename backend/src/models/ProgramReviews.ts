@@ -3,15 +3,16 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface IProgramReview extends Document {
     program: mongoose.Types.ObjectId;
     user: mongoose.Types.ObjectId;
-    year: number; // Năm học hoặc năm tốt nghiệp
-    criteriaRatings: {
-        TeachingQuality: number;      // 1-5
-        FacultySupport: number;       // 1-5
-        LearningEnvironment: number;  // 1-5
-        LibraryResources: number;     // 1-5
-        StudentSupport: number;       // 1-5
-        CampusLife: number;           // 1-5
-        OverallExperience: number;    // 1-5
+    currentSemester: string; // e.g., "Fall 2024"
+    ratings: {
+        instructorRating: number;        // 0-100
+        contentQualityRating: number;    // 0-100
+        practicalValueRating: number;    // 0-100
+    };
+    takeTheCourseAgain: boolean;
+    author: {
+        fullName: string;
+        email: string;
     };
     comment?: string;
     likes: number;
@@ -30,17 +31,18 @@ export interface IReviewLike extends Document {
 const programReviewSchema = new Schema<IProgramReview>({
     program: { type: Schema.Types.ObjectId, ref: 'Program', required: true },
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    year: { type: Number, required: true },
-    criteriaRatings: {
-        TeachingQuality: { type: Number, min: 1, max: 5, required: true },
-        FacultySupport: { type: Number, min: 1, max: 5, required: true },
-        LearningEnvironment: { type: Number, min: 1, max: 5, required: true },
-        LibraryResources: { type: Number, min: 1, max: 5, required: true },
-        StudentSupport: { type: Number, min: 1, max: 5, required: true },
-        CampusLife: { type: Number, min: 1, max: 5, required: true },
-        OverallExperience: { type: Number, min: 1, max: 5, required: true },
+    currentSemester: { type: String, required: true },
+    ratings: {
+        instructorRating: { type: Number, min: 0, max: 100, required: true },
+        contentQualityRating: { type: Number, min: 0, max: 100, required: true },
+        practicalValueRating: { type: Number, min: 0, max: 100, required: true }
     },
-    comment: { type: String, maxlength: 2000 },
+    takeTheCourseAgain: { type: Boolean, required: true },
+    author: {
+        fullName: { type: String, required: true },
+        email: { type: String, required: true }
+    },
+    comment: { type: String, maxlength: 500 },
     likes: { type: Number, default: 0 },
     dislikes: { type: Number, default: 0 },
 }, { timestamps: true });

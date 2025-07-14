@@ -172,7 +172,6 @@ bookmarkSchema.statics.findByUser = function (userId, options = {}) {
     }
     return this.find(query)
         .populate('studyMaterial', 'title description category academic.course averageRating views')
-        .populate('studyMaterial.academic.course', 'code name')
         .sort(options.sort || { createdAt: -1 })
         .limit(options.limit || 50);
 };

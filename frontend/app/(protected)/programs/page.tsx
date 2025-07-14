@@ -1,75 +1,110 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Search } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
 import LandingNavBar from "@/components/landing/LandingNavBar";
 import { Button } from "@/components/ui/Button";
 import PageLoader from "@/components/ui/PageLoader";
 import { programAPI } from "@/lib/api";
 import { Program } from "@/types/Program";
-
-// Simple FilterDropDown component
-interface FilterDropDownProps {
-    options: { label: string; value: string }[];
-    value: string;
-    onChange: (value: string) => void;
-    placeholder: string;
-}
-
-const FilterDropDown: React.FC<FilterDropDownProps> = ({ options, value, onChange, placeholder }) => {
-    return (
-        <select
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-[#232425] text-white"
-        >
-            <option value="">{placeholder}</option>
-            {options.map((option) => (
-                <option key={option.value} value={option.value}>
-                    {option.label}
-                </option>
-            ))}
-        </select>
-    );
-};
+import { Listbox } from '@headlessui/react';
+import Footer from '@/components/Footer';
 
 const ProgramsPage = () => {
     // State management
     const [programs, setPrograms] = useState<Program[]>([]);
     const [filteredPrograms, setFilteredPrograms] = useState<Program[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    
+
     // Filter states
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedSchool, setSelectedSchool] = useState("");
     const [selectedLevel, setSelectedLevel] = useState("");
     const [selectedCredential, setSelectedCredential] = useState("");
-    const [sortBy, setSortBy] = useState("name");
 
     // Pagination states
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
 
-    // Ref for scrolling to results
-    const resultsRef = useRef<HTMLDivElement>(null);
+    // Autocomplete states
+    const [suggestions, setSuggestions] = useState<Array<{
+        id: string;
+        name: string;
+        code: string;
+        school: string;
+        level: string;
+        credential: string;
+    }>>([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [suggestionsLoading, setSuggestionsLoading] = useState(false);
+
+    // Filter options
+    const [availableFilters, setAvailableFilters] = useState<{
+        schools: string[];
+        levels: string[];
+        credentials: string[];
+    }>({
+        schools: [],
+        levels: [],
+        credentials: []
+    });
+
+    // Refs
+    const searchInputRef = useRef<HTMLInputElement>(null);
+    const suggestionsRef = useRef<HTMLDivElement>(null);
+
+    // Fetch initial filter options and programs
+    const fetchInitialData = async () => {
+        try {
+            setLoading(true);
+            const [schoolsRes, levelsRes, credentialsRes, programsRes] = await Promise.all([
+                programAPI.getProgramSchools(),
+                programAPI.getProgramLevels(),
+                programAPI.getProgramCredentials(),
+                programAPI.getPrograms({ page: 1, limit: 12, sortBy: 'name', sortOrder: 'asc' })
+            ]);
+
+            setAvailableFilters({
+                schools: schoolsRes.data.schools || [],
+                levels: levelsRes.data.levels || [],
+                credentials: credentialsRes.data.credentials || []
+            });
+
+            if (programsRes.success) {
+                setPrograms(programsRes.data.data);
+                setFilteredPrograms(programsRes.data.data);
+                setCurrentPage(programsRes.data.pagination.currentPage);
+                setTotalPages(programsRes.data.pagination.totalPages);
+                setTotalItems(programsRes.data.pagination.totalItems);
+            }
+        } catch (error) {
+            console.error('Error fetching initial data:', error);
+            setError('Error loading data. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Load initial data on component mount
+    useEffect(() => {
+        fetchInitialData();
+    }, []);
 
     // Fetch programs from API
     const fetchPrograms = async (page = 1) => {
         try {
             setLoading(true);
             setError(null);
-            
-            // Build clean params object without undefined values
+
             const params: Record<string, any> = {
                 page,
                 limit: 12,
-                sortBy: sortBy || 'name',
+                sortBy: 'name',
                 sortOrder: 'asc'
             };
 
-            // Only add filter params if they have values
             if (searchTerm && searchTerm.trim()) {
                 params.search = searchTerm.trim();
             }
@@ -82,7 +117,7 @@ const ProgramsPage = () => {
             if (selectedCredential) {
                 params.credential = selectedCredential;
             }
-            
+
             const response = await programAPI.getPrograms(params);
 
             if (response.success) {
@@ -102,30 +137,74 @@ const ProgramsPage = () => {
         }
     };
 
-    // Initial load
-    useEffect(() => {
+    // Fetch suggestions for autocomplete
+    const fetchSuggestions = async (query: string) => {
+        if (query.length < 2) {
+            setSuggestions([]);
+            setShowSuggestions(false);
+            return;
+        }
+
+        try {
+            setSuggestionsLoading(true);
+            const response = await programAPI.getProgramSuggestions(query);
+
+            if (response.success) {
+                setSuggestions(response.data.suggestions);
+                setShowSuggestions(true);
+            }
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+            setSuggestions([]);
+            setShowSuggestions(false);
+        } finally {
+            setSuggestionsLoading(false);
+        }
+    };
+
+    // Handle suggestion click
+    const handleSuggestionClick = (suggestion: any) => {
+        setSearchTerm(suggestion.name);
+        setShowSuggestions(false);
         fetchPrograms(1);
+    };
+
+    // Handle input change with debounced suggestions
+    const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+
+        // Debounce suggestions
+        setTimeout(() => {
+            fetchSuggestions(value);
+        }, 300);
+    };
+
+    // Handle click outside to close suggestions
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                suggestionsRef.current &&
+                !suggestionsRef.current.contains(event.target as Node) &&
+                searchInputRef.current &&
+                !searchInputRef.current.contains(event.target as Node)
+            ) {
+                setShowSuggestions(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    // Refetch when filters change
+    // Refetch when filters change 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             fetchPrograms(1);
-        }, 500); // Debounce search
+        }, 500);
 
         return () => clearTimeout(timeoutId);
-    }, [searchTerm, selectedSchool, selectedLevel, selectedCredential, sortBy]);
-
-    // Get unique values for filter dropdowns
-    const getUniqueValues = (key: keyof Program): string[] => {
-        const values = programs.map(program => {
-            if (key === 'campus') {
-                return program[key].join(', '); // Join campus array
-            }
-            return program[key] as string;
-        }).filter(Boolean);
-        return [...new Set(values)].sort();
-    };
+    }, [selectedSchool, selectedLevel, selectedCredential, searchTerm]);
 
     // Handle pagination
     const handlePageChange = (page: number) => {
@@ -136,128 +215,11 @@ const ProgramsPage = () => {
     const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault();
+            setShowSuggestions(false);
             fetchPrograms(1);
-            // Scroll to results after a short delay to ensure state update
-            setTimeout(() => {
-                resultsRef.current?.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }, 100);
+        } else if (e.key === 'Escape') {
+            setShowSuggestions(false);
         }
-    };
-
-    // Handle search button click
-    const handleSearchClick = () => {
-        fetchPrograms(1);
-        // Scroll to results after a short delay to ensure state update
-        setTimeout(() => {
-            resultsRef.current?.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }, 100);
-    };
-
-    // Filter options
-    const schoolOptions = getUniqueValues('school').map(school => ({ 
-        label: school, 
-        value: school 
-    }));
-
-    const levelOptions = getUniqueValues('level').map(level => ({ 
-        label: level, 
-        value: level 
-    }));
-
-    const credentialOptions = getUniqueValues('credential').map(credential => ({ 
-        label: credential, 
-        value: credential 
-    }));
-
-    const sortOptions = [
-        { label: "Name", value: "name" },
-        { label: "Code", value: "code" },
-        { label: "School", value: "school" },
-        { label: "Level", value: "level" }
-    ];
-
-    // Get program image based on program name/category
-    const getProgramImage = (programName: string, school: string): string => {
-        const name = programName.toLowerCase();
-        const schoolName = school.toLowerCase();
-        
-        // Technology & IT Programs
-        if (name.includes('computer') || name.includes('software') || name.includes('information technology') || 
-            name.includes('cybersecurity') || name.includes('data') || name.includes('programming') || 
-            name.includes('web') || name.includes('network') || name.includes('it ')) {
-            return 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=250&fit=crop&crop=center';
-        }
-        
-        // Business & Management
-        if (name.includes('business') || name.includes('management') || name.includes('marketing') || 
-            name.includes('finance') || name.includes('accounting') || name.includes('administration') ||
-            name.includes('entrepreneurship') || name.includes('economics')) {
-            return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop&crop=center';
-        }
-        
-        // Health & Medical
-        if (name.includes('health') || name.includes('medical') || name.includes('nursing') || 
-            name.includes('pharmacy') || name.includes('dental') || name.includes('therapy') ||
-            name.includes('healthcare') || name.includes('medicine')) {
-            return 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=250&fit=crop&crop=center';
-        }
-        
-        // Engineering & Technology
-        if (name.includes('engineering') || name.includes('mechanical') || name.includes('electrical') || 
-            name.includes('civil') || name.includes('chemical') || name.includes('aerospace') ||
-            name.includes('automotive') || name.includes('manufacturing')) {
-            return 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=250&fit=crop&crop=center';
-        }
-        
-        // Creative Arts & Design
-        if (name.includes('design') || name.includes('art') || name.includes('creative') || 
-            name.includes('animation') || name.includes('graphic') || name.includes('fashion') ||
-            name.includes('interior') || name.includes('photography') || name.includes('media')) {
-            return 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=250&fit=crop&crop=center';
-        }
-        
-        // Hospitality & Tourism
-        if (name.includes('hospitality') || name.includes('tourism') || name.includes('hotel') || 
-            name.includes('culinary') || name.includes('chef') || name.includes('restaurant') ||
-            name.includes('food') || name.includes('beverage')) {
-            return 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=250&fit=crop&crop=center';
-        }
-        
-        // Education & Social Services
-        if (name.includes('education') || name.includes('teaching') || name.includes('social') || 
-            name.includes('community') || name.includes('psychology') || name.includes('counseling') ||
-            name.includes('child') || name.includes('early childhood')) {
-            return 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=250&fit=crop&crop=center';
-        }
-        
-        // Aviation & Transportation
-        if (name.includes('aviation') || name.includes('pilot') || name.includes('aircraft') || 
-            name.includes('transportation') || name.includes('logistics') || name.includes('supply chain')) {
-            return 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&h=250&fit=crop&crop=center';
-        }
-        
-        // Law & Public Safety
-        if (name.includes('law') || name.includes('legal') || name.includes('police') || 
-            name.includes('security') || name.includes('justice') || name.includes('paralegal') ||
-            name.includes('public safety') || name.includes('criminal')) {
-            return 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&h=250&fit=crop&crop=center';
-        }
-        
-        // Science & Research
-        if (name.includes('science') || name.includes('biology') || name.includes('chemistry') || 
-            name.includes('physics') || name.includes('research') || name.includes('laboratory') ||
-            name.includes('environmental') || name.includes('biotechnology')) {
-            return 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=250&fit=crop&crop=center';
-        }
-        
-        // Default image for general programs
-        return 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=250&fit=crop&crop=center';
     };
 
     if (loading && programs.length === 0) {
@@ -266,16 +228,15 @@ const ProgramsPage = () => {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-[#1a1a1a] text-white">
-                <div className="sticky top-0 z-30 bg-[#18191A]">
+            <div className="min-h-screen bg-gray-50">
+                <div className="sticky top-0 z-30 bg-white">
                     <LandingNavBar />
                 </div>
-                <div className="h-20" />
                 <div className="container mx-auto px-4 py-8">
                     <div className="text-center">
-                        <h2 className="text-2xl font-bold text-red-400 mb-4">Error</h2>
-                        <p className="text-gray-300 mb-4">{error}</p>
-                        <Button onClick={() => fetchPrograms(1)}>
+                        <h2 className="text-2xl font-bold text-red-600 mb-4">Error</h2>
+                        <p className="text-gray-600 mb-4">{error}</p>
+                        <Button onClick={fetchInitialData}>
                             Try Again
                         </Button>
                     </div>
@@ -285,277 +246,424 @@ const ProgramsPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#1a1a1a] text-white">
-            <div className="sticky top-0 z-30 bg-[#18191A]">
+        <div className="min-h-screen bg-[#FAF9F6]">
+            {/* Navigation */}
+            <div className="sticky top-0 z-30">
                 <LandingNavBar />
             </div>
-            <div className="h-20" />
-            <div className="border-b border-white/10 w-full" />
-            
-            {/* Header */}
-            <div className="w-full border-b border-[#232425] min-h-screen flex items-center justify-center">
-                <div className="max-w-6xl mx-auto px-6 py-30 text-center">
-                    <h1 className="text-8xl font-bold mb-5">Programs Reviews</h1>
-                    <p className="text-gray-300 mb-15 max-w-full mx-auto text-lg">
-                        Explore a wealth of resources shared by your peers, categorized by program and course.
-                    </p>
-                    <div className="relative w-full max-w-2xl mb-10 mx-auto">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                        <input
-                            type="text"
-                            value={searchTerm}
-                            onChange={e => setSearchTerm(e.target.value)}
-                            placeholder="Search for programs or materials..."
-                            className="w-full pl-12 pr-4 py-5 rounded-full bg-[#232425] text-white placeholder-gray-400 focus:ring-2 focus:ring-amber-50 outline-none transition cursor-text"
-                            onKeyDown={handleSearchKeyDown}
-                        />
-                        <button
-                            onClick={handleSearchClick}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-4 py-2 rounded-full transition-colors"
-                        >
-                            Search
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            {/* Results Section */}
-            <div ref={resultsRef} className="max-w-6xl mx-auto px-6 pb-20 pt-10">
-                {/* Filters */}
-                <div className="mb-8 bg-[#232425] rounded-lg shadow-sm border border-[#36454F] p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-                        {/* School Filter */}
-                        <FilterDropDown
-                            options={schoolOptions}
-                            value={selectedSchool}
-                            onChange={setSelectedSchool}
-                            placeholder="All Schools"
-                        />
+            {/* Hero Section */}
+            <div className="relative h-[500px] overflow-hidden">
+                {/* Background Image */}
+                <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{
+                        backgroundImage: 'url("https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?q=80&w=2070&auto=format&fit=crop")',
+                    }}
+                />
 
-                        {/* Level Filter */}
-                        <FilterDropDown
-                            options={levelOptions}
-                            value={selectedLevel}
-                            onChange={setSelectedLevel}
-                            placeholder="All Levels"
-                        />
+                {/* Dark overlay */}
+                <div className="absolute inset-0 bg-black/60" />
 
-                        {/* Credential Filter */}
-                        <FilterDropDown
-                            options={credentialOptions}
-                            value={selectedCredential}
-                            onChange={setSelectedCredential}
-                            placeholder="All Credentials"
-                        />
+                {/* Content */}
+                <div className="relative z-10 h-full flex items-center justify-center">
+                    <div className="max-w-4xl mx-auto px-6 text-center">
+                        <div className="text-[#F9F6EE]">
+                            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-center">
+                                Search for programs
+                            </h1>
 
-                        {/* Sort */}
-                        <FilterDropDown
-                            options={sortOptions}
-                            value={sortBy}
-                            onChange={setSortBy}
-                            placeholder="Sort by"
-                        />
-                    </div>
-                </div>
+                            {/* Yellow accent bar */}
+                            <div className="w-30 h-1 bg-yellow-400 mb-10 mx-auto" />
 
-                {/* Results Count */}
-                <div className="mb-6">
-                    <p className="text-gray-300">
-                        Showing {filteredPrograms.length} of {totalItems} programs
-                        {loading && <span className="ml-2 text-amber-400">Loading...</span>}
-                    </p>
-                </div>
-
-                {/* Programs Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-                    {filteredPrograms.map((program, index) => (
-                        <div
-                            key={program._id}
-                            className="group bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-200 overflow-hidden hover:scale-105 cursor-pointer transform hover:-translate-y-2"
-                            style={{
-                                animationDelay: `${index * 100}ms`,
-                                animation: 'fadeInUp 0.6s ease-out forwards'
-                            }}
-                            onClick={() => {
-                                window.location.href = `/programs/${program.programId}`;
-                            }}
-                        >
-                            {/* Image Header */}
-                            <div className="relative h-48 overflow-hidden">
-                                <img 
-                                    src={getProgramImage(program.name, program.school)}
-                                    alt={program.name}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                />
-                                {/* Overlay gradient */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
-                                
-                                {/* Campus badge */}
-                                {/* <div className="absolute top-4 left-4">
-                                    <span className="inline-block bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
-                                        {program.campus.join(', ') || 'Multiple Campuses'}
-                                    </span>
-                                </div> */}
-                                
-                                {/* Program Code badge */}
-                                <div className="absolute top-4 right-4">
-                                    <span className="inline-block bg-gradient-to-r from-amber-400 to-orange-400 text-black text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                                        {program.code}
-                                    </span>
-                                </div>
-                                
-                                {/* Decorative elements */}
-                                <div className="absolute bottom-0 right-0 w-20 h-20 bg-white/10 rounded-full translate-y-10 translate-x-10"></div>
-                                <div className="absolute top-0 left-0 w-16 h-16 bg-white/5 rounded-full -translate-y-8 -translate-x-8"></div>
-                            </div>
-
-                            {/* Content */}
-                            <div className="p-6 relative bg-white">
-                                {/* Program Name */}
-                                <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-amber-600 transition-colors duration-300">
-                                    {program.name}
-                                </h3>
-
-                                {/* Overview */}
-                                <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-                                    {program.overview}
+                            <div className="max-w-3xl mx-auto">
+                                <p className="text-md text-[#F9F6EE] leading-relaxed">
+                                    We have collected the most complete database of universities in Canada. We will help you find
+                                    universities by various criteria, including countries, degrees.
                                 </p>
-
-                                {/* Additional Info with Icons */}
-                                <div className="space-y-2 text-xs text-gray-500 mb-6">
-                                    <div className="flex items-center space-x-2">
-                                        <div className="w-4 h-4 bg-amber-100 rounded-full flex items-center justify-center">
-                                            <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
-                                        </div>
-                                        <span className="font-medium text-gray-700">Duration:</span>
-                                        <span>{program.duration}</span>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <div className="w-4 h-4 bg-orange-100 rounded-full flex items-center justify-center">
-                                            <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                                        </div>
-                                        <span className="font-medium text-gray-700">Level:</span>
-                                        <span>{program.level}</span>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <div className="w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center">
-                                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                        </div>
-                                        <span className="font-medium text-gray-700">Campus:</span>
-                                        <span className="line-clamp-1">{program.campus.join(', ') || 'Multiple Campuses'}</span>
-                                    </div>
-                                </div>
-
-                                {/* Action Button */}
-                                <div className="mt-6">
-                                    <Button
-                                        variant="default"
-                                        size="sm"
-                                        className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group-hover:from-orange-500 group-hover:to-red-500"
-                                    >
-                                        <span className="flex items-center justify-center space-x-2">
-                                            <span>View Details</span>
-                                            <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                            </svg>
-                                        </span>
-                                    </Button>
-                                </div>
-
-                                {/* Hover overlay effect */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none"></div>
                             </div>
-
-                            {/* Bottom accent line */}
-                            <div className="h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                         </div>
-                    ))}
+                    </div>
                 </div>
-
-                {/* Empty State */}
-                {filteredPrograms.length === 0 && !loading && (
-                    <div className="text-center py-20">
-                        <div className="text-6xl mb-4">🔍</div>
-                        <h3 className="text-2xl font-bold text-gray-300 mb-2">No programs found</h3>
-                        <p className="text-gray-400 mb-6">
-                            Try adjusting your search terms or filters to find what you're looking for.
-                        </p>
-                        <Button
-                            onClick={() => {
-                                setSearchTerm("");
-                                setSelectedSchool("");
-                                setSelectedLevel("");
-                                setSelectedCredential("");
-                            }}
-                            className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
-                        >
-                            Clear Filters
-                        </Button>
-                    </div>
-                )}
-
-                {/* Pagination */}
-                {totalPages > 1 && (
-                    <div className="flex justify-center items-center gap-4 mt-10">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            disabled={currentPage === 1 || loading}
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            className="border-[#36454F] text-gray-300 hover:bg-[#36454F]"
-                        >
-                            Previous
-                        </Button>
-                        
-                        <div className="flex gap-2">
-                            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                                const page = i + Math.max(1, currentPage - 2);
-                                if (page > totalPages) return null;
-                                
-                                return (
-                                    <Button
-                                        key={page}
-                                        variant={currentPage === page ? "default" : "outline"}
-                                        size="sm"
-                                        onClick={() => handlePageChange(page)}
-                                        disabled={loading}
-                                        className={currentPage === page 
-                                            ? "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600" 
-                                            : "border-[#36454F] text-gray-300 hover:bg-[#36454F]"
-                                        }
-                                    >
-                                        {page}
-                                    </Button>
-                                );
-                            })}
-                        </div>
-
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            disabled={currentPage === totalPages || loading}
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            className="border-[#36454F] text-gray-300 hover:bg-[#36454F]"
-                        >
-                            Next
-                        </Button>
-                    </div>
-                )}
             </div>
 
-            {/* Add CSS animations */}
-            <style jsx>{`
-                @keyframes fadeInUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(30px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-            `}</style>
+            {/* Search Section */}
+            <div className="py-12">
+                <div className="max-w-4xl mx-auto px-6">
+                    {/* Search Bar */}
+                    <div className="relative -mt-21 z-50">
+                        <div className="absolute inset-0 w-full h-full rounded-2xl pointer-events-none" style={{ boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10)' }} />
+                        <div className="relative">
+                            
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-6 h-6" />
+                            <input
+                                ref={searchInputRef}
+                                type="text"
+                                value={searchTerm}
+                                onChange={handleSearchInputChange}
+                                placeholder="Find a program"
+                                className="w-full pl-14 pr-4 py-5 text-lg bg-[#FAF9F6] text-gray-900 placeholder-gray-500 border border-gray-300 rounded-xl  focus:ring-gray-500 focus:border-gray-500 outline-none shadow-sm"
+                                onKeyDown={handleSearchKeyDown}
+                                onFocus={() => {
+                                    if (searchTerm.length >= 2 && suggestions.length > 0) {
+                                        setShowSuggestions(true);
+                                    }
+                                }}
+                            />
+                        </div>
+
+                        {/* Suggestions Dropdown */}
+                        {showSuggestions && (
+                            <div
+                                ref={suggestionsRef}
+                                className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-80 overflow-y-auto"
+                                style={{ minHeight: suggestions.length > 0 || suggestionsLoading ? '60px' : undefined }}
+                            >
+                                {suggestionsLoading ? (
+                                    <div className="p-4 text-center text-gray-500">
+                                        <div className="animate-spin w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full mx-auto"></div>
+                                        <span className="mt-2 block">Loading...</span>
+                                    </div>
+                                ) : suggestions.length > 0 ? (
+                                    <div className="py-2">
+                                        {suggestions.map((suggestion, index) => (
+                                            <button
+                                                key={suggestion.id}
+                                                onClick={() => handleSuggestionClick(suggestion)}
+                                                className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
+                                            >
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex-1">
+                                                        <div className="font-medium text-gray-900 line-clamp-1">
+                                                            {suggestion.name}
+                                                        </div>
+                                                        <div className="text-sm text-gray-500 mt-1">
+                                                            {suggestion.school} • {suggestion.level} • {suggestion.credential}
+                                                        </div>
+                                                    </div>
+                                                    <div className="ml-3 flex-shrink-0">
+                                                        <span className="bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded">
+                                                            {suggestion.code}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="p-4 text-center text-gray-500">
+                                        No programs found
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+                {/* Thêm margin-bottom để tránh suggestions che nội dung bên dưới */}
+                <div style={{ marginBottom: showSuggestions ? 300 : 0 }} />
+            </div>
+
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto px-6 py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    {/* Left Sidebar - Filter */}
+                    <div className="lg:col-span-1">
+                        <div className="p-4 shadow-sm sticky top-8">
+                            <h2 className="text-lg font-semibold mb-10 text-gray-900">Filter</h2>
+
+                            {/* School Names Filter */}
+                            <div className="mb-4">
+                                <h3 className="text-sm font-medium mb-2 text-gray-700">School Names</h3>
+                                <Listbox value={selectedSchool} onChange={setSelectedSchool}>
+                                    <div className="relative">
+                                        <Listbox.Button className="w-full p-2.5 border border-gray-300 rounded-lg text-left bg-white text-gray-900 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none flex items-center justify-between">
+                                            <span>{selectedSchool || "All Schools"}</span>
+                                            <ChevronDown className="w-4 h-4 text-gray-500" />
+                                        </Listbox.Button>
+                                        <Listbox.Options className="absolute mt-1 w-full bg-white rounded-lg shadow-lg max-h-60 overflow-auto z-50 border border-gray-200">
+                                            <Listbox.Option value="">
+                                                {({ active }) => (
+                                                    <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''}`}>All Schools</span>
+                                                )}
+                                            </Listbox.Option>
+                                            {(availableFilters.schools).map((school) => (
+                                                <Listbox.Option key={school} value={school}>
+                                                    {({ active, selected }) => (
+                                                        <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''} ${selected ? 'font-semibold text-gray-900' : ''}`}>{school}</span>
+                                                    )}
+                                                </Listbox.Option>
+                                            ))}
+                                        </Listbox.Options>
+                                    </div>
+                                </Listbox>
+                            </div>
+
+                            {/* Institution Type Filter */}
+                            <div className="mb-4">
+                                <h3 className="text-sm font-medium mb-2 text-gray-700">Institution Type</h3>
+                                <Listbox value={selectedLevel} onChange={setSelectedLevel}>
+                                    <div className="relative">
+                                        <Listbox.Button className="w-full p-2.5 border border-gray-300 rounded-lg text-left bg-white text-gray-900 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none flex items-center justify-between">
+                                            <span>{selectedLevel || "All Types"}</span>
+                                            <ChevronDown className="w-4 h-4 text-gray-500" />
+                                        </Listbox.Button>
+                                        <Listbox.Options className="absolute mt-1 w-full bg-white rounded-lg shadow-lg max-h-60 overflow-auto z-50 border border-gray-200">
+                                            <Listbox.Option value="">
+                                                {({ active }) => (
+                                                    <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''}`}>All Types</span>
+                                                )}
+                                            </Listbox.Option>
+                                            <Listbox.Option value="University">
+                                                {({ active, selected }) => (
+                                                    <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''} ${selected ? 'font-semibold text-gray-900' : ''}`}>University</span>
+                                                )}
+                                            </Listbox.Option>
+                                            <Listbox.Option value="College">
+                                                {({ active, selected }) => (
+                                                    <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''} ${selected ? 'font-semibold text-gray-900' : ''}`}>College</span>
+                                                )}
+                                            </Listbox.Option>
+                                        </Listbox.Options>
+                                    </div>
+                                </Listbox>
+                            </div>
+
+                            {/* Credentials Filter */}
+                            <div>
+                                <h3 className="text-sm font-medium mb-2 text-gray-700">Credentials</h3>
+                                <Listbox value={selectedCredential} onChange={setSelectedCredential}>
+                                    <div className="relative">
+                                        <Listbox.Button className="w-full p-2.5 border border-gray-300 rounded-lg text-left bg-white text-gray-900 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none flex items-center justify-between">
+                                            <span>{selectedCredential || "All Credentials"}</span>
+                                            <ChevronDown className="w-4 h-4 text-gray-500" />
+                                        </Listbox.Button>
+                                        <Listbox.Options className="absolute mt-1 w-full bg-white rounded-lg shadow-lg max-h-60 overflow-auto z-50 border border-gray-200">
+                                            <Listbox.Option value="">
+                                                {({ active }) => (
+                                                    <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''}`}>All Credentials</span>
+                                                )}
+                                            </Listbox.Option>
+                                            {(availableFilters.credentials).map((credential) => (
+                                                <Listbox.Option key={credential} value={credential}>
+                                                    {({ active, selected }) => (
+                                                        <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''} ${selected ? 'font-semibold text-gray-900' : ''}`}>
+                                                            {credential.charAt(0).toUpperCase() + credential.slice(1)}
+                                                        </span>
+                                                    )}
+                                                </Listbox.Option>
+                                            ))}
+                                        </Listbox.Options>
+                                    </div>
+                                </Listbox>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Content - Results */}
+                    <div className="lg:col-span-3">
+
+                        {/* Info Notice */}
+                        <div className="bg-white border border-gray-200 rounded-xl flex items-center gap-5 p-6 mb-8 mt-4 shadow-sm">
+                            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center">
+                                <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
+                                    <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                                    <circle cx="12" cy="16" r="1.5" fill="currentColor" />
+                                </svg>
+                            </div>
+                            <div className="text-lg text-gray-900 font-normal">
+                                The information is for informational purposes only. Check more details on the official website of the educational institution.
+                            </div>
+                        </div>
+
+                        {/* Results Count */}
+                        <div className="mb-6">
+                            <p className="text-gray-600">
+                                Entries <span className="font-semibold">{((currentPage - 1) * 12) + 1}-{Math.min(currentPage * 12, totalItems)}</span> of <span className="font-semibold">{totalItems.toLocaleString()}</span>
+                                {loading && <span className="ml-2 text-gray-400">Loading...</span>}
+                            </p>
+                        </div>
+
+                        {/* Programs Grid */}
+                        <div className="space-y-6">
+                            {loading && filteredPrograms.length === 0 && (
+                                <div className="text-center py-12">
+                                    <div className="animate-spin w-8 h-8 border-4 border-gray-400 border-t-transparent rounded-full mx-auto mb-4"></div>
+                                    <p className="text-gray-600">Loading universities...</p>
+                                </div>
+                            )}
+
+                            {!loading && filteredPrograms.map((program, index) => (
+                                <div
+                                    key={program._id}
+                                    className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                                >
+                                    {/* Header with school name and location */}
+                                    <div className="mb-4">
+                                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                            {program.name}
+                                        </h3>
+                                        <div className="flex items-center text-gray-600 mb-4">
+                                            <span className="text-lg">🇨🇦</span>
+                                            <span className="ml-2">Canada, {program.campus[0] || 'Multiple Locations'}</span>
+                                        </div>
+
+                                        {/* Rankings */}
+                                        <div className="flex flex-wrap gap-2 mb-6">
+                                            <span className="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
+                                                #{Math.floor(Math.random() * 50) + 1} QS Rankings
+                                            </span>
+                                            <span className="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
+                                                #{Math.floor(Math.random() * 50) + 1} THE Rankings
+                                            </span>
+                                            <span className="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
+                                                #{Math.floor(Math.random() * 50) + 1} ARWU Rankings
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Degree Programs and Pricing */}
+                                    <div className="grid grid-cols-3 gap-6 mb-6">
+                                        {/* Bachelor's degree */}
+                                        <div className="text-center">
+                                            <h4 className="font-semibold text-gray-800 mb-3">Bachelor's degree</h4>
+                                            <div className="space-y-1">
+                                                <div className="text-xs text-gray-500">from</div>
+                                                <div className="text-lg font-bold text-gray-900">
+                                                    {(Math.floor(Math.random() * 5000) + 15000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                                </div>
+                                                <div className="text-xs text-gray-500">to</div>
+                                                <div className="text-lg font-bold text-gray-900">
+                                                    {(Math.floor(Math.random() * 15000) + 35000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Master's degree */}
+                                        <div className="text-center">
+                                            <h4 className="font-semibold text-gray-800 mb-3">Master's degree</h4>
+                                            <div className="space-y-1">
+                                                <div className="text-xs text-gray-500">from</div>
+                                                <div className="text-lg font-bold text-gray-900">
+                                                    {(Math.floor(Math.random() * 8000) + 20000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                                </div>
+                                                <div className="text-xs text-gray-500">to</div>
+                                                <div className="text-lg font-bold text-gray-900">
+                                                    {(Math.floor(Math.random() * 20000) + 45000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Doctoral studies */}
+                                        <div className="text-center">
+                                            <h4 className="font-semibold text-gray-800 mb-3">Doctoral studies</h4>
+                                            <div className="space-y-1">
+                                                <div className="text-xs text-gray-500">from</div>
+                                                <div className="text-lg font-bold text-gray-900">
+                                                    {(Math.floor(Math.random() * 5000) + 25000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                                </div>
+                                                <div className="text-xs text-gray-500">to</div>
+                                                <div className="text-lg font-bold text-gray-900">
+                                                    {(Math.floor(Math.random() * 10000) + 35000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="flex gap-4">
+                                        <button
+                                            onClick={() => {
+                                                window.location.href = `/programs/${program.programId}`;
+                                            }}
+                                            className="cursor-pointer flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-3 px-4 rounded-lg transition-colors"
+                                        >
+                                            Read more
+                                        </button>
+                                        <button className="cursor-pointer flex-1 bg-gray-800 hover:bg-gray-900 text-white font-medium py-3 px-4 rounded-lg transition-colors" onClick={() => {
+                                            window.location.href = `/programs/${program.programId}`;
+                                        }}>
+                                            Write a review
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Empty State */}
+                        {!loading && filteredPrograms.length === 0 && (
+                            <div className="text-center py-20">
+                                <div className="text-6xl mb-4">🔍</div>
+                                <h3 className="text-2xl font-bold text-gray-800 mb-2">No universities found</h3>
+                                <p className="text-gray-600 mb-6">
+                                    Try adjusting your search terms or filters to find what you're looking for.
+                                </p>
+                                <Button
+                                    onClick={() => {
+                                        setSearchTerm("");
+                                        setSelectedSchool("");
+                                        setSelectedLevel("");
+                                        setSelectedCredential("");
+                                        fetchPrograms(1);
+                                    }}
+                                    className="bg-gray-800 hover:bg-gray-900 text-white"
+                                >
+                                    Clear Filters
+                                </Button>
+                            </div>
+                        )}
+
+                        {/* Pagination */}
+                        {totalPages > 1 && (
+                            <div className="flex justify-center items-center gap-4 mt-10">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    disabled={currentPage === 1 || loading}
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                                >
+                                    Previous
+                                </Button>
+
+                                <div className="flex gap-2">
+                                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                                        const page = i + Math.max(1, currentPage - 2);
+                                        if (page > totalPages) return null;
+
+                                        return (
+                                            <Button
+                                                key={page}
+                                                variant={currentPage === page ? "default" : "outline"}
+                                                size="sm"
+                                                onClick={() => handlePageChange(page)}
+                                                disabled={loading}
+                                                className={currentPage === page
+                                                    ? "bg-gray-800 hover:bg-gray-900 text-white"
+                                                    : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                                                }
+                                            >
+                                                {page}
+                                            </Button>
+                                        );
+                                    })}
+                                </div>
+
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    disabled={currentPage === totalPages || loading}
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                                >
+                                    Next
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+            <Footer />
         </div>
     );
 };

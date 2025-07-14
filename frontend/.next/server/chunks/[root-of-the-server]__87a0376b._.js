@@ -292,23 +292,27 @@ const uploadAPI = {
     getUserFiles: ()=>api.get('/upload/files')
 };
 const programAPI = {
-    getPrograms: (params)=>{
-        // Filter out undefined values
-        const cleanParams = {};
-        if (params) {
-            Object.keys(params).forEach((key)=>{
-                if (params[key] !== undefined && params[key] !== null && params[key] !== '') {
-                    cleanParams[key] = params[key];
-                }
-            });
-        }
-        const queryString = Object.keys(cleanParams).length > 0 ? `?${new URLSearchParams(cleanParams).toString()}` : '';
-        return api.get(`/programs${queryString}`);
-    },
+    getPrograms: (params)=>api.get('/programs', {
+            params
+        }),
     getProgramById: (id)=>api.get(`/programs/${id}`),
-    searchPrograms: (query)=>api.get(`/programs/search?q=${encodeURIComponent(query)}`),
-    getProgramsBySchool: (schoolId)=>api.get(`/programs/school/${schoolId}`),
-    getProgramLevels: ()=>api.get('/programs/levels')
+    getProgramsBySchool: (schoolId, params)=>api.get(`/programs/school/${schoolId}`, {
+            params
+        }),
+    getProgramLevels: ()=>api.get('/programs/levels'),
+    getProgramSchools: ()=>api.get('/programs/schools'),
+    getProgramCredentials: ()=>api.get('/programs/credentials'),
+    searchPrograms: (params)=>api.get('/programs/search', {
+            params
+        }),
+    getProgramSuggestions: (query)=>api.get('/programs/suggestions', {
+            params: {
+                q: query
+            }
+        }),
+    createProgram: (data)=>api.post('/programs', data),
+    updateProgram: (id, data)=>api.put(`/programs/${id}`, data),
+    deleteProgram: (id)=>api.delete(`/programs/${id}`)
 };
 const courseAPI = {
     getProgramCourses: (programId)=>api.get(`/courses/program-courses/${programId}`),

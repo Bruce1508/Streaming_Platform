@@ -36,20 +36,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Program = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const programSchema = new mongoose_1.Schema({
-    programId: {
+    // Simplified schema with standardized fields
+    id: {
         type: String,
         required: [true, 'Program ID is required'],
         unique: true,
-        trim: true,
-        lowercase: true
+        trim: true
     },
     code: {
         type: String,
         required: [true, 'Program code is required'],
-        unique: true,
         uppercase: true,
         trim: true,
-        maxlength: [10, 'Program code cannot exceed 10 characters']
+        maxlength: [50, 'Program code cannot exceed 50 characters']
     },
     name: {
         type: String,
@@ -57,15 +56,9 @@ const programSchema = new mongoose_1.Schema({
         trim: true,
         maxlength: [200, 'Program name cannot exceed 200 characters']
     },
-    overview: {
-        type: String,
-        required: [true, 'Program overview is required'],
-        trim: true,
-        maxlength: [2000, 'Overview cannot exceed 2000 characters']
-    },
     duration: {
         type: String,
-        required: [true, 'Duration is required'],
+        required: false,
         trim: true,
         maxlength: [100, 'Duration cannot exceed 100 characters']
     },
@@ -73,20 +66,31 @@ const programSchema = new mongoose_1.Schema({
             type: String,
             trim: true
         }],
+    credential: {
+        type: String,
+        required: [true, 'Credential is required'],
+        enum: ['bachelor', 'diploma', 'advanced diploma', 'certificate'],
+        lowercase: true
+    },
+    // Optional legacy fields for backward compatibility
+    programId: {
+        type: String,
+        trim: true,
+        lowercase: true
+    },
+    overview: {
+        type: String,
+        required: false,
+        trim: true,
+        maxlength: [2000, 'Overview cannot exceed 2000 characters']
+    },
     delivery: {
         type: String,
         trim: true,
         maxlength: [200, 'Delivery cannot exceed 200 characters']
     },
-    credential: {
-        type: String,
-        required: [true, 'Credential is required'],
-        trim: true,
-        maxlength: [100, 'Credential cannot exceed 100 characters']
-    },
     school: {
         type: String,
-        required: [true, 'School is required'],
         trim: true,
         maxlength: [200, 'School name cannot exceed 200 characters']
     },
@@ -102,8 +106,7 @@ const programSchema = new mongoose_1.Schema({
             'Honours Bachelor',
             'Seneca Certificate of Standing',
             'Certificate of Apprenticeship, Ontario College Certificate'
-        ],
-        required: [true, 'Program level is required']
+        ]
     },
     isActive: {
         type: Boolean,
@@ -130,7 +133,33 @@ const programSchema = new mongoose_1.Schema({
             min: [0, 'Employment rate cannot be negative'],
             max: [100, 'Employment rate cannot exceed 100%']
         }
-    }
+    },
+    // Semester and course structure for imported data
+    semesters: [{
+            id: {
+                type: String,
+                trim: true
+            },
+            name: {
+                type: String,
+                trim: true
+            },
+            courses: [{
+                    id: {
+                        type: String,
+                        trim: true
+                    },
+                    code: {
+                        type: String,
+                        uppercase: true,
+                        trim: true
+                    },
+                    name: {
+                        type: String,
+                        trim: true
+                    }
+                }]
+        }]
 }, {
     timestamps: true,
     toJSON: { virtuals: true },
@@ -142,11 +171,11 @@ programSchema.index({ school: 1 });
 programSchema.index({ level: 1 });
 programSchema.index({ isActive: 1 });
 programSchema.index({ name: 'text', overview: 'text', description: 'text' });
-// Virtual for courses
-programSchema.virtual('courses', {
-    ref: 'Course',
-    localField: '_id',
-    foreignField: 'programs.program'
-});
+// Virtual for courses - commented out until Course model is properly implemented
+// programSchema.virtual('courses', {
+//     ref: 'Course',
+//     localField: '_id',
+//     foreignField: 'programs.program'
+// });
 exports.Program = mongoose_1.default.model('Program', programSchema);
 //# sourceMappingURL=Program.js.map

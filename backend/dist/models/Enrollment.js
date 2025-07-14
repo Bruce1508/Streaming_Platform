@@ -99,9 +99,10 @@ const enrollmentSchema = new mongoose_1.Schema({
     },
     courses: [{
             course: {
-                type: mongoose_1.Schema.Types.ObjectId,
-                ref: 'Course',
-                required: true
+                type: String,
+                required: true,
+                trim: true,
+                maxlength: [100, 'Course name cannot exceed 100 characters']
             },
             semester: {
                 type: Number,
@@ -214,7 +215,6 @@ enrollmentSchema.statics.findByUser = function (userId) {
     return this.find({ user: userId })
         .populate('school', 'name shortName')
         .populate('program', 'name code duration')
-        .populate('courses.course', 'name code credits')
         .sort({ createdAt: -1 });
 };
 enrollmentSchema.statics.findByProgram = function (programId, options = {}) {

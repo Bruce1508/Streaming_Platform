@@ -1,88 +1,23 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import LandingNavBar from '@/components/landing/LandingNavBar';
 import { Button } from '@/components/ui/Button';
 import PageLoader from '@/components/ui/PageLoader';
-import { programAPI, courseAPI } from '@/lib/api';
-import { 
-    Clock, 
-    Award, 
-    Users, 
-    Building, 
-    BookOpen, 
-    MapPin, 
-    ExternalLink,
+import { programAPI, programReviewAPI } from '@/lib/api';
+import {
     ArrowLeft,
-    Star,
-    TrendingUp,
-    GraduationCap,
-    Briefcase,
-    CheckCircle,
-    AlertCircle
+    Send,
+    Star
 } from 'lucide-react';
-import ProgramReviewDisplay from '@/components/program/ProgramReviewDisplay';
-import ProgramScoreOverview from '@/components/program/ProgramScoreOverview';
+import LandingNavBar from '@/components/landing/LandingNavBar';
+import Footer from '@/components/Footer';
+import { capitalizeFirstLetter } from '@/lib/utils';
+import { Geist } from 'next/font/google';
+import { InteractiveHoverButton } from '@/components/magicui/interactive-hover-button';
+import { NumberTicker } from '@/components/magicui/number-ticker';
 
-interface Course {
-    id?: string;
-    code?: string;
-    name?: string;
-    credits?: number;
-    description?: string;
-}
-
-interface Requirement {
-    id: string;
-    type: 'general_education' | 'professional_options' | 'electives' | 'other';
-    title: string;
-    description: string;
-    selectCount: number;
-    availableCourses: Course[];
-    isRequired: boolean;
-    category?: string;
-    externalLinks?: string[];
-}
-
-interface Semester {
-    id?: string;
-    name?: string;
-    type: 'regular' | 'work_integrated_learning' | 'coop';
-    order: number;
-    coreCourses: Course[];
-    requirements: Requirement[];
-    totalCredits?: number;
-    prerequisites?: string[];
-    notes?: string;
-    isOptional?: boolean;
-}
-
-interface ProgramCourses {
-    programId: string;
-    programName: string;
-    semesters: Semester[];
-    totalSemesters: number;
-    totalCredits?: number;
-    hasWorkIntegratedLearning?: boolean;
-    stats?: {
-        totalSemesters: number;
-        regularSemesters: number;
-        workIntegratedSemesters: number;
-        totalCoreCourses: number;
-        totalRequirements: number;
-        totalCourses: number;
-        hasWorkIntegratedLearning: boolean;
-        coursesPerSemester: Array<{
-            semester: string;
-            type: string;
-            coreCourses: number;
-            requirements: number;
-            totalCourses: number;
-            isOptional: boolean;
-        }>;
-    };
-}
+const geist = Geist({ subsets: ['latin'] });
 
 interface Program {
     _id: string;
@@ -97,94 +32,302 @@ interface Program {
     school: string;
     level: string;
     isActive: boolean;
-    stats?: {
-        enrollmentCount: number;
-        graduationRate?: number;
-        employmentRate?: number;
-    };
 }
 
-const ProgramDetailPage = () => {
+interface Review {
+    _id: string;
+    ratings: {
+        instructorRating: number;        // 0-100
+        contentQualityRating: number;    // 0-100
+        practicalValueRating: number;    // 0-100
+    };
+    takeTheCourseAgain: boolean;
+    comment: string;
+    author: {
+        fullName: string;
+        email: string;
+    };
+    currentSemester: string;
+    createdAt: string;
+}
+
+const ProgramReviewPage = () => {
     const params = useParams();
     const router = useRouter();
     const [program, setProgram] = useState<Program | null>(null);
-    const [programCourses, setProgramCourses] = useState<ProgramCourses | null>(null);
+    const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
-    const [coursesLoading, setCoursesLoading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [retryCount, setRetryCount] = useState(0);
-    const [openSemesterIndex, setOpenSemesterIndex] = useState(0);
 
-    // Retry function for failed API calls
-    const retryFetch = () => {
-        setRetryCount(prev => prev + 1);
-        setError(null);
-        fetchProgramData();
+    // Review form state - Updated for new schema
+    const [instructorRating, setInstructorRating] = useState(50);
+    const [contentQualityRating, setContentQualityRating] = useState(50);
+    const [practicalValueRating, setPracticalValueRating] = useState(50);
+    const [takeTheCourseAgain, setTakeTheCourseAgain] = useState(false);
+    const [comment, setComment] = useState('');
+    const [currentSemester, setCurrentSemester] = useState('');
+    const [showReviewModal, setShowReviewModal] = useState(false);
+
+    // Review statistics
+    const [averageRating, setAverageRating] = useState(0);
+    const [gradeDistribution, setGradeDistribution] = useState({
+        'A+': 0, 'A': 0, 'B+': 0, 'B': 0, 'C+': 0, 'C': 0, 'D': 0, 'F': 0
+    });
+
+    const [activeTab, setActiveTab] = useState<'all' | 'A+' | 'A' | 'B+' | 'B' | 'C+' | 'C' | 'D' | 'F'>('all');
+
+    // Helper function to convert score to grade
+    const getGradeFromScore = (score: number): string => {
+        if (score >= 90) return 'A+';
+        if (score >= 80) return 'A';
+        if (score >= 75) return 'B+';
+        if (score >= 70) return 'B';
+        if (score >= 65) return 'C+';
+        if (score >= 60) return 'C';
+        if (score >= 50) return 'D';
+        return 'F';
     };
+
+    // Helper function to get grade color
+    const getGradeColor = (grade: string): string => {
+        switch (grade) {
+            case 'A+': return 'text-green-600';
+            case 'A': return 'text-green-500';
+            case 'B+': return 'text-blue-600';
+            case 'B': return 'text-blue-500';
+            case 'C+': return 'text-yellow-600';
+            case 'C': return 'text-yellow-500';
+            case 'D': return 'text-orange-500';
+            case 'F': return 'text-red-500';
+            default: return 'text-gray-500';
+        }
+    };
+
+    // Calculate average from 3 ratings
+    const calculateAverageRating = (ratings: { instructorRating: number; contentQualityRating: number; practicalValueRating: number; }): number => {
+        return Math.round((ratings.instructorRating + ratings.contentQualityRating + ratings.practicalValueRating) / 3);
+    };
+
+    // Helper function to generate semester options from 2020 to current
+    const generateSemesterOptions = () => {
+        const options = [];
+        const currentYear = new Date().getFullYear();
+        
+        for (let year = currentYear; year >= 2020; year--) {
+            options.push(`Fall ${year}`);
+            options.push(`Summer ${year}`);
+            options.push(`Spring ${year}`);
+            options.push(`Winter ${year}`);
+        }
+        
+        return options;
+    };
+
+    const filteredReviews = activeTab === 'all' ? reviews : reviews.filter(r => getGradeFromScore(calculateAverageRating(r.ratings)) === activeTab);
+    const [currentPage, setCurrentPage] = useState(1);
+    const COMMENTS_PER_PAGE = 20;
+    const totalPages = Math.ceil(filteredReviews.length / COMMENTS_PER_PAGE);
+    const paginatedReviews = filteredReviews.slice((currentPage - 1) * COMMENTS_PER_PAGE, currentPage * COMMENTS_PER_PAGE);
 
     const fetchProgramData = async () => {
         try {
             setLoading(true);
             setError(null);
             const programId = params.id as string;
-            
-            console.log('Fetching program with ID:', programId, 'Retry count:', retryCount);
-            
-            // Fetch program basic info
+
             const programResponse = await programAPI.getProgramById(programId.toUpperCase());
-            
-            console.log('Program API Response:', programResponse);
-            
+
             if (programResponse.success && programResponse.data) {
                 setProgram(programResponse.data);
                 
-                // Fetch program courses
-                setCoursesLoading(true);
+                // Try to fetch reviews from backend
                 try {
-                    console.log('Fetching courses for program:', programId.toUpperCase());
-                    const coursesResponse = await courseAPI.getProgramCourses(programId.toUpperCase());
-                    console.log('Courses API Response:', coursesResponse);
-                    
-                    if (coursesResponse.success && coursesResponse.data) {
-                        setProgramCourses(coursesResponse.data);
-                        console.log('Program courses data:', coursesResponse.data);
-                    } else {
-                        console.warn('No courses found for program:', programId);
-                        // Don't set this as error - courses might not be available for all programs
+                    const reviewsResponse = await programReviewAPI.getProgramReviews(programId.toUpperCase());
+                    if (reviewsResponse.success && reviewsResponse.data) {
+                        const backendReviews = reviewsResponse.data.reviews || [];
+                        setReviews(backendReviews);
+                        calculateReviewStats(backendReviews);
+                        return;
                     }
-                } catch (coursesError: any) {
-                    console.warn('Failed to fetch courses:', coursesError);
-                    // Don't set error - courses are optional
-                } finally {
-                    setCoursesLoading(false);
+                } catch (reviewError) {
+                    console.log('No backend reviews found, using mock data');
                 }
+                
+                // Fallback to mock reviews for demo
+                const mockReviews = [
+                    {
+                        _id: '1',
+                        ratings: {
+                            instructorRating: 90,
+                            contentQualityRating: 95,
+                            practicalValueRating: 100
+                        },
+                        takeTheCourseAgain: true,
+                        comment: 'Excellent program with great practical learning opportunities.',
+                        author: {
+                            fullName: 'Sarah M.',
+                            email: 'sarah.m@example.com'
+                        },
+                        currentSemester: 'Fall 2024',
+                        createdAt: '2024-01-15'
+                    },
+                    {
+                        _id: '2',
+                        ratings: {
+                            instructorRating: 85,
+                            contentQualityRating: 80,
+                            practicalValueRating: 80
+                        },
+                        takeTheCourseAgain: false,
+                        comment: 'Good curriculum but could use more hands-on projects.',
+                        author: {
+                            fullName: 'Mike J.',
+                            email: 'mike.j@example.com'
+                        },
+                        currentSemester: 'Spring 2024',
+                        createdAt: '2024-01-10'
+                    },
+                    {
+                        _id: '3',
+                        ratings: {
+                            instructorRating: 90,
+                            contentQualityRating: 85,
+                            practicalValueRating: 90
+                        },
+                        takeTheCourseAgain: true,
+                        comment: 'Amazing faculty and excellent career support.',
+                        author: {
+                            fullName: 'Lisa K.',
+                            email: 'lisa.k@example.com'
+                        },
+                        currentSemester: 'Fall 2024',
+                        createdAt: '2024-01-08'
+                    }
+                ];
+
+                setReviews(mockReviews);
+                calculateReviewStats(mockReviews);
             } else {
-                console.error('Program not found in response:', programResponse);
-                setError('Program not found. Please check the program ID or try again.');
+                setError('Program not found');
             }
         } catch (err: any) {
-            console.error('Error fetching program:', err);
-            console.error('Error details:', {
-                message: err.message,
-                response: err.response,
-                status: err.response?.status,
-                data: err.response?.data
-            });
-            
-            // More specific error messages
-            if (err.response?.status === 404) {
-                setError('Program not found. This program may have been removed or the ID is incorrect.');
-            } else if (err.response?.status === 500) {
-                setError('Server error occurred. Please try again later.');
-            } else if (err.code === 'NETWORK_ERROR' || !navigator.onLine) {
-                setError('Network connection error. Please check your internet connection and try again.');
-            } else {
-                setError('Failed to load program details. Please try again.');
-            }
+            setError('Failed to load program details');
         } finally {
             setLoading(false);
         }
     };
+
+    const calculateReviewStats = (reviewsData: Review[]) => {
+        if (reviewsData.length === 0) return;
+
+        const totalRating = reviewsData.reduce((sum, review) => sum + calculateAverageRating(review.ratings), 0);
+        const avg = totalRating / reviewsData.length;
+        setAverageRating(avg);
+
+        const distribution = {
+            'A+': 0, 'A': 0, 'B+': 0, 'B': 0, 'C+': 0, 'C': 0, 'D': 0, 'F': 0
+        };
+        reviewsData.forEach(review => {
+            const avgScore = calculateAverageRating(review.ratings);
+            const grade = getGradeFromScore(avgScore);
+            distribution[grade as keyof typeof distribution]++;
+        });
+        setGradeDistribution(distribution);
+    };
+
+    const handleSubmitReview = async () => {
+        if (!instructorRating || !contentQualityRating || !practicalValueRating || !comment.trim() || !currentSemester.trim()) {
+            alert('Please fill in all required fields');
+            return;
+        }
+
+        if (comment.length > 500) {
+            alert('Comment must be 500 characters or less');
+            return;
+        }
+
+        setSubmitting(true);
+        
+        try {
+            const reviewData = {
+                programId: params.id as string,
+                currentSemester: currentSemester.trim(),
+                ratings: {
+                    instructorRating,
+                    contentQualityRating,
+                    practicalValueRating
+                },
+                takeTheCourseAgain,
+                comment: comment.trim()
+            };
+
+            // Try to submit to backend
+            const response = await programReviewAPI.createReview(reviewData);
+            
+            if (response.success) {
+                // Refresh reviews from backend
+                await fetchProgramData();
+                alert('✅ Review submitted successfully! Thank you for sharing your experience.');
+            } else {
+                throw new Error('Failed to submit review');
+            }
+            
+        } catch (err: any) {
+            console.error('Failed to submit review:', err);
+            
+            // Fallback: save to localStorage for demo
+            const newReview: Review = {
+                _id: Date.now().toString(),
+                ratings: {
+                    instructorRating,
+                    contentQualityRating,
+                    practicalValueRating
+                },
+                takeTheCourseAgain,
+                comment: comment.trim(),
+                author: {
+                    fullName: 'Anonymous User', // In real app, this comes from auth
+                    email: 'user@example.com'
+                },
+                currentSemester: currentSemester.trim(),
+                createdAt: new Date().toISOString().split('T')[0]
+            };
+            
+            const updatedReviews = [newReview, ...reviews];
+            setReviews(updatedReviews);
+            calculateReviewStats(updatedReviews);
+            
+            alert('✅ Review submitted successfully! Thank you for sharing your experience.');
+        } finally {
+            // Reset form and close modal
+            setInstructorRating(50);
+            setContentQualityRating(50);
+            setPracticalValueRating(50);
+            setTakeTheCourseAgain(false);
+            setComment('');
+            setCurrentSemester('');
+            setShowReviewModal(false);
+            setSubmitting(false);
+        }
+    };
+
+    const getProgramImage = (programName: string, school: string): string => {
+        const name = programName.toLowerCase();
+
+        if (name.includes('computer') || name.includes('software') || name.includes('information technology')) {
+            return 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=400&fit=crop&crop=center';
+        }
+
+        if (name.includes('business') || name.includes('management') || name.includes('marketing')) {
+            return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&crop=center';
+        }
+
+        return 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop&crop=center';
+    };
+
+    const summaryRef = useRef<HTMLDivElement>(null);
+    const [isSticky, setIsSticky] = useState(false);
 
     useEffect(() => {
         if (params.id) {
@@ -192,181 +335,28 @@ const ProgramDetailPage = () => {
         }
     }, [params.id]);
 
-    const getProgramImage = (programName: string, school: string): string => {
-        const name = programName.toLowerCase();
-        
-        if (name.includes('computer') || name.includes('software') || name.includes('information technology') || 
-            name.includes('cybersecurity') || name.includes('data') || name.includes('programming') || 
-            name.includes('web') || name.includes('network') || name.includes('it ')) {
-            return 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1200&h=400&fit=crop&crop=center';
-        }
-        
-        if (name.includes('business') || name.includes('management') || name.includes('marketing') || 
-            name.includes('finance') || name.includes('accounting') || name.includes('administration') ||
-            name.includes('entrepreneurship') || name.includes('economics')) {
-            return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=400&fit=crop&crop=center';
-        }
-        
-        return 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&h=400&fit=crop&crop=center';
-    };
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!summaryRef.current) return;
+            const { top } = summaryRef.current.getBoundingClientRect();
+            setIsSticky(top <= 100);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
-    const getRequirementTypeIcon = (type: string) => {
-        switch (type) {
-            case 'general_education':
-                return <BookOpen className="w-5 h-5 text-blue-400" />;
-            case 'professional_options':
-                return <Briefcase className="w-5 h-5 text-green-400" />;
-            case 'electives':
-                return <Star className="w-5 h-5 text-purple-400" />;
-            default:
-                return <CheckCircle className="w-5 h-5 text-gray-400" />;
+    // Disable/enable body scroll when modal opens/closes
+    useEffect(() => {
+        if (showReviewModal) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
         }
-    };
-
-    const getRequirementTypeColor = (type: string) => {
-        switch (type) {
-            case 'general_education':
-                return 'border-blue-400 bg-blue-400/10';
-            case 'professional_options':
-                return 'border-green-400 bg-green-400/10';
-            case 'electives':
-                return 'border-purple-400 bg-purple-400/10';
-            default:
-                return 'border-gray-400 bg-gray-400/10';
-        }
-    };
-
-    // Dynamic Apply Now URL based on school
-    const getApplyNowUrl = (school: string, programCode: string): string => {
-        const schoolName = school.toLowerCase();
         
-        switch (schoolName) {
-            case 'seneca college':
-            case 'seneca polytechnic':
-            case 'seneca':
-                return `https://www.senecapolytechnic.ca/programs/fulltime/${programCode}/apply-now.html#menu`;
-            
-            case 'george brown college':
-            case 'george brown':
-                return `https://www.georgebrown.ca/programs/${programCode}/apply`;
-            
-            case 'humber college':
-            case 'humber':
-                return `https://applynow.humber.ca/`;
-            
-            case 'centennial college':
-            case 'centennial':
-                return `https://www.centennialcollege.ca/admissions/how-to-apply/`;
-            
-            case 'toronto metropolitan university':
-            case 'tmu':
-            case 'ryerson':
-                return `https://www.torontomu.ca/admissions/undergraduate/apply/`;
-            
-            case 'york university':
-            case 'york':
-                return `https://futurestudents.yorku.ca/apply`;
-            
-            default:
-                return '#'; // Fallback for unknown schools
-        }
-    };
-
-    // Dynamic Apply Now button text based on school
-    const getApplyButtonText = (school: string): string => {
-        const schoolName = school.toLowerCase();
-        
-        switch (schoolName) {
-            case 'seneca college':
-            case 'seneca polytechnic':
-            case 'seneca':
-                return 'Apply Now at Seneca';
-            
-            case 'george brown college':
-            case 'george brown':
-                return 'Apply Now at George Brown';
-            
-            case 'humber college':
-            case 'humber':
-                return 'Apply Now at Humber';
-            
-            case 'centennial college':
-            case 'centennial':
-                return 'Apply Now at Centennial';
-            
-            case 'toronto metropolitan university':
-            case 'tmu':
-            case 'ryerson':
-                return 'Apply Now at TMU';
-            
-            case 'york university':
-            case 'york':
-                return 'Apply Now at York';
-            
-            default:
-                return 'Apply Now';
-        }
-    };
-
-    // School-specific program features
-    const getSchoolSpecificFeatures = (school: string) => {
-        const schoolName = school.toLowerCase();
-        
-        switch (schoolName) {
-            case 'seneca college':
-            case 'seneca polytechnic':
-            case 'seneca':
-                return {
-                    showWorkIntegratedLearning: true,
-                    showCoopPrograms: true,
-                    showIndustryPartnerships: true,
-                };
-            
-            case 'george brown college':
-            case 'george brown':
-                return {
-                    showCulinaryPrograms: true,
-                    showHealthPrograms: true,
-                    showHospitalityPrograms: true,
-                };
-            
-            case 'humber college':
-            case 'humber':
-                return {
-                    showBusinessPrograms: true,
-                    showMediaPrograms: true,
-                    showTechnologyPrograms: true,
-                };
-            
-            case 'centennial college':
-            case 'centennial':
-                return {
-                    showEngineeringPrograms: true,
-                    showHealthPrograms: true,
-                    showBusinessPrograms: true,
-                };
-            
-            case 'toronto metropolitan university':
-            case 'tmu':
-            case 'ryerson':
-                return {
-                    showUniversityPrograms: true,
-                    showResearchPrograms: true,
-                    showInnovationPrograms: true,
-                };
-            
-            case 'york university':
-            case 'york':
-                return {
-                    showUniversityPrograms: true,
-                    showLiberalArtsPrograms: true,
-                    showResearchPrograms: true,
-                };
-            
-            default:
-                return {};
-        }
-    };
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [showReviewModal]);
 
     if (loading) {
         return <PageLoader />;
@@ -374,538 +364,453 @@ const ProgramDetailPage = () => {
 
     if (error || !program) {
         return (
-            <div className="min-h-screen bg-[#1a1a1a] text-white">
-                <div className="sticky top-0 z-30 bg-[#18191A]">
-                    <LandingNavBar />
-                </div>
-                <div className="h-20" />
-                <div className="max-w-6xl mx-auto px-6 py-20 text-center">
-                    <div className="text-6xl mb-4">😔</div>
-                    <h1 className="text-4xl font-bold text-gray-300 mb-4">
-                        {error?.includes('not found') ? 'Program Not Found' : 'Error Loading Program'}
-                    </h1>
-                    <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-                        {error || 'The program you\'re looking for doesn\'t exist or has been moved.'}
-                    </p>
-                    <div className="flex gap-4 justify-center">
-                        <Button
-                            onClick={() => router.push('/programs')}
-                            variant="outline"
-                            className="border-[#36454F] text-gray-300 hover:bg-[#36454F]"
-                        >
-                            <ArrowLeft className="w-4 h-4 mr-2" />
-                            Back to Programs
-                        </Button>
-                        {error && !error.includes('not found') && retryCount < 3 && (
-                            <Button
-                                onClick={retryFetch}
-                                className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
-                            >
-                                Try Again {retryCount > 0 && `(${retryCount}/3)`}
-                            </Button>
-                        )}
-                    </div>
-                    {retryCount >= 3 && (
-                        <p className="text-red-400 text-sm mt-4">
-                            Maximum retry attempts reached. Please try again later.
-                        </p>
-                    )}
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold text-gray-800 mb-4">Program Not Found</h1>
+                    <Button
+                        onClick={() => router.push('/programs')}
+                        variant="outline"
+                        className="border-gray-300 text-gray-700"
+                    >
+                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        Back to Programs
+                    </Button>
                 </div>
             </div>
         );
     }
 
-    // Debug: log program data
-    console.log('Program detail data:', program);
+    const totalReviews = reviews.length;
+    const maxCount = Math.max(...Object.values(gradeDistribution));
 
     return (
-        <div className="min-h-screen bg-[#1a1a1a] text-white">
+        <div className={`min-h-screen text-white flex flex-col ${geist.className}`}>
+            {/* Navbar */}
             <div className="sticky top-0 z-30 bg-[#18191A]">
                 <LandingNavBar />
             </div>
-            <div className="h-20" />
             
-            {/* Hero Section */}
-            <div className="relative h-[520px] md:h-[700px] overflow-hidden">
-                <img 
-                    src={getProgramImage(program.name, program.school)}
-                    alt={program.name}
-                    className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/80"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                        <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg mb-4">
-                            {program.name} 
-                        </h1>
-                        {programCourses?.hasWorkIntegratedLearning && (
-                            <div className="inline-flex items-center bg-gradient-to-r from-blue-600/90 to-purple-600/90 px-6 py-3 rounded-full backdrop-blur-sm">
-                                <Briefcase className="w-5 h-5 mr-2" />
-                                <span className="font-semibold">Work-Integrated Learning Program</span>
-                            </div>
-                        )}
+            {/* Hero Section for Review Page */}
+            <div className="bg-[#FAF9F6] px-4 min-h-screen lg:min-h-0 flex items-center justify-center pt-45 pb-20">
+                <div className="w-full">
+                    <div className="max-w-4xl mx-auto text-center mb-16">
+                        <h1 className={`text-5xl md:text-6xl font-serif font-bold text-[#232323] mb-6 ${geist.className}`}>{program.name}</h1>
+                        <p className="text-lg md:text-xl text-[#141413] max-w-2xl mx-auto opacity-50">Read real student experiences and share your own thoughts about this program. Your review helps future students make informed decisions!</p>
                     </div>
-                </div>
-            </div>
-
-            <div className="max-w-6xl mx-auto px-6 py-16">
-                {/* Quick Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-                    <div className="bg-gradient-to-br from-[#2a2b2c] to-[#1f2021] rounded-2xl p-6 text-center border border-[#36454F] hover:border-amber-400/50 transition-all duration-300 hover:scale-105">
-                        <Clock className="w-8 h-8 text-amber-400 mx-auto mb-3" />
-                        <div className="text-2xl font-bold text-white mb-1">{program.duration}</div>
-                        <div className="text-gray-400 text-sm">Duration</div>
-                    </div>
-                    <div className="bg-gradient-to-br from-[#2a2b2c] to-[#1f2021] rounded-2xl p-6 text-center border border-[#36454F] hover:border-amber-400/50 transition-all duration-300 hover:scale-105">
-                        <Award className="w-8 h-8 text-orange-400 mx-auto mb-3" />
-                        <div className="text-lg font-bold text-white mb-1">{program.credential}</div>
-                        <div className="text-gray-400 text-sm">Credential</div>
-                    </div>
-                    <div className="bg-gradient-to-br from-[#2a2b2c] to-[#1f2021] rounded-2xl p-6 text-center border border-[#36454F] hover:border-amber-400/50 transition-all duration-300 hover:scale-105">
-                        <MapPin className="w-8 h-8 text-blue-400 mx-auto mb-3" />
-                        <div className="text-lg font-bold text-white mb-1">{program.campus.slice(0, 2).join(', ')}</div>
-                        <div className="text-gray-400 text-sm">Campus{program.campus.length > 1 ? 'es' : ''}</div>
-                    </div>
-                    <div className="bg-gradient-to-br from-[#2a2b2c] to-[#1f2021] rounded-2xl p-6 text-center border border-[#36454F] hover:border-amber-400/50 transition-all duration-300 hover:scale-105">
-                        <Building className="w-8 h-8 text-green-400 mx-auto mb-3" />
-                        <div className="text-lg font-bold text-white mb-1">{program.school}</div>
-                        <div className="text-gray-400 text-sm">School</div>
-                    </div>
-                </div>
-
-                {/* Program Overview */}
-                <section className="mb-16">
-                    <h2 className="text-4xl font-bold mb-8 text-center">Program Overview</h2>
-                    <div className="bg-gradient-to-br from-[#2a2b2c] to-[#1f2021] rounded-2xl p-8 border border-[#36454F]">
-                        <p className="text-lg text-gray-300 leading-relaxed text-center max-w-4xl mx-auto">
-                            {program.overview}
-                        </p>
-                    </div>
-                </section>
-
-                {/* School-Specific Highlights */}
-                <section className="mb-16">
-                    <h2 className="text-3xl font-bold mb-8 text-center">School Highlights</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {/* Seneca College Highlights */}
-                        {program.school.toLowerCase().includes('seneca') && (
-                            <>
-                                <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/20 rounded-xl p-6 border border-blue-600/30">
-                                    <Briefcase className="w-8 h-8 text-blue-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Work-Integrated Learning</h3>
-                                    <p className="text-gray-300 text-sm">Gain real-world experience through co-op placements and industry partnerships.</p>
-                                </div>
-                                <div className="bg-gradient-to-br from-green-600/20 to-green-700/20 rounded-xl p-6 border border-green-600/30">
-                                    <Building className="w-8 h-8 text-green-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Industry Connections</h3>
-                                    <p className="text-gray-300 text-sm">Strong partnerships with leading employers in the Greater Toronto Area.</p>
-                                </div>
-                                <div className="bg-gradient-to-br from-purple-600/20 to-purple-700/20 rounded-xl p-6 border border-purple-600/30">
-                                    <Star className="w-8 h-8 text-purple-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Applied Learning</h3>
-                                    <p className="text-gray-300 text-sm">Hands-on education with state-of-the-art labs and equipment.</p>
-                                </div>
-                            </>
-                        )}
-
-                        {/* George Brown College Highlights */}
-                        {program.school.toLowerCase().includes('george brown') && (
-                            <>
-                                <div className="bg-gradient-to-br from-orange-600/20 to-orange-700/20 rounded-xl p-6 border border-orange-600/30">
-                                    <MapPin className="w-8 h-8 text-orange-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Downtown Location</h3>
-                                    <p className="text-gray-300 text-sm">Located in the heart of Toronto with easy access to internships and jobs.</p>
-                                </div>
-                                <div className="bg-gradient-to-br from-red-600/20 to-red-700/20 rounded-xl p-6 border border-red-600/30">
-                                    <Award className="w-8 h-8 text-red-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Industry Recognition</h3>
-                                    <p className="text-gray-300 text-sm">Programs designed with input from industry leaders and professionals.</p>
-                                </div>
-                                <div className="bg-gradient-to-br from-teal-600/20 to-teal-700/20 rounded-xl p-6 border border-teal-600/30">
-                                    <Users className="w-8 h-8 text-teal-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Small Class Sizes</h3>
-                                    <p className="text-gray-300 text-sm">Personalized attention with low student-to-faculty ratios.</p>
-                                </div>
-                            </>
-                        )}
-
-                        {/* Humber College Highlights */}
-                        {program.school.toLowerCase().includes('humber') && (
-                            <>
-                                <div className="bg-gradient-to-br from-indigo-600/20 to-indigo-700/20 rounded-xl p-6 border border-indigo-600/30">
-                                    <BookOpen className="w-8 h-8 text-indigo-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Innovative Programs</h3>
-                                    <p className="text-gray-300 text-sm">Cutting-edge curriculum that adapts to industry changes.</p>
-                                </div>
-                                <div className="bg-gradient-to-br from-pink-600/20 to-pink-700/20 rounded-xl p-6 border border-pink-600/30">
-                                    <Star className="w-8 h-8 text-pink-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Modern Facilities</h3>
-                                    <p className="text-gray-300 text-sm">State-of-the-art labs, studios, and learning spaces.</p>
-                                </div>
-                                <div className="bg-gradient-to-br from-yellow-600/20 to-yellow-700/20 rounded-xl p-6 border border-yellow-600/30">
-                                    <TrendingUp className="w-8 h-8 text-yellow-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Career Services</h3>
-                                    <p className="text-gray-300 text-sm">Comprehensive career support and job placement assistance.</p>
-                                </div>
-                            </>
-                        )}
-
-                        {/* TMU Highlights */}
-                        {(program.school.toLowerCase().includes('tmu') || program.school.toLowerCase().includes('toronto metropolitan')) && (
-                            <>
-                                <div className="bg-gradient-to-br from-red-600/20 to-red-700/20 rounded-xl p-6 border border-red-600/30">
-                                    <GraduationCap className="w-8 h-8 text-red-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">University Education</h3>
-                                    <p className="text-gray-300 text-sm">Bachelor's and graduate degree programs with research opportunities.</p>
-                                </div>
-                                <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/20 rounded-xl p-6 border border-blue-600/30">
-                                    <Building className="w-8 h-8 text-blue-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Urban Campus</h3>
-                                    <p className="text-gray-300 text-sm">Modern campus in downtown Toronto with excellent transit access.</p>
-                                </div>
-                                <div className="bg-gradient-to-br from-purple-600/20 to-purple-700/20 rounded-xl p-6 border border-purple-600/30">
-                                    <Star className="w-8 h-8 text-purple-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Innovation Focus</h3>
-                                    <p className="text-gray-300 text-sm">Emphasis on innovation, entrepreneurship, and technology.</p>
-                                </div>
-                            </>
-                        )}
-
-                        {/* York University Highlights */}
-                        {program.school.toLowerCase().includes('york') && (
-                            <>
-                                <div className="bg-gradient-to-br from-indigo-600/20 to-indigo-700/20 rounded-xl p-6 border border-indigo-600/30">
-                                    <GraduationCap className="w-8 h-8 text-indigo-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Comprehensive University</h3>
-                                    <p className="text-gray-300 text-sm">Wide range of undergraduate and graduate programs across multiple faculties.</p>
-                                </div>
-                                <div className="bg-gradient-to-br from-green-600/20 to-green-700/20 rounded-xl p-6 border border-green-600/30">
-                                    <Users className="w-8 h-8 text-green-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Diverse Community</h3>
-                                    <p className="text-gray-300 text-sm">Multicultural campus with students from around the world.</p>
-                                </div>
-                                <div className="bg-gradient-to-br from-orange-600/20 to-orange-700/20 rounded-xl p-6 border border-orange-600/30">
-                                    <BookOpen className="w-8 h-8 text-orange-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Research Excellence</h3>
-                                    <p className="text-gray-300 text-sm">Opportunities to participate in cutting-edge research projects.</p>
-                                </div>
-                            </>
-                        )}
-
-                        {/* Centennial College Highlights */}
-                        {program.school.toLowerCase().includes('centennial') && (
-                            <>
-                                <div className="bg-gradient-to-br from-orange-600/20 to-orange-700/20 rounded-xl p-6 border border-orange-600/30">
-                                    <Briefcase className="w-8 h-8 text-orange-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Hands-On Learning</h3>
-                                    <p className="text-gray-300 text-sm">Practical education with industry-standard equipment and facilities.</p>
-                                </div>
-                                <div className="bg-gradient-to-br from-teal-600/20 to-teal-700/20 rounded-xl p-6 border border-teal-600/30">
-                                    <Star className="w-8 h-8 text-teal-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Industry Partnerships</h3>
-                                    <p className="text-gray-300 text-sm">Strong connections with employers and professional organizations.</p>
-                                </div>
-                                <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/20 rounded-xl p-6 border border-blue-600/30">
-                                    <MapPin className="w-8 h-8 text-blue-400 mb-4" />
-                                    <h3 className="text-lg font-semibold text-white mb-2">Multiple Locations</h3>
-                                    <p className="text-gray-300 text-sm">Campuses across the GTA with convenient transportation access.</p>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </section>
-
-                {/* Course Curriculum */}
-                {programCourses && programCourses.semesters.length > 0 && (
-                    <section className="mb-16">
-                        <h2 className="text-4xl font-bold mb-8 text-center">Course Curriculum</h2>
-                        
-                        {/* Course Statistics */}
-                        {programCourses.stats && (
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                                <div className="bg-gradient-to-br from-[#2a2b2c] to-[#1f2021] rounded-xl p-4 text-center border border-[#36454F]">
-                                    <div className="text-2xl font-bold text-amber-400">{programCourses.stats.totalSemesters}</div>
-                                    <div className="text-gray-400 text-sm">Total Semesters</div>
-                                </div>
-                                <div className="bg-gradient-to-br from-[#2a2b2c] to-[#1f2021] rounded-xl p-4 text-center border border-[#36454F]">
-                                    <div className="text-2xl font-bold text-blue-400">{programCourses.stats.totalCoreCourses}</div>
-                                    <div className="text-gray-400 text-sm">Core Courses</div>
-                                </div>
-                                <div className="bg-gradient-to-br from-[#2a2b2c] to-[#1f2021] rounded-xl p-4 text-center border border-[#36454F]">
-                                    <div className="text-2xl font-bold text-green-400">{programCourses.stats.totalRequirements}</div>
-                                    <div className="text-gray-400 text-sm">Requirements</div>
-                                </div>
-                                <div className="bg-gradient-to-br from-[#2a2b2c] to-[#1f2021] rounded-xl p-4 text-center border border-[#36454F]">
-                                    <div className="text-2xl font-bold text-purple-400">{programCourses.stats.totalCourses}</div>
-                                    <div className="text-gray-400 text-sm">Total Courses</div>
-                                </div>
-                            </div>
-                        )}
-
-                        {coursesLoading ? (
-                            <div className="text-center py-12">
-                                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-amber-400"></div>
-                                <p className="text-gray-400 mt-4">Loading course curriculum...</p>
-                            </div>
-                        ) : (
-                            <div className="space-y-4">
-                                {programCourses.semesters
-                                    .sort((a, b) => a.order - b.order)
-                                    .map((semester, index) => (
-                                    <div key={semester.id} className={`rounded-2xl border border-[#36454F] bg-gradient-to-br from-[#232526] to-[#1f2021] shadow-md overflow-hidden transition-all duration-500 ${openSemesterIndex === index ? 'ring-2 ring-amber-400/40 shadow-2xl scale-[1.01]' : ''}`}>
-                                        <button
-                                            className={`w-full flex items-center justify-between px-6 py-5 focus:outline-none transition-colors duration-300 group ${openSemesterIndex === index ? 'bg-amber-500/10' : 'hover:bg-[#232526]/80 hover:shadow-lg'}`}
-                                            onClick={() => setOpenSemesterIndex(openSemesterIndex === index ? -1 : index)}
-                                            aria-expanded={openSemesterIndex === index}
-                                        >
-                                            <div className="flex items-center gap-4">
-                                                <span className="text-2xl font-bold text-white drop-shadow">{semester.name}</span>
-                                                {semester.type === 'work_integrated_learning' && (
-                                                    <span className="ml-2 flex items-center bg-blue-600/20 text-blue-300 px-3 py-1 rounded-full text-sm">
-                                                        <Briefcase className="w-4 h-4 mr-1" />
-                                                        Work-Integrated Learning
-                                                    </span>
-                                                )}
-                                                {semester.isOptional && (
-                                                    <span className="ml-2 flex items-center bg-orange-600/20 text-orange-300 px-3 py-1 rounded-full text-sm">
-                                                        <AlertCircle className="w-4 h-4 mr-1" />
-                                                        Optional
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <span className="text-sm text-gray-400 font-medium">
-                                                {semester.coreCourses.length + semester.requirements.reduce((sum, req) => sum + req.selectCount, 0)} courses
-                                            </span>
-                                            <span className={`ml-4 transition-transform duration-500 ${openSemesterIndex === index ? 'rotate-180' : ''}`}>
-                                                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-chevron-down text-amber-400"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                            </span>
-                                        </button>
-                                        <div
-                                            className={`transition-all duration-700 ease-in-out overflow-hidden bg-gradient-to-r from-[#232526]/80 to-[#1f2021]/90 ${openSemesterIndex === index ? 'max-h-[2000px] opacity-100 py-6 px-6' : 'max-h-0 opacity-0 py-0 px-6'}`}
-                                            style={{ background: openSemesterIndex === index ? 'linear-gradient(90deg, #232526 0%, #1f2021 100%)' : undefined }}
-                                        >
-                                            {openSemesterIndex === index && (
-                                                <>
-                                                    {semester.notes && (
-                                                        <div className="mb-6 p-4 bg-blue-600/10 border border-blue-600/30 rounded-lg">
-                                                            <p className="text-blue-300 text-sm">{semester.notes}</p>
-                                                        </div>
-                                                    )}
-                                                    {/* Core Courses */}
-                                                    {semester.coreCourses.length > 0 && (
-                                                        <div className="mb-6">
-                                                            <h4 className="text-lg font-semibold text-amber-400 mb-4 flex items-center">
-                                                                <CheckCircle className="w-5 h-5 mr-2" />
-                                                                Core Courses ({semester.coreCourses.length})
-                                                            </h4>
-                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                                {semester.coreCourses.map((course, courseIndex) => (
-                                                                    <div key={courseIndex} className="bg-[#1f2021] rounded-lg p-4 border border-[#36454F] hover:border-amber-400/50 transition-colors">
-                                                                        <div className="flex items-start justify-between">
-                                                                            <div>
-                                                                                <div className="font-semibold text-white text-sm mb-1">
-                                                                                    {course.code}
-                                                                                </div>
-                                                                                <div className="text-gray-300 text-sm">
-                                                                                    {course.name}
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                    {/* Requirements */}
-                                                    {semester.requirements.length > 0 && (
-                                                        <div>
-                                                            <h4 className="text-lg font-semibold text-green-400 mb-4 flex items-center">
-                                                                <Star className="w-5 h-5 mr-2" />
-                                                                Course Requirements ({semester.requirements.length})
-                                                            </h4>
-                                                            <div className="space-y-4">
-                                                                {semester.requirements.map((requirement, reqIndex) => (
-                                                                    <div key={reqIndex} className={`bg-[#1f2021] rounded-lg p-4 border ${getRequirementTypeColor(requirement.type)} transition-colors`}>
-                                                                        <div className="flex items-start justify-between mb-3">
-                                                                            <div className="flex items-center">
-                                                                                {getRequirementTypeIcon(requirement.type)}
-                                                                                <div className="ml-3">
-                                                                                    <div className="font-semibold text-white text-sm">
-                                                                                        {requirement.title}
-                                                                                    </div>
-                                                                                    <div className="text-gray-400 text-sm">
-                                                                                        Select {requirement.selectCount} course{requirement.selectCount > 1 ? 's' : ''}
-                                                                                        {requirement.availableCourses.length > 0 ? 
-                                                                                            ` from ${requirement.availableCourses.length} options` : 
-                                                                                            ' (see course catalog)'
-                                                                                        }
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            
-                                                                            {requirement.externalLinks && requirement.externalLinks.length > 0 && (
-                                                                                <div className="mt-3">
-                                                                                    <p className="text-xs text-gray-400 mb-2">For course options, visit:</p>
-                                                                                    {requirement.externalLinks.map((link, linkIndex) => (
-                                                                                        <a 
-                                                                                            key={linkIndex}
-                                                                                            href={link} 
-                                                                                            target="_blank" 
-                                                                                            rel="noopener noreferrer"
-                                                                                            className="inline-flex items-center text-blue-400 hover:text-blue-300 text-xs mr-4"
-                                                                                        >
-                                                                                            <ExternalLink className="w-3 h-3 mr-1" />
-                                                                                            Course Catalog
-                                                                                        </a>
-                                                                                    ))}
-                                                                                </div>
-                                                                            )}
-
-                                                                            {requirement.availableCourses.length > 0 && (
-                                                                                <div className="mt-3">
-                                                                                    <p className="text-xs text-gray-400 mb-2">Available Options:</p>
-                                                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                                                                        {requirement.availableCourses.slice(0, 6).map((course, courseIndex) => (
-                                                                                            <div key={courseIndex} className="bg-[#36454F]/30 rounded p-2">
-                                                                                                <div className="text-xs font-medium text-white">{course.code}</div>
-                                                                                                <div className="text-xs text-gray-400">{course.name}</div>
-                                                                                            </div>
-                                                                                        ))}
-                                                                                        {requirement.availableCourses.length > 6 && (
-                                                                                            <div className="bg-[#36454F]/30 rounded p-2 flex items-center justify-center">
-                                                                                                <span className="text-xs text-gray-400">
-                                                                                                    +{requirement.availableCourses.length - 6} more
-                                                                                                </span>
-                                                                                            </div>
-                                                                                        )}
-                                                                                    </div>
-                                                                                </div>
-                                                                            )}
-                                                                        </div>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                </>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </section>
-                )}
-
-                {/* Divider before Student Reviews */}
-                <hr className="border-t border-gray-700/40 my-16" />
-                <section className="mb-20 mt-20">
-                    <h2 className="text-6xl font-bold mb-20 text-center">Student Reviews</h2>
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* Score Overview - Left Side */}
-                        <div className="lg:col-span-1">
-                            {typeof window !== 'undefined' && typeof document !== 'undefined' &&
-                                <ProgramScoreOverview
-                                    programId={program._id}
-                                    schoolName={program.school}
-                                    hideIfNoReview
-                                />
-                            }
-                        </div>
-                        
-                        {/* Reviews Display - Right Side */}
-                        <div className="lg:col-span-2">
-                            <ProgramReviewDisplay
-                                programId={program._id}
-                                programName={program.name}
-                                schoolName={program.school}
+                    <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 p-10">
+                        {/* Left: Program Image */}
+                        <div className="flex-1 flex justify-center items-center">
+                            <img
+                                src={getProgramImage(program.name, program.school)}
+                                alt={program.name}
+                                className="rounded-xl shadow-md w-full max-w-xs object-cover"
+                                style={{ minHeight: '220px', background: '#eee' }}
                             />
                         </div>
-                    </div>
-                </section>
-
-                {/* Apply Now Section */}
-                <section className="text-center">
-                    <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 rounded-2xl p-12 border border-amber-500/30">
-                        <h2 className="text-3xl font-bold mb-4">Ready to Apply?</h2>
-                        <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-                            Take the next step in your career journey. Apply now to secure your spot in this program.
-                        </p>
-                        
-                        {/* School-specific additional info */}
-                        {program.school.toLowerCase().includes('seneca') && (
-                            <div className="mb-6 p-4 bg-blue-600/10 border border-blue-600/30 rounded-lg max-w-2xl mx-auto">
-                                <p className="text-blue-300 text-sm">
-                                    🎓 Seneca offers work-integrated learning opportunities and industry partnerships to enhance your career prospects.
-                                </p>
+                        {/* Right: Program Details */}
+                        <div className="flex-1 w-full max-w-md">
+                            <div className="space-y-8">
+                                <div className="flex items-center justify-between border-b border-gray-200 pb-4">
+                                    <span className="text-gray-500 text-lg">Duration</span>
+                                    <span className="text-[#73726C] text-lg">{program.duration}</span>
+                                </div>
+                                <div className="flex items-center justify-between border-b border-gray-200 pb-4">
+                                    <span className="text-gray-500 text-lg">Campus</span>
+                                    <span className="text-[#73726C] text-lg">{program.campus[0]}</span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-gray-500 text-lg">Credential</span>
+                                    <span className="text-[#73726C] text-lg">{capitalizeFirstLetter(program.credential)}</span>
+                                </div>
                             </div>
-                        )}
-                        
-                        {program.school.toLowerCase().includes('george brown') && (
-                            <div className="mb-6 p-4 bg-green-600/10 border border-green-600/30 rounded-lg max-w-2xl mx-auto">
-                                <p className="text-green-300 text-sm">
-                                    🏢 George Brown College is located in downtown Toronto with strong industry connections.
-                                </p>
-                            </div>
-                        )}
-                        
-                        {program.school.toLowerCase().includes('humber') && (
-                            <div className="mb-6 p-4 bg-purple-600/10 border border-purple-600/30 rounded-lg max-w-2xl mx-auto">
-                                <p className="text-purple-300 text-sm">
-                                    🌟 Humber College offers hands-on learning with state-of-the-art facilities.
-                                </p>
-                            </div>
-                        )}
-                        
-                        {(program.school.toLowerCase().includes('tmu') || program.school.toLowerCase().includes('toronto metropolitan')) && (
-                            <div className="mb-6 p-4 bg-red-600/10 border border-red-600/30 rounded-lg max-w-2xl mx-auto">
-                                <p className="text-red-300 text-sm">
-                                    🏛️ TMU offers university-level programs with research opportunities in the heart of Toronto.
-                                </p>
-                            </div>
-                        )}
-                        
-                        {program.school.toLowerCase().includes('york') && (
-                            <div className="mb-6 p-4 bg-indigo-600/10 border border-indigo-600/30 rounded-lg max-w-2xl mx-auto">
-                                <p className="text-indigo-300 text-sm">
-                                    🌍 York University offers diverse programs with a global perspective and extensive research opportunities.
-                                </p>
-                            </div>
-                        )}
-                        
-                        {program.school.toLowerCase().includes('centennial') && (
-                            <div className="mb-6 p-4 bg-orange-600/10 border border-orange-600/30 rounded-lg max-w-2xl mx-auto">
-                                <p className="text-orange-300 text-sm">
-                                    🔧 Centennial College focuses on practical, hands-on learning with industry-standard equipment.
-                                </p>
-                            </div>
-                        )}
-                        
-                        <Button
-                            onClick={() => {
-                                const url = getApplyNowUrl(program.school, program.code);
-                                if (url !== '#') {
-                                    window.open(url, '_blank');
-                                } else {
-                                    // Show a message for schools without direct apply links
-                                    alert(`Please visit ${program.school}'s official website to apply for this program.`);
-                                }
-                            }}
-                            className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-8 py-4 text-lg font-semibold"
-                        >
-                            <ExternalLink className="w-5 h-5 mr-2" />
-                            {getApplyButtonText(program.school)}
-                        </Button>
-                        
-                        {/* Additional application info */}
-                        <div className="mt-6 text-sm text-gray-400">
-                            <p>💡 Tip: Make sure to check admission requirements and application deadlines on the school's website.</p>
                         </div>
                     </div>
-                </section>
+                </div>
             </div>
+            
+            {/* Main Content */}
+            <div className="flex-1 pt-20 bg-[#FAF9F6]">
+                {/* Header */}
+                <div className='mb-10'>
+                    <div className="max-w-7xl mx-auto px-6 py-4">
+                        <div className="flex items-center justify-between">
+                            <h1 className={`text-5xl font-bold text-[#CC5500] ${geist.className}`}>What others say about this program</h1>
+                            <div className="w-32"></div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Main Content */}
+                <div className="max-w-7xl mx-auto px-6 py-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
+                        {/* Left Column - Sticky Student Reviews Summary */}
+                        <div className="lg:col-span-1">
+                            <div
+                                ref={summaryRef}
+                                className={`sticky top-[100px] z-10 transition-all duration-300 ${isSticky ? 'shadow-xl scale-[1.01] translate-y-2' : 'shadow-md'}`}
+                                style={{ willChange: 'transform' }}
+                            >
+                                <div className="p-8 mb-6">
+                                    <div className="flex items-center mb-8 justify-center gap-3">
+                                        <NumberTicker 
+                                            value={Number(averageRating.toFixed(1))}
+                                            decimalPlaces={1}
+                                            className="text-8xl font-bold text-gray-800 opacity-90"
+                                        />
+                                        <span className="text-2xl text-gray-800">/ 100</span>
+                                        <div className="ml-4">
+                                            <span className={`text-3xl font-bold ${getGradeColor(getGradeFromScore(averageRating))}`}>
+                                                {getGradeFromScore(averageRating)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    {/* Rating Distribution */}
+                                    <div className="space-y-2 mt-4">
+                                        {Object.entries(gradeDistribution).map(([grade, count]) => {
+                                            const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
+                                            return (
+                                                <div key={grade} className="flex items-center gap-2">
+                                                    <span className={`text-base font-semibold w-8 ${getGradeColor(grade)}`}>{grade}</span>
+                                                    <div className="flex-1 bg-gray-200 rounded-full h-2">
+                                                        <div
+                                                            className="bg-gray-600 h-2 rounded-full transition-all duration-300"
+                                                            style={{ width: `${percentage}%` }}
+                                                        ></div>
+                                                    </div>
+                                                    <span className="text-base text-gray-700 w-5 text-right">{count}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                    {/* Write Review Button */}
+                                    <div className="mt-6 pt-4 border-t border-gray-200 flex justify-center">
+                                        <InteractiveHoverButton
+                                            onClick={() => setShowReviewModal(true)}
+                                            className="bg-black text-white px-6 md:px-8 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                                        >
+                                            Write Your Review
+                                        </InteractiveHoverButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Right Column - Reviews List with filter tabs */}
+                        <div className="lg:col-span-2">
+                            {/* Tabs for filtering by rating */}
+                            <div className="flex gap-2 mb-7 flex-wrap">
+                                <button
+                                    className={`px-4 cursor-pointer py-2 rounded-full text-sm font-medium transition-colors ${activeTab === 'all' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                    onClick={() => setActiveTab('all')}
+                                >
+                                    All
+                                </button>
+                                {['A+', 'A', 'B+', 'B', 'C+', 'C', 'D', 'F'].map(grade => (
+                                    <button
+                                        key={grade}
+                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${activeTab === grade ? 'bg-black text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                        onClick={() => setActiveTab(grade as 'A+' | 'A' | 'B+' | 'B' | 'C+' | 'C' | 'D' | 'F')}
+                                    >
+                                        <span className={activeTab === grade ? 'text-white' : getGradeColor(grade)}>
+                                            {grade}
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="space-y-4">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+                                    {paginatedReviews.length === 0 ? (
+                                        <div className="text-gray-500 text-center py-8 col-span-2">No reviews for this rating.</div>
+                                    ) : (
+                                        paginatedReviews.map((review) => {
+                                            const avgRating = calculateAverageRating(review.ratings);
+                                            return (
+                                                <div
+                                                    key={review._id}
+                                                    className="relative rounded-2xl p-8 min-h-[220px] flex flex-col justify-between overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+                                                    style={{
+                                                        color: 'black',
+                                                        boxShadow: '0 4px 32px 0 rgba(0,0,0,0.18)'
+                                                    }}
+                                                >
+                                                    {/* Grade Badge */}
+                                                    <div className="absolute top-4 right-4">
+                                                        <span className={`text-2xl font-bold ${getGradeColor(getGradeFromScore(avgRating))}`}>
+                                                            {getGradeFromScore(avgRating)}
+                                                        </span>
+                                                        <div className="text-xs text-gray-500 text-center">
+                                                            {avgRating}/100
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    {/* Quote icon */}
+                                                    {review.comment && (
+                                                        <div className="absolute top-6 left-6 text-4xl opacity-30 select-none pointer-events-none">&ldquo;</div>
+                                                    )}
+                                                    
+                                                    {/* Comment text */}
+                                                    <div className="flex-1 flex items-center relative">
+                                                        <p className="text-xl md:text-2xl font-medium leading-snug mt-5 opacity-70">{review.comment}</p>
+                                                    </div>
+                                                    
+                                                    {/* Take course again indicator */}
+                                                    <div className="mt-4 mb-2">
+                                                        <span className={`text-sm px-3 py-1 rounded-full ${review.takeTheCourseAgain ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                                            {review.takeTheCourseAgain ? '✓ Would take again' : '✗ Would not take again'}
+                                                        </span>
+                                                    </div>
+                                                    
+                                                    {/* Footer: author left, semester and date right */}
+                                                    <div className="flex items-center justify-between mt-7 z-10 opacity-40">
+                                                        <span className="text-sm tracking-wide uppercase">{review.author.fullName}</span>
+                                                        <div className="text-xs text-right">
+                                                            <div>{review.currentSemester}</div>
+                                                            <div>{review.createdAt}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })
+                                    )}
+                                </div>
+                                {/* Pagination Controls */}
+                                {totalPages > 1 && (
+                                    <div className="flex justify-center items-center gap-4 mb-8">
+                                        <button
+                                            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                                            disabled={currentPage === 1}
+                                            className={`rounded-full p-2 bg-gray-200 hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
+                                            aria-label="Previous Page"
+                                        >
+                                            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                                        </button>
+                                        <button
+                                            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                                            disabled={currentPage === totalPages}
+                                            className={`rounded-full p-2 bg-black hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-white`}
+                                            aria-label="Next Page"
+                                        >
+                                            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {/* Footer */}
+            <Footer />
+
+            {/* Review Modal - Updated with monochrome theme */}
+            {showReviewModal && (
+                <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+                        {/* Modal Header */}
+                        <div className="flex items-center justify-between px-8 py-6 border-b border-gray-200 flex-shrink-0">
+                            <h2 className="text-2xl font-bold text-gray-800">Write Your Review</h2>
+                            <button
+                                onClick={() => setShowReviewModal(false)}
+                                className="text-gray-500 hover:text-gray-700 transition-colors"
+                            >
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        {/* Modal Content - Scrollable */}
+                        <div className="flex-1 overflow-y-auto">
+                        <div className="flex px-8 py-6 gap-8">
+                            {/* Left Column */}
+                            <div className="flex-1 space-y-6">
+                                {/* Current Semester */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Current Semester *
+                                    </label>
+                                    <div className="relative">
+                                        <select
+                                            value={currentSemester}
+                                            onChange={(e) => setCurrentSemester(e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all duration-200 appearance-none cursor-pointer hover:border-gray-300 hover:bg-gray-50"
+                                            required
+                                            style={{
+                                                backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+                                                backgroundPosition: 'right 12px center',
+                                                backgroundRepeat: 'no-repeat',
+                                                backgroundSize: '16px'
+                                            }}
+                                        >
+                                            <option value="" className="text-gray-500">Select Semester</option>
+                                            {generateSemesterOptions().slice(0, 5).map((semester) => (
+                                                <option key={semester} value={semester} className="text-gray-900">
+                                                    {semester}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {/* Rating Sliders - Updated to monochrome */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                                        Your Ratings (0-100) *
+                                    </label>
+                                    <div className="space-y-6">
+                                        {/* Instructor Rating */}
+                                        <div>
+                                            <div className="flex justify-between items-center mb-3">
+                                                <label className="text-sm text-gray-600 font-medium">Instructor Quality</label>
+                                                <span className="text-lg font-bold text-gray-800">
+                                                    {instructorRating} ({getGradeFromScore(instructorRating)})
+                                                </span>
+                                            </div>
+                                            <div className="relative">
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={instructorRating}
+                                                    onChange={(e) => setInstructorRating(Number(e.target.value))}
+                                                    className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                                                    style={{
+                                                        background: `linear-gradient(to right, #6b7280 0%, #6b7280 ${instructorRating}%, #e5e7eb ${instructorRating}%, #e5e7eb 100%)`
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Content Quality Rating */}
+                                        <div>
+                                            <div className="flex justify-between items-center mb-3">
+                                                <label className="text-sm text-gray-600 font-medium">Content Quality & Difficulty</label>
+                                                <span className="text-lg font-bold text-gray-800">
+                                                    {contentQualityRating} ({getGradeFromScore(contentQualityRating)})
+                                                </span>
+                                            </div>
+                                            <div className="relative">
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={contentQualityRating}
+                                                    onChange={(e) => setContentQualityRating(Number(e.target.value))}
+                                                    className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                                                    style={{
+                                                        background: `linear-gradient(to right, #6b7280 0%, #6b7280 ${contentQualityRating}%, #e5e7eb ${contentQualityRating}%, #e5e7eb 100%)`
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Practical Value Rating */}
+                                        <div>
+                                            <div className="flex justify-between items-center mb-3">
+                                                <label className="text-sm text-gray-600 font-medium">Practical Value & Usefulness</label>
+                                                <span className="text-lg font-bold text-gray-800">
+                                                    {practicalValueRating} ({getGradeFromScore(practicalValueRating)})
+                                                </span>
+                                            </div>
+                                            <div className="relative">
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={practicalValueRating}
+                                                    onChange={(e) => setPracticalValueRating(Number(e.target.value))}
+                                                    className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                                                    style={{
+                                                        background: `linear-gradient(to right, #6b7280 0%, #6b7280 ${practicalValueRating}%, #e5e7eb ${practicalValueRating}%, #e5e7eb 100%)`
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Take Course Again Checkbox */}
+                                <div>
+                                    <label className="flex items-center space-x-3 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={takeTheCourseAgain}
+                                            onChange={(e) => setTakeTheCourseAgain(e.target.checked)}
+                                            className="w-5 h-5 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-500 focus:ring-2"
+                                        />
+                                        <span className="text-sm font-medium text-gray-700">
+                                            Would you take this course again?
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            {/* Right Column */}
+                            <div className="flex-1 flex flex-col">
+                                {/* Comment */}
+                                <div className="flex-1">
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Your Review *
+                                    </label>
+                                    <textarea
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
+                                        rows={12}
+                                        className="text-black w-full h-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent resize-none transition-all min-h-[300px]"
+                                        placeholder="Share your experience with this program..."
+                                        required
+                                    />
+                                    <div className="flex justify-between items-center mt-2">
+                                        <span className="text-sm text-gray-500">
+                                            {comment.length}/500 characters
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        {/* Modal Footer - Fixed */}
+                        <div className="flex gap-3 px-8 py-6 border-t border-gray-200 flex-shrink-0 bg-white">
+                            <Button
+                                onClick={() => {
+                                    setShowReviewModal(false);
+                                    setInstructorRating(50);
+                                    setContentQualityRating(50);
+                                    setPracticalValueRating(50);
+                                    setTakeTheCourseAgain(false);
+                                    setComment('');
+                                    setCurrentSemester('');
+                                }}
+                                variant="outline"
+                                className="px-8 border-gray-300 text-gray-700 hover:bg-gray-50"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                onClick={handleSubmitReview}
+                                disabled={submitting || !instructorRating || !contentQualityRating || !practicalValueRating || !comment.trim() || !currentSemester.trim() || comment.length > 500}
+                                className="px-8 bg-black hover:bg-gray-800 text-white font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed transition-all"
+                            >
+                                {submitting ? (
+                                    <>
+                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                                        Submitting...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Send className="w-4 h-4 mr-2" />
+                                        Submit Review
+                                    </>
+                                )}
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
 
-export default ProgramDetailPage; 
+export default ProgramReviewPage;

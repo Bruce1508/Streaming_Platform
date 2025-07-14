@@ -22,7 +22,7 @@ export interface IComment {
 export interface IAcademicContext {
     school: mongoose.Types.ObjectId;
     program: mongoose.Types.ObjectId;
-    course: mongoose.Types.ObjectId;
+    course: string;
     semester: {
         term: 'fall' | 'winter' | 'summer';
         year: number;

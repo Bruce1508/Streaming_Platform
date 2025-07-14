@@ -1,32 +1,39 @@
 import { Request, Response } from 'express';
 import { ProgramReview, ReviewLike } from '../models/ProgramReviews';
 import { Program } from '../models/Program';
+import User from '../models/User';
 import { ApiError } from '../utils/ApiError';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
 import { AuthRequest } from '../middleware/auth.middleware';
 import { createNotification } from './notification.controllers';
-import mongoose from 'mongoose';
+import { calculateAverageRating, getGradeFromScore, calculateGradeDistribution } from '../utils/gradeCalculator';
 
 // ===== CREATE REVIEW =====
 export const createReview = asyncHandler(async (req: AuthRequest, res: Response) => {
-    const { programId, year, criteriaRatings, comment } = req.body;
+    const { programId, currentSemester, ratings, takeTheCourseAgain, comment } = req.body;
     const userId = req.user?._id;
 
     // Validate required fields
-    if (!programId || !year || !criteriaRatings) {
-        throw new ApiError(400, 'Program ID, year, and criteria ratings are required');
+    if (!programId || !currentSemester || !ratings || takeTheCourseAgain === undefined) {
+        throw new ApiError(400, 'Program ID, current s868emester, ratings, and takeTheCourseAgain are required');
     }
 
-    // Validate program exists
-    const program = await Program.findById(programId);
+    // Validate program exists (find by code instead of _id)
+    const program = await Program.findOne({ code: programId });
     if (!program) {
         throw new ApiError(404, 'Program not found');
     }
 
-    // Check if user already reviewed this program
+    // Get user info for author
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new ApiError(404, 'User not found');
+    }
+
+    // Check if user already reviewed this program (use program ObjectId)
     const existingReview = await ProgramReview.findOne({ 
-        program: programId, 
+        program: program._id, 
         user: userId 
     });
     
@@ -34,29 +41,39 @@ export const createReview = asyncHandler(async (req: AuthRequest, res: Response)
         throw new ApiError(400, 'You have already reviewed this program. Use update instead.');
     }
 
-    // Validate criteria ratings
-    const requiredCriteria = [
-        'TeachingQuality', 'FacultySupport', 'LearningEnvironment', 
-        'LibraryResources', 'StudentSupport', 'CampusLife', 'OverallExperience'
-    ];
+    // Validate ratings
+    const { instructorRating, contentQualityRating, practicalValueRating } = ratings;
     
-    for (const criteria of requiredCriteria) {
-        if (!criteriaRatings[criteria] || criteriaRatings[criteria] < 1 || criteriaRatings[criteria] > 5) {
-            throw new ApiError(400, `${criteria} rating must be between 1 and 5`);
-        }
+    if (!instructorRating || instructorRating < 0 || instructorRating > 100) {
+        throw new ApiError(400, 'Instructor rating must be between 0 and 100');
+    }
+    if (!contentQualityRating || contentQualityRating < 0 || contentQualityRating > 100) {
+        throw new ApiError(400, 'Content quality rating must be between 0 and 100');
+    }
+    if (!practicalValueRating || practicalValueRating < 0 || practicalValueRating > 100) {
+        throw new ApiError(400, 'Practical value rating must be between 0 and 100');
     }
 
-    // Create review
+    // Create review (use program ObjectId)
     const review = await ProgramReview.create({
-        program: programId,
+        program: program._id,
         user: userId,
-        year,
-        criteriaRatings,
+        currentSemester,
+        ratings: {
+            instructorRating,
+            contentQualityRating,
+            practicalValueRating
+        },
+        takeTheCourseAgain,
+        author: {
+            fullName: user.fullName,
+            email: user.email
+        },
         comment: comment || ''
     });
 
-    // Update program review statistics
-    await updateProgramReviewStats(programId);
+    // Update program review statistics (use program ObjectId)
+    await updateProgramReviewStats((program._id as any).toString());
 
     // Populate user info for response
     const populatedReview = await ProgramReview.findById(review._id)
@@ -74,8 +91,8 @@ export const getProgramReviews = asyncHandler(async (req: AuthRequest, res: Resp
     const { page = 1, limit = 10, sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
     const userId = req.user?._id; // For checking user's likes/dislikes
 
-    // Validate program exists
-    const program = await Program.findById(programId);
+    // Validate program exists (find by code instead of _id)
+    const program = await Program.findOne({ code: programId });
     if (!program) {
         throw new ApiError(404, 'Program not found');
     }
@@ -86,18 +103,18 @@ export const getProgramReviews = asyncHandler(async (req: AuthRequest, res: Resp
 
     const sortOption: { [key: string]: 1 | -1 } = { [sortBy as string]: sortOrder === 'asc' ? 1 : -1 };
 
-    // Get reviews and calculate averages
+    // Get reviews and calculate averages (use program ObjectId)
     const [reviews, total, averages, userLikes] = await Promise.all([
-        ProgramReview.find({ program: programId })
+        ProgramReview.find({ program: program._id })
             .populate('user', 'fullName profilePic academic')
             .sort(sortOption)
             .skip(skip)
             .limit(limitNum)
             .lean(),
         
-        ProgramReview.countDocuments({ program: programId }),
+        ProgramReview.countDocuments({ program: program._id }),
         
-        calculateCriteriaAverages(programId),
+        calculateCriteriaAverages((program._id as any).toString()),
         
         // Get user's likes/dislikes for these reviews
         userId ? ReviewLike.find({ user: userId }).lean() : []
@@ -130,7 +147,7 @@ export const getProgramReviews = asyncHandler(async (req: AuthRequest, res: Resp
 // ===== UPDATE REVIEW =====
 export const updateReview = asyncHandler(async (req: AuthRequest, res: Response) => {
     const { reviewId } = req.params;
-    const { year, criteriaRatings, comment } = req.body;
+    const { currentSemester, ratings, takeTheCourseAgain, comment } = req.body;
     const userId = req.user?._id;
 
     const review = await ProgramReview.findOne({ 
@@ -142,17 +159,18 @@ export const updateReview = asyncHandler(async (req: AuthRequest, res: Response)
         throw new ApiError(404, 'Review not found or you are not authorized to update it');
     }
 
-    // Validate criteria ratings if provided
-    if (criteriaRatings) {
-        const requiredCriteria = [
-            'TeachingQuality', 'FacultySupport', 'LearningEnvironment', 
-            'LibraryResources', 'StudentSupport', 'CampusLife', 'OverallExperience'
-        ];
+    // Validate ratings if provided
+    if (ratings) {
+        const { instructorRating, contentQualityRating, practicalValueRating } = ratings;
         
-        for (const criteria of requiredCriteria) {
-            if (criteriaRatings[criteria] && (criteriaRatings[criteria] < 1 || criteriaRatings[criteria] > 5)) {
-                throw new ApiError(400, `${criteria} rating must be between 1 and 5`);
-            }
+        if (instructorRating !== undefined && (instructorRating < 0 || instructorRating > 100)) {
+            throw new ApiError(400, 'Instructor rating must be between 0 and 100');
+        }
+        if (contentQualityRating !== undefined && (contentQualityRating < 0 || contentQualityRating > 100)) {
+            throw new ApiError(400, 'Content quality rating must be between 0 and 100');
+        }
+        if (practicalValueRating !== undefined && (practicalValueRating < 0 || practicalValueRating > 100)) {
+            throw new ApiError(400, 'Practical value rating must be between 0 and 100');
         }
     }
 
@@ -160,8 +178,9 @@ export const updateReview = asyncHandler(async (req: AuthRequest, res: Response)
     const updatedReview = await ProgramReview.findByIdAndUpdate(
         reviewId,
         {
-            ...(year && { year }),
-            ...(criteriaRatings && { criteriaRatings }),
+            ...(currentSemester && { currentSemester }),
+            ...(ratings && { ratings }),
+            ...(takeTheCourseAgain !== undefined && { takeTheCourseAgain }),
             ...(comment !== undefined && { comment })
         },
         { new: true, runValidators: true }
@@ -205,8 +224,14 @@ export const getUserReviewForProgram = asyncHandler(async (req: AuthRequest, res
     const { programId } = req.params;
     const userId = req.user?._id;
 
+    // Find program by code first
+    const program = await Program.findOne({ code: programId });
+    if (!program) {
+        throw new ApiError(404, 'Program not found');
+    }
+
     const review = await ProgramReview.findOne({
-        program: programId,
+        program: program._id,
         user: userId
     }).populate('user', 'fullName profilePic');
 
@@ -223,187 +248,139 @@ export const getUserReviewForProgram = asyncHandler(async (req: AuthRequest, res
 
 // ===== HELPER FUNCTIONS =====
 
-/**
- * Calculate average ratings for each criteria for a program
- */
+// Calculate criteria averages for a program
 async function calculateCriteriaAverages(programId: string) {
     const reviews = await ProgramReview.find({ program: programId });
     
     if (reviews.length === 0) {
         return {
-            TeachingQuality: 0,
-            FacultySupport: 0,
-            LearningEnvironment: 0,
-            LibraryResources: 0,
-            StudentSupport: 0,
-            CampusLife: 0,
-            OverallExperience: 0,
-            totalReviews: 0
+            averageRating: 0,
+            instructorAverage: 0,
+            contentQualityAverage: 0,
+            practicalValueAverage: 0,
+            gradeDistribution: calculateGradeDistribution([]),
+            totalReviews: 0,
+            takeAgainPercentage: 0
         };
     }
 
-    const criteria = [
-        'TeachingQuality', 'FacultySupport', 'LearningEnvironment', 
-        'LibraryResources', 'StudentSupport', 'CampusLife', 'OverallExperience'
-    ];
+    const totals = reviews.reduce((acc, review) => ({
+        instructor: acc.instructor + review.ratings.instructorRating,
+        contentQuality: acc.contentQuality + review.ratings.contentQualityRating,
+        practicalValue: acc.practicalValue + review.ratings.practicalValueRating,
+        takeAgain: acc.takeAgain + (review.takeTheCourseAgain ? 1 : 0)
+    }), { instructor: 0, contentQuality: 0, practicalValue: 0, takeAgain: 0 });
 
-    const averages: any = { totalReviews: reviews.length };
+    const instructorAverage = Math.round(totals.instructor / reviews.length);
+    const contentQualityAverage = Math.round(totals.contentQuality / reviews.length);
+    const practicalValueAverage = Math.round(totals.practicalValue / reviews.length);
+    const overallAverage = Math.round((instructorAverage + contentQualityAverage + practicalValueAverage) / 3);
+    const takeAgainPercentage = Math.round((totals.takeAgain / reviews.length) * 100);
 
-    criteria.forEach(criterion => {
-        const sum = reviews.reduce((acc, review) => 
-            acc + (review.criteriaRatings[criterion as keyof typeof review.criteriaRatings] || 0), 0
-        );
-        averages[criterion] = Math.round((sum / reviews.length) * 10) / 10; // Round to 1 decimal
-    });
-
-    return averages;
+    return {
+        averageRating: overallAverage,
+        instructorAverage,
+        contentQualityAverage,
+        practicalValueAverage,
+        gradeDistribution: calculateGradeDistribution(reviews),
+        totalReviews: reviews.length,
+        takeAgainPercentage
+    };
 }
 
-/**
- * Update program's review statistics (optional - for caching)
- */
+// Update program review statistics
 async function updateProgramReviewStats(programId: string) {
-    const averages = await calculateCriteriaAverages(programId);
-    
-    // You can store these averages in Program model for faster queries
-    // For now, we'll just recalculate on each request
-    
-    // Optional: Update Program model with review stats
-    // await Program.findByIdAndUpdate(programId, {
-    //     'reviewStats.averages': averages,
-    //     'reviewStats.totalReviews': averages.totalReviews,
-    //     'reviewStats.lastUpdated': new Date()
-    // });
+    // This function can be used to update cached statistics if needed
+    // For now, we calculate on-demand in getProgramReviews
+    return;
 }
 
-// ===== LIKE/DISLIKE REVIEW =====
+// ===== LIKE/DISLIKE FUNCTIONS =====
 export const likeReview = asyncHandler(async (req: AuthRequest, res: Response) => {
     const { reviewId } = req.params;
     const userId = req.user?._id;
-    const action = 'like';
 
-    // Validate review exists
     const review = await ProgramReview.findById(reviewId);
     if (!review) {
         throw new ApiError(404, 'Review not found');
     }
 
     // Check if user already liked/disliked this review
-    const existingLike = await ReviewLike.findOne({ 
-        review: reviewId, 
-        user: userId 
-    });
-
+    const existingLike = await ReviewLike.findOne({ review: reviewId, user: userId });
+    
     if (existingLike) {
-        if (existingLike.type === action) {
+        if (existingLike.type === 'like') {
             // Remove like
             await ReviewLike.findByIdAndDelete(existingLike._id);
             await ProgramReview.findByIdAndUpdate(reviewId, {
                 $inc: { likes: -1 }
             });
-            
-            return res.status(200).json(
-                new ApiResponse(200, null, 'Like removed successfully')
-            );
         } else {
-            // Change dislike to like
-            existingLike.type = action;
-            await existingLike.save();
-            
+            // Change from dislike to like
+            await ReviewLike.findByIdAndUpdate(existingLike._id, { type: 'like' });
             await ProgramReview.findByIdAndUpdate(reviewId, {
                 $inc: { likes: 1, dislikes: -1 }
             });
-            
-            return res.status(200).json(
-                new ApiResponse(200, null, 'Changed to like successfully')
-            );
         }
     } else {
-        // Create new like
-        await ReviewLike.create({
-            review: reviewId,
-            user: userId,
-            type: action
-        });
-        
+        // Add new like
+        await ReviewLike.create({ review: reviewId, user: userId, type: 'like' });
         await ProgramReview.findByIdAndUpdate(reviewId, {
             $inc: { likes: 1 }
         });
 
-        // Send notification to review author
-        if (review.user.toString() !== userId?.toString()) {
-            await createNotification({
-                recipient: review.user.toString(),
-                sender: userId?.toString(),
-                type: 'like',
-                title: 'Your review was liked',
-                message: 'Someone liked your program review.',
-                relatedId: reviewId,
-                relatedModel: 'ProgramReview'
-            });
-        }
-        
-        return res.status(200).json(
-            new ApiResponse(200, null, 'Review liked successfully')
-        );
+        // Create notification for review author
+        await createNotification({
+            recipient: review.user.toString(),
+            sender: userId?.toString(),
+            type: 'like',
+            title: 'Your review received a like',
+            message: 'Someone liked your program review',
+            relatedId: reviewId,
+            relatedModel: 'ProgramReview'
+        });
     }
+
+    res.status(200).json(
+        new ApiResponse(200, null, 'Review liked successfully')
+    );
 });
 
 export const dislikeReview = asyncHandler(async (req: AuthRequest, res: Response) => {
     const { reviewId } = req.params;
     const userId = req.user?._id;
-    const action = 'dislike';
 
-    // Validate review exists
     const review = await ProgramReview.findById(reviewId);
     if (!review) {
         throw new ApiError(404, 'Review not found');
     }
 
     // Check if user already liked/disliked this review
-    const existingLike = await ReviewLike.findOne({ 
-        review: reviewId, 
-        user: userId 
-    });
-
+    const existingLike = await ReviewLike.findOne({ review: reviewId, user: userId });
+    
     if (existingLike) {
-        if (existingLike.type === action) {
+        if (existingLike.type === 'dislike') {
             // Remove dislike
             await ReviewLike.findByIdAndDelete(existingLike._id);
             await ProgramReview.findByIdAndUpdate(reviewId, {
                 $inc: { dislikes: -1 }
             });
-            
-            return res.status(200).json(
-                new ApiResponse(200, null, 'Dislike removed successfully')
-            );
         } else {
-            // Change like to dislike
-            existingLike.type = action;
-            await existingLike.save();
-            
+            // Change from like to dislike
+            await ReviewLike.findByIdAndUpdate(existingLike._id, { type: 'dislike' });
             await ProgramReview.findByIdAndUpdate(reviewId, {
-                $inc: { dislikes: 1, likes: -1 }
+                $inc: { likes: -1, dislikes: 1 }
             });
-            
-            return res.status(200).json(
-                new ApiResponse(200, null, 'Changed to dislike successfully')
-            );
         }
     } else {
-        // Create new dislike
-        await ReviewLike.create({
-            review: reviewId,
-            user: userId,
-            type: action
-        });
-        
+        // Add new dislike
+        await ReviewLike.create({ review: reviewId, user: userId, type: 'dislike' });
         await ProgramReview.findByIdAndUpdate(reviewId, {
             $inc: { dislikes: 1 }
         });
-        
-        return res.status(200).json(
-            new ApiResponse(200, null, 'Review disliked successfully')
-        );
     }
+
+    res.status(200).json(
+        new ApiResponse(200, null, 'Review disliked successfully')
+    );
 }); 

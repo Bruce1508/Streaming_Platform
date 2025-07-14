@@ -12,7 +12,9 @@
     "migrate:prod": "NODE_ENV=production ts-node scripts/run-migration.ts",
     "dev": "tsx src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "test:transform": "ts-node scripts/test-transformation.ts",
+    "import:unified": "ts-node scripts/universal-importer.ts"
   },
   "keywords": [],
   "author": "",

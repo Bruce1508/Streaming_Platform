@@ -85,9 +85,10 @@ const studyMaterialSchema = new mongoose_1.Schema({
             required: [true, 'Program is required']
         },
         course: {
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: 'Course',
-            required: [true, 'Course is required']
+            type: String,
+            required: [true, 'Course is required'],
+            trim: true,
+            maxlength: [100, 'Course name cannot exceed 100 characters']
         },
         semester: {
             term: {
@@ -362,11 +363,10 @@ studyMaterialSchema.pre('save', function (next) {
     }
     next();
 });
-// Focused static methods
+// Static methods
 studyMaterialSchema.statics.findByCategory = function (category, options = {}) {
     return this.find(Object.assign({ category, status: 'published', isPublic: true }, options.filter))
         .populate('author', 'fullName profilePic')
-        .populate('academic.course', 'code name')
         .populate('academic.program', 'name')
         .sort(options.sort || { averageRating: -1, createdAt: -1 })
         .limit(options.limit || 20);
@@ -374,14 +374,12 @@ studyMaterialSchema.statics.findByCategory = function (category, options = {}) {
 studyMaterialSchema.statics.findByCourse = function (courseId, options = {}) {
     return this.find(Object.assign({ 'academic.course': courseId, status: 'published', isPublic: true }, options.filter))
         .populate('author', 'fullName profilePic')
-        .populate('academic.course', 'code name')
         .sort(options.sort || { averageRating: -1, createdAt: -1 })
         .limit(options.limit || 20);
 };
 studyMaterialSchema.statics.findByProgram = function (programId, options = {}) {
     return this.find(Object.assign({ 'academic.program': programId, status: 'published', isPublic: true }, options.filter))
         .populate('author', 'fullName profilePic')
-        .populate('academic.course', 'code name')
         .populate('academic.program', 'name')
         .sort(options.sort || { averageRating: -1, createdAt: -1 })
         .limit(options.limit || 20);
@@ -393,7 +391,6 @@ studyMaterialSchema.statics.findFeatured = function (limit = 10) {
         isPublic: true
     })
         .populate('author', 'fullName profilePic')
-        .populate('academic.course', 'code name')
         .sort({ averageRating: -1, views: -1 })
         .limit(limit);
 };
@@ -404,8 +401,7 @@ studyMaterialSchema.statics.getPopularMaterials = function (limit = 10) {
     })
         .sort({ views: -1, averageRating: -1 })
         .limit(limit)
-        .populate('author', 'fullName profilePic')
-        .populate('academic.course', 'code name');
+        .populate('author', 'fullName profilePic');
 };
 // Instance methods
 studyMaterialSchema.methods.incrementViews = function () {

@@ -45,7 +45,6 @@ const getStudyMaterialById = (req, res) => __awaiter(void 0, void 0, void 0, fun
             .populate('author', 'fullName profilePic email')
             .populate('academic.school', 'name location')
             .populate('academic.program', 'name code')
-            .populate('academic.course', 'code name')
             .populate('comments.user', 'fullName profilePic')
             .exec();
         if (!material) {
@@ -140,7 +139,6 @@ const getStudyMaterials = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 .populate('author', 'fullName profilePic')
                 .populate('academic.school', 'name location')
                 .populate('academic.program', 'name code')
-                .populate('academic.course', 'code name')
                 .sort(sortObj)
                 .limit(limitNum)
                 .skip(skip)
@@ -268,13 +266,19 @@ const createStudyMaterial = (req, res) => __awaiter(void 0, void 0, void 0, func
                 message: "Semester term and year are required"
             });
         }
-        // Validate ObjectIds
+        // Validate ObjectIds (except course which is now string)
         if (!mongoose_1.default.Types.ObjectId.isValid(school) ||
-            !mongoose_1.default.Types.ObjectId.isValid(program) ||
-            !mongoose_1.default.Types.ObjectId.isValid(course)) {
+            !mongoose_1.default.Types.ObjectId.isValid(program)) {
             return res.status(400).json({
                 success: false,
-                message: "Invalid school, program, or course ID"
+                message: "Invalid school or program ID"
+            });
+        }
+        // Validate course is not empty string
+        if (!course || course.trim().length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Course is required"
             });
         }
         // ✅ Enhanced attachments with utils
@@ -294,7 +298,7 @@ const createStudyMaterial = (req, res) => __awaiter(void 0, void 0, void 0, func
             author: authReq.user._id,
             category,
             // Required academic context
-            academic: Object.assign(Object.assign({ school: new mongoose_1.default.Types.ObjectId(school), program: new mongoose_1.default.Types.ObjectId(program), course: new mongoose_1.default.Types.ObjectId(course), semester: {
+            academic: Object.assign(Object.assign({ school: new mongoose_1.default.Types.ObjectId(school), program: new mongoose_1.default.Types.ObjectId(program), course: course, semester: {
                     term: semester.term,
                     year: parseInt(semester.year)
                 } }, (week && { week: parseInt(week) })), (professor && { professor: professor.trim() })),
@@ -318,8 +322,7 @@ const createStudyMaterial = (req, res) => __awaiter(void 0, void 0, void 0, func
         yield savedMaterial.populate([
             { path: 'author', select: 'fullName profilePic email' },
             { path: 'academic.school', select: 'name location' },
-            { path: 'academic.program', select: 'name code' },
-            { path: 'academic.course', select: 'code name' }
+            { path: 'academic.program', select: 'name code' }
         ]);
         console.log('✅ Study material created:', {
             id: savedMaterial._id,
@@ -696,7 +699,6 @@ const getUserUploadedMaterials = (req, res) => __awaiter(void 0, void 0, void 0,
             filter.status = status;
         const materials = yield StudyMaterial_1.default.find(filter)
             .populate('author', 'fullName profilePic')
-            .populate('academic.course', 'code name')
             .populate('academic.program', 'name')
             .sort({ createdAt: -1 })
             .limit(limitNum)
@@ -763,8 +765,7 @@ const updateStudyMaterial = (req, res) => __awaiter(void 0, void 0, void 0, func
         const updatedMaterial = yield StudyMaterial_1.default.findByIdAndUpdate(id, Object.assign(Object.assign({}, updateData), { updatedAt: new Date() }), { new: true, runValidators: true }).populate([
             { path: 'author', select: 'fullName profilePic' },
             { path: 'academic.school', select: 'name location' },
-            { path: 'academic.program', select: 'name code' },
-            { path: 'academic.course', select: 'code name' }
+            { path: 'academic.program', select: 'name code' }
         ]);
         return res.json({
             success: true,
@@ -837,10 +838,11 @@ const getMaterialsByCourse = (req, res) => __awaiter(void 0, void 0, void 0, fun
     try {
         const { courseId } = req.params;
         const { limit = '20', sort = 'newest' } = req.query;
-        if (!mongoose_1.default.Types.ObjectId.isValid(courseId)) {
+        // Validate course is not empty string (course is now string, not ObjectId)
+        if (!courseId || courseId.trim().length === 0) {
             return res.status(400).json({
                 success: false,
-                message: 'Invalid course ID'
+                message: 'Course ID is required'
             });
         }
         const sortOptions = {

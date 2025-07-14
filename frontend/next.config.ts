@@ -38,6 +38,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'assets.aceternity.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
     // ✅ Add these timeout and optimization configs
     domains: [], // Keep empty if using remotePatterns

@@ -4,8 +4,8 @@ export interface INotification extends Document {
     sender?: mongoose.Types.ObjectId;
     title: string;
     message: string;
-    type: 'comment' | 'rating' | 'material-approved' | 'material-rejected' | 'new-material' | 'course-update' | 'reminder' | 'system' | 'enrollment' | 'achievement' | 'report-resolved';
-    relatedModel?: 'StudyMaterial' | 'Course' | 'Program' | 'User' | 'Enrollment';
+    type: 'comment' | 'rating' | 'material-approved' | 'material-rejected' | 'new-material' | 'course-update' | 'reminder' | 'system' | 'enrollment' | 'achievement' | 'report-resolved' | 'like' | 'general';
+    relatedModel?: 'StudyMaterial' | 'Course' | 'Program' | 'User' | 'Enrollment' | 'ProgramReview' | 'Comment' | 'Material';
     relatedId?: mongoose.Types.ObjectId;
     metadata?: {
         course?: {

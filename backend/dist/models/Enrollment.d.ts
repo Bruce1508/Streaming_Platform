@@ -11,7 +11,7 @@ export interface IEnrollment extends Document {
     totalCredits: number;
     completedCredits: number;
     courses: {
-        course: mongoose.Types.ObjectId;
+        course: string;
         semester: number;
         year: number;
         term: 'fall' | 'winter' | 'summer';

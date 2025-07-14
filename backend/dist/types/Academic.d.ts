@@ -59,10 +59,10 @@ export interface IProgram {
     code: string;
     name: string;
     overview: string;
-    duration: string;
+    duration?: string;
     campus: string[];
     delivery?: string;
-    credential: string;
+    credential?: string;
     school: string;
     level: 'Certificate' | 'Diploma' | 'Advanced Diploma' | 'Bachelor' | 'Graduate Certificate' | 'Honours Bachelor Degree' | 'Honours Bachelor' | 'Seneca Certificate of Standing' | 'Certificate of Apprenticeship, Ontario College Certificate';
     isActive: boolean;
@@ -72,6 +72,15 @@ export interface IProgram {
         graduationRate?: number;
         employmentRate?: number;
     };
+    semesters?: {
+        id?: string;
+        name?: string;
+        courses?: {
+            id?: string;
+            code?: string;
+            name?: string;
+        }[];
+    }[];
 }
 export interface IProgramDocument extends IProgram, Document {
 }

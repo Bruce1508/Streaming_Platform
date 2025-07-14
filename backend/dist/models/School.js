@@ -55,26 +55,6 @@ const schoolSchema = new mongoose_1.Schema({
         trim: true,
         maxlength: [500, 'Description cannot exceed 500 characters']
     },
-    website: {
-        type: String,
-        trim: true,
-        validate: {
-            validator: function (v) {
-                return !v || /^https?:\/\/.+/.test(v);
-            },
-            message: 'Website must be a valid URL'
-        }
-    },
-    color: {
-        type: String,
-        default: '#3B82F6',
-        validate: {
-            validator: function (v) {
-                return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(v);
-            },
-            message: 'Color must be a valid hex color'
-        }
-    },
     isActive: {
         type: Boolean,
         default: true

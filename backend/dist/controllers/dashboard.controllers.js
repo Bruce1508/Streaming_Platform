@@ -22,7 +22,7 @@ const logger_utils_1 = require("../utils/logger.utils");
 // Import models
 const User_1 = __importDefault(require("../models/User"));
 const StudyMaterial_1 = __importDefault(require("../models/StudyMaterial"));
-const Course_1 = require("../models/Course");
+const ProgramCourses_1 = require("../models/ProgramCourses");
 const Enrollment_1 = __importDefault(require("../models/Enrollment"));
 /**
  * @desc    Get comprehensive dashboard statistics
@@ -43,7 +43,7 @@ exports.getDashboard = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(
     }
     try {
         // ✅ Get comprehensive stats using utils
-        const models = { User: User_1.default, Material: StudyMaterial_1.default, Course: Course_1.Course, Enrollment: Enrollment_1.default };
+        const models = { User: User_1.default, Material: StudyMaterial_1.default, Course: ProgramCourses_1.ProgramCourses, Enrollment: Enrollment_1.default };
         const dashboardData = yield (0, Stats_utils_1.getDashboardStats)(models);
         if (!dashboardData) {
             return res.status(500).json(new ApiResponse_1.ApiResponse(500, null, 'Failed to generate dashboard statistics'));
@@ -178,7 +178,7 @@ exports.getCourseAnalytics = (0, asyncHandler_1.asyncHandler)((req, res) => __aw
     const { programId } = req.query;
     try {
         // ✅ Get course statistics
-        const courseStats = yield (0, Stats_utils_1.getCourseStats)(Course_1.Course, Enrollment_1.default, programId);
+        const courseStats = yield (0, Stats_utils_1.getCourseStats)(ProgramCourses_1.ProgramCourses, Enrollment_1.default, programId);
         if (!courseStats) {
             return res.status(500).json(new ApiResponse_1.ApiResponse(500, null, 'Failed to generate course statistics'));
         }
@@ -297,7 +297,7 @@ exports.getSystemHealth = (0, asyncHandler_1.asyncHandler)((req, res) => __await
         const [userCount, materialCount, courseCount, enrollmentCount] = yield Promise.all([
             User_1.default.countDocuments({ isActive: true }),
             StudyMaterial_1.default.countDocuments({ status: 'published' }),
-            Course_1.Course.countDocuments({ isActive: true }),
+            ProgramCourses_1.ProgramCourses.countDocuments(),
             Enrollment_1.default.countDocuments({})
         ]);
         // ✅ System health indicators

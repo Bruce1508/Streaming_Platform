@@ -208,7 +208,7 @@ exports.getDashboardStats = getDashboardStats;
 // Get trending materials
 const getTrendingMaterials = (MaterialModel_1, ...args_1) => __awaiter(void 0, [MaterialModel_1, ...args_1], void 0, function* (MaterialModel, days = 7, limit = 10) {
     try {
-        const cacheKey = (0, Cache_utils_1.generateCacheKey)('trending_materials', days, limit);
+        const cacheKey = (0, Cache_utils_1.generateCacheKey)('trending_materials', days.toString(), limit.toString());
         const cached = Cache_utils_1.cache.get(cacheKey);
         if (cached)
             return cached;
@@ -280,7 +280,7 @@ exports.getTrendingMaterials = getTrendingMaterials;
 const getUserActivityStats = (models_1, userId_1, ...args_1) => __awaiter(void 0, [models_1, userId_1, ...args_1], void 0, function* (models, userId, days = 30) {
     var _a;
     try {
-        const cacheKey = (0, Cache_utils_1.generateCacheKey)('user_activity', userId, days);
+        const cacheKey = (0, Cache_utils_1.generateCacheKey)('user_activity', userId, days.toString());
         const cached = Cache_utils_1.cache.get(cacheKey);
         if (cached)
             return cached;
@@ -362,7 +362,7 @@ exports.calculateGrowthMetrics = calculateGrowthMetrics;
 // Get top performers
 const getTopPerformers = (models_1, ...args_1) => __awaiter(void 0, [models_1, ...args_1], void 0, function* (models, metric = 'downloads', limit = 10) {
     try {
-        const cacheKey = (0, Cache_utils_1.generateCacheKey)('top_performers', metric, limit);
+        const cacheKey = (0, Cache_utils_1.generateCacheKey)('top_performers', metric, limit.toString());
         const cached = Cache_utils_1.cache.get(cacheKey);
         if (cached)
             return cached;

@@ -109,26 +109,17 @@ export const uploadAPI = {
 
 // ===== PROGRAM APIs =====
 export const programAPI = {
-    getPrograms: (params?: any) => {
-        // Filter out undefined values
-        const cleanParams: Record<string, string> = {};
-        if (params) {
-            Object.keys(params).forEach(key => {
-                if (params[key] !== undefined && params[key] !== null && params[key] !== '') {
-                    cleanParams[key] = params[key];
-                }
-            });
-        }
-        
-        const queryString = Object.keys(cleanParams).length > 0 
-            ? `?${new URLSearchParams(cleanParams).toString()}` 
-            : '';
-        return api.get(`/programs${queryString}`);
-    },
+    getPrograms: (params: any) => api.get('/programs', { params }),
     getProgramById: (id: string) => api.get(`/programs/${id}`),
-    searchPrograms: (query: string) => api.get(`/programs/search?q=${encodeURIComponent(query)}`),
-    getProgramsBySchool: (schoolId: string) => api.get(`/programs/school/${schoolId}`),
+    getProgramsBySchool: (schoolId: string, params: any) => api.get(`/programs/school/${schoolId}`, { params }),
     getProgramLevels: () => api.get('/programs/levels'),
+    getProgramSchools: () => api.get('/programs/schools'),
+    getProgramCredentials: () => api.get('/programs/credentials'),
+    searchPrograms: (params: any) => api.get('/programs/search', { params }),
+    getProgramSuggestions: (query: string) => api.get('/programs/suggestions', { params: { q: query } }),
+    createProgram: (data: any) => api.post('/programs', data),
+    updateProgram: (id: string, data: any) => api.put(`/programs/${id}`, data),
+    deleteProgram: (id: string) => api.delete(`/programs/${id}`),
 };
 
 // ===== COURSE APIs =====
@@ -150,19 +141,25 @@ export const programReviewAPI = {
     getUserReviewForProgram: (programId: string) => api.get(`/program-reviews/user/${programId}`),
     createReview: (data: {
         programId: string;
-        year: number;
-        criteriaRatings: {
-            TeachingQuality: number;
-            FacultySupport: number;
-            LearningEnvironment: number;
-            LibraryResources: number;
-            StudentSupport: number;
-            CampusLife: number;
-            OverallExperience: number;
+        currentSemester: string;
+        ratings: {
+            instructorRating: number;        // 0-100
+            contentQualityRating: number;    // 0-100
+            practicalValueRating: number;    // 0-100
         };
+        takeTheCourseAgain: boolean;
         comment?: string;
     }) => api.post('/program-reviews', data),
-    updateReview: (reviewId: string, data: any) => api.put(`/program-reviews/${reviewId}`, data),
+    updateReview: (reviewId: string, data: {
+        currentSemester?: string;
+        ratings?: {
+            instructorRating?: number;
+            contentQualityRating?: number;
+            practicalValueRating?: number;
+        };
+        takeTheCourseAgain?: boolean;
+        comment?: string;
+    }) => api.put(`/program-reviews/${reviewId}`, data),
     deleteReview: (reviewId: string) => api.delete(`/program-reviews/${reviewId}`),
     likeReview: (reviewId: string, action: 'like' | 'dislike') => api.post(`/program-reviews/${reviewId}/${action}`),
 };

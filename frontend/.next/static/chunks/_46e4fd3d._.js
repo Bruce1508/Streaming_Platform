@@ -233,11 +233,11 @@ const LandingNavBar = ()=>{
                 ${isScrolled ? 'fixed backdrop-blur-sm bg-[#18191A]/70 shadow-lg' : 'absolute bg-transparent'}`,
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
-                className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center gap-8 font-medium text-white",
+                className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center gap-8 font-medium text-black",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: "/",
-                        className: "hover:text-gray-200",
+                        className: "hover:text-gray-600",
                         children: "Home"
                     }, void 0, false, {
                         fileName: "[project]/components/landing/LandingNavBar.tsx",
@@ -246,7 +246,7 @@ const LandingNavBar = ()=>{
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: "/courses",
-                        className: "hover:text-gray-200",
+                        className: "hover:text-gray-600",
                         children: "Courses"
                     }, void 0, false, {
                         fileName: "[project]/components/landing/LandingNavBar.tsx",
@@ -255,7 +255,7 @@ const LandingNavBar = ()=>{
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: "/programs",
-                        className: "hover:text-gray-200",
+                        className: "hover:text-gray-600",
                         children: "Programs"
                     }, void 0, false, {
                         fileName: "[project]/components/landing/LandingNavBar.tsx",
@@ -264,7 +264,7 @@ const LandingNavBar = ()=>{
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: "/resources",
-                        className: "hover:text-gray-200",
+                        className: "hover:text-gray-600",
                         children: "Resources"
                     }, void 0, false, {
                         fileName: "[project]/components/landing/LandingNavBar.tsx",
@@ -273,7 +273,7 @@ const LandingNavBar = ()=>{
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: "/about",
-                        className: "hover:text-gray-200",
+                        className: "hover:text-gray-600",
                         children: "About"
                     }, void 0, false, {
                         fileName: "[project]/components/landing/LandingNavBar.tsx",
@@ -287,7 +287,7 @@ const LandingNavBar = ()=>{
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center justify-between h-20 w-full px-6 xl:px-16 2xl:px-32 text-white",
+                className: "flex items-center justify-between h-20 w-full px-6 xl:px-16 2xl:px-32 text-black",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex items-center",
@@ -295,7 +295,7 @@ const LandingNavBar = ()=>{
                             href: "/",
                             className: "flex items-center gap-2.5",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "text-2xl md:text-3xl font-bold",
+                                className: "text-2xl md:text-3xl font-bold text-black",
                                 children: "StudyBuddy"
                             }, void 0, false, {
                                 fileName: "[project]/components/landing/LandingNavBar.tsx",
@@ -322,10 +322,10 @@ const LandingNavBar = ()=>{
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                         onClick: ()=>setShowAccountModal(true),
-                                        className: "flex items-center gap-2 p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors",
+                                        className: "flex items-center gap-2 p-1 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "w-8 h-8 rounded-full overflow-hidden bg-white/30",
+                                                className: "w-8 h-8 rounded-full overflow-hidden bg-gray-300",
                                                 children: user.image ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                     src: user.image,
                                                     alt: "User Avatar",
@@ -339,7 +339,7 @@ const LandingNavBar = ()=>{
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "w-full h-full flex items-center justify-center",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UserIcon$3e$__["UserIcon"], {
-                                                        className: "w-5 h-5 text-white"
+                                                        className: "w-5 h-5 text-gray-600"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/landing/LandingNavBar.tsx",
                                                         lineNumber: 97,
@@ -356,7 +356,7 @@ const LandingNavBar = ()=>{
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDownIcon$3e$__["ChevronDownIcon"], {
-                                                className: "w-4 h-4 text-white"
+                                                className: "w-4 h-4 text-black"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/landing/LandingNavBar.tsx",
                                                 lineNumber: 101,
@@ -498,7 +498,7 @@ const LandingNavBar = ()=>{
                                     href: "/sign-in",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                         variant: "secondary",
-                                        className: "rounded-full bg-white text-blue-600 hover:bg-gray-200",
+                                        className: "rounded-full bg-gray-200 text-black hover:bg-gray-300 border border-gray-300",
                                         children: "Log In"
                                     }, void 0, false, {
                                         fileName: "[project]/components/landing/LandingNavBar.tsx",
@@ -514,7 +514,7 @@ const LandingNavBar = ()=>{
                                     href: "/sign-up",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                         variant: "default",
-                                        className: "rounded-full",
+                                        className: "rounded-full bg-black text-white hover:bg-gray-800",
                                         children: "Sign Up"
                                     }, void 0, false, {
                                         fileName: "[project]/components/landing/LandingNavBar.tsx",
@@ -569,94 +569,125 @@ __turbopack_context__.s({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/Button.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__SearchIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/search.js [app-client] (ecmascript) <export default as SearchIcon>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/map-pin.js [app-client] (ecmascript) <export default as MapPin>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pen$2d$line$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Edit3$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/pen-line.js [app-client] (ecmascript) <export default as Edit3>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.js [app-client] (ecmascript)");
 'use client';
+;
 ;
 ;
 ;
 const HeroSection = ()=>{
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-        className: "min-h-screen w-full flex flex-col justify-center items-center",
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "absolute inset-0 bg-cover bg-center z-0",
-                style: {
-                    backgroundImage: "url('https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2070&auto=format&fit=crop')"
-                },
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "absolute inset-0 bg-black/60"
-                }, void 0, false, {
-                    fileName: "[project]/components/landing/HeroSection.tsx",
-                    lineNumber: 15,
-                    columnNumber: 17
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/components/landing/HeroSection.tsx",
-                lineNumber: 10,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "relative z-10 flex flex-col items-center text-center px-4",
+        className: "w-full pt-50 pb-20 bg-[#FAF9F6]",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "container mx-auto px-4 sm:px-6 lg:px-8",
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "max-w-4xl mx-auto text-center",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                        className: "text-5xl md:text-6xl font-extrabold !leading-tight tracking-tight",
-                        children: "Find your course materials"
+                        className: "text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight",
+                        children: [
+                            "Find Your Perfect",
+                            ' ',
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "text-red-600",
+                                children: "Canadian"
+                            }, void 0, false, {
+                                fileName: "[project]/components/landing/HeroSection.tsx",
+                                lineNumber: 16,
+                                columnNumber: 25
+                            }, this),
+                            ' ',
+                            "University Experience"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/components/landing/HeroSection.tsx",
+                        lineNumber: 14,
+                        columnNumber: 21
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-lg md:text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed",
+                        children: "Read honest reviews from Canadian students about their programs, courses, and university experiences. Make informed decisions about your education."
                     }, void 0, false, {
                         fileName: "[project]/components/landing/HeroSection.tsx",
-                        lineNumber: 20,
-                        columnNumber: 17
+                        lineNumber: 21,
+                        columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "mt-8 w-full max-w-2xl",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: " relative  bg-white/20  backdrop-blur-sm  rounded-full  transition-all duration-300 focus-within:bg-white  focus-within:ring-2  focus-within:ring-white  focus-within:shadow-lg ",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__SearchIcon$3e$__["SearchIcon"], {
-                                    className: "absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400"
-                                }, void 0, false, {
-                                    fileName: "[project]/components/landing/HeroSection.tsx",
-                                    lineNumber: 37,
-                                    columnNumber: 25
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                    type: "text",
-                                    placeholder: "Enter course code or program name",
-                                    className: " w-full h-16 pl-16 pr-40 rounded-full text-lg  bg-transparent text-white placeholder-gray-200  focus:text-black focus:placeholder-gray-500 focus:outline-none "
-                                }, void 0, false, {
-                                    fileName: "[project]/components/landing/HeroSection.tsx",
-                                    lineNumber: 38,
-                                    columnNumber: 25
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                        className: "flex flex-col sm:flex-row gap-4 justify-center items-center",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                href: "/programs",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                     size: "lg",
-                                    className: "cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-12 px-8 bg-white/80 border border-white/70 text-primary font-bold shadow hover:bg-white/60 transition-colors",
-                                    children: "Search"
-                                }, void 0, false, {
+                                    className: "bg-red-600 hover:bg-red-700 text-white px-8 py-4 cursor-pointer rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__["MapPin"], {
+                                            className: "w-5 h-5"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/landing/HeroSection.tsx",
+                                            lineNumber: 33,
+                                            columnNumber: 33
+                                        }, this),
+                                        "Browse Schools"
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/components/landing/HeroSection.tsx",
-                                    lineNumber: 48,
-                                    columnNumber: 25
+                                    lineNumber: 29,
+                                    columnNumber: 29
                                 }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/components/landing/HeroSection.tsx",
-                            lineNumber: 26,
-                            columnNumber: 21
-                        }, this)
-                    }, void 0, false, {
+                            }, void 0, false, {
+                                fileName: "[project]/components/landing/HeroSection.tsx",
+                                lineNumber: 28,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                href: "/sign-up",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                    variant: "outline",
+                                    size: "lg",
+                                    className: "border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-8 py-4 cursor-pointer rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pen$2d$line$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Edit3$3e$__["Edit3"], {
+                                            className: "w-5 h-5"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/landing/HeroSection.tsx",
+                                            lineNumber: 44,
+                                            columnNumber: 33
+                                        }, this),
+                                        "Write a Review"
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/components/landing/HeroSection.tsx",
+                                    lineNumber: 39,
+                                    columnNumber: 29
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/components/landing/HeroSection.tsx",
+                                lineNumber: 38,
+                                columnNumber: 25
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/components/landing/HeroSection.tsx",
-                        lineNumber: 25,
-                        columnNumber: 17
+                        lineNumber: 27,
+                        columnNumber: 21
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/landing/HeroSection.tsx",
-                lineNumber: 19,
-                columnNumber: 13
+                lineNumber: 12,
+                columnNumber: 17
             }, this)
-        ]
-    }, void 0, true, {
+        }, void 0, false, {
+            fileName: "[project]/components/landing/HeroSection.tsx",
+            lineNumber: 11,
+            columnNumber: 13
+        }, this)
+    }, void 0, false, {
         fileName: "[project]/components/landing/HeroSection.tsx",
-        lineNumber: 8,
+        lineNumber: 9,
         columnNumber: 9
     }, this);
 };
@@ -677,7 +708,7 @@ __turbopack_context__.s({
     "default": (()=>ExplorePrograms)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swiper$2f$swiper$2d$react$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/swiper/swiper-react.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/styled-jsx/style.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$2f$react$2f$24$2f$outline$2f$esm$2f$AcademicCapIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AcademicCapIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/@heroicons/react/24/outline/esm/AcademicCapIcon.js [app-client] (ecmascript) <export default as AcademicCapIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$2f$react$2f$24$2f$outline$2f$esm$2f$CodeBracketIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CodeBracketIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/@heroicons/react/24/outline/esm/CodeBracketIcon.js [app-client] (ecmascript) <export default as CodeBracketIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$2f$react$2f$24$2f$outline$2f$esm$2f$BeakerIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BeakerIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/@heroicons/react/24/outline/esm/BeakerIcon.js [app-client] (ecmascript) <export default as BeakerIcon>");
@@ -704,14 +735,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$
 ;
 ;
 ;
-;
 const programs = [
     {
         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$2f$react$2f$24$2f$outline$2f$esm$2f$AcademicCapIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AcademicCapIcon$3e$__["AcademicCapIcon"], {
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 9,
+            lineNumber: 7,
             columnNumber: 15
         }, this),
         name: 'Education',
@@ -727,7 +757,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 15,
+            lineNumber: 13,
             columnNumber: 15
         }, this),
         name: 'Computer Science',
@@ -743,7 +773,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 21,
+            lineNumber: 19,
             columnNumber: 15
         }, this),
         name: 'Biology',
@@ -759,7 +789,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 27,
+            lineNumber: 25,
             columnNumber: 15
         }, this),
         name: 'International Studies',
@@ -775,7 +805,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 33,
+            lineNumber: 31,
             columnNumber: 15
         }, this),
         name: 'Mathematics',
@@ -791,7 +821,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 39,
+            lineNumber: 37,
             columnNumber: 15
         }, this),
         name: 'Business Administration',
@@ -807,7 +837,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 45,
+            lineNumber: 43,
             columnNumber: 15
         }, this),
         name: 'Literature',
@@ -823,7 +853,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 51,
+            lineNumber: 49,
             columnNumber: 15
         }, this),
         name: 'Medicine',
@@ -839,7 +869,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 57,
+            lineNumber: 55,
             columnNumber: 15
         }, this),
         name: 'Music',
@@ -855,7 +885,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 63,
+            lineNumber: 61,
             columnNumber: 15
         }, this),
         name: 'Fine Arts',
@@ -871,7 +901,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 69,
+            lineNumber: 67,
             columnNumber: 15
         }, this),
         name: 'Engineering',
@@ -887,7 +917,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 75,
+            lineNumber: 73,
             columnNumber: 15
         }, this),
         name: 'Law',
@@ -903,7 +933,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 81,
+            lineNumber: 79,
             columnNumber: 15
         }, this),
         name: 'Data Science',
@@ -919,7 +949,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 87,
+            lineNumber: 85,
             columnNumber: 15
         }, this),
         name: 'Hospitality & Tourism',
@@ -935,7 +965,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 93,
+            lineNumber: 91,
             columnNumber: 15
         }, this),
         name: 'Human Services',
@@ -951,7 +981,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 99,
+            lineNumber: 97,
             columnNumber: 15
         }, this),
         name: 'Esthetics & Wellness',
@@ -967,7 +997,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 105,
+            lineNumber: 103,
             columnNumber: 15
         }, this),
         name: 'Media & Broadcasting',
@@ -983,7 +1013,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 111,
+            lineNumber: 109,
             columnNumber: 15
         }, this),
         name: 'Design & Animation',
@@ -999,7 +1029,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 117,
+            lineNumber: 115,
             columnNumber: 15
         }, this),
         name: 'Public Safety & Policing',
@@ -1015,7 +1045,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 123,
+            lineNumber: 121,
             columnNumber: 15
         }, this),
         name: 'Administration & Office Services',
@@ -1031,7 +1061,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 129,
+            lineNumber: 127,
             columnNumber: 15
         }, this),
         name: 'Logistics & Supply Chain',
@@ -1047,7 +1077,7 @@ const programs = [
             className: "h-10 w-10 text-[#16294a]"
         }, void 0, false, {
             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 135,
+            lineNumber: 133,
             columnNumber: 15
         }, this),
         name: 'Languages & TESL',
@@ -1059,207 +1089,185 @@ const programs = [
         ]
     }
 ];
+// Duplicate programs for seamless loop
+const extendedPrograms = [
+    ...programs,
+    ...programs
+];
 function ExplorePrograms() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-        className: "pt-30 pb-40 bg-[#F6F9FC] w-full border-t border-gray-200 overflow-visible",
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "w-full max-w-full mx-auto overflow-visible",
-            children: [
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                    className: "text-4xl sm:text-6xl font-extrabold mb-6 text-center tracking-tight",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                            className: "text-gray-300",
-                            children: "Discover."
-                        }, void 0, false, {
-                            fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                            lineNumber: 147,
-                            columnNumber: 17
-                        }, this),
-                        ' ',
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                            className: "text-gray-500",
-                            children: "Learn."
-                        }, void 0, false, {
-                            fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                            lineNumber: 148,
-                            columnNumber: 17
-                        }, this),
-                        ' ',
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                            className: "text-[#301934]",
-                            children: "Succeed"
-                        }, void 0, false, {
-                            fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                            lineNumber: 149,
-                            columnNumber: 17
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                    lineNumber: 146,
-                    columnNumber: 13
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                    className: "text-[#899499] text-md mb-10 text-center max-w-3xl mx-auto font-semibold",
-                    children: "Select a program to unlock resources shared by students like you."
-                }, void 0, false, {
-                    fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                    lineNumber: 151,
-                    columnNumber: 13
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "w-full overflow-visible",
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swiper$2f$swiper$2d$react$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Swiper"], {
-                        spaceBetween: 100,
-                        slidesPerView: 1.2,
-                        breakpoints: {
-                            640: {
-                                slidesPerView: 2,
-                                spaceBetween: 20
+        className: "jsx-d70ba39fcddc5b14" + " " + "pt-30 pb-40 bg-[#FAF9F6] w-full border-t border-gray-200 overflow-hidden",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "jsx-d70ba39fcddc5b14" + " " + "w-full max-w-full mx-auto",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "jsx-d70ba39fcddc5b14" + " " + "text-4xl sm:text-6xl font-extrabold mb-6 text-center tracking-tight",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "jsx-d70ba39fcddc5b14" + " " + "text-gray-500/20",
+                                children: "Discover."
+                            }, void 0, false, {
+                                fileName: "[project]/components/landing/ExplorePrograms.tsx",
+                                lineNumber: 148,
+                                columnNumber: 21
+                            }, this),
+                            ' ',
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "jsx-d70ba39fcddc5b14" + " " + "text-gray-500",
+                                children: "Learn."
+                            }, void 0, false, {
+                                fileName: "[project]/components/landing/ExplorePrograms.tsx",
+                                lineNumber: 149,
+                                columnNumber: 21
+                            }, this),
+                            ' ',
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "jsx-d70ba39fcddc5b14" + " " + "text-[#301934]",
+                                children: "Succeed"
+                            }, void 0, false, {
+                                fileName: "[project]/components/landing/ExplorePrograms.tsx",
+                                lineNumber: 150,
+                                columnNumber: 21
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/components/landing/ExplorePrograms.tsx",
+                        lineNumber: 147,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "jsx-d70ba39fcddc5b14" + " " + "text-[#899499] text-md mb-10 text-center max-w-3xl mx-auto font-semibold",
+                        children: "Select a program to unlock resources shared by students like you."
+                    }, void 0, false, {
+                        fileName: "[project]/components/landing/ExplorePrograms.tsx",
+                        lineNumber: 152,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "jsx-d70ba39fcddc5b14" + " " + "w-full overflow-hidden",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            style: {
+                                width: 'max-content',
+                                animation: 'scroll 60s linear infinite'
                             },
-                            1024: {
-                                slidesPerView: 3.1,
-                                spaceBetween: 50
+                            onMouseEnter: (e)=>{
+                                e.currentTarget.style.animationPlayState = 'paused';
                             },
-                            1440: {
-                                slidesPerView: 4.1,
-                                spaceBetween: 50
+                            onMouseLeave: (e)=>{
+                                e.currentTarget.style.animationPlayState = 'running';
                             },
-                            1920: {
-                                slidesPerView: 5,
-                                spaceBetween: 100
-                            },
-                            2560: {
-                                slidesPerView: 6,
-                                spaceBetween: 120
-                            },
-                            3840: {
-                                slidesPerView: 8,
-                                spaceBetween: 150
-                            },
-                            4096: {
-                                slidesPerView: 12,
-                                spaceBetween: 200
-                            }
-                        },
-                        className: "pb-8 overflow-visible",
-                        style: {
-                            width: '100%'
-                        },
-                        grabCursor: true,
-                        children: programs.map((program, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swiper$2f$swiper$2d$react$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SwiperSlide"], {
-                                className: "overflow-visible",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "bg-[#FAF9F6] rounded-xl border border-gray-200 min-h-[500px] w-[480px] flex flex-col justify-between transition-all duration-300 hover:z-30 origin-center hover:scale-105 hover:shadow-2xl hover:border-2 hover:bg-white/95",
+                            className: "jsx-d70ba39fcddc5b14" + " " + "flex gap-8 animate-scroll",
+                            children: extendedPrograms.map((program, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     style: {
                                         boxShadow: '0 8px 32px 0 rgba(16,30,54,0.08), 0 1.5px 3px 0 rgba(16,30,54,0.03), 0 0 0 1px rgba(0,0,0,0.05), 0 4px 8px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1), 0 16px 32px rgba(0,0,0,0.1)'
                                     },
+                                    className: "jsx-d70ba39fcddc5b14" + " " + "bg-[#FAF9F6] rounded-xl border border-gray-200 min-h-[400px] w-[400px] flex flex-col justify-between transition-all cursor-pointer duration-300 hover:shadow-2xl hover:border-2 hover:bg-white/95 flex-shrink-0",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "h-2 w-full bg-slate-500 rounded-t-xl"
+                                            className: "jsx-d70ba39fcddc5b14" + " " + "h-5 w-full bg-slate-500 rounded-t-xl"
                                         }, void 0, false, {
                                             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                                            lineNumber: 172,
-                                            columnNumber: 37
+                                            lineNumber: 179,
+                                            columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "p-14 pb-8",
+                                            className: "jsx-d70ba39fcddc5b14" + " " + "p-8 pb-6",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "mb-6 flex items-center gap-3",
+                                                    className: "jsx-d70ba39fcddc5b14" + " " + "mb-6 flex items-center gap-3",
                                                     children: program.icon
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                                                    lineNumber: 174,
-                                                    columnNumber: 41
+                                                    lineNumber: 181,
+                                                    columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                    className: "text-2xl font-extrabold text-gray-900 mb-4",
+                                                    className: "jsx-d70ba39fcddc5b14" + " " + "text-xl font-extrabold text-gray-900 mb-4",
                                                     children: program.name
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                                                    lineNumber: 175,
-                                                    columnNumber: 41
+                                                    lineNumber: 182,
+                                                    columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-gray-600 text-lg mb-8",
+                                                    className: "jsx-d70ba39fcddc5b14" + " " + "text-gray-600 text-base mb-6",
                                                     children: program.desc
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                                                    lineNumber: 176,
-                                                    columnNumber: 41
+                                                    lineNumber: 183,
+                                                    columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                                     href: "#",
-                                                    className: "inline-flex items-center text-indigo-600 font-semibold hover:underline text-base",
+                                                    className: "jsx-d70ba39fcddc5b14" + " " + "inline-flex items-center text-indigo-600 font-semibold hover:underline text-sm",
                                                     children: [
                                                         "Learn more ",
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "ml-1",
+                                                            className: "jsx-d70ba39fcddc5b14" + " " + "ml-1",
                                                             children: "→"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                                                            lineNumber: 177,
-                                                            columnNumber: 157
+                                                            lineNumber: 185,
+                                                            columnNumber: 52
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                                                    lineNumber: 177,
-                                                    columnNumber: 41
+                                                    lineNumber: 184,
+                                                    columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                                            lineNumber: 173,
-                                            columnNumber: 37
+                                            lineNumber: 180,
+                                            columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "border-t border-gray-200 px-10 py-4 flex gap-8 items-center min-h-[60px] justify-center",
+                                            className: "jsx-d70ba39fcddc5b14" + " " + "border-t border-gray-200 px-6 py-3 flex gap-4 items-center min-h-[50px] justify-center",
                                             children: (program.partners ?? []).map((partner, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: "text-sm text-gray-400 font-semibold tracking-wide uppercase whitespace-nowrap pb-2",
+                                                    className: "jsx-d70ba39fcddc5b14" + " " + "text-xs text-gray-400 font-semibold tracking-wide uppercase whitespace-nowrap",
                                                     children: partner
                                                 }, i, false, {
                                                     fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                                                    lineNumber: 181,
-                                                    columnNumber: 45
+                                                    lineNumber: 190,
+                                                    columnNumber: 41
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                                            lineNumber: 179,
-                                            columnNumber: 37
+                                            lineNumber: 188,
+                                            columnNumber: 33
                                         }, this)
                                     ]
-                                }, void 0, true, {
+                                }, idx, true, {
                                     fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                                    lineNumber: 171,
-                                    columnNumber: 33
-                                }, this)
-                            }, idx, false, {
-                                fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                                lineNumber: 170,
-                                columnNumber: 29
-                            }, this))
+                                    lineNumber: 172,
+                                    columnNumber: 29
+                                }, this))
+                        }, void 0, false, {
+                            fileName: "[project]/components/landing/ExplorePrograms.tsx",
+                            lineNumber: 158,
+                            columnNumber: 21
+                        }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                        lineNumber: 153,
-                        columnNumber: 21
+                        lineNumber: 157,
+                        columnNumber: 17
                     }, this)
-                }, void 0, false, {
-                    fileName: "[project]/components/landing/ExplorePrograms.tsx",
-                    lineNumber: 152,
-                    columnNumber: 17
-                }, this)
-            ]
-        }, void 0, true, {
-            fileName: "[project]/components/landing/ExplorePrograms.tsx",
-            lineNumber: 145,
-            columnNumber: 13
-        }, this)
-    }, void 0, false, {
+                ]
+            }, void 0, true, {
+                fileName: "[project]/components/landing/ExplorePrograms.tsx",
+                lineNumber: 146,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                id: "d70ba39fcddc5b14",
+                children: "@keyframes scroll{0%{transform:translate(0)}to{transform:translate(-50%)}}.animate-scroll.jsx-d70ba39fcddc5b14{animation:60s linear infinite scroll}.animate-scroll.jsx-d70ba39fcddc5b14:hover{animation-play-state:paused}"
+            }, void 0, false, void 0, this)
+        ]
+    }, void 0, true, {
         fileName: "[project]/components/landing/ExplorePrograms.tsx",
-        lineNumber: 144,
+        lineNumber: 145,
         columnNumber: 9
     }, this);
 }
