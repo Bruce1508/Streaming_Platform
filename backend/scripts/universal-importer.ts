@@ -16,7 +16,8 @@ const SCHOOL_CONFIGS: Record<string, { filePath: string; name: string }> = {
     york: { filePath: 'output/yorkUni/yorkUni.json', name: 'York University' },
     georgebrown: { filePath: 'output/george_brown/georgebrown_programs_complete.json', name: 'George Brown College' },
     humber: { filePath: 'output/humber/humber.json', name: 'Humber College' },
-    tmu: { filePath: 'output/tmu/tmu.json', name: 'Toronto Metropolitan University' }
+    tmu: { filePath: 'output/tmu/tmu.json', name: 'Toronto Metropolitan University' },
+    manitobaUni: { filePath: 'output/manitobaUni/umanitoba_programs.json', name: 'University of Manitoba' }
 };
 
 interface ImportResult {
@@ -188,6 +189,7 @@ async function importSchoolPrograms(schoolKey: string): Promise<ImportResult> {
 async function main() {
     console.log('🚀 UNIVERSAL PROGRAM IMPORTER STARTED');
     console.log('🎯 Standardized Fields: id, code, name, duration, campus, credential');
+    console.log('🔧 Credential Types: bachelor, diploma, advanced diploma, certificate, other');
     console.log('=' .repeat(50));
 
     const schoolsToImport = process.argv.slice(2);
@@ -258,7 +260,7 @@ async function main() {
     if (totalSuccess > 0) {
         console.log(`\n📋 STANDARDIZED DATA SAMPLE:`);
         console.log('Fields: id, code, name, duration, campus, credential');
-        console.log('Credential values: bachelor, diploma, advanced diploma, certificate');
+        console.log('Credential values: bachelor, diploma, advanced diploma, certificate, other');
     }
     
     console.log('\n🎉 Universal import process completed!');

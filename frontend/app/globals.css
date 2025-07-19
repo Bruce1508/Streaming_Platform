@@ -1,6 +1,4 @@
 @import "tailwindcss";
-@import 'stream-chat-react/dist/css/v2/index.css';
-@import '@stream-io/video-react-sdk/dist/css/styles.css';
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));

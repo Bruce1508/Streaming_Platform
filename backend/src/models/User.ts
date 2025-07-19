@@ -68,6 +68,13 @@ export interface IUser extends Document {
     
     isActive: boolean;
     isVerified: boolean;
+    verificationStatus: 'unverified' | 'email-verified' | 'edu-verified' | 'manual-verified';
+    verificationMethod: 'none' | 'email-link' | 'edu-domain' | 'edu-pattern' | 'admin-manual';
+    institutionInfo: {
+        name: string;
+        domain: string;
+        type: 'university' | 'college' | 'polytechnic' | 'institute' | '';
+    };
     
     // ===== METHODS =====
     matchPassword(enteredPassword: string): Promise<boolean>;
@@ -336,6 +343,37 @@ const userSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
+    },
+    verificationStatus: {
+        type: String,
+        enum: {
+            values: ['unverified', 'email-verified', 'edu-verified', 'manual-verified'],
+            message: '{VALUE} is not a valid verification status'
+        },
+        default: 'unverified'
+    },
+    verificationMethod: {
+        type: String,
+        enum: {
+            values: ['none', 'email-link', 'edu-domain', 'edu-pattern', 'admin-manual'],
+            message: '{VALUE} is not a valid verification method'
+        },
+        default: 'none'
+    },
+    institutionInfo: {
+        name: {
+            type: String,
+            default: ''
+        },
+        domain: {
+            type: String,
+            default: ''
+        },
+        type: {
+            type: String,
+            enum: ['university', 'college', 'polytechnic', 'institute', ''],
+            default: ''
+        }
     },
     
     // ===== SECURITY FIELDS =====

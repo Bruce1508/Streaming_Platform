@@ -28,9 +28,15 @@ import {
     truncate, 
     capitalize
 } from "../utils/Format.utils";
+import { 
+    detectEducationalEmail, 
+    getVerificationStatusFromEmail,
+    getInstitutionFromEmail 
+} from "../utils/email.utils";
 import { logger } from "../utils/logger.utils";
 import { generateSecureToken, generateStudentId } from "../utils/Random.utils";
 import redis from 'ioredis';
+import { sendEmail, emailTemplates } from "../utils/email.utils";
 
 // ✅ Helper function to generate secure session ID
 const generateSessionId = (): string => {
@@ -39,228 +45,9 @@ const generateSessionId = (): string => {
 
 const redisClient = new redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
-// ✅ ENHANCED signUp with utils integration
-export const signUp = async (req: Request, res: Response): Promise<void> => {
-    try {
-        logApiRequest(req as AuthRequest);
-        
-        const { email, password, fullName, role = 'student', academic } = req.body;
+// ✅ REMOVED: Traditional signUp - now using magic link authentication
 
-        // Check if user exists
-        const existingUser = await User.findOne({ email: email.toLowerCase() });
-        if (existingUser) {
-            res.status(400).json({
-                success: false,
-                message: "User already exists with this email"
-            });
-            return;
-        }
-
-        // ✅ Enhanced user data with utils
-        const userData: Partial<IUser> = {
-            fullName: capitalize(fullName),
-            email: email.toLowerCase(),
-            password,
-            role,
-            bio: "",
-            profilePic: "",
-            location: "",
-            website: "",
-            isOnboarded: false,
-            authProvider: "local",
-            isActive: true,
-            isVerified: false,
-            savedMaterials: [],
-            uploadedMaterials: [],
-            studyStats: {
-                materialsViewed: 0,
-                materialsSaved: 0,
-                materialsCreated: 0,
-                ratingsGiven: 0
-            },
-            preferences: {
-                theme: 'system',
-                notifications: {
-                    email: true,
-                    push: true,
-                    newMaterials: true,
-                    courseUpdates: true
-                },
-                privacy: {
-                    showProfile: true,
-                    showActivity: true
-                }
-            },
-            activity: {
-                loginCount: 0,
-                uploadCount: 0,
-                downloadCount: 0,
-                contributionScore: 0
-            },
-            friends: []
-        };
-
-        // ✅ Enhanced academic info with utils
-        if (academic) {
-            userData.academic = {
-                studentId: academic.studentId || (role === 'student' ? generateStudentId() : undefined),
-                school: academic.school,
-                program: academic.program,
-                currentSemester: academic.currentSemester,
-                enrollmentYear: academic.enrollmentYear,
-                completedCourses: [],
-                status: 'active'
-            };
-        }
-
-        const newUser = new User(userData);
-        await newUser.save();
-
-        // ✅ Generate secure session and enhanced tokens
-        const sessionId = generateSessionId();
-        const tokens = generateTokenPair(newUser._id.toString(), sessionId);
-
-        // ✅ Store session in Redis with user info
-        await redisClient.setex(`session:${sessionId}`, 7 * 24 * 60 * 60, JSON.stringify({
-            userId: newUser._id.toString(),
-            email: newUser.email,
-            role: newUser.role,
-            createdAt: new Date().toISOString()
-        }));
-
-        // ✅ Cache user with utils
-        await cacheUser(newUser._id.toString(), {
-            _id: newUser._id,
-            fullName: newUser.fullName,
-            email: newUser.email,
-            role: newUser.role,
-            isOnboarded: newUser.isOnboarded,
-            isVerified: newUser.isVerified
-        });
-
-        // ✅ Enhanced logging with masked email
-        logger.info('User registered successfully', {
-            userId: newUser._id,
-            email: maskEmail(newUser.email),
-            role: newUser.role
-        });
-
-        res.status(201).json({
-            success: true,
-            message: "Account created successfully",
-            data: {
-                user: {
-                    _id: newUser._id,
-                    fullName: newUser.fullName,
-                    email: newUser.email,
-                    role: newUser.role,
-                    isOnboarded: newUser.isOnboarded,
-                    isVerified: newUser.isVerified
-                },
-                token: tokens.accessToken, // Frontend expects data.token
-                refreshToken: tokens.refreshToken,
-                tokens // Keep for backward compatibility
-            }
-        });
-
-    } catch (error: any) {
-        logger.error("Signup error:", error);
-        res.status(500).json({
-            success: false,
-            message: "Registration failed",
-            error: process.env.NODE_ENV === 'development' ? error.message : undefined
-        });
-    }
-};
-
-// ✅ ENHANCED signIn with utils integration
-export const signIn = async (req: Request, res: Response): Promise<void> => {
-    try {
-        logApiRequest(req as AuthRequest);
-        
-        const { email, password, rememberMe = false } = req.body;
-
-        const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
-        
-        if (!user || !(await user.matchPassword(password))) {
-            res.status(401).json({
-                success: false,
-                message: "Invalid credentials"
-            });
-            return;
-        }
-
-        if (!user.isActive) {
-            res.status(403).json({
-                success: false,
-                message: "Account is deactivated. Please contact support."
-            });
-            return;
-        }
-
-        // Update last login and activity
-        await user.updateLastLogin();
-        user.activity.loginCount += 1;
-        await user.save();
-
-        // ✅ Generate secure session and enhanced tokens  
-        const sessionId = generateSessionId();
-        const tokens = generateTokenPair(user._id.toString(), sessionId);
-
-        // ✅ Store session in Redis with user info
-        await redisClient.setex(`session:${sessionId}`, 7 * 24 * 60 * 60, JSON.stringify({
-            userId: user._id.toString(),
-            email: user.email,
-            role: user.role,
-            lastLogin: new Date().toISOString()
-        }));
-
-        // ✅ Cache user after successful login
-        await cacheUser(user._id.toString(), {
-            _id: user._id,
-            fullName: user.fullName,
-            email: user.email,
-            role: user.role,
-            profilePic: user.profilePic,
-            isOnboarded: user.isOnboarded,
-            isVerified: user.isVerified,
-            isActive: user.isActive
-        });
-
-        // ✅ Enhanced logging with masked email
-        logger.info('User signed in successfully', {
-            userId: user._id,
-            email: maskEmail(user.email)
-        });
-
-        res.json({
-            success: true,
-            message: "Login successful",
-            data: {
-                user: {
-                    _id: user._id,
-                    fullName: user.fullName,
-                    email: user.email,
-                    role: user.role,
-                    profilePic: user.profilePic,
-                    isOnboarded: user.isOnboarded,
-                    isVerified: user.isVerified,
-                    isActive: user.isActive
-                },
-                token: tokens.accessToken, // Frontend expects data.token
-                refreshToken: tokens.refreshToken,
-                tokens // Keep for backward compatibility
-            }
-        });
-
-    } catch (error: any) {
-        logger.error("Login error:", error);
-        res.status(500).json({
-            success: false,
-            message: "Login failed"
-        });
-    }
-};
+// ✅ REMOVED: Traditional signIn - now using magic link authentication
 
 // ✅ ENHANCED getMe with cache integration
 export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -939,6 +726,184 @@ export const handleOAuth = async (req: Request, res: Response): Promise<void> =>
         res.status(500).json({
             success: false,
             message: "OAuth authentication failed"
+        });
+    }
+};
+
+// ✅ NEW: Send Magic Link
+export const sendMagicLink = async (req: Request, res: Response): Promise<any> => {
+    try {
+        logApiRequest(req as AuthRequest);
+        
+        const { email, callbackUrl, baseUrl } = req.body;
+        const normalizedEmail = email.toLowerCase().trim();
+
+        // Check if user exists, if not create one
+        let user = await User.findOne({ email: normalizedEmail });
+        
+        if (!user) {
+            // Create new user with magic link flow
+            const emailVerification = getVerificationStatusFromEmail(normalizedEmail);
+            const institutionInfo = getInstitutionFromEmail(normalizedEmail);
+            
+            user = new User({
+                email: normalizedEmail,
+                fullName: normalizedEmail.split('@')[0], // Temporary name
+                role: 'student',
+                isActive: true,
+                isVerified: emailVerification.isVerified,
+                verificationStatus: emailVerification.verificationStatus as any,
+                verificationMethod: emailVerification.verificationMethod as any,
+                institutionInfo: {
+                    name: institutionInfo.name || 'Unknown',
+                    domain: institutionInfo.domain || '',
+                    type: institutionInfo.type || ''
+                },
+                activity: {
+                    loginCount: 0,
+                    uploadCount: 0,
+                    downloadCount: 0,
+                    contributionScore: 0
+                }
+            });
+
+            await user.save();
+            logger.info('New user created via magic link', {
+                userId: user._id,
+                email: maskEmail(user.email),
+                isVerified: emailVerification.isVerified
+            });
+        }
+
+        // Generate magic link token
+        const magicToken = generateSecureToken(32);
+        const magicTokenExpiry = new Date(Date.now() + 600000); // 10 minutes
+
+        // Store magic link token in Redis
+        await redisClient.setex(
+            `magic:${magicToken}`, 
+            600, // 10 minutes
+            JSON.stringify({
+                userId: user._id.toString(),
+                email: normalizedEmail,
+                createdAt: new Date().toISOString()
+            })
+        );
+
+        // Create magic link URL
+        const magicLinkUrl = `${baseUrl}/api/auth/callback/email?callbackUrl=${encodeURIComponent(callbackUrl || '/dashboard')}&token=${magicToken}&email=${encodeURIComponent(normalizedEmail)}`;
+
+        // Send magic link email
+        const emailTemplate = emailTemplates.magicLink({
+            name: user.fullName,
+            magicLinkUrl: magicLinkUrl,
+            expiryMinutes: 10
+        });
+
+        const emailSent = await sendEmail({
+            to: normalizedEmail,
+            subject: emailTemplate.subject,
+            html: emailTemplate.html
+        });
+
+        if (!emailSent) {
+            throw new Error("Failed to send magic link email");
+        }
+
+        logger.info('Magic link sent successfully', {
+            userId: user._id,
+            email: maskEmail(normalizedEmail)
+        });
+
+        res.json({
+            success: true,
+            message: "Magic link sent to your email"
+        });
+
+    } catch (error: any) {
+        logger.error("Send magic link error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to send magic link"
+        });
+    }
+};
+
+// ✅ NEW: Verify Magic Link
+export const verifyMagicLink = async (req: Request, res: Response): Promise<any> => {
+    try {
+        logApiRequest(req as AuthRequest);
+        
+        const { email } = req.body;
+        const normalizedEmail = email.toLowerCase().trim();
+
+        const user = await User.findOne({ email: normalizedEmail });
+        
+        if (!user) {
+            res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+            return;
+        }
+
+        // Update last login and activity
+        await user.updateLastLogin();
+        user.activity.loginCount += 1;
+        await user.save();
+
+        // Generate session tokens
+        const sessionId = generateSessionId();
+        const tokens = generateTokenPair(user._id.toString(), sessionId);
+
+        // Store session in Redis
+        await redisClient.setex(`session:${sessionId}`, 7 * 24 * 60 * 60, JSON.stringify({
+            userId: user._id.toString(),
+            email: user.email,
+            role: user.role,
+            lastLogin: new Date().toISOString()
+        }));
+
+        // Cache user
+        await cacheUser(user._id.toString(), {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            role: user.role,
+            profilePic: user.profilePic,
+            isOnboarded: user.isOnboarded,
+            isVerified: user.isVerified,
+            isActive: user.isActive
+        });
+
+        logger.info('Magic link authentication successful', {
+            userId: user._id,
+            email: maskEmail(user.email)
+        });
+
+        res.json({
+            success: true,
+            message: "Authentication successful",
+            user: {
+                _id: user._id,
+                fullName: user.fullName,
+                email: user.email,
+                profilePic: user.profilePic,
+                role: user.role,
+                isOnboarded: user.isOnboarded,
+                isVerified: user.isVerified,
+                isActive: user.isActive,
+                bio: user.bio,
+                location: user.location
+            },
+            token: tokens.accessToken
+        });
+
+    } catch (error: any) {
+        logger.error("Verify magic link error:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to verify magic link"
         });
     }
 };

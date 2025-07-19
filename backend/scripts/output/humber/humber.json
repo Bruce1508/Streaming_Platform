@@ -1,308 +1,1934 @@
 [
-    {
-        "name": "3D Modelling and Visual Effects Production",
-        "credential": "Certificate of Achievement",
-        "length": "2 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Acting for Stage and Screen",
-        "credential": "Diploma",
-        "length": "4 semesters",
-        "location": "Lakeshore"
-    },
-    {
-        "name": "Advertising & Graphic Design",
-        "credential": "Diploma",
-        "length": "4 semesters",
-        "location": "Lakeshore, Online"
-    },
-    {
-        "name": "Advertising - Account Management",
-        "credential": "Ontario Graduate Certificate",
-        "length": "3 semesters",
-        "location": "TBD"
-    },
-    {
-        "name": "Advertising - Art Direction",
-        "credential": "Ontario Graduate Certificate",
-        "length": "3 semesters",
-        "location": "Downtown (IGS)"
-    },
-    {
-        "name": "Advertising and Marketing Communications",
-        "credential": "Diploma",
-        "length": "4 semesters",
-        "location": "Lakeshore, Online"
-    },
-    {
-        "name": "Advertising Copywriting",
-        "credential": "Ontario Graduate Certificate",
-        "length": "3 semesters",
-        "location": "Downtown (IGS)"
-    },
-    {
-        "name": "Animation - 3D",
-        "credential": "Advanced Diploma",
-        "length": "6 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Art Foundation",
-        "credential": "Ontario College Certificate",
-        "length": "2 semesters",
-        "location": "TBD"
-    },
-    {
-        "name": "Arts Administration and Cultural Management",
-        "credential": "Ontario Graduate Certificate",
-        "length": "3 semesters",
-        "location": "Downtown (IGS)"
-    },
-    {
-        "name": "Broadcast Television/Videography",
-        "credential": "Diploma",
-        "length": "4 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Comedy: Writing and Performance",
-        "credential": "Diploma",
-        "length": "3 semesters",
-        "location": "Lakeshore"
-    },
-    {
-        "name": "Content Strategy",
-        "credential": "Ontario Graduate Certificate",
-        "length": "3 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Creative Advertising, Bachelor of",
-        "credential": "Bachelor Degree",
-        "length": "8 semesters",
-        "location": "TBD"
-    },
-    {
-        "name": "Creative and Professional Writing, Bachelor of",
-        "credential": "Bachelor Degree",
-        "length": "8 semesters",
-        "location": "Lakeshore"
-    },
-    {
-        "name": "Creative Book Publishing",
-        "credential": "Ontario Graduate Certificate",
-        "length": "1 semester",
-        "location": "Online"
-    },
-    {
-        "name": "Creative Writing",
-        "credential": "Ontario Graduate Certificate",
-        "length": "2 semesters",
-        "location": "Online"
-    },
-    {
-        "name": "Design Foundation",
-        "credential": "Ontario College Certificate",
-        "length": "2 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Digital Communications, Bachelor of",
-        "credential": "Bachelor Degree",
-        "length": "8 semesters",
-        "location": "Lakeshore"
-    },
-    {
-        "name": "Film and Media Production, Bachelor of",
-        "credential": "Bachelor Degree",
-        "length": "8 semesters",
-        "location": "Lakeshore"
-    },
-    {
-        "name": "Film and Multiplatform Storytelling",
-        "credential": "Ontario Graduate Certificate",
-        "length": "3 semesters",
-        "location": "TBD"
-    },
-    {
-        "name": "Film and Television Production",
-        "credential": "Advanced Diploma",
-        "length": "6 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Game Programming",
-        "credential": "Advanced Diploma",
-        "length": "6 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Graphic Design",
-        "credential": "Advanced Diploma",
-        "length": "6 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Graphic Design for Print and Digital Media NEW",
-        "credential": "Certificate",
-        "length": "2 semesters",
-        "location": "North, Downtown (IGS)"
-    },
-    {
-        "name": "Industrial Design, Bachelor of",
-        "credential": "Bachelor Degree",
-        "length": "8 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Interactive Media Management – Creative Technologies",
-        "credential": "Ontario Graduate Certificate",
-        "length": "3 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Interior Decorating",
-        "credential": "Diploma",
-        "length": "4 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Interior Design, Bachelor of",
-        "credential": "Bachelor Degree",
-        "length": "8 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Journalism",
-        "credential": "Advanced Diploma",
-        "length": "6 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Journalism (Graduate Certificate)",
-        "credential": "Ontario Graduate Certificate",
-        "length": "3 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Media Communications",
-        "credential": "Diploma",
-        "length": "4 semesters",
-        "location": "Lakeshore, North"
-    },
-    {
-        "name": "Media Foundation",
-        "credential": "Ontario College Certificate",
-        "length": "2 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Multimedia Design and Development",
-        "credential": "Diploma",
-        "length": "4 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Music Business",
-        "credential": "Ontario Graduate Certificate",
-        "length": "2 semesters",
-        "location": "Lakeshore"
-    },
-    {
-        "name": "Music, Bachelor of",
-        "credential": "Bachelor Degree",
-        "length": "8 semesters",
-        "location": "Lakeshore"
-    },
-    {
-        "name": "Music, Introduction to Commercial Jazz Music",
-        "credential": "Ontario College Certificate",
-        "length": "2 semesters",
-        "location": "Lakeshore"
-    },
-    {
-        "name": "Photography",
-        "credential": "Diploma",
-        "length": "4 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Post-Production",
-        "credential": "Ontario Graduate Certificate",
-        "length": "3 semesters",
-        "location": "TBD"
-    },
-    {
-        "name": "Public Relations",
-        "credential": "Advanced Diploma",
-        "length": "6 semesters",
-        "location": "TBD"
-    },
-    {
-        "name": "Public Relations (Graduate Certificate)",
-        "credential": "Ontario Graduate Certificate",
-        "length": "3 semesters",
-        "location": "Lakeshore"
-    },
-    {
-        "name": "Public Relations, Bachelor of",
-        "credential": "Bachelor Degree",
-        "length": "8 semesters",
-        "location": "Lakeshore"
-    },
-    {
-        "name": "Radio, Broadcasting",
-        "credential": "Diploma",
-        "length": "4 semesters",
-        "location": "TBD"
-    },
-    {
-        "name": "Television Writing and Producing",
-        "credential": "Ontario Graduate Certificate",
-        "length": "2 semesters",
-        "location": "TBD"
-    },
-    {
-        "name": "Theatre Arts - Technical Production",
-        "credential": "Diploma",
-        "length": "4 semesters",
-        "location": "TBD"
-    },
-    {
-        "name": "User Experience (UX) Design",
-        "credential": "Ontario Graduate Certificate",
-        "length": "3 semesters",
-        "location": "North"
-    },
-    {
-        "name": "User Experience, Bachelor of Design",
-        "credential": "Bachelor Degree",
-        "length": "8 semesters",
-        "location": "North"
-    },
-    {
-        "name": "Virtual Production",
-        "credential": "Ontario Graduate Certificate",
-        "length": "2 semesters",
-        "location": "Lakeshore"
-    },
-    {
-        "name": "Visual and Digital Arts",
-        "credential": "Diploma",
-        "length": "4 semesters",
-        "location": "Lakeshore"
-    },
-    {
-        "name": "Web Design and Development NEW",
-        "credential": "Certificate",
-        "length": "2 semesters",
-        "location": "North, Downtown (IGS)"
-    },
-    {
-        "name": "Web Development",
-        "credential": "Ontario Graduate Certificate",
-        "length": "3 semesters",
-        "location": "North"
-    }
+  {
+    "name": "3D Modelling and Visual Effects Production",
+    "credential": "Certificate of Achievement",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/3d.html?refer=intl"
+  },
+  {
+    "name": "Academic Upgrading (AU)",
+    "credential": "Certificate of Completion",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://liberalarts.humber.ca/programs/academic-upgrading.html?refer=intl"
+  },
+  {
+    "name": "Accounting, Bachelor of Commerce",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/accounting-bachelor-of-commerce.html?refer=intl"
+  },
+  {
+    "name": "Accounting, Business",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/business-accounting.html?refer=intl"
+  },
+  {
+    "name": "Accounting, Business Administration",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/business-administration-accounting.html?refer=intl"
+  },
+  {
+    "name": "Accounting, Professional Practice",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/professional-accounting-practice.html?refer=intl"
+  },
+  {
+    "name": "Acting for Stage and Screen",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/acting-for-stage-and-screen.html?refer=intl"
+  },
+  {
+    "name": "Addictions and Mental Health",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/addictions-and-mental-health.html?refer=intl"
+  },
+  {
+    "name": "Addictions and Mental Health, Bachelor of Social Science",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/bachelor-of-social-science-addictions-and-mental-health.html?refer=intl"
+  },
+  {
+    "name": "Advertising & Graphic Design",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/advertising-and-graphic-design.html?refer=intl"
+  },
+  {
+    "name": "Advertising - Account Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/advertising-account-management.html?refer=intl"
+  },
+  {
+    "name": "Advertising - Art Direction",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "Downtown"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/advertising-art-direction.html?refer=intl"
+  },
+  {
+    "name": "Advertising - Media Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/advertising-media-management.html?refer=intl"
+  },
+  {
+    "name": "Advertising and Marketing Communications",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/advertising-and-marketing-communications.html?refer=intl"
+  },
+  {
+    "name": "Advertising Copywriting",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "Downtown"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/advertising-copywriting.html?refer=intl"
+  },
+  {
+    "name": "Alternative Dispute Resolution",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/alternative-dispute-resolution.html?refer=intl"
+  },
+  {
+    "name": "Animation - 3D",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/animation-3d.html?refer=intl"
+  },
+  {
+    "name": "Arboriculture - Apprenticeship",
+    "credential": "Ontario College Certificate",
+    "duration": "12 weeks",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/arborist-apprenticeship.html?refer=intl"
+  },
+  {
+    "name": "Architectural Technology",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/architectural-technology.html?refer=intl"
+  },
+  {
+    "name": "Architectural Technology - Sustainable Design NEW",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/architectural-technology-sustainable-design.html?refer=intl"
+  },
+  {
+    "name": "Art Foundation",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/art-foundation.html?refer=intl"
+  },
+  {
+    "name": "Artificial Intelligence - Integration and Governance",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "Downtown"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/artificial-intelligence-integration-and-governance.html?refer=intl"
+  },
+  {
+    "name": "Artificial Intelligence with Machine Learning",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/artificial-intelligence-with-machine-learning.html?refer=intl"
+  },
+  {
+    "name": "Arts Administration and Cultural Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "Downtown"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/arts-administration-and-cultural-management?refer=intl"
+  },
+  {
+    "name": "Baking and Pastry Arts Management",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/baking-pastry-management.html?refer=intl"
+  },
+  {
+    "name": "Behavioural Science, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/behavioural-science-bachelor.html?refer=intl"
+  },
+  {
+    "name": "Biomedical Sciences, Bachelor of Science",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/bachelor-of-science-biomedical-sciences.html?refer=intl"
+  },
+  {
+    "name": "Biotechnology",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/biotechnology.html?refer=intl"
+  },
+  {
+    "name": "Broadcast Television/Videography",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/brtv.html?refer=intl"
+  },
+  {
+    "name": "Building Construction Technician",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/building-construction-technician.html?refer=intl"
+  },
+  {
+    "name": "Business Administration",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/business-administration.html?refer=intl"
+  },
+  {
+    "name": "Business Insights and Analytics",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "4 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/business-insights-and-analytics.html?refer=intl"
+  },
+  {
+    "name": "Business Management",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North",
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/business-management.html?refer=intl"
+  },
+  {
+    "name": "Carpentry and Renovation Technician",
+    "credential": "Diploma",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/carpentry-and-renovation-technician.html?refer=intl"
+  },
+  {
+    "name": "Carpentry and Renovation Techniques",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/carpentry-and-renovation-techniques.html?refer=intl"
+  },
+  {
+    "name": "Child and Youth Care",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/child-and-youth-care.html?refer=intl"
+  },
+  {
+    "name": "Child and Youth Care - Accelerated",
+    "credential": "Advanced Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/child-and-youth-care-accelerated.html?refer=intl"
+  },
+  {
+    "name": "Child and Youth Care, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/child-and-youth-care-bachelor-of-arts.html?refer=intl"
+  },
+  {
+    "name": "Civil Engineering Technology",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/civil-engineering-technology.html?refer=intl"
+  },
+  {
+    "name": "Clinical Bioinformatics",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/clinical-bioinformatics.html?refer=intl"
+  },
+  {
+    "name": "Clinical Research",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/clinical-research-graduate.html?refer=intl"
+  },
+  {
+    "name": "Cloud Computing",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/cloud-computing.html?refer=intl"
+  },
+  {
+    "name": "Comedy: Writing and Performance",
+    "credential": "Diploma",
+    "duration": "3 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/comedy-writing-and-performance.html?refer=intl"
+  },
+  {
+    "name": "Community and Justice Services",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/community-and-justice-services.html?refer=intl"
+  },
+  {
+    "name": "Community Development, Bachelor of NEW",
+    "credential": "Honours Degree",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://communityservices.humber.ca/programs/community-development-bachelor-of.html?refer=intl"
+  },
+  {
+    "name": "Community Integration through Co-operative Education (CICE)",
+    "credential": "Ontario College Certificate",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/cice-ontario-college-certificate.html?refer=intl"
+  },
+  {
+    "name": "Computer Engineering Technology",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/computer-engineering-technology.html?refer=intl"
+  },
+  {
+    "name": "Computer Programming",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North",
+      "Downtown"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/computer-programming.html?refer=intl"
+  },
+  {
+    "name": "Computer Programming and Analysis",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North",
+      "Downtown"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/computer-programming-and-analysis.html?refer=intl"
+  },
+  {
+    "name": "Computer Systems Technician – Information Technology Infrastructure and Services",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/computer-systems-technician-information-technology-infrastructure-and-services.html?refer=intl"
+  },
+  {
+    "name": "Construction Engineering Technology",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/construction-engineering-technology.html?refer=intl"
+  },
+  {
+    "name": "Content Strategy",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/content-strategy?refer=intl"
+  },
+  {
+    "name": "Cosmetic Management",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/cosmetic-management.html?refer=intl"
+  },
+  {
+    "name": "Creative Advertising, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/creative-advertising.html?refer=intl"
+  },
+  {
+    "name": "Creative and Professional Writing, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/bachelor-of-creative-and-professional-writing.html?refer=intl"
+  },
+  {
+    "name": "Creative Book Publishing",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "1 semester",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/creative-book-publishing?refer=intl"
+  },
+  {
+    "name": "Creative Writing",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/creative-writing-fiction-creative-non-fiction-poetry.html?refer=intl"
+  },
+  {
+    "name": "Criminal Justice, Bachelor of Social Science",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/criminal-justice-bachelor-of-social-science.html?refer=intl"
+  },
+  {
+    "name": "Culinary Management",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/culinary-management.html?refer=intl"
+  },
+  {
+    "name": "Culinary Skills",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/culinary-skills.html?refer=intl"
+  },
+  {
+    "name": "Culinary Techniques - Cook II Apprenticeship",
+    "credential": "Ontario College Certificate",
+    "duration": "2 levels/2 years",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/cook-apprentice.html?refer=intl"
+  },
+  {
+    "name": "Cybersecurity and Artificial Intelligence NEW",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/cybersecurity-and-artificial-intelligence.html?refer=intl"
+  },
+  {
+    "name": "Data Analytics NEW",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/data-analytics.html?refer=intl"
+  },
+  {
+    "name": "Design Foundation",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/design-foundation.html?refer=intl"
+  },
+  {
+    "name": "Developmental Services Worker",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/developmental-services-worker.html?refer=intl"
+  },
+  {
+    "name": "Digital Business Management, Bachelor of Commerce",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/digital-business-management.html?refer=intl"
+  },
+  {
+    "name": "Digital Communications, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/digital-communications.html?refer=intl"
+  },
+  {
+    "name": "Early Childhood Education",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/early-childhood-education.html?refer=intl"
+  },
+  {
+    "name": "Electrical Engineering Technician - Control Systems",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/electrical-engineering-technician-control-systems.html?refer=intl"
+  },
+  {
+    "name": "Electrical Engineering Technology - Control Systems",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/electrical-engineering-technology-control-systems.html?refer=intl"
+  },
+  {
+    "name": "Electrical Techniques",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/electrical-techniques.html?refer=intl"
+  },
+  {
+    "name": "Electrical Techniques - Construction and Maintenance Apprenticeship",
+    "credential": "Ontario College Certificate",
+    "duration": "8 & 10 weeks",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/electrician-construction-and-maintenance-apprenticeship.html?refer=intl"
+  },
+  {
+    "name": "Electrical Techniques - Industrial Electrician Apprenticeship",
+    "credential": "Ontario College Certificate",
+    "duration": "8 & 10 weeks",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/electrician-industrial-apprenticeship.html?refer=intl"
+  },
+  {
+    "name": "Electromechanical Engineering Technician",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/electromechanical-engineering-technician-automation-and-robotics-profile.html?refer=intl"
+  },
+  {
+    "name": "Electromechanical Engineering Technology",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/electromechanical-engineering-technology-automation-and-robotics-profile.html?refer=intl"
+  },
+  {
+    "name": "Electronics Engineering Technician",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/electronics-engineering-technician.html?refer=intl"
+  },
+  {
+    "name": "Electronics Engineering Technology",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/electronics-engineering-technology.html?refer=intl"
+  },
+  {
+    "name": "Emergency Telecommunications",
+    "credential": "Ontario College Certificate",
+    "duration": "1 semester",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/emergency-telecommunications.html?refer=intl"
+  },
+  {
+    "name": "Engineering - Information Systems Engineering, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/bachelor-of-engineering-information-systems-engineering.html?refer=intl"
+  },
+  {
+    "name": "Engineering - Mechatronics Engineering, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/bachelor-of-engineering-mechatronics.html?refer=intl"
+  },
+  {
+    "name": "Engineering - Sustainable Building Engineering, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/bachelor-of-engineering-the-built-environment.html?refer=intl"
+  },
+  {
+    "name": "English for Academic Purposes (EAP)",
+    "credential": "Ontario College Certificate",
+    "duration": "8 weeks per level",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://liberalarts.humber.ca/programs/english-for-academic-purposes.html?refer=intl"
+  },
+  {
+    "name": "Enterprise Software Development",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/enterprise-software-development.html?refer=intl"
+  },
+  {
+    "name": "Entrepreneurial Enterprise, Business Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/entrepreneurial-enterprise.html?refer=intl"
+  },
+  {
+    "name": "Environmental Control",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/environmental-control.html?refer=intl"
+  },
+  {
+    "name": "Esthetician/Spa Management",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/esthetician-spa-management.html?refer=intl"
+  },
+  {
+    "name": "Event Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/event-management.html?refer=intl"
+  },
+  {
+    "name": "Exercise Science and Lifestyle Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/exercise-science-lifestyle-management.html?refer=intl"
+  },
+  {
+    "name": "Fashion Arts and Business",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/fashion-arts.html?refer=intl"
+  },
+  {
+    "name": "Fashion Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/fashion-management-grad-cert.html?refer=intl"
+  },
+  {
+    "name": "Fashion Management, Bachelor of Commerce",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/fashion-management.html?refer=intl"
+  },
+  {
+    "name": "Film and Media Production, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/film-and-media-production.html?refer=intl"
+  },
+  {
+    "name": "Film and Multiplatform Storytelling",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/film-and-multiplatform-storytelling.html?refer=intl"
+  },
+  {
+    "name": "Film and Television Production",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/fmtv.html?refer=intl"
+  },
+  {
+    "name": "Finance, Bachelor of Commerce",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/finance.html?refer=intl"
+  },
+  {
+    "name": "Financial Planning",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/financial-planning.html?refer=intl"
+  },
+  {
+    "name": "Financial Services, Business Management",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/business-management-financial-services.html?refer=intl"
+  },
+  {
+    "name": "Fire Services",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/fire-services.html?refer=intl"
+  },
+  {
+    "name": "Fitness and Health Promotion",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/fitness-health-promotion.html?refer=intl"
+  },
+  {
+    "name": "Food and Nutrition Management",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/food-nutrition-management.html?refer=intl"
+  },
+  {
+    "name": "Forensic Identification",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/forensic-identification.html?refer=intl"
+  },
+  {
+    "name": "Funeral Director Class 1 (Embalming)",
+    "credential": "Diploma",
+    "duration": "5 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/funeral-director-class-1-embalming.html?refer=intl"
+  },
+  {
+    "name": "Funeral Director Class 2 (Non-Embalming)",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/funeral-director-class-2-non-embalming.html?refer=intl"
+  },
+  {
+    "name": "Furniture and Cabinetmaking Techniques",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/furniture-and-cabinetmaking-techniques.html?refer=intl"
+  },
+  {
+    "name": "Game Programming",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/game-programming.html?refer=intl"
+  },
+  {
+    "name": "General Arts and Science - College Transfer",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://liberalarts.humber.ca/programs/general-arts-and-science-college-transfer.html?refer=intl"
+  },
+  {
+    "name": "General Arts and Science - Degree Transfer (Certificate)",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://liberalarts.humber.ca/programs/general-arts-and-science-university-transfer.html?refer=intl"
+  },
+  {
+    "name": "General Arts and Science - Technology",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://liberalarts.humber.ca/programs/general-arts-and-science-technology.html?refer=intl"
+  },
+  {
+    "name": "General Arts and Science - University Transfer (Diploma)",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://liberalarts.humber.ca/programs/general-arts-and-science-university-transfer-diploma.html?refer=intl"
+  },
+  {
+    "name": "Global Business Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/global-business-management.html?refer=intl"
+  },
+  {
+    "name": "Golf Management (Professional) – Business Administration",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/business-administration-professional-golf-management.html?refer=intl"
+  },
+  {
+    "name": "Graphic Design",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/graphic-design.html?refer=intl"
+  },
+  {
+    "name": "Graphic Design for Print and Digital Media NEW",
+    "credential": "Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/graphic-design-for-print-and-digital-media.html?refer=intl"
+  },
+  {
+    "name": "Health Informatics NEW",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/health-informatics.html?refer=intl"
+  },
+  {
+    "name": "Health Sector Regulatory Compliance",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/health-sector-regulatory-compliance.html?refer=intl"
+  },
+  {
+    "name": "Healthcare Management, Bachelor of Commerce",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/healthcare-management.html?refer=intl"
+  },
+  {
+    "name": "Hearing Instrument Specialist",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/hearing-instrument-specialist.html?refer=intl"
+  },
+  {
+    "name": "Heating, Refrigeration and Air Conditioning Technician",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/heating-refrigeration-and-air-conditioning-technician.html?refer=intl"
+  },
+  {
+    "name": "Heating, Refrigeration and Air Conditioning Technology",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/heating-refrigeration-and-air-conditioning-technology.html?refer=intl"
+  },
+  {
+    "name": "Horticulture Techniques - Apprenticeship",
+    "credential": "Ontario College Certificate",
+    "duration": "12 weeks",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/horticultural-technician-apprenticeship.html?refer=intl"
+  },
+  {
+    "name": "Hospitality - Event Management",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/hospitality-event-management.html?refer=intl"
+  },
+  {
+    "name": "Hospitality - Hotel and Restaurant Operations Management",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/hospitality-hotel-and-restaurant-operations-management.html?refer=intl"
+  },
+  {
+    "name": "Hospitality and Tourism Operations Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/hospitality-tourism-operations-management.html?refer=intl"
+  },
+  {
+    "name": "Human Resources Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/human-resources-management.html?refer=intl"
+  },
+  {
+    "name": "Human Resources Management, Bachelor of Commerce",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/bachelor-of-human-resources-management.html?refer=intl"
+  },
+  {
+    "name": "Industrial Design, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/bachelor-of-industrial-design.html?refer=intl"
+  },
+  {
+    "name": "Industrial Woodworking Technician",
+    "credential": "Diploma",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/industrial-woodworking-technician.html?refer=intl"
+  },
+  {
+    "name": "Infection Prevention and Control",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/infection-prevention-and-control.html?refer=intl"
+  },
+  {
+    "name": "Information Technology Solutions",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/information-technology-solutions.html?refer=intl"
+  },
+  {
+    "name": "Information Technology Systems Analyst NEW",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "Downtown"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/information-technology-systems-analyst.html?refer=intl"
+  },
+  {
+    "name": "Insurance Management – Property and Casualty",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "Downtown"
+    ],
+    "url": "https://business.humber.ca/programs/insurance-management-property-and-casualty.html?refer=intl"
+  },
+  {
+    "name": "Interactive Media Management – Creative Technologies",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/interactive-media-management-creative-technologies.html?refer=intl"
+  },
+  {
+    "name": "Interior Decorating",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/interior-decorating.html?refer=intl"
+  },
+  {
+    "name": "Interior Design, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/bachelor-of-interior-design.html?refer=intl"
+  },
+  {
+    "name": "International Business, Bachelor of Commerce",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/international-business.html?refer=intl"
+  },
+  {
+    "name": "International Development",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/international-development.html?refer=intl"
+  },
+  {
+    "name": "Journalism",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/journalism-diploma.html?refer=intl"
+  },
+  {
+    "name": "Journalism (Graduate Certificate)",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/journalism.html?refer=intl"
+  },
+  {
+    "name": "Landscape Technician",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/landscape-technician.html?refer=intl"
+  },
+  {
+    "name": "Law Clerk",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/law-clerk.html?refer=intl"
+  },
+  {
+    "name": "Management Studies, Bachelor of Commerce",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/management-studies.html?refer=intl"
+  },
+  {
+    "name": "Marketing Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "Lakeshore",
+      "Downtown"
+    ],
+    "url": "https://business.humber.ca/programs/marketing-management.html?refer=intl"
+  },
+  {
+    "name": "Marketing, Bachelor of Commerce",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/marketing.html?refer=intl"
+  },
+  {
+    "name": "Marketing, Business",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/business-marketing.html?refer=intl"
+  },
+  {
+    "name": "Massage Therapy",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/massage-therapy.html?refer=intl"
+  },
+  {
+    "name": "Mechanical Engineering Technician",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/mechanical-engineering-technician.html?refer=intl"
+  },
+  {
+    "name": "Mechanical Engineering Technology",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/mechanical-engineering-technology.html?refer=intl"
+  },
+  {
+    "name": "Mechanical Techniques - Construction Boilermaker Apprenticeship",
+    "credential": "Ontario College Certificate",
+    "duration": "8 weeks",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/construction-boilermaker-apprenticeship.html?refer=intl"
+  },
+  {
+    "name": "Mechanical Techniques - Millwright",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/mechanical-techniques-millwright.html?refer=intl"
+  },
+  {
+    "name": "Media Communications",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/media-communications.html?refer=intl"
+  },
+  {
+    "name": "Media Foundation",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/media-foundation.html?refer=intl"
+  },
+  {
+    "name": "Medical Esthetics NEW",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/medical-esthetics.html?refer=intl"
+  },
+  {
+    "name": "Medical Laboratory Assistant NEW",
+    "credential": "Ontario College Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/medical-laboratory-assistant.html?refer=intl"
+  },
+  {
+    "name": "Medical Laboratory Technology NEW",
+    "credential": "Advanced Diploma",
+    "duration": "7 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/medical-laboratory-technology.html?refer=intl"
+  },
+  {
+    "name": "Mobile Applications Development NEW",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/mobile-applications-development.html?refer=intl"
+  },
+  {
+    "name": "Multimedia Design and Development",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/multimedia-design-and-development.html?refer=intl"
+  },
+  {
+    "name": "Music Business",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/music-business.html?refer=intl"
+  },
+  {
+    "name": "Music, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/music-bachelor-of.html?refer=intl"
+  },
+  {
+    "name": "Music, Introduction to Commercial Jazz Music",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/jazz-performance-introduction-to-commercial-jazz.html?refer=intl"
+  },
+  {
+    "name": "Nursing - RPN to BScN Bridging, Bachelor of Science",
+    "credential": "Honours Degree",
+    "duration": "7 months",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/bachelor-of-science-nursing-rpn-to-bn-bridging-program.html?refer=intl"
+  },
+  {
+    "name": "Nursing - Second Entry Preparation, Bachelor of Science",
+    "credential": "Preparatory Semester",
+    "duration": "1 semester",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/bachelor-of-science-nursing-second-entry-preparation.html?refer=intl"
+  },
+  {
+    "name": "Nursing, Bachelor of Science",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/bachelor-of-science-nursing.html?refer=intl"
+  },
+  {
+    "name": "Nutrition and Healthy Lifestyle Promotion",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/nutrition-and-healthy-lifestyle-promotion.html?refer=intl"
+  },
+  {
+    "name": "Occupational Therapist Assistant & Physiotherapist Assistant",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/occupational-therapist-assistant-and-physiotherapist-assistant.html?refer=intl"
+  },
+  {
+    "name": "Paralegal",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/paralegal.html?refer=intl"
+  },
+  {
+    "name": "Paralegal Education",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/paralegal-education.html?refer=intl"
+  },
+  {
+    "name": "Paralegal Studies, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/bachelor-of-paralegal-studies.html?refer=intl"
+  },
+  {
+    "name": "Paramedic",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/paramedic.html?refer=intl"
+  },
+  {
+    "name": "Personal Support Worker",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North",
+      "Lakeshore"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/personal-support-worker.html?refer=intl"
+  },
+  {
+    "name": "Pharmacy Technician",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/pharmacy-technician.html?refer=intl"
+  },
+  {
+    "name": "Photography",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/photography.html?refer=intl"
+  },
+  {
+    "name": "Plumbing Techniques",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/plumbing-techniques.html?refer=intl"
+  },
+  {
+    "name": "Plumbing Techniques - Apprenticeship",
+    "credential": "Ontario College Certificate",
+    "duration": "8 weeks",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/plumbing-apprenticeship.html?refer=intl"
+  },
+  {
+    "name": "Police Foundations",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/police-foundations?refer=intl"
+  },
+  {
+    "name": "Post-Production",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/post-production.html?refer=intl"
+  },
+  {
+    "name": "Practical Nursing",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/practical-nursing.html?refer=intl"
+  },
+  {
+    "name": "Pre-Health Sciences Pathway to Advanced Diplomas and Degrees",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://liberalarts.humber.ca/programs/pre-health-sciences-pathway-to-advanced-diplomas-and-degrees.html?refer=intl"
+  },
+  {
+    "name": "Pre-Service Firefighter Education and Training",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/pre-service-firefighter-education-training.html?refer=intl"
+  },
+  {
+    "name": "Professional Writing and Communications",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://liberalarts.humber.ca/programs/professional-writing-and-communications.html?refer=intl"
+  },
+  {
+    "name": "Project Management - Information Technology NEW",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/project-management-information-technology.html?refer=intl"
+  },
+  {
+    "name": "Protection, Security and Investigation",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/protection-security-and-investigation?refer=intl"
+  },
+  {
+    "name": "Public Administration",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "Downtown"
+    ],
+    "url": "https://business.humber.ca/programs/public-administration.html?refer=intl"
+  },
+  {
+    "name": "Public Relations",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/public-relations.html?refer=intl"
+  },
+  {
+    "name": "Public Relations (Graduate Certificate)",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/public-relations-postgraduate.html?refer=intl"
+  },
+  {
+    "name": "Public Relations, Bachelor of",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/public-relations-bachelor.html?refer=intl"
+  },
+  {
+    "name": "Quality Assurance – Manufacturing and Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "Downtown"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/quality-assurance-manufacturing-and-management.html?refer=intl"
+  },
+  {
+    "name": "Radio, Broadcasting",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/broadcasting-radio.html?refer=intl"
+  },
+  {
+    "name": "Recreation and Leisure Services",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/recreation-leisure-services.html?refer=intl"
+  },
+  {
+    "name": "Regulatory Affairs",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/regulatory-affairs-graduate.html?refer=intl"
+  },
+  {
+    "name": "Research Analyst",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://liberalarts.humber.ca/programs/research-analyst.html?refer=intl"
+  },
+  {
+    "name": "Retirement Home Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/retirement-home-management.html?refer=intl"
+  },
+  {
+    "name": "Social Service Worker",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://communityservices.humber.ca/programs/social-service-worker?refer=intl"
+  },
+  {
+    "name": "Sport Business Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/sport-business-management.html?refer=intl"
+  },
+  {
+    "name": "Sport Management",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/sport-management?refer=intl"
+  },
+  {
+    "name": "Supply Chain Management",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North",
+      "Downtown"
+    ],
+    "url": "https://business.humber.ca/programs/supply-chain-management-certificate.html?refer=intl"
+  },
+  {
+    "name": "Supply Chain Management, Bachelor of Commerce",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://business.humber.ca/programs/supply-chain-management.html?refer=intl"
+  },
+  {
+    "name": "Teaching English as a Second Language (TESL)",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://liberalarts.humber.ca/programs/teaching-english-as-a-second-language.html?refer=intl"
+  },
+  {
+    "name": "Television Writing and Producing",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/television-writing-and-producing.html?refer=intl"
+  },
+  {
+    "name": "Theatre Arts - Technical Production",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/theatre-arts-production.html?refer=intl"
+  },
+  {
+    "name": "Tourism - Travel Services Management",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://business.humber.ca/programs/tourism-travel-services-management.html?refer=intl"
+  },
+  {
+    "name": "Traditional Chinese Medicine Practitioner",
+    "credential": "Advanced Diploma",
+    "duration": "6 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/traditional-chinese-medicine-practitioner.html?refer=intl"
+  },
+  {
+    "name": "Transfer Service Sales Representative",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/transfer-service-sales-representative.html?refer=intl"
+  },
+  {
+    "name": "Urban Arboriculture - Tree Care",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/urban-arboriculture-tree-care.html?refer=intl"
+  },
+  {
+    "name": "User Experience (UX) Design",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/ux-design.html?refer=intl"
+  },
+  {
+    "name": "User Experience, Bachelor of Design",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/uxdesign.html?refer=intl"
+  },
+  {
+    "name": "Victimology NEW",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "Downtown"
+    ],
+    "url": "https://communityservices.humber.ca/programs/victimology.html?refer=intl"
+  },
+  {
+    "name": "Virtual Production",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/virtual-production.html?refer=intl"
+  },
+  {
+    "name": "Visual and Digital Arts",
+    "credential": "Diploma",
+    "duration": "4 semesters",
+    "campus": [
+      "Lakeshore"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/visual-and-digital-arts.html?refer=intl"
+  },
+  {
+    "name": "Web Design and Development NEW",
+    "credential": "Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/web-design-and-development.html?refer=intl"
+  },
+  {
+    "name": "Web Development",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "3 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://mediaarts.humber.ca/programs/web-development.html?refer=intl"
+  },
+  {
+    "name": "Welding Techniques",
+    "credential": "Ontario College Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/welding-techniques.html?refer=intl"
+  },
+  {
+    "name": "Wellness Coaching",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/wellness-coaching.html?refer=intl"
+  },
+  {
+    "name": "Wireless Telecommunications",
+    "credential": "Ontario Graduate Certificate",
+    "duration": "2 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://appliedtechnology.humber.ca/programs/wireless-telecommunications.html?refer=intl"
+  },
+  {
+    "name": "Workplace Health and Wellness, Bachelor of Health Sciences",
+    "credential": "Honours Degree",
+    "duration": "8 semesters",
+    "campus": [
+      "North"
+    ],
+    "url": "https://healthsciences.humber.ca/programs/bachelor-of-health-sciences-workplace-health-and-wellness?refer=intl"
+  }
 ]

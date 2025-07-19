@@ -6,14 +6,15 @@ async function testTransformation() {
     console.log('🧪 TESTING PROGRAM TRANSFORMATION');
     console.log('=' .repeat(50));
 
-    const schools = ['seneca', 'centennial', 'york', 'georgebrown', 'humber', 'tmu'];
-    const filePaths = {
+    const schools = ['seneca', 'centennial', 'york', 'georgebrown', 'humber', 'tmu', 'manitobaUni'] as const;
+    const filePaths: Record<typeof schools[number], string> = {
         seneca: 'output/seneca/all_programs.json',
         centennial: 'output/centennial/centennial_programs_manual.json',
         york: 'output/yorkUni/yorkUni.json',
         georgebrown: 'output/george_brown/georgebrown_programs_complete.json',
         humber: 'output/humber/humber.json',
-        tmu: 'output/tmu/tmu.json'
+        tmu: 'output/tmu/tmu.json',
+        manitobaUni: 'output/manitobaUni/umanitoba_programs.json'
     };
 
     for (const school of schools) {
@@ -61,7 +62,7 @@ async function testTransformation() {
                 });
             }
             
-        } catch (error) {
+        } catch (error: any) {
             console.error(`❌ Error testing ${school}:`, error.message);
         }
     }

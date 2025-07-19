@@ -70,8 +70,7 @@ export interface ApiResponse<T = any> {
 
 // ===== AUTH APIs =====
 export const authAPI = {
-    signUp: (data: any) => api.post('/auth/signUp', data),
-    signIn: (data: any) => api.post('/auth/signIn', data),
+    // ✅ REMOVED: signUp, signIn - now using NextAuth with magic link + OAuth
     getMe: () => api.get('/auth/me'),
     logout: () => api.post('/auth/logout'),
 };
@@ -164,10 +163,7 @@ export const programReviewAPI = {
     likeReview: (reviewId: string, action: 'like' | 'dislike') => api.post(`/program-reviews/${reviewId}/${action}`),
 };
 
-// ===== CHAT APIs =====
-export const chatAPI = {
-    getStreamToken: () => api.get('/chat/token'),
-};
+// ✅ REMOVED: Chat APIs - stream.io no longer used
 
 // ===== NOTIFICATION API =====
 const notificationAPI = {
@@ -181,15 +177,14 @@ const notificationAPI = {
 };
 
 // ===== LEGACY EXPORTS (Để tương thích với code cũ) =====
-export const signUp = authAPI.signUp;
-export const signIn = authAPI.signIn;
+// ✅ REMOVED: signUp, signIn exports - now using NextAuth
 export const getAuthUser = authAPI.getMe;
 export const getUserFriends = userAPI.getFriends;
 export const getRecommendedUsers = userAPI.getRecommended;
 export const getMyProfile = userAPI.getProfile;
 export const updateMyProfile = userAPI.updateProfile;
 export const searchUsers = userAPI.searchUsers;
-export const getStreamToken = chatAPI.getStreamToken;
+// ✅ REMOVED: getStreamToken - stream.io no longer used
 export const completeOnBoarding = userAPI.completeOnBoarding;
 
 // Export notification functions

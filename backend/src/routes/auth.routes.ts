@@ -1,17 +1,17 @@
 // src/routes/auth.routes.ts - ENHANCED VERSION
 import express from "express";
 import { 
-    signIn, 
-    signUp, 
     getMe, 
     logout, 
-    logoutAllDevices, // ✅ NEW ENHANCED
+    logoutAllDevices, 
     updateProfile, 
     refreshToken,
-    getAllUsers,      // ✅ NEW
-    forgotPassword,   // ✅ NEW  
-    resetPassword,    // ✅ NEW
-    handleOAuth       // ✅ NEW OAUTH
+    getAllUsers,
+    forgotPassword,
+    resetPassword,
+    handleOAuth,      // ✅ OAuth authentication
+    sendMagicLink,    // ✅ Magic link authentication
+    verifyMagicLink   // ✅ Magic link verification
 } from "../controllers/auth.controllers";
 import { protectRoute } from "../middleware/auth.middleware";
 
@@ -22,20 +22,7 @@ import { authValidators, securityMiddleware } from "../middleware/validation/aut
 const router = express.Router();
 
 // ===== PUBLIC ROUTES =====
-
-// ✅ ENHANCED SIGNUP với additional validation
-router.post("/signUp", [
-    authRateLimiters.register,           // Rate limiting
-    securityMiddleware.sanitizeInput,    // XSS prevention
-    authValidators.validateSignUp       // Validation
-], signUp);
-
-// ✅ ENHANCED SIGNIN với progressive rate limiting
-router.post("/signIn", [
-    authRateLimiters.login,              // Progressive rate limiting
-    securityMiddleware.sanitizeInput,    // XSS prevention
-    authValidators.validateSignIn       // Validation
-], signIn);
+// ✅ REMOVED: Traditional signUp/signIn routes - now using magic link + OAuth
 
 // ✅ ENHANCED REFRESH TOKEN với rate limiting
 router.post("/refresh", [
@@ -62,6 +49,17 @@ router.post("/oauth", [
     authRateLimiters.general
     // Remove sanitizeInput middleware that's causing issues
 ], handleOAuth);
+
+// ===== MAGIC LINK ROUTES =====
+router.post('/send-magic-link', 
+    authValidators.validateSendMagicLink, 
+    sendMagicLink
+);
+
+router.post('/magic-link-verify', 
+    authValidators.validateVerifyMagicLink, 
+    verifyMagicLink
+);
 
 // ===== PROTECTED ROUTES =====
 

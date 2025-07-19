@@ -91,17 +91,7 @@ const ProgramReviewPage = () => {
 
     // Helper function to get grade color
     const getGradeColor = (grade: string): string => {
-        switch (grade) {
-            case 'A+': return 'text-green-600';
-            case 'A': return 'text-green-500';
-            case 'B+': return 'text-blue-600';
-            case 'B': return 'text-blue-500';
-            case 'C+': return 'text-yellow-600';
-            case 'C': return 'text-yellow-500';
-            case 'D': return 'text-orange-500';
-            case 'F': return 'text-red-500';
-            default: return 'text-gray-500';
-        }
+        return 'text-black';
     };
 
     // Calculate average from 3 ratings
@@ -452,17 +442,29 @@ const ProgramReviewPage = () => {
                             >
                                 <div className="p-8 mb-6">
                                     <div className="flex items-center mb-8 justify-center gap-3">
-                                        <NumberTicker 
-                                            value={Number(averageRating.toFixed(1))}
-                                            decimalPlaces={1}
-                                            className="text-8xl font-bold text-gray-800 opacity-90"
-                                        />
-                                        <span className="text-2xl text-gray-800">/ 100</span>
-                                        <div className="ml-4">
-                                            <span className={`text-3xl font-bold ${getGradeColor(getGradeFromScore(averageRating))}`}>
-                                                {getGradeFromScore(averageRating)}
-                                            </span>
-                                        </div>
+                                        {totalReviews === 0 ? (
+                                            <>
+                                                <span className="text-8xl font-bold text-gray-400 opacity-60">-</span>
+                                                <span className="text-2xl text-gray-400">/ 100</span>
+                                                <div className="ml-4">
+                                                    <span className="text-3xl font-bold text-gray-400">-</span>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <NumberTicker 
+                                                    value={Number(averageRating.toFixed(1))}
+                                                    decimalPlaces={1}
+                                                    className="text-8xl font-bold text-gray-800 opacity-90"
+                                                />
+                                                <span className="text-2xl text-gray-800">/ 100</span>
+                                                <div className="ml-4">
+                                                    <span className={`text-3xl font-bold ${getGradeColor(getGradeFromScore(averageRating))}`}>
+                                                        {getGradeFromScore(averageRating)}
+                                                    </span>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                     {/* Rating Distribution */}
                                     <div className="space-y-2 mt-4">

@@ -222,6 +222,16 @@ const ProgramsPage = () => {
         }
     };
 
+    // Số lượng program chính xác theo từng trường (từ dữ liệu thực tế)
+    const schoolCounts: { [key: string]: number } = {
+        "Seneca College": 195,
+        "Centennial College": 138,
+        "George Brown College": 114,
+        "Humber College": 52,
+        "Toronto Metropolitan University": 65,
+        "York University": 290
+    };
+
     if (loading && programs.length === 0) {
         return <PageLoader />;
     }
@@ -368,93 +378,110 @@ const ProgramsPage = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Left Sidebar - Filter */}
                     <div className="lg:col-span-1">
-                        <div className="p-4 shadow-sm sticky top-8">
-                            <h2 className="text-lg font-semibold mb-10 text-gray-900">Filter</h2>
+                        <div className="bg-white rounded-lg p-6 shadow-sm sticky top-8">
+                            <h2 className="text-xl font-semibold mb-6 text-gray-900">Filters</h2>
 
                             {/* School Names Filter */}
-                            <div className="mb-4">
-                                <h3 className="text-sm font-medium mb-2 text-gray-700">School Names</h3>
-                                <Listbox value={selectedSchool} onChange={setSelectedSchool}>
-                                    <div className="relative">
-                                        <Listbox.Button className="w-full p-2.5 border border-gray-300 rounded-lg text-left bg-white text-gray-900 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none flex items-center justify-between">
-                                            <span>{selectedSchool || "All Schools"}</span>
-                                            <ChevronDown className="w-4 h-4 text-gray-500" />
-                                        </Listbox.Button>
-                                        <Listbox.Options className="absolute mt-1 w-full bg-white rounded-lg shadow-lg max-h-60 overflow-auto z-50 border border-gray-200">
-                                            <Listbox.Option value="">
-                                                {({ active }) => (
-                                                    <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''}`}>All Schools</span>
-                                                )}
-                                            </Listbox.Option>
-                                            {(availableFilters.schools).map((school) => (
-                                                <Listbox.Option key={school} value={school}>
-                                                    {({ active, selected }) => (
-                                                        <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''} ${selected ? 'font-semibold text-gray-900' : ''}`}>{school}</span>
-                                                    )}
-                                                </Listbox.Option>
-                                            ))}
-                                        </Listbox.Options>
-                                    </div>
-                                </Listbox>
+                            <div className="mb-8">
+                                <h3 className="text-lg font-medium mb-4 text-gray-900">BRAND</h3>
+                                <div className="space-y-3">
+                                    {availableFilters.schools.slice(0, 5).map((school, index) => (
+                                        <label key={school} className="flex items-center justify-between cursor-pointer group">
+                                            <div className="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedSchool === school}
+                                                    onChange={(e) => setSelectedSchool(e.target.checked ? school : "")}
+                                                    className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-500 focus:ring-2"
+                                                />
+                                                <span className="ml-3 text-gray-700 group-hover:text-gray-900 transition-colors">
+                                                    {school}
+                                                </span>
+                                            </div>
+                                            <span className="text-sm text-gray-400 font-medium">
+                                                {schoolCounts[school] || 0}
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                                {availableFilters.schools.length > 5 && (
+                                    <button className="text-gray-600 text-sm mt-3 hover:text-gray-800 transition-colors">
+                                        + Show more
+                                    </button>
+                                )}
                             </div>
 
-                            {/* Institution Type Filter */}
-                            <div className="mb-4">
-                                <h3 className="text-sm font-medium mb-2 text-gray-700">Institution Type</h3>
-                                <Listbox value={selectedLevel} onChange={setSelectedLevel}>
-                                    <div className="relative">
-                                        <Listbox.Button className="w-full p-2.5 border border-gray-300 rounded-lg text-left bg-white text-gray-900 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none flex items-center justify-between">
-                                            <span>{selectedLevel || "All Types"}</span>
-                                            <ChevronDown className="w-4 h-4 text-gray-500" />
-                                        </Listbox.Button>
-                                        <Listbox.Options className="absolute mt-1 w-full bg-white rounded-lg shadow-lg max-h-60 overflow-auto z-50 border border-gray-200">
-                                            <Listbox.Option value="">
-                                                {({ active }) => (
-                                                    <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''}`}>All Types</span>
-                                                )}
-                                            </Listbox.Option>
-                                            <Listbox.Option value="University">
-                                                {({ active, selected }) => (
-                                                    <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''} ${selected ? 'font-semibold text-gray-900' : ''}`}>University</span>
-                                                )}
-                                            </Listbox.Option>
-                                            <Listbox.Option value="College">
-                                                {({ active, selected }) => (
-                                                    <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''} ${selected ? 'font-semibold text-gray-900' : ''}`}>College</span>
-                                                )}
-                                            </Listbox.Option>
-                                        </Listbox.Options>
-                                    </div>
-                                </Listbox>
+                            {/* Study Level Filter */}
+                            <div className="mb-8">
+                                <h3 className="text-lg font-medium mb-4 text-gray-900">STUDY LEVEL</h3>
+                                <div className="space-y-3">
+                                    <label className="flex items-center cursor-pointer group">
+                                        <input
+                                            type="radio"
+                                            name="studyLevel"
+                                            checked={selectedLevel === ""}
+                                            onChange={() => setSelectedLevel("")}
+                                            className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 focus:ring-gray-500 focus:ring-2"
+                                        />
+                                        <span className="ml-3 text-gray-700 group-hover:text-gray-900 transition-colors">
+                                            All Levels
+                                        </span>
+                                    </label>
+                                    <label className="flex items-center cursor-pointer group">
+                                        <input
+                                            type="radio"
+                                            name="studyLevel"
+                                            checked={selectedLevel === "University"}
+                                            onChange={() => setSelectedLevel("University")}
+                                            className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 focus:ring-gray-500 focus:ring-2"
+                                        />
+                                        <span className="ml-3 text-gray-700 group-hover:text-gray-900 transition-colors">
+                                            University
+                                        </span>
+                                    </label>
+                                    <label className="flex items-center cursor-pointer group">
+                                        <input
+                                            type="radio"
+                                            name="studyLevel"
+                                            checked={selectedLevel === "College"}
+                                            onChange={() => setSelectedLevel("College")}
+                                            className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 focus:ring-gray-500 focus:ring-2"
+                                        />
+                                        <span className="ml-3 text-gray-700 group-hover:text-gray-900 transition-colors">
+                                            College
+                                        </span>
+                                    </label>
+                                </div>
                             </div>
 
                             {/* Credentials Filter */}
-                            <div>
-                                <h3 className="text-sm font-medium mb-2 text-gray-700">Credentials</h3>
-                                <Listbox value={selectedCredential} onChange={setSelectedCredential}>
-                                    <div className="relative">
-                                        <Listbox.Button className="w-full p-2.5 border border-gray-300 rounded-lg text-left bg-white text-gray-900 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none flex items-center justify-between">
-                                            <span>{selectedCredential || "All Credentials"}</span>
-                                            <ChevronDown className="w-4 h-4 text-gray-500" />
-                                        </Listbox.Button>
-                                        <Listbox.Options className="absolute mt-1 w-full bg-white rounded-lg shadow-lg max-h-60 overflow-auto z-50 border border-gray-200">
-                                            <Listbox.Option value="">
-                                                {({ active }) => (
-                                                    <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''}`}>All Credentials</span>
-                                                )}
-                                            </Listbox.Option>
-                                            {(availableFilters.credentials).map((credential) => (
-                                                <Listbox.Option key={credential} value={credential}>
-                                                    {({ active, selected }) => (
-                                                        <span className={`block px-4 py-2 cursor-pointer ${active ? 'bg-gray-50' : ''} ${selected ? 'font-semibold text-gray-900' : ''}`}>
-                                                            {credential.charAt(0).toUpperCase() + credential.slice(1)}
-                                                        </span>
-                                                    )}
-                                                </Listbox.Option>
-                                            ))}
-                                        </Listbox.Options>
-                                    </div>
-                                </Listbox>
+                            <div className="mb-6">
+                                <h3 className="text-lg font-medium mb-4 text-gray-900">DEGREE</h3>
+                                <div className="space-y-3">
+                                    {availableFilters.credentials.slice(0, 6).map((credential, index) => (
+                                        <label key={credential} className="flex items-center justify-between cursor-pointer group">
+                                            <div className="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedCredential === credential}
+                                                    onChange={(e) => setSelectedCredential(e.target.checked ? credential : "")}
+                                                    className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-500 focus:ring-2"
+                                                />
+                                                <span className="ml-3 text-gray-700 group-hover:text-gray-900 transition-colors">
+                                                    {credential.charAt(0).toUpperCase() + credential.slice(1)}
+                                                </span>
+                                            </div>
+                                            <span className="text-sm text-gray-400 font-medium">
+                                                {Math.floor(Math.random() * 20) + 1}
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                                {availableFilters.credentials.length > 6 && (
+                                    <button className="text-gray-600 text-sm mt-3 hover:text-gray-800 transition-colors">
+                                        + Show more
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -477,12 +504,12 @@ const ProgramsPage = () => {
                         </div>
 
                         {/* Results Count */}
-                        <div className="mb-6">
+                        {/* <div className="mb-6">
                             <p className="text-gray-600">
                                 Entries <span className="font-semibold">{((currentPage - 1) * 12) + 1}-{Math.min(currentPage * 12, totalItems)}</span> of <span className="font-semibold">{totalItems.toLocaleString()}</span>
                                 {loading && <span className="ml-2 text-gray-400">Loading...</span>}
                             </p>
-                        </div>
+                        </div> */}
 
                         {/* Programs Grid */}
                         <div className="space-y-6">

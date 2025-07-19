@@ -5,7 +5,7 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
-import chatRoutes from "./routes/chat.routes";
+// ✅ REMOVED: chatRoutes - stream.io no longer used
 import sessionRoutes from './routes/session.routes';
 import materialRoutes from "./routes/material.routes";
 import uploadRoutes from "./routes/upload.routes";
@@ -27,7 +27,6 @@ import "./models/User";
 import "./models/School";
 import "./models/Program";
 import "./models/ProgramReviews";
-// import "./models/Course"; // Commented out - Course model doesn't exist, only ProgramCourses
 import "./models/StudyMaterial";
 import "./models/BookMark";
 import "./models/Enrollment";
@@ -64,7 +63,7 @@ app.use('/api/', limiter);
 app.use("/api/auth", authRoutes);
 app.use("/api/sessions", sessionRoutes);        
 app.use("/api/users", userRoutes);
-app.use("/api/chat", chatRoutes);
+// ✅ REMOVED: /api/chat routes - stream.io no longer used
 app.use("/api/materials", materialRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/courses", courseRoutes);

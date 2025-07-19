@@ -123,6 +123,30 @@ export const emailTemplates = {
         };
     },
 
+    magicLink: ({ name, magicLinkUrl, expiryMinutes }: { name: string; magicLinkUrl: string; expiryMinutes: number }): EmailTemplate => {
+        const formattedName = formatEmailContent.formatName(name);
+        const safeUrl = formatEmailContent.createSafeUrl(magicLinkUrl);
+        
+        return {
+            subject: 'Your StudyHub Sign-in Link',
+            html: `
+                <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6;">
+                    <h1 style="color: #3B82F6;">Your Sign-in Link</h1>
+                    <p>Hi ${formattedName},</p>
+                    <p>Click the button below to sign in to your StudyHub account:</p>
+                    <a href="${safeUrl}" style="background: #3B82F6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 16px 0;">
+                        Sign In to StudyHub
+                    </a>
+                    <p style="background: #FEF3C7; padding: 12px; border-radius: 6px; border-left: 4px solid #F59E0B;">
+                        <strong>⚠️ This link expires in ${expiryMinutes} minutes.</strong>
+                    </p>
+                    <p>If you didn't request this, please ignore this email.</p>
+                    <p style="margin-top: 24px;">Best regards,<br><strong>The StudyHub Team</strong></p>
+                </div>
+            `
+        };
+    },
+
     emailVerification: ({ name, verificationUrl }: EmailTemplateData['emailVerification']): EmailTemplate => {
         const formattedName = formatEmailContent.formatName(name);
         const safeUrl = formatEmailContent.createSafeUrl(verificationUrl);
@@ -344,4 +368,242 @@ export const emailService = {
     sendMaterialRejectionEmail,
     sendBulkEmail,
     isAvailable: isEmailServiceAvailable
+};
+
+// Canadian educational institution domains
+const CANADIAN_EDU_DOMAINS = {
+    // Universities
+    'utoronto.ca': 'University of Toronto',
+    'utsc.utoronto.ca': 'University of Toronto Scarborough',
+    'utm.utoronto.ca': 'University of Toronto Mississauga',
+    'yorku.ca': 'York University',
+    'queensu.ca': "Queen's University",
+    'umanitoba.ca': 'University of Manitoba',
+    'uwaterloo.ca': 'University of Waterloo',
+    'mcmaster.ca': 'McMaster University',
+    'uwo.ca': 'Western University',
+    'carleton.ca': 'Carleton University',
+    'uottawa.ca': 'University of Ottawa',
+    'concordia.ca': 'Concordia University',
+    'mcgill.ca': 'McGill University',
+    
+    // Colleges & Polytechnics
+    'myseneca.ca': 'Seneca College',
+    'georgebrown.ca': 'George Brown College',
+    'humber.ca': 'Humber College',
+    'centennialcollege.ca': 'Centennial College',
+    'torontomu.ca': 'Toronto Metropolitan University',
+    'ryerson.ca': 'Ryerson University (TMU)',
+    'sheridancollege.ca': 'Sheridan College',
+    'mohawkcollege.ca': 'Mohawk College',
+    'algonquincollege.com': 'Algonquin College',
+    'conestogac.on.ca': 'Conestoga College',
+    'fanshawec.ca': 'Fanshawe College',
+    'lambtoncollege.ca': 'Lambton College',
+    'loyalistcollege.com': 'Loyalist College',
+    'niagaracollege.ca': 'Niagara College',
+    'stclaircollege.ca': 'St. Clair College',
+    
+    // General educational domains
+    '.edu': 'Educational Institution',
+    '.ac.ca': 'Academic Institution (Canada)'
+};
+
+// Student email patterns that might not have institutional domains
+const STUDENT_EMAIL_PATTERNS = [
+    /student\./i,
+    /\.student\./i,
+    /students\./i,
+    /\.students\./i,
+    /myseneca\./i,
+    /my\.georgebrown\./i,
+    /learn\.humber\./i,
+    /student\.centennialcollege\./i,
+    /my\.torontomu\./i
+];
+
+export interface EmailVerificationResult {
+    isEducational: boolean;
+    institutionName?: string;
+    domain?: string;
+    verificationMethod: 'domain-match' | 'pattern-match' | 'none';
+    confidence: 'high' | 'medium' | 'low';
+}
+
+/**
+ * Detect if an email belongs to an educational institution
+ */
+export const detectEducationalEmail = (email: string): EmailVerificationResult => {
+    const normalizedEmail = email.toLowerCase().trim();
+    const emailDomain = normalizedEmail.split('@')[1];
+    
+    if (!emailDomain) {
+        return {
+            isEducational: false,
+            verificationMethod: 'none',
+            confidence: 'low'
+        };
+    }
+
+    // Method 1: Direct domain match (highest confidence)
+    for (const [domain, institutionName] of Object.entries(CANADIAN_EDU_DOMAINS)) {
+        if (emailDomain === domain || emailDomain.endsWith(`.${domain}`)) {
+            logger.info('Educational email detected via domain match', {
+                email: maskEmail(email),
+                institution: institutionName,
+                domain
+            });
+            
+            return {
+                isEducational: true,
+                institutionName,
+                domain: emailDomain,
+                verificationMethod: 'domain-match',
+                confidence: 'high'
+            };
+        }
+    }
+
+    // Method 2: Pattern matching for student subdomains (medium confidence)
+    for (const pattern of STUDENT_EMAIL_PATTERNS) {
+        if (pattern.test(normalizedEmail)) {
+            logger.info('Educational email detected via pattern match', {
+                email: maskEmail(email),
+                pattern: pattern.toString()
+            });
+            
+            return {
+                isEducational: true,
+                institutionName: 'Educational Institution (Pattern Match)',
+                domain: emailDomain,
+                verificationMethod: 'pattern-match',
+                confidence: 'medium'
+            };
+        }
+    }
+
+    // Method 3: Generic educational domains (medium confidence)
+    if (emailDomain.includes('.edu') || emailDomain.includes('.ac.')) {
+        logger.info('Educational email detected via generic domain', {
+            email: maskEmail(email),
+            domain: emailDomain
+        });
+        
+        return {
+            isEducational: true,
+            institutionName: 'Educational Institution',
+            domain: emailDomain,
+            verificationMethod: 'domain-match',
+            confidence: 'medium'
+        };
+    }
+
+    return {
+        isEducational: false,
+        verificationMethod: 'none',
+        confidence: 'low'
+    };
+};
+
+/**
+ * Get verification status and method based on email
+ */
+export const getVerificationStatusFromEmail = (email: string): {
+    isVerified: boolean;
+    verificationStatus: string;
+    verificationMethod: string;
+} => {
+    const detection = detectEducationalEmail(email);
+    
+    if (detection.isEducational && detection.confidence === 'high') {
+        return {
+            isVerified: true,
+            verificationStatus: 'edu-verified',
+            verificationMethod: 'edu-domain'
+        };
+    } else if (detection.isEducational && detection.confidence === 'medium') {
+        return {
+            isVerified: true,
+            verificationStatus: 'email-verified',
+            verificationMethod: 'edu-pattern'
+        };
+    }
+    
+    return {
+        isVerified: false,
+        verificationStatus: 'unverified',
+        verificationMethod: 'none'
+    };
+};
+
+/**
+ * Validate educational email format
+ */
+export const validateEducationalEmail = (email: string): {
+    isValid: boolean;
+    errors: string[];
+    suggestions?: string[];
+} => {
+    const errors: string[] = [];
+    const suggestions: string[] = [];
+    
+    if (!email || typeof email !== 'string') {
+        errors.push('Email is required');
+        return { isValid: false, errors };
+    }
+    
+    const normalizedEmail = email.toLowerCase().trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!emailRegex.test(normalizedEmail)) {
+        errors.push('Please provide a valid email address');
+        return { isValid: false, errors };
+    }
+    
+    const detection = detectEducationalEmail(normalizedEmail);
+    
+    if (!detection.isEducational) {
+        errors.push('This email does not appear to be from an educational institution');
+        suggestions.push('Please use your student email (e.g., student@senecacollege.ca)');
+        suggestions.push('Contact your institution\'s IT support if you need help accessing your student email');
+    }
+    
+    return {
+        isValid: detection.isEducational,
+        errors,
+        suggestions: suggestions.length > 0 ? suggestions : undefined
+    };
+};
+
+/**
+ * Get institution info from email
+ */
+export const getInstitutionFromEmail = (email: string): {
+    name?: string;
+    domain?: string;
+    type?: 'university' | 'college' | 'polytechnic' | 'institute';
+} => {
+    const detection = detectEducationalEmail(email);
+    
+    if (!detection.isEducational) {
+        return {};
+    }
+    
+    // Determine institution type based on name
+    const name = detection.institutionName?.toLowerCase() || '';
+    let type: 'university' | 'college' | 'polytechnic' | 'institute' = 'institute';
+    
+    if (name.includes('university')) {
+        type = 'university';
+    } else if (name.includes('college')) {
+        type = 'college';
+    } else if (name.includes('polytechnic')) {
+        type = 'polytechnic';
+    }
+    
+    return {
+        name: detection.institutionName,
+        domain: detection.domain,
+        type
+    };
 };

@@ -59,7 +59,7 @@ const validateStandardizedBulkImport = (req: any, res: any, next: any) => {
         });
     }
 
-    const allowedCredentials = ['bachelor', 'diploma', 'advanced diploma', 'certificate'];
+    const allowedCredentials = ['bachelor', 'diploma', 'advanced diploma', 'certificate', 'other'];
 
     for (let i = 0; i < programs.length; i++) {
         const program = programs[i];

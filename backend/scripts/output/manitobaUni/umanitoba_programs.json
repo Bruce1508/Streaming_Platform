@@ -1,0 +1,1295 @@
+[
+  {
+    "name": "Accounting (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/accounting-bcomm-honours",
+    "duration": "4 years",
+    "faculty": "Asper School of Business",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": []
+  },
+  {
+    "name": "Actuarial Mathematics (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/actuarial-mathematics-bsc",
+    "duration": "4 years",
+    "faculty": "Faculty of Science",
+    "credential": "Bachelor of Science (Honours)",
+    "hasCoOp": false,
+    "programOptions": []
+  },
+  {
+    "name": "Agribusiness (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/agribusiness-bsc",
+    "faculty": "Faculty of Agricultural and Food Sciences",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Agroecology (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/agroecology-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Agronomy (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/agronomy-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Animal Systems (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/animal-systems-bsc",
+    "faculty": "Faculty of Agricultural and Food Sciences",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Anthropology (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/anthropology-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Applied Mathematics (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/applied-mathematics-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Art History (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/art-history-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Bachelor of Arts (General)\n• Minor in Art History"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Art History (BFA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/art-history-bfa",
+    "faculty": "School of Art",
+    "duration": "2+ years",
+    "credential": "Bachelor of Fine Arts",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Asian Studies (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/asian-studies-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Bachelor of Arts (General)\n• Minor in Asian Studies"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Athletic Therapy (BKin)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/athletic-therapy-bkin",
+    "faculty": "Faculty of Kinesiology and Recreation Management",
+    "duration": "4 years",
+    "credential": "Bachelor of Kinesiology – Athletic Therapy",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Bachelor of Education (BEd)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/bachelor-of-education-bed",
+    "faculty": "Faculty of Education",
+    "duration": "2+ years",
+    "credential": "Bachelor of Education",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Biochemistry (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/biochemistry-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Biological Sciences (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/biological-sciences-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Biosystems Engineering (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/biosystems-engineering-bsc",
+    "faculty": "Price Faculty of Engineering",
+    "duration": "5 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op/Industrial Internship Program"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Business Analytics (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/business-analytics-bcomm",
+    "faculty": "Asper School of Business",
+    "duration": "4 years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Canadian Studies (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/canadian-studies-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "4 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Bachelor of Arts (General)\n• Bachelor of Arts (Honours)\n• Minor in Canadian Studies"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Central and East European Studies (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/central-and-east-european-studies-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Chemistry (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/chemistry-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Civil Engineering (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/civil-engineering-bsc",
+    "faculty": "Price Faculty of Engineering",
+    "duration": "4-5 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op/Industrial Internship Program"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Classics (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/classics-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "4 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Commerce (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/commerce-bcomm",
+    "faculty": "Asper School of Business",
+    "duration": "4 years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op \n• International exchange"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Computer Engineering (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/computer-engineering-bsc",
+    "faculty": "Price Faculty of Engineering",
+    "duration": "5 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op/Industrial Internship Program"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Computer Science (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/computer-science-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Criminology (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/criminology-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [
+      "•\tBachelor of Arts (General)\n•\tBachelor of Arts (Honours)\n•\tCo-op"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Data Science (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/data-science-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Dental Hygiene Degree Completion Program (BScDH)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/dental-hygiene-degree-completion-program-bscdh",
+    "faculty": "Rady Faculty of Health Sciences",
+    "duration": "2 years",
+    "credential": "Advanced Diploma",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Dentistry (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/dentistry-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "2 summer terms",
+    "credential": "Bachelor of Science",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Dentistry (DMD)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/dentistry-dmd",
+    "faculty": "Rady Faculty of Health Sciences",
+    "duration": "4 years",
+    "credential": "Bachelor of Science in Dentistry",
+    "hasCoOp": false,
+    "programOptions": [
+      "•\tBachelor of Science in Dentistry\n•\tInternational exchange \n•\tCommunity outreach programs"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Dentistry (DMD/PhD)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/dentistry-dmdphd",
+    "faculty": "Unknown Faculty",
+    "duration": "7 years",
+    "credential": "Bachelor of Science in Dentistry",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Diploma in Agriculture",
+    "url": "https://umanitoba.ca/explore/programs-of-study/diploma-in-agriculture",
+    "faculty": "Extended Education",
+    "duration": "2 years",
+    "credential": "Diploma in Agriculture",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Diploma in Dental Hygiene",
+    "url": "https://umanitoba.ca/explore/programs-of-study/diploma-in-dental-hygiene",
+    "faculty": "Rady Faculty of Health Sciences",
+    "duration": "3 years",
+    "credential": "Diploma in Dental Hygiene",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Earth Sciences (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/earth-sciences-bsc",
+    "faculty": "Clayton H. Riddell Faculty of Environment, Earth, and Resources",
+    "duration": "3 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": false,
+    "programOptions": [
+      "• General\n• Minor"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Economics (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/economics-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Electrical Engineering (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/electrical-engineering-bsc",
+    "faculty": "Price Faculty of Engineering",
+    "duration": "4-5 years",
+    "credential": "Bachelor of Science (BSc)",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op/Industrial Internship Program"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Engineering (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/engineering-bsc",
+    "faculty": "Price Faculty of Engineering",
+    "duration": "5 years",
+    "credential": "Bachelor of Science (BSc)",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op/Industrial Internship Program"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "English (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/english-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Entrepreneurship & Innovation Major (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/entrepreneurship-innovation-major-bcomm",
+    "faculty": "Asper School of Business",
+    "duration": "4+ years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Environmental Design (BEnvD)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/environmental-design-benvd",
+    "faculty": "Faculty of Architecture",
+    "duration": "3+ years",
+    "credential": "Bachelor of Environmental Design",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op/integrated education program"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Environmental Geoscience (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/environmental-geoscience-bsc",
+    "faculty": "Clayton H. Riddell Faculty of Environment, Earth, and Resources",
+    "duration": "4 years",
+    "credential": "Bachelor of Science - Environmental Geoscience",
+    "hasCoOp": false,
+    "programOptions": [
+      "• Honours\n• Major"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Environmental Science (BEnvSC)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/environmental-science-benvsc",
+    "faculty": "Clayton H. Riddell Faculty of Environment, Earth, and Resources",
+    "duration": "4 years",
+    "credential": "Bachelor of Science - Environmental Science",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Honours \n• Major \n• General \n• Minor"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Environmental Studies (BEnvST)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/environmental-studies-benvst",
+    "faculty": "Unknown Faculty",
+    "duration": "4 years",
+    "credential": "Bachelor of Science - Environmental Studies",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Honours\n• Major\n• General\n• Minor"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Film Studies (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/film-studies-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [
+      "•\tBachelor of Arts (General)\n•\tBachelor of Arts (Advanced)\n•\tMinor in Film Studies\n•      Co-op"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Finance (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/finance-bcomm",
+    "faculty": "Asper School of Business",
+    "duration": "4 years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op \n• International exchange"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Fine Arts Studio Program (BFA, diploma)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/fine-arts-studio-program-bfadiploma",
+    "faculty": "School of Art",
+    "duration": "3+ years",
+    "credential": ["Bachelor of Fine Arts", "Diploma in Art"],
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Food Science (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/food-science-bsc",
+    "faculty": "Faculty of Agricultural and Food Sciences",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Science\n• Business"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "French (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/french-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "General (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/general-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "3 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Generalist (Business) (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/generalist-business",
+    "faculty": "Asper School of Business",
+    "duration": "4 years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op \n• International exchange"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Genetics (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/genetics-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Geography (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/geography-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "4 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": false,
+    "programOptions": [
+      "• Honours\n• Advanced\n• General\n• Minor"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Geology (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/geology-bsc",
+    "faculty": "Clayton H. Riddell Faculty of Environment, Earth, and Resources",
+    "duration": "Major and honours: 4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Geophysics (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/geophysics-bsc",
+    "faculty": "Clayton H. Riddell Faculty of Environment, Earth, and Resources",
+    "duration": "Major and honours: 4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "German (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/german-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Global Political Economy (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/global-political-economy-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "4 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Bachelor of Arts (General)\n• Bachelor of Arts (Advanced)"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Health Sciences (BHSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/health-sciences-bhsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Health Sciences",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Health Studies (BHSt)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/health-studies-bhst",
+    "faculty": "Unknown Faculty",
+    "duration": "4 years",
+    "credential": "Bachelor of Health Studies",
+    "hasCoOp": false,
+    "programOptions": [
+      "The BHSt offers you the flexibility to design a program that meets your unique goals and interests.",
+      "Choose from three specialized concentrations:",
+      "Health Policy, Planning, and Evaluation",
+      "Health Promotion and Education",
+      "Family Health"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "History (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/history-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Human Nutritional Sciences (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/human-nutritional-sciences-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science (Human Nutritional Sciences)",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Human Resource Management/Industrial Relations (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/human-resource-managementindustrial-relations-bcomm",
+    "faculty": "Asper School of Business",
+    "duration": "4 years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op \n• International exchange"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Icelandic (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/icelandic-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "4 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Bachelor of Arts (General)\n• Bachelor of Arts (Honours)\n• Minor in Icelandic"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Indigenous Business Studies (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/indigenous-business-studies-bcomm",
+    "faculty": "Asper School of Business",
+    "duration": "4 years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op \n• International exchange"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Indigenous Governance (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/indigenous-governance-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "4 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [
+      "•\tBachelor of Arts (Advanced)"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Indigenous Studies (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/indigenous-studies-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "International Business (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/international-business-bcomm",
+    "faculty": "Asper School of Business",
+    "duration": "4 years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op \n• International exchange"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "International Dentist Degree Program (IDDP)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/international-dentist-degree-program-iddp",
+    "faculty": "Unknown Faculty",
+    "duration": "2 years",
+    "credential": "Doctor of Dental Medicine (International Dentists Degree Program)",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "International Medical Graduate (IMG) Programs",
+    "url": "https://umanitoba.ca/explore/programs-of-study/international-medical-graduate-programs-img",
+    "faculty": "Unknown Faculty",
+    "duration": "3-12 months",
+    "credential": "",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Italian Studies (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/italian-studies-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts in Italian",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Jazz Studies (BJazz)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/jazz-studies-bjazz",
+    "faculty": "Desautels Faculty of Music",
+    "duration": "4 years",
+    "credential": "Bachelor of Jazz Studies",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Juris Doctor (JD)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/juris-doctor-jd",
+    "faculty": "Robson Hall, Faculty of Law",
+    "duration": "3 years",
+    "credential": "Juris Doctor",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Kinesiology (BKin)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/kinesiology-bkin",
+    "faculty": "Faculty of Kinesiology and Recreation Management",
+    "duration": "4 years",
+    "credential": "Bachelor of Kinesiology",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Labour Studies (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/labour-studies-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Leadership and Organizations (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/leadership-and-organizations-bcomm",
+    "faculty": "Asper School of Business",
+    "duration": "4 years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op \n• International exchange"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Linguistics (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/linguistics-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Logistics and Supply Chain Management (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/logistics-and-supply-chain-management-bcomm",
+    "faculty": "Asper School of Business",
+    "duration": "4 years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op \n• International exchange"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Management Information Systems (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/management-information-systems-bcomm",
+    "faculty": "Asper School of Business",
+    "duration": "4 years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op \n• International exchange"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Management Minor for Non-Business Students",
+    "url": "https://umanitoba.ca/explore/programs-of-study/management-minor-for-nonbusiness-students",
+    "faculty": "Asper School of Business",
+    "duration": "18 credit hours",
+    "credential": "",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Wisnnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Marketing (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/marketing-bcomm",
+    "faculty": "Asper School of Business",
+    "duration": "4 years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op \n• International exchange"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Mathematics (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/mathematics-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Honours\n• Major\n• Minor"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Mechanical Engineering (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/mechanical-engineering-bsc",
+    "faculty": "Price Faculty of Engineering",
+    "duration": "5 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Co-op/Industrial Internship Program"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Medicine (BSc Med)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/medicine-bscmed",
+    "faculty": "Rady Faculty of Health Sciences",
+    "duration": "two 13-week summer sessions",
+    "credential": "Bachelor of Science in Medicine",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Medicine (MD)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/medicine-md",
+    "faculty": "Rady Faculty of Health Sciences",
+    "duration": "4 years",
+    "credential": "Doctor of Medicine",
+    "hasCoOp": false,
+    "programOptions": [
+      "• Summer research program",
+      "Block 1: Surgery and Anesthesia",
+      "This block provides clinical teaching in:",
+      "General surgery (3 weeks)",
+      "Musculoskeletal medicine (2 weeks)",
+      "Urology (1 week)",
+      "Plastic surgery (1 week)",
+      "Neurosurgery (1 week)",
+      "Anesthesia (2 weeks)",
+      "Perioperative care (2 weeks)",
+      "Block 2: Pediatrics and Obstetrics & Gynecology",
+      "Clinical teaching in this block includes:",
+      "Pediatrics inpatient care (3 weeks)",
+      "Pediatric outpatient care (3 weeks)",
+      "Obstetrics (2 weeks)",
+      "Gynecology (2 weeks)",
+      "Obstetrics & gynecology outpatient clinics (2 weeks)",
+      "Block 3: Internal Medicine and Emergency Medicine",
+      "This block provides clinical teaching in:",
+      "Internal medicine inpatient care (6 weeks)",
+      "Internal medicine selective (2 weeks)",
+      "Block 4: Psychiatry and Family Medicine/Public Health",
+      "Clinical teaching in this block includes:",
+      "Psychiatry inpatient, outpatient, and consultations (6 weeks)",
+      "UGME Academic Time",
+      "Academic Sessions for Core Rotations"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Medieval and Early Modern Studies (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/medieval-and-early-modern-studies-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "4 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Microbiology (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/microbiology-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Honours\n• Major\n• Minor"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Midwifery (BMid)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/midwifery-bmid",
+    "faculty": "Rady Faculty of Health Sciences",
+    "duration": "3+ years",
+    "credential": "Bachelor",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Music (BMus)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/music-bmus",
+    "faculty": "Desautels Faculty of Music",
+    "description": "Page not found or empty"
+  },
+  {
+    "name": "Music (Post-Baccalaureate Diploma in Performance)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/music-postbaccalaureatediplomainperformance",
+    "faculty": "Desautels Faculty of Music",
+    "description": "Page not found or empty"
+  },
+  {
+    "name": "Nursing (BN)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/nursing-bn",
+    "faculty": "Rady Faculty of Health Sciences",
+    "duration": "28 months",
+    "credential": "Bachelor",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Pharmacy (PharmD)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/pharmacy-pharmd",
+    "faculty": "Rady Faculty of Health Sciences",
+    "duration": "4+",
+    "credential": "Doctor of Pharmacy (PharmD)",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Philosophy (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/philosophy-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Physical Education (BPE)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/physical-education-bpe",
+    "faculty": "Faculty of Education",
+    "duration": "3 years",
+    "credential": "Bachelor of Physical Education",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Physical Geography (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/physical-geography-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Honours\n• Major\n• Minor",
+      "Expected duration:",
+      "Major and honours: 4 years (120 credit hours)",
+      "Minor: 18 credit hours",
+      "Physical geography students choose from the following streams:"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Physics and Astronomy (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/physics-and-astronomy-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Honours\n• Major\n• Minor"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Plant Biotechnology (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/plant-biotechnology-bsc",
+    "faculty": "Faculty of Agricultural and Food Sciences",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Political Studies (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/political-studies-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "5 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Post-Baccalaureate Diploma in Education (PBDE)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/postbaccalaureate-diploma-in-education-pbde",
+    "faculty": "Faculty of Education",
+    "duration": "1 year",
+    "credential": "Post-Baccalaureate in Education Diploma",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Post-Baccalaureate Diploma in Medical Physiology and Pathophysiology",
+    "url": "https://umanitoba.ca/explore/programs-of-study/postbaccalaureate-diploma-in-medical-physiology-and-pathophysiology",
+    "faculty": "Extended Education",
+    "duration": "1 year",
+    "credential": "Post-Baccalaureate Diploma",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Psychology (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/psychology-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Psychology (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/psychology-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Honours\n• Major\n• Minor"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Recreation Management and Community Development (BRMCD)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/recreation-management-and-community-development-brmcd",
+    "faculty": "Faculty of Kinesiology and Recreation Management",
+    "duration": "4 years",
+    "credential": "Bachelor of Recreation Management and Community Development",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Religion (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/religion-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Respiratory Therapy (BRT)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/respiratory-therapy-brt",
+    "faculty": "Rady Faculty of Health Sciences",
+    "duration": "3 years",
+    "credential": "Bachelor of Respiratory Therapy",
+    "hasCoOp": false,
+    "programOptions": [
+      "• BRT program\n• BRT degree completion program"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Russian (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/russian-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [
+      "•\tBachelor of Arts (General)\n•\tMinor in Russian"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Social Work – Distance Delivery (BSW)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/social-work-distance-delivery-bsw",
+    "faculty": "Faculty of Social Work",
+    "duration": "3+ years",
+    "credential": "Bachelor",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Flexible schedule"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Social Work – Fort Garry campus (BSW)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/social-work-fort-garry-campus-bsw",
+    "faculty": "Faculty of Social Work",
+    "duration": "2+ years",
+    "credential": "Bachelor of Social Work",
+    "hasCoOp": false,
+    "programOptions": [
+      "• Flexible schedule"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Social Work – Inner City Program at William Norrie Centre (BSW)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/social-work-inner-city-program-at-william-norrie-centre-bsw",
+    "faculty": "Faculty of Social Work",
+    "duration": "",
+    "credential": "",
+    "hasCoOp": false,
+    "programOptions": [
+      "• Flexible schedule"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Social Work – Inner City Program at William Norrie Centre (BSW)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/social-work-inner-city-program-at-william-norrie-centre-bsw",
+    "faculty": "Faculty of Social Work",
+    "duration": "",
+    "credential": "",
+    "hasCoOp": false,
+    "programOptions": [
+      "• Flexible schedule"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Sociology (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/sociology-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Spanish (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/spanish-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [
+      "•\tBachelor of Arts (General)\n•\tBachelor of Arts (Advanced)\n•\tMinor in Spanish"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Sport, Physical Activity and Recreation in the Community Certificate (SPARC)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/sport-physical-activity-and-recreation-in-the-community-certificate-sparc",
+    "faculty": "Faculty of Kinesiology and Recreation Management",
+    "duration": "1 year",
+    "credential": "Certificate",
+    "hasCoOp": false,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Statistics (BSc)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/statistics-bsc",
+    "faculty": "Faculty of Science",
+    "duration": "4 years",
+    "credential": "Bachelor of Science",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Honours\n• Major\n• Minor"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Strategy and Global Management (BComm) (Honours)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/strategy-and-global-management-bcomm",
+    "faculty": "Asper School of Business",
+    "duration": "4 years",
+    "credential": "Bachelor of Commerce",
+    "hasCoOp": true,
+    "programOptions": [
+      "• Honours\n• Major\n• Minor"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Theatre (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/theatre-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [
+      "•\tBachelor of Arts (General)\n•\tBachelor of Arts (Advanced)\n•\tMinor in Theatre\n•\tCo-op"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Ukrainian (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/ukrainian-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [
+      "•\tBachelor of Arts (General)\n•\tMinor in Ukrainian"
+    ],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Ukrainian Canadian Heritage Studies (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/ukrainian-canadian-heritage-studies-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "3+ years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  },
+  {
+    "name": "Women's and Gender Studies (BA)",
+    "url": "https://umanitoba.ca/explore/programs-of-study/womens-and-gender-studies-ba",
+    "faculty": "Faculty of Arts",
+    "duration": "4 years",
+    "credential": "Bachelor of Arts",
+    "hasCoOp": true,
+    "programOptions": [],
+    "description": "University of Manitoba\n        Winnipeg, Manitoba Canada, R3T 2N2"
+  }
+]

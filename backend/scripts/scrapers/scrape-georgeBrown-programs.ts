@@ -7,6 +7,7 @@ interface GeorgeBrownProgram {
     international: string;
     duration: string;
     programId: string;
+    url: string;
 }
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -69,6 +70,7 @@ async function scrapeGeorgeBrownPrograms() {
                 const programId = row.getAttribute('data-program-year-id') || '';
                 const programLink = row.querySelector('a.program-title-link');
                 const programName = programLink?.textContent?.trim() || '';
+                const programUrl = programLink?.getAttribute('href') || '';
                 const credentialCell = row.querySelector('td.views-field-field-credential');
                 const credential = credentialCell?.textContent?.trim() || '';
                 const internationalCell = row.querySelector('td.views-field-field-intern-students-can-apply .intern-availability');
@@ -81,6 +83,7 @@ async function scrapeGeorgeBrownPrograms() {
                         international,
                         duration: '',
                         programId,
+                        url: programUrl.startsWith('http') ? programUrl : `https://www.georgebrown.ca${programUrl}`,
                         processed: false // Thêm flag để track
                     });
                 }
@@ -252,7 +255,8 @@ async function scrapeGeorgeBrownPrograms() {
         credential: p.credential,
         international: p.international,
         duration: p.duration,
-        programId: p.programId
+        programId: p.programId,
+        url: p.url
     }));
     
     await fs.writeJson('georgebrown_programs_complete.json', cleanPrograms, { spaces: 2 });

@@ -1,9 +1,6 @@
 {
   "/(auth)/sign-in/page": "app/(auth)/sign-in/page.js",
-  "/(protected)/programs/[id]/page": "app/(protected)/programs/[id]/page.js",
-  "/(protected)/programs/page": "app/(protected)/programs/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/auth/verify-request/page": "app/auth/verify-request/page.js",
   "/page": "app/page.js"
 }

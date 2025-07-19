@@ -136,24 +136,7 @@ const paginationSchema = Joi.object({
 
 // ✅ ENHANCED VALIDATION SCHEMAS
 const authSchemas = {
-    signUp: Joi.object({
-        email: emailSchema,
-        password: passwordSchema,
-        fullName: nameSchema,
-        phone: phoneSchema,
-        role: Joi.string().valid('student', 'teacher', 'admin', 'guest').default('student'),
-        academic: academicSchema.optional(),
-        terms: Joi.boolean().valid(true).required().messages({
-            'any.only': 'You must accept the terms and conditions'
-        }),
-        newsletter: Joi.boolean().default(false)
-    }),
-
-    signIn: Joi.object({
-        email: emailSchema,
-        password: Joi.string().required(),
-        rememberMe: Joi.boolean().default(false)
-    }),
+    // ✅ REMOVED: signUp, signIn schemas - now using magic link + OAuth
 
     oauth: Joi.object({
         provider: oauthProviderSchema,
@@ -209,7 +192,35 @@ const authSchemas = {
 
     changePassword: Joi.object({
         currentPassword: Joi.string().required(),
-        newPassword: strongPasswordSchema  // Require strong password for changes
+        newPassword: passwordSchema,
+        confirmPassword: Joi.string().valid(Joi.ref('newPassword')).required().messages({
+            'any.only': 'Passwords do not match'
+        })
+    }),
+
+    sendMagicLink: Joi.object({
+        email: emailSchema,
+        callbackUrl: Joi.string().uri().optional(),
+        baseUrl: Joi.string().uri().optional()
+    }),
+
+    verifyMagicLink: Joi.object({
+        email: emailSchema
+    }),
+
+    completeProfile: Joi.object({
+        fullName: nameSchema,
+        bio: Joi.string().max(500).allow('').optional(),
+        location: Joi.string().max(100).allow('').optional(),
+        website: urlSchema,
+        profilePic: urlSchema,
+        phone: phoneSchema,
+        academic: academicSchema.optional(),
+        preferences: Joi.object({
+            notifications: Joi.boolean().default(true),
+            theme: Joi.string().valid('light', 'dark', 'auto').default('auto'),
+            language: Joi.string().valid('en', 'vi', 'fr', 'es').default('en')
+        }).optional()
     }),
 
     // ✅ ADMIN SCHEMAS
@@ -416,22 +427,21 @@ export const securityMiddleware = {
 
 // ✅ EXPORT ENHANCED VALIDATORS
 export const authValidators = {
-    // Basic auth
-    validateSignUp: createValidator(authSchemas.signUp),
-    validateSignIn: createValidator(authSchemas.signIn),
+    // ✅ REMOVED: validateSignUp, validateSignIn - now using magic link + OAuth
     validateOAuth: createValidator(authSchemas.oauth),
+    
+    // Magic Link
+    validateSendMagicLink: createValidator(authSchemas.sendMagicLink),
+    validateVerifyMagicLink: createValidator(authSchemas.verifyMagicLink),
     
     // Profile management
     validateOnBoarding: createValidator(authSchemas.onBoarding),
-    validateUpdateProfile: createValidator(authSchemas.updateProfile),
+    validateCompleteProfile: createValidator(authSchemas.completeProfile),
     
     // Password management
     validateForgotPassword: createValidator(authSchemas.forgotPassword),
     validateResetPassword: createValidator(authSchemas.resetPassword),
     validateChangePassword: createValidator(authSchemas.changePassword),
-    
-    // Token management
-    validateRefreshToken: createValidator(authSchemas.refreshToken),
     
     // Admin functions
     validateGetUsersList: createValidator(authSchemas.getUsersList, 'query'),
@@ -441,24 +451,11 @@ export const authValidators = {
     validateUserParams: createValidator(authSchemas.userParams, 'params'),
     validateVerificationToken: createValidator(authSchemas.verificationParams, 'params'),
     
-    // ✅ NEW - Combined validation for complex operations
-    validateCompleteProfile: [
-        createValidator(authSchemas.updateProfile),
-        (req: Request, res: Response, next: NextFunction) => {
-            // Additional business logic validation
-            const { fullName, bio, academic } = req.body;
-            
-            if (academic?.role === 'student' && !academic?.studentId) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Student ID is required for student role'
-                });
-            }
-            
-            next();
-        }
-    ]
+    // Pagination
+    validatePagination: createValidator(paginationSchema, 'query')
 };
+
+
 
 // ✅ NEW - VALIDATION HELPERS
 export const validationHelpers = {

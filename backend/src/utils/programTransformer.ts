@@ -7,7 +7,8 @@ export interface StandardizedProgram {
     name: string;
     duration: string;
     campus: string[];
-    credential: 'bachelor' | 'diploma' | 'advanced diploma' | 'certificate';
+    credential: 'bachelor' | 'diploma' | 'advanced diploma' | 'certificate' | 'other';
+    url?: string;
 }
 
 // School transformation configurations
@@ -19,7 +20,8 @@ export const SCHOOL_TRANSFORMERS: Record<string, (program: any) => StandardizedP
             name: program.name,
             duration: program.duration || '',
             campus: Array.isArray(program.campus) ? program.campus : [program.campus].filter(Boolean),
-            credential: mapCredential(program.credential)
+            credential: mapCredential(program.credential),
+            url: program.url
         };
     },
 
@@ -30,7 +32,8 @@ export const SCHOOL_TRANSFORMERS: Record<string, (program: any) => StandardizedP
             name: program.name,
             duration: program.duration || '',
             campus: Array.isArray(program.campus) ? program.campus : [program.campus].filter(Boolean),
-            credential: mapCredential(program.credential)
+            credential: mapCredential(program.credential),
+            url: program.url
         };
     },
 
@@ -41,46 +44,61 @@ export const SCHOOL_TRANSFORMERS: Record<string, (program: any) => StandardizedP
             name: program.name,
             duration: '', // York doesn't have duration info
             campus: program.campus ? [program.campus] : [],
-            credential: mapYorkDegree(program.degree)
+            credential: mapYorkDegree(program.degree),
+            url: program.url
         };
     },
 
     georgebrown: (program: any): StandardizedProgram => {
         return {
-            id: program.programId || generateId(program.name),
-            code: extractCodeFromName(program.name) || generateCode(program.name),
+            id: program.id || generateId(program.name),
+            code: program.code || generateCode(program.name),
             name: program.name,
             duration: program.duration || '',
-            campus: [], // George Brown doesn't have campus info in data
-            credential: mapCredential(program.credential)
+            campus: Array.isArray(program.campus) ? program.campus : [program.campus].filter(Boolean),
+            credential: mapCredential(program.credential),
+            url: program.url
         };
     },
 
     humber: (program: any): StandardizedProgram => {
         return {
-            id: generateId(program.name),
-            code: generateCode(program.name),
+            id: program.id || generateId(program.name),
+            code: program.code || generateCode(program.name),
             name: program.name,
-            duration: program.length || '',
-            campus: program.location ? program.location.split(',').map((s: string) => s.trim()) : [],
-            credential: mapCredential(program.credential)
+            duration: program.duration || '',
+            campus: Array.isArray(program.campus) ? program.campus : [program.campus].filter(Boolean),
+            credential: mapCredential(program.credential),
+            url: program.url
         };
     },
 
     tmu: (program: any): StandardizedProgram => {
         return {
-            id: generateId(program.name),
-            code: extractCodeFromName(program.name) || generateCode(program.name),
+            id: program.id || generateId(program.name),
+            code: program.code || generateCode(program.name),
             name: program.name,
-            duration: '', // TMU doesn't have duration info
-            campus: [], // TMU doesn't have campus info in data
-            credential: mapTMUDegree(program.degree)
+            duration: program.duration || '',
+            campus: Array.isArray(program.campus) ? program.campus : [program.campus].filter(Boolean),
+            credential: mapCredential(program.credential),
+            url: program.url
+        };
+    },
+    manitobaUni: (program: any): StandardizedProgram => {
+        return {
+            id: program.id || generateId(program.name),
+            code: program.code || generateCode(program.name),
+            name: program.name,
+            duration: program.duration || '',
+            campus: program.faculty ? [program.faculty] : ['Main Campus'],
+            credential: mapManitobaCredential(program.credential),
+            url: program.url
         };
     }
 };
 
 // Credential mapping functions
-function mapCredential(credential: string): 'bachelor' | 'diploma' | 'advanced diploma' | 'certificate' {
+function mapCredential(credential: string): 'bachelor' | 'diploma' | 'advanced diploma' | 'certificate' | 'other' {
     if (!credential) return 'certificate';
     
     const credentialLower = credential.toLowerCase();
@@ -91,12 +109,14 @@ function mapCredential(credential: string): 'bachelor' | 'diploma' | 'advanced d
         return 'advanced diploma';
     } else if (credentialLower.includes('diploma')) {
         return 'diploma';
-    } else {
+    } else if (credentialLower.includes('certificate')) {
         return 'certificate';
+    } else {
+        return 'other';
     }
 }
 
-function mapYorkDegree(degree: string): 'bachelor' | 'diploma' | 'advanced diploma' | 'certificate' {
+function mapYorkDegree(degree: string): 'bachelor' | 'diploma' | 'advanced diploma' | 'certificate' | 'other' {
     if (!degree) return 'certificate';
     
     const degreeLower = degree.toLowerCase();
@@ -107,18 +127,51 @@ function mapYorkDegree(degree: string): 'bachelor' | 'diploma' | 'advanced diplo
         degreeLower.includes('bscn') || degreeLower.includes('iba') ||
         degreeLower.includes('ibsc') || degreeLower.includes('jd')) {
         return 'bachelor';
-    } else {
+    } else if (degreeLower.includes('certificate')) {
         return 'certificate';
+    } else {
+        return 'other';
     }
 }
 
-function mapTMUDegree(degree: string): 'bachelor' | 'diploma' | 'advanced diploma' | 'certificate' {
+function mapTMUDegree(degree: string): 'bachelor' | 'diploma' | 'advanced diploma' | 'certificate' | 'other' {
     if (!degree) return 'certificate';
     
-    if (degree.toLowerCase().includes('bachelor')) {
+    const degreeLower = degree.toLowerCase();
+    
+    if (degreeLower.includes('bachelor')) {
         return 'bachelor';
-    } else {
+    } else if (degreeLower.includes('certificate')) {
         return 'certificate';
+    } else {
+        return 'other';
+    }
+}
+
+function mapManitobaCredential(credential: string | string[]): 'bachelor' | 'diploma' | 'advanced diploma' | 'certificate' | 'other' {
+    if (!credential) return 'certificate';
+    
+    // Handle array credentials - use first item
+    const credentialStr = Array.isArray(credential) ? credential[0] : credential;
+    if (!credentialStr || typeof credentialStr !== 'string') return 'certificate';
+    
+    const credentialLower = credentialStr.toLowerCase();
+    
+    if (credentialLower.includes('bachelor') || credentialLower.includes('bcomm') || 
+        credentialLower.includes('bsc') || credentialLower.includes('ba') ||
+        credentialLower.includes('bfa') || credentialLower.includes('bed') ||
+        credentialLower.includes('bkin') || credentialLower.includes('bmid') ||
+        credentialLower.includes('benvd') || credentialLower.includes('bjazz') ||
+        credentialLower.includes('doctor') || credentialLower.includes('juris')) {
+        return 'bachelor';
+    } else if (credentialLower.includes('advanced diploma')) {
+        return 'advanced diploma';
+    } else if (credentialLower.includes('diploma') && !credentialLower.includes('post-baccalaureate')) {
+        return 'diploma';
+    } else if (credentialLower.includes('certificate')) {
+        return 'certificate';
+    } else {
+        return 'other';
     }
 }
 
@@ -195,6 +248,6 @@ export function validateStandardizedProgram(program: StandardizedProgram): boole
         program.code && 
         program.name && 
         program.credential &&
-        ['bachelor', 'diploma', 'advanced diploma', 'certificate'].includes(program.credential)
+        ['bachelor', 'diploma', 'advanced diploma', 'certificate', 'other'].includes(program.credential)
     );
 } 
