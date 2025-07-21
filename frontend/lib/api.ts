@@ -19,8 +19,20 @@ apiClient.interceptors.request.use(
     async (config) => {
         try {
             const session = await getSession();
+            console.log('🔍 API Request Debug:', {
+                url: config.url,
+                method: config.method,
+                hasSession: !!session,
+                hasAccessToken: !!session?.accessToken,
+                sessionKeys: session ? Object.keys(session) : [],
+                userEmail: session?.user?.email
+            });
+            
             if (session?.accessToken) {
                 config.headers.Authorization = `Bearer ${session.accessToken}`;
+                console.log('✅ Authorization header added');
+            } else {
+                console.log('❌ No accessToken in session');
             }
         } catch (error) {
             console.error('❌ Error getting session token:', error);

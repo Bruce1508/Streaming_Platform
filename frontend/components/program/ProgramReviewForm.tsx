@@ -12,6 +12,7 @@ import {
 } from '@/types/ProgramReview';
 import { programReviewAPI } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import { useSession } from 'next-auth/react';
 
 interface ProgramReviewFormProps {
     programId: string;
@@ -28,6 +29,7 @@ const ProgramReviewForm: React.FC<ProgramReviewFormProps> = ({
     onClose,
     onSuccess
 }) => {
+    const { data: session, status } = useSession();
     const currentYear = new Date().getFullYear();
 
     const [formData, setFormData] = useState<CreateReviewData>({
@@ -80,6 +82,18 @@ const ProgramReviewForm: React.FC<ProgramReviewFormProps> = ({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // ✅ Check authentication
+        if (status === 'loading') {
+            toast.error('Please wait while we verify your session...');
+            return;
+        }
+
+        if (!session) {
+            toast.error('Please sign in to submit a review');
+            onClose();
+            return;
+        }
+
         if (!isFormValid()) {
             toast.error('Please rate all criteria and provide a valid year');
             return;
@@ -88,13 +102,23 @@ const ProgramReviewForm: React.FC<ProgramReviewFormProps> = ({
         setIsSubmitting(true);
 
         try {
+            console.log('🔄 Submitting review with session:', {
+                userEmail: session.user?.email,
+                hasAccessToken: !!session.accessToken
+            });
+            
             await programReviewAPI.createReview(formData);
             toast.success('Review submitted successfully!');
             onSuccess();
             onClose();
         } catch (error: any) {
             console.error('Error submitting review:', error);
-            toast.error(error.response?.data?.message || 'Failed to submit review');
+            if (error.response?.status === 401) {
+                toast.error('Please sign in to submit a review');
+                onClose();
+            } else {
+                toast.error(error.response?.data?.message || 'Failed to submit review');
+            }
         } finally {
             setIsSubmitting(false);
         }

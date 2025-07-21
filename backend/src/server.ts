@@ -48,6 +48,21 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// ✅ DEBUG: Log all incoming requests
+app.use((req, res, next) => {
+    console.log(`🔥 Backend: ${req.method} ${req.url} - ${new Date().toISOString()}`);
+    console.log('📋 Backend: Request details:', {
+        headers: {
+            'content-type': req.headers['content-type'],
+            'user-agent': req.headers['user-agent'],
+            'origin': req.headers.origin
+        },
+        body: req.body,
+        query: req.query
+    });
+    next();
+});
+
 // Security middleware
 app.use(helmet());
 

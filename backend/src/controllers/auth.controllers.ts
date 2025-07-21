@@ -279,116 +279,7 @@ export const getAllUsers = async (req: AuthRequest, res: Response): Promise<void
     }
 };
 
-// ✅ ENHANCED forgotPassword with secure token generation
-export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
-    try {
-        logApiRequest(req as AuthRequest);
-        
-        const { email } = req.body;
-        const normalizedEmail = email.toLowerCase().trim();
 
-        const user = await User.findOne({ email: normalizedEmail });
-        
-        if (!user) {
-            logger.warn('Password reset requested for non-existent user', {
-                email: maskEmail(normalizedEmail),
-                ip: req.ip
-            });
-            
-            res.status(200).json({
-                success: true,
-                message: "If an account with that email exists, we have sent a password reset link."
-            });
-            return;
-        }
-
-        // ✅ Generate secure token with utils
-        const resetToken = generateSecureToken(32);
-        const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
-
-        (user as any).resetPasswordToken = resetToken;
-        (user as any).resetPasswordExpires = resetTokenExpiry;
-        await user.save();
-
-        logger.info('Password reset token generated', {
-            userId: user._id,
-            email: maskEmail(user.email)
-        });
-
-        res.json({
-            success: true,
-            message: "Password reset link sent to your email"
-        });
-
-    } catch (error: any) {
-        logger.error("Forgot password error:", error);
-        res.status(500).json({
-            success: false,
-            message: "Failed to process password reset request"
-        });
-    }
-};
-
-// ✅ Continue with other functions...
-export const resetPassword = async (req: Request, res: Response): Promise<void> => {
-    try {
-        logApiRequest(req as AuthRequest);
-        
-        const { token, password } = req.body;
-
-        if (!token || !password) {
-            res.status(400).json({
-                success: false,
-                message: "Token and new password are required"
-            });
-            return;
-        }
-
-        if (password.length < 6) {
-            res.status(400).json({
-                success: false,
-                message: "Password must be at least 6 characters long"
-            });
-            return;
-        }
-
-        const user = await User.findOne({
-            resetPasswordToken: token,
-            resetPasswordExpires: { $gt: Date.now() }
-        } as any);
-
-        if (!user) {
-            res.status(400).json({
-                success: false,
-                message: "Invalid or expired reset token"
-            });
-            return;
-        }
-
-        user.password = password;
-        (user as any).resetPasswordToken = undefined;
-        (user as any).resetPasswordExpires = undefined;
-        
-        await user.save();
-
-        logger.info('Password reset successful', {
-            userId: user._id,
-            email: maskEmail(user.email)
-        });
-
-        res.json({
-            success: true,
-            message: "Password reset successful. Please login with your new password."
-        });
-
-    } catch (error: any) {
-        logger.error("Reset password error:", error);
-        res.status(500).json({
-            success: false,
-            message: "Failed to reset password"
-        });
-    }
-};
 
 export const refreshToken = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -571,7 +462,7 @@ export const logoutAllDevices = async (req: AuthRequest, res: Response): Promise
     }
 };
 
-// ✅ NEW OAUTH HANDLER for Google/Social login
+// ✅ NEW OAUTH HANDLER with Student vs Non-Student Detection
 export const handleOAuth = async (req: Request, res: Response): Promise<void> => {
     try {
         logApiRequest(req as AuthRequest);
@@ -588,6 +479,17 @@ export const handleOAuth = async (req: Request, res: Response): Promise<void> =>
 
         const normalizedEmail = email.toLowerCase().trim();
 
+        // ✅ NEW: Detect if email is from educational institution
+        const emailDetection = detectEducationalEmail(normalizedEmail);
+        const institutionInfo = getInstitutionFromEmail(normalizedEmail);
+        
+        logger.info('OAuth login attempt', {
+            email: maskEmail(normalizedEmail),
+            provider,
+            isEducational: emailDetection.isEducational,
+            institution: institutionInfo.name || 'Non-educational'
+        });
+
         // Check if user exists
         let user = await User.findOne({ email: normalizedEmail });
 
@@ -596,6 +498,16 @@ export const handleOAuth = async (req: Request, res: Response): Promise<void> =>
             if (!user.authProvider || user.authProvider === 'local') {
                 user.authProvider = provider;
                 user.profilePic = profilePic || user.profilePic;
+                
+                // Update institution info if it's educational
+                if (emailDetection.isEducational) {
+                    user.institutionInfo = {
+                        name: institutionInfo.name || 'Educational Institution',
+                        domain: institutionInfo.domain || '',
+                        type: institutionInfo.type || 'institute'
+                    };
+                }
+                
                 await user.save();
             }
 
@@ -604,7 +516,7 @@ export const handleOAuth = async (req: Request, res: Response): Promise<void> =>
             user.activity.loginCount += 1;
             await user.save();
         } else {
-            // Create new user from OAuth
+            // ✅ NEW: Create user with proper verification status
             const userData: Partial<IUser> = {
                 fullName: capitalize(fullName),
                 email: normalizedEmail,
@@ -615,8 +527,26 @@ export const handleOAuth = async (req: Request, res: Response): Promise<void> =>
                 website: "",
                 isOnboarded: false,
                 authProvider: provider,
+                providerId: providerId,
                 isActive: true,
-                isVerified: true, // OAuth users are considered verified
+                
+                // ✅ KEY CHANGE: OAuth users are NOT automatically verified
+                // Only Magic Link for student emails gives verification
+                isVerified: false,
+                verificationStatus: emailDetection.isEducational ? 'unverified' : 'non-student',
+                verificationMethod: 'oauth-pending',
+                
+                // ✅ Store institution info for student emails
+                institutionInfo: emailDetection.isEducational ? {
+                    name: institutionInfo.name || 'Educational Institution',
+                    domain: institutionInfo.domain || '',
+                    type: institutionInfo.type || 'institute'
+                } : {
+                    name: '',
+                    domain: '',
+                    type: ''
+                },
+                
                 savedMaterials: [],
                 uploadedMaterials: [],
                 studyStats: {
@@ -649,18 +579,19 @@ export const handleOAuth = async (req: Request, res: Response): Promise<void> =>
 
             user = new User(userData);
             await user.save();
+            
+            logger.info('New user created via OAuth', {
+                userId: user._id,
+                email: maskEmail(user.email),
+                isEducational: emailDetection.isEducational,
+                verificationStatus: user.verificationStatus
+            });
         }
 
         // ✅ Generate secure session and enhanced tokens
         const sessionId = generateSessionId();
-        console.log('🔑 OAuth - Generated sessionId:', sessionId);
-        console.log('🔑 OAuth - User ID:', user._id.toString());
         
         const tokens = generateTokenPair(user._id.toString(), sessionId);
-        console.log('🔑 OAuth - Generated tokens:', {
-            accessTokenLength: tokens.accessToken.length,
-            refreshTokenLength: tokens.refreshToken.length
-        });
 
         // ✅ Store session in Redis with user info
         await redisClient.setex(`session:${sessionId}`, 7 * 24 * 60 * 60, JSON.stringify({
@@ -687,7 +618,8 @@ export const handleOAuth = async (req: Request, res: Response): Promise<void> =>
             userId: user._id,
             email: maskEmail(user.email),
             provider,
-            isNewUser: !user.lastLogin
+            isNewUser: !user.lastLogin,
+            verificationStatus: user.verificationStatus
         });
 
         res.json({
@@ -703,7 +635,10 @@ export const handleOAuth = async (req: Request, res: Response): Promise<void> =>
                     isOnboarded: user.isOnboarded,
                     isVerified: user.isVerified,
                     isActive: user.isActive,
-                    authProvider: user.authProvider
+                    authProvider: user.authProvider,
+                    verificationStatus: user.verificationStatus,
+                    verificationMethod: user.verificationMethod,
+                    institutionInfo: user.institutionInfo
                 },
                 token: tokens.accessToken // NextAuth expects data.token
             },
@@ -716,7 +651,10 @@ export const handleOAuth = async (req: Request, res: Response): Promise<void> =>
                 isOnboarded: user.isOnboarded,
                 isVerified: user.isVerified,
                 isActive: user.isActive,
-                authProvider: user.authProvider
+                authProvider: user.authProvider,
+                verificationStatus: user.verificationStatus,
+                verificationMethod: user.verificationMethod,
+                institutionInfo: user.institutionInfo
             },
             token: tokens.accessToken // Backward compatibility
         });
@@ -730,54 +668,150 @@ export const handleOAuth = async (req: Request, res: Response): Promise<void> =>
     }
 };
 
-// ✅ NEW: Send Magic Link
+// ✅ UPDATED: Send Magic Link - Only for Student Emails
 export const sendMagicLink = async (req: Request, res: Response): Promise<any> => {
     try {
+        console.log('🔥 Backend: sendMagicLink controller called');
+        
         logApiRequest(req as AuthRequest);
         
         const { email, callbackUrl, baseUrl } = req.body;
+        
+        console.log('📧 Backend: Request data received:', {
+            email,
+            callbackUrl,
+            baseUrl,
+            bodyKeys: Object.keys(req.body),
+            headers: {
+                'content-type': req.headers['content-type'],
+                'user-agent': req.headers['user-agent']
+            }
+        });
+        
+        if (!email) {
+            console.log('❌ Backend: Email is missing from request');
+            return res.status(400).json({
+                success: false,
+                message: "Email is required"
+            });
+        }
+        
         const normalizedEmail = email.toLowerCase().trim();
+        console.log('📝 Backend: Email normalized:', normalizedEmail);
+
+        // ✅ NEW: Validate that email is from educational institution
+        const emailDetection = detectEducationalEmail(normalizedEmail);
+        console.log('🎓 Backend: Email detection result:', emailDetection);
+        
+        if (!emailDetection.isEducational) {
+            logger.warn('Magic link denied for non-educational email', {
+                email: maskEmail(normalizedEmail),
+                ip: req.ip
+            });
+            
+            return res.status(400).json({
+                success: false,
+                message: "Magic link authentication is only available for student emails from educational institutions",
+                suggestion: "Please use your student email (e.g., student@yourschool.edu) or sign in with Google instead"
+            });
+        }
+
+        const institutionInfo = getInstitutionFromEmail(normalizedEmail);
+        
+        logger.info('Magic link request for student email', {
+            email: maskEmail(normalizedEmail),
+            institution: institutionInfo.name || 'Educational Institution',
+            confidence: emailDetection.confidence
+        });
 
         // Check if user exists, if not create one
         let user = await User.findOne({ email: normalizedEmail });
         
         if (!user) {
-            // Create new user with magic link flow
-            const emailVerification = getVerificationStatusFromEmail(normalizedEmail);
-            const institutionInfo = getInstitutionFromEmail(normalizedEmail);
-            
+            // ✅ Create new user with magic link flow for students
             user = new User({
                 email: normalizedEmail,
                 fullName: normalizedEmail.split('@')[0], // Temporary name
                 role: 'student',
                 isActive: true,
-                isVerified: emailVerification.isVerified,
-                verificationStatus: emailVerification.verificationStatus as any,
-                verificationMethod: emailVerification.verificationMethod as any,
+                
+                // ✅ Magic Link users get verified status immediately
+                isVerified: true,
+                verificationStatus: emailDetection.confidence === 'high' ? 'edu-verified' : 'email-verified',
+                verificationMethod: 'magic-link',
+                
                 institutionInfo: {
-                    name: institutionInfo.name || 'Unknown',
+                    name: institutionInfo.name || 'Educational Institution',
                     domain: institutionInfo.domain || '',
-                    type: institutionInfo.type || ''
+                    type: institutionInfo.type || 'institute'
                 },
+                authProvider: 'local',
+                password: generateSecureToken(32), // ✅ Temporary password for magic link users
+                hasTemporaryPassword: true, // ✅ Flag to indicate this is a temporary password
                 activity: {
                     loginCount: 0,
                     uploadCount: 0,
                     downloadCount: 0,
                     contributionScore: 0
-                }
+                },
+                studyStats: {
+                    materialsViewed: 0,
+                    materialsSaved: 0,
+                    materialsCreated: 0,
+                    ratingsGiven: 0
+                },
+                preferences: {
+                    theme: 'system',
+                    notifications: {
+                        email: true,
+                        push: true,
+                        newMaterials: true,
+                        courseUpdates: true
+                    },
+                    privacy: {
+                        showProfile: true,
+                        showActivity: true
+                    }
+                },
+                savedMaterials: [],
+                uploadedMaterials: [],
+                friends: []
             });
 
             await user.save();
-            logger.info('New user created via magic link', {
+            logger.info('New student user created via magic link', {
                 userId: user._id,
                 email: maskEmail(user.email),
-                isVerified: emailVerification.isVerified
+                institution: institutionInfo.name,
+                verificationStatus: user.verificationStatus
             });
+        } else {
+            // ✅ For existing users, upgrade their verification if they use magic link
+            if (user.verificationStatus === 'unverified' || user.verificationStatus === 'non-student') {
+                user.verificationStatus = emailDetection.confidence === 'high' ? 'edu-verified' : 'email-verified';
+                user.verificationMethod = 'magic-link';
+                user.isVerified = true;
+                
+                // Update institution info
+                user.institutionInfo = {
+                    name: institutionInfo.name || 'Educational Institution',
+                    domain: institutionInfo.domain || '',
+                    type: institutionInfo.type || 'institute'
+                };
+                
+                await user.save();
+                
+                logger.info('Existing user verification upgraded via magic link', {
+                    userId: user._id,
+                    email: maskEmail(user.email),
+                    oldStatus: user.verificationStatus,
+                    newStatus: user.verificationStatus
+                });
+            }
         }
 
         // Generate magic link token
         const magicToken = generateSecureToken(32);
-        const magicTokenExpiry = new Date(Date.now() + 600000); // 10 minutes
 
         // Store magic link token in Redis
         await redisClient.setex(
@@ -810,46 +844,141 @@ export const sendMagicLink = async (req: Request, res: Response): Promise<any> =
             throw new Error("Failed to send magic link email");
         }
 
-        logger.info('Magic link sent successfully', {
+        logger.info('Magic link sent successfully to student', {
             userId: user._id,
-            email: maskEmail(normalizedEmail)
+            email: maskEmail(normalizedEmail),
+            institution: institutionInfo.name
         });
 
         res.json({
             success: true,
-            message: "Magic link sent to your email"
+            message: "Magic link sent to your student email. Check your inbox!",
+            institutionInfo: {
+                name: institutionInfo.name,
+                type: institutionInfo.type
+            }
         });
 
     } catch (error: any) {
-        logger.error("Send magic link error:", error);
+        logger.error("Send magic link error:", {
+            error: error.message,
+            stack: error.stack,
+            email: req.body.email ? maskEmail(req.body.email) : 'unknown'
+        });
+        
+        // Provide more specific error message based on error type
+        let errorMessage = "Failed to send magic link";
+        if (error.message.includes("Authentication failed")) {
+            errorMessage = "Email configuration error. Please check SMTP credentials.";
+        } else if (error.message.includes("ECONNREFUSED")) {
+            errorMessage = "Unable to connect to email server.";
+        } else if (error.message.includes("Invalid email")) {
+            errorMessage = "Invalid email address provided.";
+        }
+        
         res.status(500).json({
             success: false,
-            message: "Failed to send magic link"
+            message: errorMessage,
+            ...(process.env.NODE_ENV === 'development' && { 
+                debug: error.message 
+            })
         });
     }
 };
 
-// ✅ NEW: Verify Magic Link
+// ✅ UPDATED: Verify Magic Link with Token Validation
 export const verifyMagicLink = async (req: Request, res: Response): Promise<any> => {
     try {
         logApiRequest(req as AuthRequest);
         
-        const { email } = req.body;
+        const { email, token } = req.body;
         const normalizedEmail = email.toLowerCase().trim();
 
-        const user = await User.findOne({ email: normalizedEmail });
+        // ✅ Validate required parameters
+        if (!token) {
+            return res.status(400).json({
+                success: false,
+                message: "Magic link token is required"
+            });
+        }
+
+        // ✅ Get token data from Redis
+        const tokenData = await redisClient.get(`magic:${token}`);
+        
+        if (!tokenData) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid or expired magic link token"
+            });
+        }
+
+        const parsedTokenData = JSON.parse(tokenData);
+        
+        // ✅ Verify email matches token
+        if (parsedTokenData.email !== normalizedEmail) {
+            return res.status(400).json({
+                success: false,
+                message: "Email does not match magic link token"
+            });
+        }
+
+        // ✅ Find user
+        const user = await User.findById(parsedTokenData.userId);
         
         if (!user) {
-            res.status(404).json({
+            return res.status(404).json({
                 success: false,
                 message: "User not found"
             });
-            return;
+        }
+
+        // ✅ Delete token from Redis (one-time use)
+        await redisClient.del(`magic:${token}`);
+
+        // ✅ Verify this is still a student email
+        const emailDetection = detectEducationalEmail(normalizedEmail);
+        if (!emailDetection.isEducational) {
+            return res.status(400).json({
+                success: false,
+                message: "Magic link is only valid for student emails"
+            });
+        }
+
+        // ✅ Ensure user has verified status (Magic Link = Verified Student)
+        if (!user.isVerified || user.verificationMethod !== 'magic-link') {
+            user.isVerified = true;
+            user.verificationStatus = emailDetection.confidence === 'high' ? 'edu-verified' : 'email-verified';
+            user.verificationMethod = 'magic-link';
+            
+            const institutionInfo = getInstitutionFromEmail(normalizedEmail);
+            user.institutionInfo = {
+                name: institutionInfo.name || 'Educational Institution',
+                domain: institutionInfo.domain || '',
+                type: institutionInfo.type || 'institute'
+            };
+            
+            await user.save();
+            
+            logger.info('User verification confirmed via magic link', {
+                userId: user._id,
+                email: maskEmail(user.email),
+                verificationStatus: user.verificationStatus
+            });
         }
 
         // Update last login and activity
         await user.updateLastLogin();
         user.activity.loginCount += 1;
+        
+        // ✅ Clear temporary password flag on successful magic link login
+        if (user.hasTemporaryPassword) {
+            user.hasTemporaryPassword = false;
+            logger.info('Temporary password flag cleared for magic link user', {
+                userId: user._id,
+                email: maskEmail(user.email)
+            });
+        }
+        
         await user.save();
 
         // Generate session tokens
@@ -861,7 +990,8 @@ export const verifyMagicLink = async (req: Request, res: Response): Promise<any>
             userId: user._id.toString(),
             email: user.email,
             role: user.role,
-            lastLogin: new Date().toISOString()
+            lastLogin: new Date().toISOString(),
+            verificationMethod: 'magic-link'
         }));
 
         // Cache user
@@ -876,14 +1006,16 @@ export const verifyMagicLink = async (req: Request, res: Response): Promise<any>
             isActive: user.isActive
         });
 
-        logger.info('Magic link authentication successful', {
+        logger.info('Magic link authentication successful for verified student', {
             userId: user._id,
-            email: maskEmail(user.email)
+            email: maskEmail(user.email),
+            verificationStatus: user.verificationStatus,
+            institution: user.institutionInfo.name
         });
 
         res.json({
             success: true,
-            message: "Authentication successful",
+            message: "Welcome back, verified student! 🎓",
             user: {
                 _id: user._id,
                 fullName: user.fullName,
@@ -893,6 +1025,9 @@ export const verifyMagicLink = async (req: Request, res: Response): Promise<any>
                 isOnboarded: user.isOnboarded,
                 isVerified: user.isVerified,
                 isActive: user.isActive,
+                verificationStatus: user.verificationStatus,
+                verificationMethod: user.verificationMethod,
+                institutionInfo: user.institutionInfo,
                 bio: user.bio,
                 location: user.location
             },
@@ -900,7 +1035,11 @@ export const verifyMagicLink = async (req: Request, res: Response): Promise<any>
         });
 
     } catch (error: any) {
-        logger.error("Verify magic link error:", error);
+        logger.error("Verify magic link error:", {
+            error: error.message,
+            stack: error.stack,
+            email: req.body.email ? maskEmail(req.body.email) : 'unknown'
+        });
         res.status(500).json({
             success: false,
             message: "Failed to verify magic link"

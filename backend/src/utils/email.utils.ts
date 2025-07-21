@@ -4,9 +4,10 @@ import { logger } from './logger.utils';
 import { 
     capitalize, 
     truncate, 
-    formatArray,
     maskEmail 
 } from './Format.utils';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Types
 export interface EmailOptions {
@@ -38,35 +39,61 @@ const formatEmailContent = {
     createSafeUrl: (url: string): string => url.trim()
 };
 
-// Create transporter based on environment
-const createTransporter = (): nodemailer.Transporter | null => {
+// Create transporter using Gmail SMTP for both development and production
+const createTransporter = async (): Promise<nodemailer.Transporter | null> => {
     try {
-        let transporter: nodemailer.Transporter;
-
-        if (process.env.NODE_ENV === 'production') {
-            // Production: Use real SMTP
-            transporter = nodemailer.createTransport({
-                host: process.env.SMTP_HOST,
-                port: parseInt(process.env.SMTP_PORT || '587'),
-                secure: process.env.SMTP_SECURE === 'true',
-                auth: {
-                    user: process.env.SMTP_USER,
-                    pass: process.env.SMTP_PASS
-                }
-            });
-        } else {
-            // Development: Use Ethereal Email for testing
-            transporter = nodemailer.createTransport({
+        // ✅ TEMPORARY: Use Ethereal for development until Gmail credentials are fixed
+        if (process.env.NODE_ENV === 'development') {
+            console.log('🔄 Using Ethereal email for development (Gmail credentials not configured)');
+            
+            // Create Ethereal test account
+            const testAccount = await nodemailer.createTestAccount();
+            
+            const transporter = nodemailer.createTransport({
                 host: 'smtp.ethereal.email',
                 port: 587,
+                secure: false,
                 auth: {
-                    user: process.env.ETHEREAL_USER || 'ethereal.user@ethereal.email',
-                    pass: process.env.ETHEREAL_PASS || 'ethereal.password'
+                    user: testAccount.user,
+                    pass: testAccount.pass
                 }
             });
+
+            logger.info('Ethereal email transporter initialized for development', {
+                user: testAccount.user,
+                pass: testAccount.pass, // <--- add this line
+                previewUrl: 'https://ethereal.email'
+            });
+            return transporter;
         }
 
-        logger.info('Email transporter initialized successfully');
+        // Validate required environment variables for production
+        if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+            logger.error('SMTP credentials not configured. Please set SMTP_USER and SMTP_PASS in .env file');
+            return null;
+        }
+
+        // Use Gmail SMTP for production
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST || 'smtp.gmail.com',
+            port: parseInt(process.env.SMTP_PORT || '587'),
+            secure: process.env.SMTP_SECURE === 'true', // false for TLS
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS
+            },
+            // Gmail specific settings
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
+        logger.info('Gmail SMTP transporter initialized successfully', {
+            host: process.env.SMTP_HOST || 'smtp.gmail.com',
+            port: process.env.SMTP_PORT || '587',
+            user: process.env.SMTP_USER
+        });
+        
         return transporter;
     } catch (error) {
         logger.error('Failed to initialize email transporter', error);
@@ -74,8 +101,10 @@ const createTransporter = (): nodemailer.Transporter | null => {
     }
 };
 
-// Initialize transporter
-const transporter = createTransporter();
+// Get transporter (simplified approach)
+const getTransporter = async (): Promise<nodemailer.Transporter | null> => {
+    return await createTransporter();
+};
 
 // ✅ Enhanced email templates with better formatting
 export const emailTemplates = {
@@ -216,6 +245,8 @@ export const emailTemplates = {
 
 // ✅ Enhanced core email sending function with better logging
 export const sendEmail = async (options: EmailOptions): Promise<boolean> => {
+    const transporter = await getTransporter();
+    
     if (!transporter) {
         logger.error('Email transporter not configured');
         return false;
@@ -241,13 +272,8 @@ export const sendEmail = async (options: EmailOptions): Promise<boolean> => {
             messageId: result.messageId
         });
 
-        // Log preview URL in development
-        if (process.env.NODE_ENV === 'development') {
-            const previewUrl = nodemailer.getTestMessageUrl(result);
-            if (previewUrl) {
-                logger.info('Email preview URL:', previewUrl);
-            }
-        }
+        // Gmail SMTP doesn't provide preview URLs like Ethereal
+        // Email sent successfully via Gmail
 
         return true;
     } catch (error) {
@@ -354,7 +380,8 @@ export const sendBulkEmail = async (
 };
 
 // Utility function to check if email service is available
-export const isEmailServiceAvailable = (): boolean => {
+export const isEmailServiceAvailable = async (): Promise<boolean> => {
+    const transporter = await getTransporter();
     return transporter !== null;
 };
 

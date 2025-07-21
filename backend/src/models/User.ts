@@ -68,8 +68,9 @@ export interface IUser extends Document {
     
     isActive: boolean;
     isVerified: boolean;
-    verificationStatus: 'unverified' | 'email-verified' | 'edu-verified' | 'manual-verified';
-    verificationMethod: 'none' | 'email-link' | 'edu-domain' | 'edu-pattern' | 'admin-manual';
+    verificationStatus: 'unverified' | 'email-verified' | 'edu-verified' | 'manual-verified' | 'non-student';
+    verificationMethod: 'none' | 'email-link' | 'edu-domain' | 'edu-pattern' | 'admin-manual' | 'oauth-pending' | 'magic-link';
+    hasTemporaryPassword: boolean; // ✅ Track if user has temporary password from magic link
     institutionInfo: {
         name: string;
         domain: string;
@@ -347,7 +348,7 @@ const userSchema = new mongoose.Schema({
     verificationStatus: {
         type: String,
         enum: {
-            values: ['unverified', 'email-verified', 'edu-verified', 'manual-verified'],
+            values: ['unverified', 'email-verified', 'edu-verified', 'manual-verified', 'non-student'],
             message: '{VALUE} is not a valid verification status'
         },
         default: 'unverified'
@@ -355,10 +356,14 @@ const userSchema = new mongoose.Schema({
     verificationMethod: {
         type: String,
         enum: {
-            values: ['none', 'email-link', 'edu-domain', 'edu-pattern', 'admin-manual'],
+            values: ['none', 'email-link', 'edu-domain', 'edu-pattern', 'admin-manual', 'oauth-pending', 'magic-link'],
             message: '{VALUE} is not a valid verification method'
         },
         default: 'none'
+    },
+    hasTemporaryPassword: {
+        type: Boolean,
+        default: false
     },
     institutionInfo: {
         name: {
@@ -377,14 +382,6 @@ const userSchema = new mongoose.Schema({
     },
     
     // ===== SECURITY FIELDS =====
-    passwordResetToken: {
-        type: String,
-        select: false
-    },
-    passwordResetExpires: {
-        type: Date,
-        select: false
-    },
     emailVerificationToken: {
         type: String,
         select: false
@@ -395,8 +392,6 @@ const userSchema = new mongoose.Schema({
         virtuals: true,
         transform: function(doc, ret) {
             delete ret.password;
-            delete ret.passwordResetToken;
-            delete ret.passwordResetExpires;
             delete ret.emailVerificationToken;
             return ret;
         }

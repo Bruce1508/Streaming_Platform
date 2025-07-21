@@ -7,8 +7,6 @@ import {
     updateProfile, 
     refreshToken,
     getAllUsers,
-    forgotPassword,
-    resetPassword,
     handleOAuth,      // ✅ OAuth authentication
     sendMagicLink,    // ✅ Magic link authentication
     verifyMagicLink   // ✅ Magic link verification
@@ -24,42 +22,26 @@ const router = express.Router();
 // ===== PUBLIC ROUTES =====
 // ✅ REMOVED: Traditional signUp/signIn routes - now using magic link + OAuth
 
-// ✅ ENHANCED REFRESH TOKEN với rate limiting
-router.post("/refresh", [
-    authRateLimiters.general,
-    securityMiddleware.sanitizeInput
-], refreshToken);
-
-// ✅ NEW - FORGOT PASSWORD
-router.post("/forgot-password", [
-    authRateLimiters.passwordReset,      // Use existing rate limiter
-    securityMiddleware.sanitizeInput,
-    authValidators.validateForgotPassword
-], forgotPassword);
-
-// ✅ NEW - RESET PASSWORD
-router.post("/reset-password", [
-    authRateLimiters.general,
-    securityMiddleware.sanitizeInput,
-    authValidators.validateResetPassword
-], resetPassword);
-
-// ✅ NEW - OAUTH HANDLER (Minimal middleware for OAuth)
+// ✅ ENHANCED OAUTH ENDPOINT
 router.post("/oauth", [
-    authRateLimiters.general
-    // Remove sanitizeInput middleware that's causing issues
+    authRateLimiters.oauth,
+    securityMiddleware.sanitizeInput,
+    authValidators.validateOAuth
 ], handleOAuth);
 
-// ===== MAGIC LINK ROUTES =====
-router.post('/send-magic-link', 
-    authValidators.validateSendMagicLink, 
-    sendMagicLink
-);
+// ===== UTILITY ROUTES =====
+router.post("/refresh", [
+    authRateLimiters.general
+], refreshToken);
 
-router.post('/magic-link-verify', 
-    authValidators.validateVerifyMagicLink, 
-    verifyMagicLink
-);
+// ===== MAGIC LINK ROUTES =====
+router.post('/send-magic-link', [
+    authValidators.validateSendMagicLink
+], sendMagicLink);
+
+router.post('/magic-link-verify', [
+    authValidators.validateVerifyMagicLink
+], verifyMagicLink);
 
 // ===== PROTECTED ROUTES =====
 
@@ -70,37 +52,26 @@ router.put("/profile", [
     protectRoute
 ], updateProfile);
 
-// ✅ ENHANCED GET ME
-router.get('/me', [
-    protectRoute                        // ← Auth required
+router.get("/me", [
+    authRateLimiters.general,
+    protectRoute
 ], getMe);
 
-// ✅ ENHANCED LOGOUT với token blacklisting
 router.post("/logout", [
     authRateLimiters.general,
-    protectRoute                         // ← Must be authenticated to logout
+    protectRoute
 ], logout);
 
-// ✅ NEW - LOGOUT FROM ALL DEVICES
-router.post("/logout-all-devices", [
+router.post("/logout-all", [
     authRateLimiters.general,
-    protectRoute                         // ← Must be authenticated
+    protectRoute
 ], logoutAllDevices);
 
 // ===== ADMIN ROUTES =====
-
-// ✅ NEW - GET ALL USERS (Admin only)
 router.get("/users", [
-    protectRoute
+    authRateLimiters.general,
+    protectRoute,
+    // Add admin middleware here if needed
 ], getAllUsers);
-
-// ✅ NEW - HEALTH CHECK
-router.get("/health", (req: express.Request, res: express.Response) => {
-    res.json({
-        success: true,
-        message: "Auth service is healthy",
-        timestamp: new Date().toISOString()
-    });
-});
 
 export default router;

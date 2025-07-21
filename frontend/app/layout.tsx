@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter, Playfair_Display, Poppins } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ToasterProvider } from "@/components/ToasterProvider";
 import NextAuthSessionProvider from "@/providers/SessionProvider";
 
@@ -47,10 +46,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${playfair.variable} ${poppins.variable} antialiased h-screen`}
       >
         <NextAuthSessionProvider>
-          <ThemeProvider>
-            {children}
-            <ToasterProvider />
-          </ThemeProvider>
+          {children}
+          <ToasterProvider />
         </NextAuthSessionProvider>
       </body>
     </html>

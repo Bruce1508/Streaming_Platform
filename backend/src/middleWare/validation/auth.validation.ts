@@ -4,29 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { logger } from '../../utils/logger.utils';
 import { maskEmail } from '../../utils/Format.utils';
 
-// ✅ ENHANCED PASSWORD VALIDATION - more flexible
-const passwordSchema = Joi.string()
-    .min(6)  // Reduced from 8 for better UX
-    .max(128)
-    .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])'))  // Removed special char requirement
-    .required()
-    .messages({
-        'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
-        'string.min': 'Password must be at least 6 characters long',
-        'string.max': 'Password cannot exceed 128 characters'
-    });
 
-// ✅ STRONG PASSWORD VALIDATION - for admin/sensitive operations
-const strongPasswordSchema = Joi.string()
-    .min(8)
-    .max(128)
-    .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])'))
-    .required()
-    .messages({
-        'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
-        'string.min': 'Password must be at least 8 characters long',
-        'string.max': 'Password cannot exceed 128 characters'
-    });
 
 // ✅ ENHANCED EMAIL VALIDATION
 const emailSchema = Joi.string()
@@ -109,14 +87,6 @@ const tokenSchemas = {
             'string.pattern.base': 'Invalid token format'
         }),
         
-    resetToken: Joi.string()
-        .length(64)  // Secure token length
-        .pattern(new RegExp('^[a-f0-9]{64}$'))
-        .required()
-        .messages({
-            'string.pattern.base': 'Invalid reset token format'
-        }),
-        
     verificationToken: Joi.string()
         .length(64)
         .pattern(new RegExp('^[a-f0-9]{64}$'))
@@ -176,36 +146,25 @@ const authSchemas = {
         }).optional()
     }),
 
-    // ✅ NEW SCHEMAS
-    forgotPassword: Joi.object({
-        email: emailSchema
-    }),
-
-    resetPassword: Joi.object({
-        token: tokenSchemas.resetToken,
-        password: passwordSchema
-    }),
-
+    // ✅ TOKEN SCHEMAS
     refreshToken: Joi.object({
         refreshToken: tokenSchemas.refreshToken
     }),
 
-    changePassword: Joi.object({
-        currentPassword: Joi.string().required(),
-        newPassword: passwordSchema,
-        confirmPassword: Joi.string().valid(Joi.ref('newPassword')).required().messages({
-            'any.only': 'Passwords do not match'
-        })
-    }),
-
     sendMagicLink: Joi.object({
         email: emailSchema,
-        callbackUrl: Joi.string().uri().optional(),
+        callbackUrl: Joi.string().pattern(/^[\/\w\-\.]+$/).optional().messages({
+            'string.pattern.base': 'Callback URL must be a valid path (e.g., /dashboard, /profile)'
+        }),
         baseUrl: Joi.string().uri().optional()
     }),
 
     verifyMagicLink: Joi.object({
-        email: emailSchema
+        email: emailSchema,
+        token: Joi.string().required().messages({
+            'any.required': 'Magic link token is required',
+            'string.empty': 'Magic link token cannot be empty'
+        })
     }),
 
     completeProfile: Joi.object({
@@ -258,9 +217,17 @@ const authSchemas = {
 const createValidator = (schema: Joi.ObjectSchema, source: 'body' | 'query' | 'params' = 'body') => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
+            console.log(`🔥 Backend: Validation middleware called for ${req.method} ${req.path}`);
+            
             const dataToValidate = source === 'body' ? req.body : 
                                  source === 'query' ? req.query : 
                                  req.params;
+
+            console.log('📋 Backend: Data to validate:', {
+                source,
+                data: dataToValidate,
+                contentType: req.headers['content-type']
+            });
 
             const { error, value } = schema.validate(dataToValidate, {
                 abortEarly: false,
@@ -276,6 +243,13 @@ const createValidator = (schema: Joi.ObjectSchema, source: 'body' | 'query' | 'p
                     value: detail.context?.value
                 }));
 
+                console.log('❌ Backend: Validation FAILED:', {
+                    endpoint: req.path,
+                    method: req.method,
+                    errors: errorMessages,
+                    originalData: dataToValidate
+                });
+
                 logger.warn('Validation failed', {
                     endpoint: req.path,
                     method: req.method,
@@ -290,6 +264,11 @@ const createValidator = (schema: Joi.ObjectSchema, source: 'body' | 'query' | 'p
                 });
             }
 
+            console.log('✅ Backend: Validation PASSED:', {
+                endpoint: req.path,
+                validatedData: value
+            });
+
             // Update the request object with validated data
             if (source === 'body') req.body = value;
             else if (source === 'query') req.query = value;
@@ -297,6 +276,7 @@ const createValidator = (schema: Joi.ObjectSchema, source: 'body' | 'query' | 'p
 
             next();
         } catch (err: any) {
+            console.error('💥 Backend: Validation middleware error:', err);
             logger.error('Validation middleware error:', err);
             return res.status(500).json({
                 success: false,
@@ -438,10 +418,7 @@ export const authValidators = {
     validateOnBoarding: createValidator(authSchemas.onBoarding),
     validateCompleteProfile: createValidator(authSchemas.completeProfile),
     
-    // Password management
-    validateForgotPassword: createValidator(authSchemas.forgotPassword),
-    validateResetPassword: createValidator(authSchemas.resetPassword),
-    validateChangePassword: createValidator(authSchemas.changePassword),
+
     
     // Admin functions
     validateGetUsersList: createValidator(authSchemas.getUsersList, 'query'),

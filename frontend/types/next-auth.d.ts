@@ -6,6 +6,15 @@ declare module "next-auth" {
         user: {
             id: string
             isOnboarded: boolean
+            isVerified: boolean
+            verificationStatus: 'unverified' | 'email-verified' | 'edu-verified' | 'manual-verified' | 'non-student'
+            verificationMethod: 'none' | 'email-link' | 'edu-domain' | 'edu-pattern' | 'admin-manual' | 'oauth-pending' | 'magic-link'
+            institutionInfo?: {
+                name: string
+                domain: string
+                type: 'university' | 'college' | 'polytechnic' | 'institute' | ''
+            }
+            role: 'student' | 'professor' | 'admin' | 'guest'
             bio: string
             nativeLanguage: string
             learningLanguage: string
@@ -20,6 +29,15 @@ declare module "next-auth" {
         name: string
         image: string
         isOnboarded: boolean
+        isVerified: boolean
+        verificationStatus: 'unverified' | 'email-verified' | 'edu-verified' | 'manual-verified' | 'non-student'
+        verificationMethod: 'none' | 'email-link' | 'edu-domain' | 'edu-pattern' | 'admin-manual' | 'oauth-pending' | 'magic-link'
+        institutionInfo?: {
+            name: string
+            domain: string
+            type: 'university' | 'college' | 'polytechnic' | 'institute' | ''
+        }
+        role: 'student' | 'professor' | 'admin' | 'guest'
         bio: string
         nativeLanguage: string
         learningLanguage: string
@@ -33,6 +51,15 @@ declare module "next-auth/jwt" {
         id?: string
         accessToken?: string
         isOnboarded?: boolean
+        isVerified?: boolean
+        verificationStatus?: 'unverified' | 'email-verified' | 'edu-verified' | 'manual-verified' | 'non-student'
+        verificationMethod?: 'none' | 'email-link' | 'edu-domain' | 'edu-pattern' | 'admin-manual' | 'oauth-pending' | 'magic-link'
+        institutionInfo?: {
+            name: string
+            domain: string
+            type: 'university' | 'college' | 'polytechnic' | 'institute' | ''
+        }
+        role?: 'student' | 'professor' | 'admin' | 'guest'
         bio?: string
         nativeLanguage?: string
         learningLanguage?: string
