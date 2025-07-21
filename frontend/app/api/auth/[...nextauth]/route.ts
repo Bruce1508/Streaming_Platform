@@ -3,9 +3,6 @@ import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 
 const authOptions: AuthOptions = {
-    // ✅ REMOVED MongoDB adapter - Using JWT strategy to avoid DB conflicts
-    // adapter: MongoDBAdapter(clientPromise),
-    
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,

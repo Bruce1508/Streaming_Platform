@@ -16,6 +16,8 @@ import { capitalizeFirstLetter } from '@/lib/utils';
 import { Geist } from 'next/font/google';
 import { InteractiveHoverButton } from '@/components/magicui/interactive-hover-button';
 import { NumberTicker } from '@/components/magicui/number-ticker';
+import { ReviewCard } from '@/components/program/ReviewCard';
+import { ReviewSummary } from '@/components/program/ReviewSummary';
 
 const geist = Geist({ subsets: ['latin'] });
 
@@ -60,6 +62,10 @@ const ProgramReviewPage = () => {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    // NEW: User's existing review state
+    const [userReview, setUserReview] = useState<Review | null>(null);
+    const [isEditingReview, setIsEditingReview] = useState(false);
+
     // Review form state - Updated for new schema
     const [instructorRating, setInstructorRating] = useState(50);
     const [contentQualityRating, setContentQualityRating] = useState(50);
@@ -103,14 +109,14 @@ const ProgramReviewPage = () => {
     const generateSemesterOptions = () => {
         const options = [];
         const currentYear = new Date().getFullYear();
-        
+
         for (let year = currentYear; year >= 2020; year--) {
             options.push(`Fall ${year}`);
             options.push(`Summer ${year}`);
             options.push(`Spring ${year}`);
             options.push(`Winter ${year}`);
         }
-        
+
         return options;
     };
 
@@ -130,7 +136,19 @@ const ProgramReviewPage = () => {
 
             if (programResponse.success && programResponse.data) {
                 setProgram(programResponse.data);
-                
+
+                // NEW: Check if user already has a review for this program
+                try {
+                    const userReviewResponse = await programReviewAPI.getUserReviewForProgram(programId.toUpperCase());
+                    if (userReviewResponse.success && userReviewResponse.data) {
+                        setUserReview(userReviewResponse.data);
+                        console.log('🔍 User already has review:', userReviewResponse.data);
+                    }
+                } catch (userReviewError) {
+                    console.log('ℹ️ User has no existing review for this program');
+                    setUserReview(null);
+                }
+
                 // Try to fetch reviews from backend
                 try {
                     const reviewsResponse = await programReviewAPI.getProgramReviews(programId.toUpperCase());
@@ -143,7 +161,7 @@ const ProgramReviewPage = () => {
                 } catch (reviewError) {
                     console.log('No backend reviews found, using mock data');
                 }
-                
+
                 // Fallback to mock reviews for demo
                 const mockReviews = [
                     {
@@ -226,6 +244,30 @@ const ProgramReviewPage = () => {
         setGradeDistribution(distribution);
     };
 
+    // NEW: Function to open review modal (create or edit)
+    const openReviewModal = () => {
+        if (userReview) {
+            // Pre-populate form with existing review data
+            setInstructorRating(userReview.ratings.instructorRating);
+            setContentQualityRating(userReview.ratings.contentQualityRating);
+            setPracticalValueRating(userReview.ratings.practicalValueRating);
+            setTakeTheCourseAgain(userReview.takeTheCourseAgain);
+            setComment(userReview.comment);
+            setCurrentSemester(userReview.currentSemester);
+            setIsEditingReview(true);
+        } else {
+            // Reset form for new review
+            setInstructorRating(50);
+            setContentQualityRating(50);
+            setPracticalValueRating(50);
+            setTakeTheCourseAgain(false);
+            setComment('');
+            setCurrentSemester('');
+            setIsEditingReview(false);
+        }
+        setShowReviewModal(true);
+    };
+
     const handleSubmitReview = async () => {
         if (!instructorRating || !contentQualityRating || !practicalValueRating || !comment.trim() || !currentSemester.trim()) {
             alert('Please fill in all required fields');
@@ -238,7 +280,7 @@ const ProgramReviewPage = () => {
         }
 
         setSubmitting(true);
-        
+
         try {
             const reviewData = {
                 programId: params.id as string,
@@ -252,43 +294,69 @@ const ProgramReviewPage = () => {
                 comment: comment.trim()
             };
 
-            // Try to submit to backend
-            const response = await programReviewAPI.createReview(reviewData);
-            
-            if (response.success) {
-                // Refresh reviews from backend
-                await fetchProgramData();
-                alert('✅ Review submitted successfully! Thank you for sharing your experience.');
+            let response;
+
+            if (isEditingReview && userReview) {
+                // Update existing review
+                response = await programReviewAPI.updateReview(userReview._id, {
+                    currentSemester: currentSemester.trim(),
+                    ratings: {
+                        instructorRating,
+                        contentQualityRating,
+                        practicalValueRating
+                    },
+                    takeTheCourseAgain,
+                    comment: comment.trim()
+                });
+
+                if (response.success) {
+                    await fetchProgramData(); // Refresh data
+                    alert('✅ Review updated successfully! Thank you for updating your experience.');
+                } else {
+                    throw new Error('Failed to update review');
+                }
             } else {
-                throw new Error('Failed to submit review');
+                // Create new review
+                response = await programReviewAPI.createReview(reviewData);
+
+                if (response.success) {
+                    await fetchProgramData(); // Refresh data
+                    alert('✅ Review submitted successfully! Thank you for sharing your experience.');
+                } else {
+                    throw new Error('Failed to submit review');
+                }
             }
-            
+
         } catch (err: any) {
-            console.error('Failed to submit review:', err);
-            
-            // Fallback: save to localStorage for demo
-            const newReview: Review = {
-                _id: Date.now().toString(),
-                ratings: {
-                    instructorRating,
-                    contentQualityRating,
-                    practicalValueRating
-                },
-                takeTheCourseAgain,
-                comment: comment.trim(),
-                author: {
-                    fullName: 'Anonymous User', // In real app, this comes from auth
-                    email: 'user@example.com'
-                },
-                currentSemester: currentSemester.trim(),
-                createdAt: new Date().toISOString().split('T')[0]
-            };
-            
-            const updatedReviews = [newReview, ...reviews];
-            setReviews(updatedReviews);
-            calculateReviewStats(updatedReviews);
-            
-            alert('✅ Review submitted successfully! Thank you for sharing your experience.');
+            console.error('Failed to submit/update review:', err);
+
+            if (isEditingReview) {
+                alert('❌ Failed to update review. Please try again.');
+            } else {
+                // Fallback: save to localStorage for demo (only for new reviews)
+                const newReview: Review = {
+                    _id: Date.now().toString(),
+                    ratings: {
+                        instructorRating,
+                        contentQualityRating,
+                        practicalValueRating
+                    },
+                    takeTheCourseAgain,
+                    comment: comment.trim(),
+                    author: {
+                        fullName: 'Anonymous User',
+                        email: 'user@example.com'
+                    },
+                    currentSemester: currentSemester.trim(),
+                    createdAt: new Date().toISOString().split('T')[0]
+                };
+
+                const updatedReviews = [newReview, ...reviews];
+                setReviews(updatedReviews);
+                calculateReviewStats(updatedReviews);
+
+                alert('✅ Review submitted successfully! Thank you for sharing your experience.');
+            }
         } finally {
             // Reset form and close modal
             setInstructorRating(50);
@@ -297,6 +365,7 @@ const ProgramReviewPage = () => {
             setTakeTheCourseAgain(false);
             setComment('');
             setCurrentSemester('');
+            setIsEditingReview(false);
             setShowReviewModal(false);
             setSubmitting(false);
         }
@@ -316,24 +385,11 @@ const ProgramReviewPage = () => {
         return 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop&crop=center';
     };
 
-    const summaryRef = useRef<HTMLDivElement>(null);
-    const [isSticky, setIsSticky] = useState(false);
-
     useEffect(() => {
         if (params.id) {
             fetchProgramData();
         }
     }, [params.id]);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (!summaryRef.current) return;
-            const { top } = summaryRef.current.getBoundingClientRect();
-            setIsSticky(top <= 100);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
     // Disable/enable body scroll when modal opens/closes
     useEffect(() => {
@@ -342,7 +398,7 @@ const ProgramReviewPage = () => {
         } else {
             document.body.style.overflow = 'unset';
         }
-        
+
         return () => {
             document.body.style.overflow = 'unset';
         };
@@ -379,10 +435,20 @@ const ProgramReviewPage = () => {
             <div className="sticky top-0 z-30 bg-[#18191A]">
                 <LandingNavBar />
             </div>
-            
+
             {/* Hero Section for Review Page */}
             <div className="bg-[#FAF9F6] px-4 min-h-screen lg:min-h-0 flex items-center justify-center pt-45 pb-20">
                 <div className="w-full">
+                    {/* Back Button on top left */}
+                    <div className="max-w-4xl mx-auto flex items-start mb-20 opacity-50">
+                        <button
+                            onClick={() => router.push('/programs')}
+                            className="flex items-center text-gray-600 hover:text-gray-800 transition-colors cursor-pointer"
+                        >
+                            <ArrowLeft className="w-6 h-6 mr-2" />
+                            <span className="font-medium">Back to Programs</span>
+                        </button>
+                    </div>
                     <div className="max-w-4xl mx-auto text-center mb-16">
                         <h1 className={`text-5xl md:text-6xl font-serif font-bold text-[#232323] mb-6 ${geist.className}`}>{program.name}</h1>
                         <p className="text-lg md:text-xl text-[#141413] max-w-2xl mx-auto opacity-50">Read real student experiences and share your own thoughts about this program. Your review helps future students make informed decisions!</p>
@@ -417,203 +483,111 @@ const ProgramReviewPage = () => {
                     </div>
                 </div>
             </div>
-            
-            {/* Main Content */}
-            <div className="flex-1 pt-20 bg-[#FAF9F6]">
-                {/* Header */}
-                <div className='mb-10'>
-                    <div className="max-w-7xl mx-auto px-6 py-4">
-                        <div className="flex items-center justify-between">
-                            <h1 className={`text-5xl font-bold text-[#CC5500] ${geist.className}`}>What others say about this program</h1>
-                            <div className="w-32"></div>
-                        </div>
-                    </div>
-                </div>
 
+            {/* Main Content */}
+            <div className="flex-1 pt-10 bg-[#FAF9F6]">
                 {/* Main Content */}
-                <div className="max-w-7xl mx-auto px-6 py-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
-                        {/* Left Column - Sticky Student Reviews Summary */}
-                        <div className="lg:col-span-1">
-                            <div
-                                ref={summaryRef}
-                                className={`sticky top-[100px] z-10 transition-all duration-300 ${isSticky ? 'shadow-xl scale-[1.01] translate-y-2' : 'shadow-md'}`}
-                                style={{ willChange: 'transform' }}
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-8">
+                    {/* Title centered below back button (removed back button here) */}
+                    <div className="flex justify-center mb-12">
+                        <h1 className={`text-4xl md:text-5xl font-bold text-[#0047AB] ${geist.className} text-center`}>
+                            What others say about this program
+                        </h1>
+                    </div>
+
+                    {/* Review Summary at the top */}
+                    <div className="mb-12">
+                        <ReviewSummary
+                            totalReviews={totalReviews}
+                            averageRating={averageRating}
+                            gradeDistribution={gradeDistribution}
+                            userReview={userReview}
+                            onOpenReviewModal={openReviewModal}
+                            reviews={reviews}
+                            program={program}
+                        />
+                    </div>
+
+                    {/* Reviews Section */}
+                    <div className="space-y-8">
+                        {/* Tabs for filtering by rating */}
+                        <div className="flex gap-2 mb-7 flex-wrap">
+                            <button
+                                className={`px-4 cursor-pointer py-2 rounded-full text-sm font-medium transition-colors ${activeTab === 'all' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                onClick={() => setActiveTab('all')}
                             >
-                                <div className="p-8 mb-6">
-                                    <div className="flex items-center mb-8 justify-center gap-3">
-                                        {totalReviews === 0 ? (
-                                            <>
-                                                <span className="text-8xl font-bold text-gray-400 opacity-60">-</span>
-                                                <span className="text-2xl text-gray-400">/ 100</span>
-                                                <div className="ml-4">
-                                                    <span className="text-3xl font-bold text-gray-400">-</span>
-                                                </div>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <NumberTicker 
-                                                    value={Number(averageRating.toFixed(1))}
-                                                    decimalPlaces={1}
-                                                    className="text-8xl font-bold text-gray-800 opacity-90"
-                                                />
-                                                <span className="text-2xl text-gray-800">/ 100</span>
-                                                <div className="ml-4">
-                                                    <span className={`text-3xl font-bold ${getGradeColor(getGradeFromScore(averageRating))}`}>
-                                                        {getGradeFromScore(averageRating)}
-                                                    </span>
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-                                    {/* Rating Distribution */}
-                                    <div className="space-y-2 mt-4">
-                                        {Object.entries(gradeDistribution).map(([grade, count]) => {
-                                            const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
-                                            return (
-                                                <div key={grade} className="flex items-center gap-2">
-                                                    <span className={`text-base font-semibold w-8 ${getGradeColor(grade)}`}>{grade}</span>
-                                                    <div className="flex-1 bg-gray-200 rounded-full h-2">
-                                                        <div
-                                                            className="bg-gray-600 h-2 rounded-full transition-all duration-300"
-                                                            style={{ width: `${percentage}%` }}
-                                                        ></div>
-                                                    </div>
-                                                    <span className="text-base text-gray-700 w-5 text-right">{count}</span>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                    {/* Write Review Button */}
-                                    <div className="mt-6 pt-4 border-t border-gray-200 flex justify-center">
-                                        <InteractiveHoverButton
-                                            onClick={() => setShowReviewModal(true)}
-                                            className="bg-black text-white px-6 md:px-8 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
-                                        >
-                                            Write Your Review
-                                        </InteractiveHoverButton>
-                                    </div>
-                                </div>
-                            </div>
+                                All
+                            </button>
+                            {['A+', 'A', 'B+', 'B', 'C+', 'C', 'D', 'F'].map(grade => (
+                                <button
+                                    key={grade}
+                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${activeTab === grade ? 'bg-black text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                    onClick={() => setActiveTab(grade as 'A+' | 'A' | 'B+' | 'B' | 'C+' | 'C' | 'D' | 'F')}
+                                >
+                                    <span className={activeTab === grade ? 'text-white' : getGradeColor(grade)}>
+                                        {grade}
+                                    </span>
+                                </button>
+                            ))}
                         </div>
                         
-                        {/* Right Column - Reviews List with filter tabs */}
-                        <div className="lg:col-span-2">
-                            {/* Tabs for filtering by rating */}
-                            <div className="flex gap-2 mb-7 flex-wrap">
-                                <button
-                                    className={`px-4 cursor-pointer py-2 rounded-full text-sm font-medium transition-colors ${activeTab === 'all' ? 'bg-black text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-                                    onClick={() => setActiveTab('all')}
-                                >
-                                    All
-                                </button>
-                                {['A+', 'A', 'B+', 'B', 'C+', 'C', 'D', 'F'].map(grade => (
-                                    <button
-                                        key={grade}
-                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${activeTab === grade ? 'bg-black text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-                                        onClick={() => setActiveTab(grade as 'A+' | 'A' | 'B+' | 'B' | 'C+' | 'C' | 'D' | 'F')}
-                                    >
-                                        <span className={activeTab === grade ? 'text-white' : getGradeColor(grade)}>
-                                            {grade}
-                                        </span>
-                                    </button>
-                                ))}
-                            </div>
-                            <div className="space-y-4">
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-                                    {paginatedReviews.length === 0 ? (
-                                        <div className="text-gray-500 text-center py-8 col-span-2">No reviews for this rating.</div>
-                                    ) : (
-                                        paginatedReviews.map((review) => {
-                                            const avgRating = calculateAverageRating(review.ratings);
-                                            return (
-                                                <div
-                                                    key={review._id}
-                                                    className="relative rounded-2xl p-8 min-h-[220px] flex flex-col justify-between overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
-                                                    style={{
-                                                        color: 'black',
-                                                        boxShadow: '0 4px 32px 0 rgba(0,0,0,0.18)'
-                                                    }}
-                                                >
-                                                    {/* Grade Badge */}
-                                                    <div className="absolute top-4 right-4">
-                                                        <span className={`text-2xl font-bold ${getGradeColor(getGradeFromScore(avgRating))}`}>
-                                                            {getGradeFromScore(avgRating)}
-                                                        </span>
-                                                        <div className="text-xs text-gray-500 text-center">
-                                                            {avgRating}/100
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    {/* Quote icon */}
-                                                    {review.comment && (
-                                                        <div className="absolute top-6 left-6 text-4xl opacity-30 select-none pointer-events-none">&ldquo;</div>
-                                                    )}
-                                                    
-                                                    {/* Comment text */}
-                                                    <div className="flex-1 flex items-center relative">
-                                                        <p className="text-xl md:text-2xl font-medium leading-snug mt-5 opacity-70">{review.comment}</p>
-                                                    </div>
-                                                    
-                                                    {/* Take course again indicator */}
-                                                    <div className="mt-4 mb-2">
-                                                        <span className={`text-sm px-3 py-1 rounded-full ${review.takeTheCourseAgain ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                                                            {review.takeTheCourseAgain ? '✓ Would take again' : '✗ Would not take again'}
-                                                        </span>
-                                                    </div>
-                                                    
-                                                    {/* Footer: author left, semester and date right */}
-                                                    <div className="flex items-center justify-between mt-7 z-10 opacity-40">
-                                                        <span className="text-sm tracking-wide uppercase">{review.author.fullName}</span>
-                                                        <div className="text-xs text-right">
-                                                            <div>{review.currentSemester}</div>
-                                                            <div>{review.createdAt}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })
-                                    )}
-                                </div>
-                                {/* Pagination Controls */}
-                                {totalPages > 1 && (
-                                    <div className="flex justify-center items-center gap-4 mb-8">
-                                        <button
-                                            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                                            disabled={currentPage === 1}
-                                            className={`rounded-full p-2 bg-gray-200 hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
-                                            aria-label="Previous Page"
-                                        >
-                                            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
-                                        </button>
-                                        <button
-                                            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                                            disabled={currentPage === totalPages}
-                                            className={`rounded-full p-2 bg-black hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-white`}
-                                            aria-label="Next Page"
-                                        >
-                                            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                                        </button>
-                                    </div>
+                        <div className="space-y-4">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+                                {paginatedReviews.length === 0 ? (
+                                    <div className="text-gray-500 text-center py-8 col-span-2">No reviews for this rating.</div>
+                                ) : (
+                                    paginatedReviews.map((review) => (
+                                        <ReviewCard key={review._id} review={review} />
+                                    ))
                                 )}
                             </div>
+                            {/* Pagination Controls */}
+                            {totalPages > 1 && (
+                                <div className="flex justify-center items-center gap-4 mb-8">
+                                    <button
+                                        onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                                        disabled={currentPage === 1}
+                                        className={`rounded-full p-2 bg-gray-200 hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
+                                        aria-label="Previous Page"
+                                    >
+                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                                    </button>
+                                    <button
+                                        onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                                        disabled={currentPage === totalPages}
+                                        className={`rounded-full p-2 bg-black hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-white`}
+                                        aria-label="Next Page"
+                                    >
+                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             {/* Footer */}
             <Footer />
 
-            {/* Review Modal - Updated with monochrome theme */}
+            {/* Review Modal - Updated with proper layout */}
             {showReviewModal && (
                 <div className="fixed inset-0 backdrop-blur-sm bg-black/20 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
                         {/* Modal Header */}
                         <div className="flex items-center justify-between px-8 py-6 border-b border-gray-200 flex-shrink-0">
-                            <h2 className="text-2xl font-bold text-gray-800">Write Your Review</h2>
+                            <h2 className="text-2xl font-bold text-gray-800">{isEditingReview ? 'Edit Your Review' : 'Write Your Review'}</h2>
                             <button
-                                onClick={() => setShowReviewModal(false)}
+                                onClick={() => {
+                                    setShowReviewModal(false);
+                                    setInstructorRating(50);
+                                    setContentQualityRating(50);
+                                    setPracticalValueRating(50);
+                                    setTakeTheCourseAgain(false);
+                                    setComment('');
+                                    setCurrentSemester('');
+                                    setIsEditingReview(false);
+                                }}
                                 className="text-gray-500 hover:text-gray-700 transition-colors"
                             >
                                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -624,157 +598,157 @@ const ProgramReviewPage = () => {
 
                         {/* Modal Content - Scrollable */}
                         <div className="flex-1 overflow-y-auto">
-                        <div className="flex px-8 py-6 gap-8">
-                            {/* Left Column */}
-                            <div className="flex-1 space-y-6">
-                                {/* Current Semester */}
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Current Semester *
-                                    </label>
-                                    <div className="relative">
-                                        <select
-                                            value={currentSemester}
-                                            onChange={(e) => setCurrentSemester(e.target.value)}
-                                            className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all duration-200 appearance-none cursor-pointer hover:border-gray-300 hover:bg-gray-50"
+                            <div className="flex px-8 py-6 gap-8">
+                                {/* Left Column */}
+                                <div className="flex-1 space-y-6">
+                                    {/* Current Semester */}
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                            Current Semester *
+                                        </label>
+                                        <div className="relative">
+                                            <select
+                                                value={currentSemester}
+                                                onChange={(e) => setCurrentSemester(e.target.value)}
+                                                className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all duration-200 appearance-none cursor-pointer hover:border-gray-300 hover:bg-gray-50"
+                                                required
+                                                style={{
+                                                    backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+                                                    backgroundPosition: 'right 12px center',
+                                                    backgroundRepeat: 'no-repeat',
+                                                    backgroundSize: '16px'
+                                                }}
+                                            >
+                                                <option value="" className="text-gray-500">Select Semester</option>
+                                                {generateSemesterOptions().slice(0, 5).map((semester) => (
+                                                    <option key={semester} value={semester} className="text-gray-900">
+                                                        {semester}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    {/* Rating Sliders */}
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-3">
+                                            Your Ratings (0-100) *
+                                        </label>
+                                        <div className="space-y-6">
+                                            {/* Instructor Rating */}
+                                            <div>
+                                                <div className="flex justify-between items-center mb-3">
+                                                    <label className="text-sm text-gray-600 font-medium">Instructor Quality</label>
+                                                    <span className="text-lg font-bold text-gray-800">
+                                                        {instructorRating} ({getGradeFromScore(instructorRating)})
+                                                    </span>
+                                                </div>
+                                                <div className="relative">
+                                                    <input
+                                                        type="range"
+                                                        min="0"
+                                                        max="100"
+                                                        value={instructorRating}
+                                                        onChange={(e) => setInstructorRating(Number(e.target.value))}
+                                                        className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                                                        style={{
+                                                            background: `linear-gradient(to right, #6b7280 0%, #6b7280 ${instructorRating}%, #e5e7eb ${instructorRating}%, #e5e7eb 100%)`
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Content Quality Rating */}
+                                            <div>
+                                                <div className="flex justify-between items-center mb-3">
+                                                    <label className="text-sm text-gray-600 font-medium">Content Quality & Difficulty</label>
+                                                    <span className="text-lg font-bold text-gray-800">
+                                                        {contentQualityRating} ({getGradeFromScore(contentQualityRating)})
+                                                    </span>
+                                                </div>
+                                                <div className="relative">
+                                                    <input
+                                                        type="range"
+                                                        min="0"
+                                                        max="100"
+                                                        value={contentQualityRating}
+                                                        onChange={(e) => setContentQualityRating(Number(e.target.value))}
+                                                        className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                                                        style={{
+                                                            background: `linear-gradient(to right, #6b7280 0%, #6b7280 ${contentQualityRating}%, #e5e7eb ${contentQualityRating}%, #e5e7eb 100%)`
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Practical Value Rating */}
+                                            <div>
+                                                <div className="flex justify-between items-center mb-3">
+                                                    <label className="text-sm text-gray-600 font-medium">Practical Value & Usefulness</label>
+                                                    <span className="text-lg font-bold text-gray-800">
+                                                        {practicalValueRating} ({getGradeFromScore(practicalValueRating)})
+                                                    </span>
+                                                </div>
+                                                <div className="relative">
+                                                    <input
+                                                        type="range"
+                                                        min="0"
+                                                        max="100"
+                                                        value={practicalValueRating}
+                                                        onChange={(e) => setPracticalValueRating(Number(e.target.value))}
+                                                        className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                                                        style={{
+                                                            background: `linear-gradient(to right, #6b7280 0%, #6b7280 ${practicalValueRating}%, #e5e7eb ${practicalValueRating}%, #e5e7eb 100%)`
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Take Course Again Checkbox */}
+                                    <div>
+                                        <label className="flex items-center space-x-3 cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={takeTheCourseAgain}
+                                                onChange={(e) => setTakeTheCourseAgain(e.target.checked)}
+                                                className="w-5 h-5 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-500 focus:ring-2"
+                                            />
+                                            <span className="text-sm font-medium text-gray-700">
+                                                Would you take this course again?
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {/* Right Column */}
+                                <div className="flex-1 flex flex-col">
+                                    {/* Comment */}
+                                    <div className="flex-1">
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                            Your Review *
+                                        </label>
+                                        <textarea
+                                            value={comment}
+                                            onChange={(e) => setComment(e.target.value)}
+                                            rows={12}
+                                            className="text-black w-full h-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent resize-none transition-all min-h-[300px]"
+                                            placeholder="Share your experience with this program..."
                                             required
-                                            style={{
-                                                backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                                                backgroundPosition: 'right 12px center',
-                                                backgroundRepeat: 'no-repeat',
-                                                backgroundSize: '16px'
-                                            }}
-                                        >
-                                            <option value="" className="text-gray-500">Select Semester</option>
-                                            {generateSemesterOptions().slice(0, 5).map((semester) => (
-                                                <option key={semester} value={semester} className="text-gray-900">
-                                                    {semester}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {/* Rating Sliders - Updated to monochrome */}
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-3">
-                                        Your Ratings (0-100) *
-                                    </label>
-                                    <div className="space-y-6">
-                                        {/* Instructor Rating */}
-                                        <div>
-                                            <div className="flex justify-between items-center mb-3">
-                                                <label className="text-sm text-gray-600 font-medium">Instructor Quality</label>
-                                                <span className="text-lg font-bold text-gray-800">
-                                                    {instructorRating} ({getGradeFromScore(instructorRating)})
-                                                </span>
-                                            </div>
-                                            <div className="relative">
-                                                <input
-                                                    type="range"
-                                                    min="0"
-                                                    max="100"
-                                                    value={instructorRating}
-                                                    onChange={(e) => setInstructorRating(Number(e.target.value))}
-                                                    className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
-                                                    style={{
-                                                        background: `linear-gradient(to right, #6b7280 0%, #6b7280 ${instructorRating}%, #e5e7eb ${instructorRating}%, #e5e7eb 100%)`
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        {/* Content Quality Rating */}
-                                        <div>
-                                            <div className="flex justify-between items-center mb-3">
-                                                <label className="text-sm text-gray-600 font-medium">Content Quality & Difficulty</label>
-                                                <span className="text-lg font-bold text-gray-800">
-                                                    {contentQualityRating} ({getGradeFromScore(contentQualityRating)})
-                                                </span>
-                                            </div>
-                                            <div className="relative">
-                                                <input
-                                                    type="range"
-                                                    min="0"
-                                                    max="100"
-                                                    value={contentQualityRating}
-                                                    onChange={(e) => setContentQualityRating(Number(e.target.value))}
-                                                    className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
-                                                    style={{
-                                                        background: `linear-gradient(to right, #6b7280 0%, #6b7280 ${contentQualityRating}%, #e5e7eb ${contentQualityRating}%, #e5e7eb 100%)`
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        {/* Practical Value Rating */}
-                                        <div>
-                                            <div className="flex justify-between items-center mb-3">
-                                                <label className="text-sm text-gray-600 font-medium">Practical Value & Usefulness</label>
-                                                <span className="text-lg font-bold text-gray-800">
-                                                    {practicalValueRating} ({getGradeFromScore(practicalValueRating)})
-                                                </span>
-                                            </div>
-                                            <div className="relative">
-                                                <input
-                                                    type="range"
-                                                    min="0"
-                                                    max="100"
-                                                    value={practicalValueRating}
-                                                    onChange={(e) => setPracticalValueRating(Number(e.target.value))}
-                                                    className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
-                                                    style={{
-                                                        background: `linear-gradient(to right, #6b7280 0%, #6b7280 ${practicalValueRating}%, #e5e7eb ${practicalValueRating}%, #e5e7eb 100%)`
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Take Course Again Checkbox */}
-                                <div>
-                                    <label className="flex items-center space-x-3 cursor-pointer">
-                                        <input
-                                            type="checkbox"
-                                            checked={takeTheCourseAgain}
-                                            onChange={(e) => setTakeTheCourseAgain(e.target.checked)}
-                                            className="w-5 h-5 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-500 focus:ring-2"
                                         />
-                                        <span className="text-sm font-medium text-gray-700">
-                                            Would you take this course again?
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            {/* Right Column */}
-                            <div className="flex-1 flex flex-col">
-                                {/* Comment */}
-                                <div className="flex-1">
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Your Review *
-                                    </label>
-                                    <textarea
-                                        value={comment}
-                                        onChange={(e) => setComment(e.target.value)}
-                                        rows={12}
-                                        className="text-black w-full h-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent resize-none transition-all min-h-[300px]"
-                                        placeholder="Share your experience with this program..."
-                                        required
-                                    />
-                                    <div className="flex justify-between items-center mt-2">
-                                        <span className="text-sm text-gray-500">
-                                            {comment.length}/500 characters
-                                        </span>
+                                        <div className="flex justify-between items-center mt-2">
+                                            <span className="text-sm text-gray-500">
+                                                {comment.length}/500 characters
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </div>
 
-                        {/* Modal Footer - Fixed */}
-                        <div className="flex gap-3 px-8 py-6 border-t border-gray-200 flex-shrink-0 bg-white">
+                        {/* Modal Footer - Fixed at bottom */}
+                        <div className="flex gap-3 px-8 py-4 border-t border-gray-200 bg-white flex-shrink-0">
                             <Button
                                 onClick={() => {
                                     setShowReviewModal(false);
@@ -784,6 +758,7 @@ const ProgramReviewPage = () => {
                                     setTakeTheCourseAgain(false);
                                     setComment('');
                                     setCurrentSemester('');
+                                    setIsEditingReview(false);
                                 }}
                                 variant="outline"
                                 className="px-8 border-gray-300 text-gray-700 hover:bg-gray-50"
@@ -803,7 +778,7 @@ const ProgramReviewPage = () => {
                                 ) : (
                                     <>
                                         <Send className="w-4 h-4 mr-2" />
-                                        Submit Review
+                                        {isEditingReview ? 'Update Review' : 'Submit Review'}
                                     </>
                                 )}
                             </Button>
