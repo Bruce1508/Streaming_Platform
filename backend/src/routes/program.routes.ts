@@ -18,8 +18,8 @@ import {
 import { 
     protectRoute, 
     authorize
-} from '../middleware/auth.middleware';
-import { createRateLimit } from '../middleware/rateLimiter';
+} from '../middleWare/auth.middleware';
+import { createRateLimit } from '../middleWare/rateLimiter';
 
 // Validation imports
 import {
@@ -27,9 +27,8 @@ import {
     validateSearch,
     validateSort,
     validateObjectId,
-    handleValidationErrors
-} from '../middleware/validation/common.validation';
-import { validateProgramQuery, validateProgramCreate } from '../middleware/validation/program.validation';
+} from '../middleWare/validation/common.validation';
+import { validateProgramQuery, validateProgramCreate } from '../middleWare/validation/program.validation';
 
 const router = Router();
 
@@ -173,7 +172,7 @@ router.post('/bulk-import',
     // adminRateLimit,              // Temporarily disabled for import
     // protectRoute,                // Temporarily disabled
     // authorize(['admin']),        // Temporarily disabled
-    validateStandardizedBulkImport,
+    // validateStandardizedBulkImport,
     bulkImportStandardizedPrograms
 );
 

@@ -50,6 +50,14 @@ export interface IUser extends Document {
     };
     isActive: boolean;
     isVerified: boolean;
+    verificationStatus: 'unverified' | 'email-verified' | 'edu-verified' | 'manual-verified' | 'non-student';
+    verificationMethod: 'none' | 'email-link' | 'edu-domain' | 'edu-pattern' | 'admin-manual' | 'oauth-pending' | 'magic-link';
+    hasTemporaryPassword: boolean;
+    institutionInfo: {
+        name: string;
+        domain: string;
+        type: 'university' | 'college' | 'polytechnic' | 'institute' | '';
+    };
     matchPassword(enteredPassword: string): Promise<boolean>;
     saveMaterial(materialId: mongoose.Types.ObjectId): Promise<IUser>;
     unsaveMaterial(materialId: mongoose.Types.ObjectId): Promise<IUser>;

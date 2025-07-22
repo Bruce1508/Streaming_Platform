@@ -1,6 +1,6 @@
 import express from 'express';
-import { protectRoute } from '../middleware/auth.middleware';
-import { createRateLimit } from '../middleware/rateLimiter';
+import { protectRoute } from '../middleWare/auth.middleware';
+import { createRateLimit } from '../middleWare/rateLimiter';
 import {
     getNotifications,
     markAsRead,

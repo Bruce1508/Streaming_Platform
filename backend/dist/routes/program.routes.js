@@ -30,7 +30,7 @@ const validateStandardizedBulkImport = (req, res, next) => {
             message: 'Programs array is required and cannot be empty'
         });
     }
-    const allowedCredentials = ['bachelor', 'diploma', 'advanced diploma', 'certificate'];
+    const allowedCredentials = ['bachelor', 'diploma', 'advanced diploma', 'certificate', 'other'];
     for (let i = 0; i < programs.length; i++) {
         const program = programs[i];
         if (!program.id || typeof program.id !== 'string') {

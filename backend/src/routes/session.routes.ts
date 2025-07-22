@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { protectRoute } from '../middleware/auth.middleware';
-import { optionalSessionValidation } from '../middleware/session.middleware';
+import { protectRoute } from '../middleWare/auth.middleware';
+import { optionalSessionValidation } from '../middleWare/session.middleware';
 import { 
     getActiveSessions, 
     logoutSession, 
     logoutAllDevices 
 } from '../controllers/session.controllers';
-import { createRateLimit } from '../middleware/rateLimiter';
-import { validateObjectId } from '../middleware/validation/common.validation';
+import { createRateLimit } from '../middleWare/rateLimiter';
+import { validateObjectId } from '../middleWare/validation/common.validation';
 
 const router = Router();
 

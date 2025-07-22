@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const express_validator_1 = require("express-validator");
 const programReview_controllers_1 = require("../controllers/programReview.controllers");
 // Middleware imports
 const auth_middleware_1 = require("../middleware/auth.middleware");
@@ -11,29 +12,54 @@ const router = (0, express_1.Router)();
 const reviewRateLimit = (0, rateLimiter_1.createRateLimit)(5, 15); // 5 reviews per 15 minutes per user
 const publicRateLimit = (0, rateLimiter_1.createRateLimit)(100, 15); // 100 requests per 15 minutes
 // ===== VALIDATION MIDDLEWARE =====
+// Validate program code format (e.g., "3MAVEP3JF", "CPA", etc.)
+const validateProgramCode = (paramName = 'programId') => [
+    (0, express_validator_1.param)(paramName)
+        .trim()
+        .notEmpty()
+        .withMessage(`${paramName} is required`)
+        .isLength({ min: 2, max: 15 })
+        .withMessage(`${paramName} must be 2-15 characters`)
+        .matches(/^[A-Z0-9]+$/i)
+        .withMessage(`${paramName} can only contain letters and numbers`),
+    common_validation_1.handleValidationErrors
+];
 const validateReviewData = (req, res, next) => {
-    const { year, criteriaRatings } = req.body;
-    // Validate year
-    if (year && (year < 2000 || year > new Date().getFullYear() + 2)) {
+    const { currentSemester, ratings, takeTheCourseAgain } = req.body;
+    // Validate currentSemester
+    if (currentSemester && typeof currentSemester !== 'string') {
         return res.status(400).json({
             success: false,
-            message: 'Year must be between 2000 and next year'
+            message: 'Current semester must be a string'
         });
     }
-    // Validate criteriaRatings structure
-    if (criteriaRatings) {
-        const requiredCriteria = [
-            'TeachingQuality', 'FacultySupport', 'LearningEnvironment',
-            'LibraryResources', 'StudentSupport', 'CampusLife', 'OverallExperience'
-        ];
-        for (const criteria of requiredCriteria) {
-            const rating = criteriaRatings[criteria];
-            if (rating !== undefined && (typeof rating !== 'number' || rating < 1 || rating > 5)) {
-                return res.status(400).json({
-                    success: false,
-                    message: `${criteria} must be a number between 1 and 5`
-                });
-            }
+    // Validate takeTheCourseAgain
+    if (takeTheCourseAgain !== undefined && typeof takeTheCourseAgain !== 'boolean') {
+        return res.status(400).json({
+            success: false,
+            message: 'takeTheCourseAgain must be a boolean'
+        });
+    }
+    // Validate ratings structure
+    if (ratings) {
+        const { instructorRating, contentQualityRating, practicalValueRating } = ratings;
+        if (instructorRating !== undefined && (typeof instructorRating !== 'number' || instructorRating < 0 || instructorRating > 100)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Instructor rating must be a number between 0 and 100'
+            });
+        }
+        if (contentQualityRating !== undefined && (typeof contentQualityRating !== 'number' || contentQualityRating < 0 || contentQualityRating > 100)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Content quality rating must be a number between 0 and 100'
+            });
+        }
+        if (practicalValueRating !== undefined && (typeof practicalValueRating !== 'number' || practicalValueRating < 0 || practicalValueRating > 100)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Practical value rating must be a number between 0 and 100'
+            });
         }
     }
     next();
@@ -44,7 +70,7 @@ const validateReviewData = (req, res, next) => {
  * @desc    Get all reviews for a specific program with averages
  * @access  Public
  */
-router.get('/program/:programId', publicRateLimit, (0, common_validation_1.validateObjectId)('programId'), common_validation_1.handleValidationErrors, programReview_controllers_1.getProgramReviews);
+router.get('/program/:programId', publicRateLimit, ...validateProgramCode('programId'), programReview_controllers_1.getProgramReviews);
 // ===== PROTECTED ROUTES =====
 /**
  * @route   POST /api/program-reviews
@@ -57,7 +83,7 @@ router.post('/', auth_middleware_1.protectRoute, reviewRateLimit, validateReview
  * @desc    Get current user's review for a specific program
  * @access  Private
  */
-router.get('/user/:programId', auth_middleware_1.protectRoute, (0, common_validation_1.validateObjectId)('programId'), common_validation_1.handleValidationErrors, programReview_controllers_1.getUserReviewForProgram);
+router.get('/user/:programId', auth_middleware_1.protectRoute, ...validateProgramCode('programId'), programReview_controllers_1.getUserReviewForProgram);
 /**
  * @route   POST /api/program-reviews/:reviewId/like
  * @desc    Like a review

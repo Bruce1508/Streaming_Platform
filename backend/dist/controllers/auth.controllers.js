@@ -12,224 +12,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handleOAuth = exports.logoutAllDevices = exports.logout = exports.refreshToken = exports.resetPassword = exports.forgotPassword = exports.getAllUsers = exports.updateProfile = exports.getMe = exports.signIn = exports.signUp = void 0;
+exports.verifyMagicLink = exports.sendMagicLink = exports.handleOAuth = exports.logoutAllDevices = exports.logout = exports.refreshToken = exports.getAllUsers = exports.updateProfile = exports.getMe = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const jwt_enhanced_1 = require("../utils/jwt.enhanced");
 const crypto_1 = __importDefault(require("crypto"));
 const Api_utils_1 = require("../utils/Api.utils");
 const Cache_utils_1 = require("../utils/Cache.utils");
 const Format_utils_1 = require("../utils/Format.utils");
+const email_utils_1 = require("../utils/email.utils");
 const logger_utils_1 = require("../utils/logger.utils");
 const Random_utils_1 = require("../utils/Random.utils");
 const ioredis_1 = __importDefault(require("ioredis"));
+const email_utils_2 = require("../utils/email.utils");
 // ✅ Helper function to generate secure session ID
 const generateSessionId = () => {
     return crypto_1.default.randomBytes(32).toString('hex');
 };
 const redisClient = new ioredis_1.default(process.env.REDIS_URL || 'redis://localhost:6379');
-// ✅ ENHANCED signUp with utils integration
-const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        (0, Api_utils_1.logApiRequest)(req);
-        const { email, password, fullName, role = 'student', academic } = req.body;
-        // Check if user exists
-        const existingUser = yield User_1.default.findOne({ email: email.toLowerCase() });
-        if (existingUser) {
-            res.status(400).json({
-                success: false,
-                message: "User already exists with this email"
-            });
-            return;
-        }
-        // ✅ Enhanced user data with utils
-        const userData = {
-            fullName: (0, Format_utils_1.capitalize)(fullName),
-            email: email.toLowerCase(),
-            password,
-            role,
-            bio: "",
-            profilePic: "",
-            location: "",
-            website: "",
-            isOnboarded: false,
-            authProvider: "local",
-            isActive: true,
-            isVerified: false,
-            savedMaterials: [],
-            uploadedMaterials: [],
-            studyStats: {
-                materialsViewed: 0,
-                materialsSaved: 0,
-                materialsCreated: 0,
-                ratingsGiven: 0
-            },
-            preferences: {
-                theme: 'system',
-                notifications: {
-                    email: true,
-                    push: true,
-                    newMaterials: true,
-                    courseUpdates: true
-                },
-                privacy: {
-                    showProfile: true,
-                    showActivity: true
-                }
-            },
-            activity: {
-                loginCount: 0,
-                uploadCount: 0,
-                downloadCount: 0,
-                contributionScore: 0
-            },
-            friends: []
-        };
-        // ✅ Enhanced academic info with utils
-        if (academic) {
-            userData.academic = {
-                studentId: academic.studentId || (role === 'student' ? (0, Random_utils_1.generateStudentId)() : undefined),
-                school: academic.school,
-                program: academic.program,
-                currentSemester: academic.currentSemester,
-                enrollmentYear: academic.enrollmentYear,
-                completedCourses: [],
-                status: 'active'
-            };
-        }
-        const newUser = new User_1.default(userData);
-        yield newUser.save();
-        // ✅ Generate secure session and enhanced tokens
-        const sessionId = generateSessionId();
-        const tokens = (0, jwt_enhanced_1.generateTokenPair)(newUser._id.toString(), sessionId);
-        // ✅ Store session in Redis with user info
-        yield redisClient.setex(`session:${sessionId}`, 7 * 24 * 60 * 60, JSON.stringify({
-            userId: newUser._id.toString(),
-            email: newUser.email,
-            role: newUser.role,
-            createdAt: new Date().toISOString()
-        }));
-        // ✅ Cache user with utils
-        yield (0, Cache_utils_1.cacheUser)(newUser._id.toString(), {
-            _id: newUser._id,
-            fullName: newUser.fullName,
-            email: newUser.email,
-            role: newUser.role,
-            isOnboarded: newUser.isOnboarded,
-            isVerified: newUser.isVerified
-        });
-        // ✅ Enhanced logging with masked email
-        logger_utils_1.logger.info('User registered successfully', {
-            userId: newUser._id,
-            email: (0, Format_utils_1.maskEmail)(newUser.email),
-            role: newUser.role
-        });
-        res.status(201).json({
-            success: true,
-            message: "Account created successfully",
-            data: {
-                user: {
-                    _id: newUser._id,
-                    fullName: newUser.fullName,
-                    email: newUser.email,
-                    role: newUser.role,
-                    isOnboarded: newUser.isOnboarded,
-                    isVerified: newUser.isVerified
-                },
-                token: tokens.accessToken, // Frontend expects data.token
-                refreshToken: tokens.refreshToken,
-                tokens // Keep for backward compatibility
-            }
-        });
-    }
-    catch (error) {
-        logger_utils_1.logger.error("Signup error:", error);
-        res.status(500).json({
-            success: false,
-            message: "Registration failed",
-            error: process.env.NODE_ENV === 'development' ? error.message : undefined
-        });
-    }
-});
-exports.signUp = signUp;
-// ✅ ENHANCED signIn with utils integration
-const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        (0, Api_utils_1.logApiRequest)(req);
-        const { email, password, rememberMe = false } = req.body;
-        const user = yield User_1.default.findOne({ email: email.toLowerCase() }).select('+password');
-        if (!user || !(yield user.matchPassword(password))) {
-            res.status(401).json({
-                success: false,
-                message: "Invalid credentials"
-            });
-            return;
-        }
-        if (!user.isActive) {
-            res.status(403).json({
-                success: false,
-                message: "Account is deactivated. Please contact support."
-            });
-            return;
-        }
-        // Update last login and activity
-        yield user.updateLastLogin();
-        user.activity.loginCount += 1;
-        yield user.save();
-        // ✅ Generate secure session and enhanced tokens  
-        const sessionId = generateSessionId();
-        const tokens = (0, jwt_enhanced_1.generateTokenPair)(user._id.toString(), sessionId);
-        // ✅ Store session in Redis with user info
-        yield redisClient.setex(`session:${sessionId}`, 7 * 24 * 60 * 60, JSON.stringify({
-            userId: user._id.toString(),
-            email: user.email,
-            role: user.role,
-            lastLogin: new Date().toISOString()
-        }));
-        // ✅ Cache user after successful login
-        yield (0, Cache_utils_1.cacheUser)(user._id.toString(), {
-            _id: user._id,
-            fullName: user.fullName,
-            email: user.email,
-            role: user.role,
-            profilePic: user.profilePic,
-            isOnboarded: user.isOnboarded,
-            isVerified: user.isVerified,
-            isActive: user.isActive
-        });
-        // ✅ Enhanced logging with masked email
-        logger_utils_1.logger.info('User signed in successfully', {
-            userId: user._id,
-            email: (0, Format_utils_1.maskEmail)(user.email)
-        });
-        res.json({
-            success: true,
-            message: "Login successful",
-            data: {
-                user: {
-                    _id: user._id,
-                    fullName: user.fullName,
-                    email: user.email,
-                    role: user.role,
-                    profilePic: user.profilePic,
-                    isOnboarded: user.isOnboarded,
-                    isVerified: user.isVerified,
-                    isActive: user.isActive
-                },
-                token: tokens.accessToken, // Frontend expects data.token
-                refreshToken: tokens.refreshToken,
-                tokens // Keep for backward compatibility
-            }
-        });
-    }
-    catch (error) {
-        logger_utils_1.logger.error("Login error:", error);
-        res.status(500).json({
-            success: false,
-            message: "Login failed"
-        });
-    }
-});
-exports.signIn = signIn;
+// ✅ REMOVED: Traditional signUp - now using magic link authentication
+// ✅ REMOVED: Traditional signIn - now using magic link authentication
 // ✅ ENHANCED getMe with cache integration
 const getMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -421,100 +222,6 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getAllUsers = getAllUsers;
-// ✅ ENHANCED forgotPassword with secure token generation
-const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        (0, Api_utils_1.logApiRequest)(req);
-        const { email } = req.body;
-        const normalizedEmail = email.toLowerCase().trim();
-        const user = yield User_1.default.findOne({ email: normalizedEmail });
-        if (!user) {
-            logger_utils_1.logger.warn('Password reset requested for non-existent user', {
-                email: (0, Format_utils_1.maskEmail)(normalizedEmail),
-                ip: req.ip
-            });
-            res.status(200).json({
-                success: true,
-                message: "If an account with that email exists, we have sent a password reset link."
-            });
-            return;
-        }
-        // ✅ Generate secure token with utils
-        const resetToken = (0, Random_utils_1.generateSecureToken)(32);
-        const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
-        user.resetPasswordToken = resetToken;
-        user.resetPasswordExpires = resetTokenExpiry;
-        yield user.save();
-        logger_utils_1.logger.info('Password reset token generated', {
-            userId: user._id,
-            email: (0, Format_utils_1.maskEmail)(user.email)
-        });
-        res.json({
-            success: true,
-            message: "Password reset link sent to your email"
-        });
-    }
-    catch (error) {
-        logger_utils_1.logger.error("Forgot password error:", error);
-        res.status(500).json({
-            success: false,
-            message: "Failed to process password reset request"
-        });
-    }
-});
-exports.forgotPassword = forgotPassword;
-// ✅ Continue with other functions...
-const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        (0, Api_utils_1.logApiRequest)(req);
-        const { token, password } = req.body;
-        if (!token || !password) {
-            res.status(400).json({
-                success: false,
-                message: "Token and new password are required"
-            });
-            return;
-        }
-        if (password.length < 6) {
-            res.status(400).json({
-                success: false,
-                message: "Password must be at least 6 characters long"
-            });
-            return;
-        }
-        const user = yield User_1.default.findOne({
-            resetPasswordToken: token,
-            resetPasswordExpires: { $gt: Date.now() }
-        });
-        if (!user) {
-            res.status(400).json({
-                success: false,
-                message: "Invalid or expired reset token"
-            });
-            return;
-        }
-        user.password = password;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
-        yield user.save();
-        logger_utils_1.logger.info('Password reset successful', {
-            userId: user._id,
-            email: (0, Format_utils_1.maskEmail)(user.email)
-        });
-        res.json({
-            success: true,
-            message: "Password reset successful. Please login with your new password."
-        });
-    }
-    catch (error) {
-        logger_utils_1.logger.error("Reset password error:", error);
-        res.status(500).json({
-            success: false,
-            message: "Failed to reset password"
-        });
-    }
-});
-exports.resetPassword = resetPassword;
 const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         (0, Api_utils_1.logApiRequest)(req);
@@ -673,7 +380,7 @@ const logoutAllDevices = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.logoutAllDevices = logoutAllDevices;
-// ✅ NEW OAUTH HANDLER for Google/Social login
+// ✅ NEW OAUTH HANDLER with Student vs Non-Student Detection
 const handleOAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         (0, Api_utils_1.logApiRequest)(req);
@@ -686,6 +393,15 @@ const handleOAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             return;
         }
         const normalizedEmail = email.toLowerCase().trim();
+        // ✅ NEW: Detect if email is from educational institution
+        const emailDetection = (0, email_utils_1.detectEducationalEmail)(normalizedEmail);
+        const institutionInfo = (0, email_utils_1.getInstitutionFromEmail)(normalizedEmail);
+        logger_utils_1.logger.info('OAuth login attempt', {
+            email: (0, Format_utils_1.maskEmail)(normalizedEmail),
+            provider,
+            isEducational: emailDetection.isEducational,
+            institution: institutionInfo.name || 'Non-educational'
+        });
         // Check if user exists
         let user = yield User_1.default.findOne({ email: normalizedEmail });
         if (user) {
@@ -693,6 +409,14 @@ const handleOAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             if (!user.authProvider || user.authProvider === 'local') {
                 user.authProvider = provider;
                 user.profilePic = profilePic || user.profilePic;
+                // Update institution info if it's educational
+                if (emailDetection.isEducational) {
+                    user.institutionInfo = {
+                        name: institutionInfo.name || 'Educational Institution',
+                        domain: institutionInfo.domain || '',
+                        type: institutionInfo.type || 'institute'
+                    };
+                }
                 yield user.save();
             }
             // Update last login
@@ -701,7 +425,7 @@ const handleOAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             yield user.save();
         }
         else {
-            // Create new user from OAuth
+            // ✅ NEW: Create user with proper verification status
             const userData = {
                 fullName: (0, Format_utils_1.capitalize)(fullName),
                 email: normalizedEmail,
@@ -712,8 +436,23 @@ const handleOAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 website: "",
                 isOnboarded: false,
                 authProvider: provider,
+                providerId: providerId,
                 isActive: true,
-                isVerified: true, // OAuth users are considered verified
+                // ✅ KEY CHANGE: OAuth users are NOT automatically verified
+                // Only Magic Link for student emails gives verification
+                isVerified: false,
+                verificationStatus: emailDetection.isEducational ? 'unverified' : 'non-student',
+                verificationMethod: 'oauth-pending',
+                // ✅ Store institution info for student emails
+                institutionInfo: emailDetection.isEducational ? {
+                    name: institutionInfo.name || 'Educational Institution',
+                    domain: institutionInfo.domain || '',
+                    type: institutionInfo.type || 'institute'
+                } : {
+                    name: '',
+                    domain: '',
+                    type: ''
+                },
                 savedMaterials: [],
                 uploadedMaterials: [],
                 studyStats: {
@@ -745,16 +484,16 @@ const handleOAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             };
             user = new User_1.default(userData);
             yield user.save();
+            logger_utils_1.logger.info('New user created via OAuth', {
+                userId: user._id,
+                email: (0, Format_utils_1.maskEmail)(user.email),
+                isEducational: emailDetection.isEducational,
+                verificationStatus: user.verificationStatus
+            });
         }
         // ✅ Generate secure session and enhanced tokens
         const sessionId = generateSessionId();
-        console.log('🔑 OAuth - Generated sessionId:', sessionId);
-        console.log('🔑 OAuth - User ID:', user._id.toString());
         const tokens = (0, jwt_enhanced_1.generateTokenPair)(user._id.toString(), sessionId);
-        console.log('🔑 OAuth - Generated tokens:', {
-            accessTokenLength: tokens.accessToken.length,
-            refreshTokenLength: tokens.refreshToken.length
-        });
         // ✅ Store session in Redis with user info
         yield redisClient.setex(`session:${sessionId}`, 7 * 24 * 60 * 60, JSON.stringify({
             userId: user._id.toString(),
@@ -778,7 +517,8 @@ const handleOAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             userId: user._id,
             email: (0, Format_utils_1.maskEmail)(user.email),
             provider,
-            isNewUser: !user.lastLogin
+            isNewUser: !user.lastLogin,
+            verificationStatus: user.verificationStatus
         });
         res.json({
             success: true,
@@ -793,7 +533,10 @@ const handleOAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                     isOnboarded: user.isOnboarded,
                     isVerified: user.isVerified,
                     isActive: user.isActive,
-                    authProvider: user.authProvider
+                    authProvider: user.authProvider,
+                    verificationStatus: user.verificationStatus,
+                    verificationMethod: user.verificationMethod,
+                    institutionInfo: user.institutionInfo
                 },
                 token: tokens.accessToken // NextAuth expects data.token
             },
@@ -806,7 +549,10 @@ const handleOAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 isOnboarded: user.isOnboarded,
                 isVerified: user.isVerified,
                 isActive: user.isActive,
-                authProvider: user.authProvider
+                authProvider: user.authProvider,
+                verificationStatus: user.verificationStatus,
+                verificationMethod: user.verificationMethod,
+                institutionInfo: user.institutionInfo
             },
             token: tokens.accessToken // Backward compatibility
         });
@@ -820,4 +566,329 @@ const handleOAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.handleOAuth = handleOAuth;
+// ✅ UPDATED: Send Magic Link - Only for Student Emails
+const sendMagicLink = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        console.log('🔥 Backend: sendMagicLink controller called');
+        (0, Api_utils_1.logApiRequest)(req);
+        const { email, callbackUrl, baseUrl } = req.body;
+        console.log('📧 Backend: Request data received:', {
+            email,
+            callbackUrl,
+            baseUrl,
+            bodyKeys: Object.keys(req.body),
+            headers: {
+                'content-type': req.headers['content-type'],
+                'user-agent': req.headers['user-agent']
+            }
+        });
+        if (!email) {
+            console.log('❌ Backend: Email is missing from request');
+            return res.status(400).json({
+                success: false,
+                message: "Email is required"
+            });
+        }
+        const normalizedEmail = email.toLowerCase().trim();
+        console.log('📝 Backend: Email normalized:', normalizedEmail);
+        // ✅ NEW: Validate that email is from educational institution
+        const emailDetection = (0, email_utils_1.detectEducationalEmail)(normalizedEmail);
+        console.log('🎓 Backend: Email detection result:', emailDetection);
+        if (!emailDetection.isEducational) {
+            logger_utils_1.logger.warn('Magic link denied for non-educational email', {
+                email: (0, Format_utils_1.maskEmail)(normalizedEmail),
+                ip: req.ip
+            });
+            return res.status(400).json({
+                success: false,
+                message: "Magic link authentication is only available for student emails from educational institutions",
+                suggestion: "Please use your student email (e.g., student@yourschool.edu) or sign in with Google instead"
+            });
+        }
+        const institutionInfo = (0, email_utils_1.getInstitutionFromEmail)(normalizedEmail);
+        logger_utils_1.logger.info('Magic link request for student email', {
+            email: (0, Format_utils_1.maskEmail)(normalizedEmail),
+            institution: institutionInfo.name || 'Educational Institution',
+            confidence: emailDetection.confidence
+        });
+        // Check if user exists, if not create one
+        let user = yield User_1.default.findOne({ email: normalizedEmail });
+        if (!user) {
+            // ✅ Create new user with magic link flow for students
+            user = new User_1.default({
+                email: normalizedEmail,
+                fullName: normalizedEmail.split('@')[0], // Temporary name
+                role: 'student',
+                isActive: true,
+                // ✅ Magic Link users get verified status immediately
+                isVerified: true,
+                verificationStatus: emailDetection.confidence === 'high' ? 'edu-verified' : 'email-verified',
+                verificationMethod: 'magic-link',
+                institutionInfo: {
+                    name: institutionInfo.name || 'Educational Institution',
+                    domain: institutionInfo.domain || '',
+                    type: institutionInfo.type || 'institute'
+                },
+                authProvider: 'local',
+                password: (0, Random_utils_1.generateSecureToken)(32), // ✅ Temporary password for magic link users
+                hasTemporaryPassword: true, // ✅ Flag to indicate this is a temporary password
+                activity: {
+                    loginCount: 0,
+                    uploadCount: 0,
+                    downloadCount: 0,
+                    contributionScore: 0
+                },
+                studyStats: {
+                    materialsViewed: 0,
+                    materialsSaved: 0,
+                    materialsCreated: 0,
+                    ratingsGiven: 0
+                },
+                preferences: {
+                    theme: 'system',
+                    notifications: {
+                        email: true,
+                        push: true,
+                        newMaterials: true,
+                        courseUpdates: true
+                    },
+                    privacy: {
+                        showProfile: true,
+                        showActivity: true
+                    }
+                },
+                savedMaterials: [],
+                uploadedMaterials: [],
+                friends: []
+            });
+            yield user.save();
+            logger_utils_1.logger.info('New student user created via magic link', {
+                userId: user._id,
+                email: (0, Format_utils_1.maskEmail)(user.email),
+                institution: institutionInfo.name,
+                verificationStatus: user.verificationStatus
+            });
+        }
+        else {
+            // ✅ For existing users, upgrade their verification if they use magic link
+            if (user.verificationStatus === 'unverified' || user.verificationStatus === 'non-student') {
+                user.verificationStatus = emailDetection.confidence === 'high' ? 'edu-verified' : 'email-verified';
+                user.verificationMethod = 'magic-link';
+                user.isVerified = true;
+                // Update institution info
+                user.institutionInfo = {
+                    name: institutionInfo.name || 'Educational Institution',
+                    domain: institutionInfo.domain || '',
+                    type: institutionInfo.type || 'institute'
+                };
+                yield user.save();
+                logger_utils_1.logger.info('Existing user verification upgraded via magic link', {
+                    userId: user._id,
+                    email: (0, Format_utils_1.maskEmail)(user.email),
+                    oldStatus: user.verificationStatus,
+                    newStatus: user.verificationStatus
+                });
+            }
+        }
+        // Generate magic link token
+        const magicToken = (0, Random_utils_1.generateSecureToken)(32);
+        // Store magic link token in Redis
+        yield redisClient.setex(`magic:${magicToken}`, 600, // 10 minutes
+        JSON.stringify({
+            userId: user._id.toString(),
+            email: normalizedEmail,
+            createdAt: new Date().toISOString()
+        }));
+        // Create magic link URL
+        const magicLinkUrl = `${baseUrl}/api/auth/callback/email?callbackUrl=${encodeURIComponent(callbackUrl || '/dashboard')}&token=${magicToken}&email=${encodeURIComponent(normalizedEmail)}`;
+        // Send magic link email
+        const emailTemplate = email_utils_2.emailTemplates.magicLink({
+            name: user.fullName,
+            magicLinkUrl: magicLinkUrl,
+            expiryMinutes: 10
+        });
+        const emailSent = yield (0, email_utils_2.sendEmail)({
+            to: normalizedEmail,
+            subject: emailTemplate.subject,
+            html: emailTemplate.html
+        });
+        if (!emailSent) {
+            throw new Error("Failed to send magic link email");
+        }
+        logger_utils_1.logger.info('Magic link sent successfully to student', {
+            userId: user._id,
+            email: (0, Format_utils_1.maskEmail)(normalizedEmail),
+            institution: institutionInfo.name
+        });
+        res.json({
+            success: true,
+            message: "Magic link sent to your student email. Check your inbox!",
+            institutionInfo: {
+                name: institutionInfo.name,
+                type: institutionInfo.type
+            }
+        });
+    }
+    catch (error) {
+        logger_utils_1.logger.error("Send magic link error:", {
+            error: error.message,
+            stack: error.stack,
+            email: req.body.email ? (0, Format_utils_1.maskEmail)(req.body.email) : 'unknown'
+        });
+        // Provide more specific error message based on error type
+        let errorMessage = "Failed to send magic link";
+        if (error.message.includes("Authentication failed")) {
+            errorMessage = "Email configuration error. Please check SMTP credentials.";
+        }
+        else if (error.message.includes("ECONNREFUSED")) {
+            errorMessage = "Unable to connect to email server.";
+        }
+        else if (error.message.includes("Invalid email")) {
+            errorMessage = "Invalid email address provided.";
+        }
+        res.status(500).json(Object.assign({ success: false, message: errorMessage }, (process.env.NODE_ENV === 'development' && {
+            debug: error.message
+        })));
+    }
+});
+exports.sendMagicLink = sendMagicLink;
+// ✅ UPDATED: Verify Magic Link with Token Validation
+const verifyMagicLink = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        (0, Api_utils_1.logApiRequest)(req);
+        const { email, token } = req.body;
+        const normalizedEmail = email.toLowerCase().trim();
+        // ✅ Validate required parameters
+        if (!token) {
+            return res.status(400).json({
+                success: false,
+                message: "Magic link token is required"
+            });
+        }
+        // ✅ Get token data from Redis
+        const tokenData = yield redisClient.get(`magic:${token}`);
+        if (!tokenData) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid or expired magic link token"
+            });
+        }
+        const parsedTokenData = JSON.parse(tokenData);
+        // ✅ Verify email matches token
+        if (parsedTokenData.email !== normalizedEmail) {
+            return res.status(400).json({
+                success: false,
+                message: "Email does not match magic link token"
+            });
+        }
+        // ✅ Find user
+        const user = yield User_1.default.findById(parsedTokenData.userId);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+        // ✅ Delete token from Redis (one-time use)
+        yield redisClient.del(`magic:${token}`);
+        // ✅ Verify this is still a student email
+        const emailDetection = (0, email_utils_1.detectEducationalEmail)(normalizedEmail);
+        if (!emailDetection.isEducational) {
+            return res.status(400).json({
+                success: false,
+                message: "Magic link is only valid for student emails"
+            });
+        }
+        // ✅ Ensure user has verified status (Magic Link = Verified Student)
+        if (!user.isVerified || user.verificationMethod !== 'magic-link') {
+            user.isVerified = true;
+            user.verificationStatus = emailDetection.confidence === 'high' ? 'edu-verified' : 'email-verified';
+            user.verificationMethod = 'magic-link';
+            const institutionInfo = (0, email_utils_1.getInstitutionFromEmail)(normalizedEmail);
+            user.institutionInfo = {
+                name: institutionInfo.name || 'Educational Institution',
+                domain: institutionInfo.domain || '',
+                type: institutionInfo.type || 'institute'
+            };
+            yield user.save();
+            logger_utils_1.logger.info('User verification confirmed via magic link', {
+                userId: user._id,
+                email: (0, Format_utils_1.maskEmail)(user.email),
+                verificationStatus: user.verificationStatus
+            });
+        }
+        // Update last login and activity
+        yield user.updateLastLogin();
+        user.activity.loginCount += 1;
+        // ✅ Clear temporary password flag on successful magic link login
+        if (user.hasTemporaryPassword) {
+            user.hasTemporaryPassword = false;
+            logger_utils_1.logger.info('Temporary password flag cleared for magic link user', {
+                userId: user._id,
+                email: (0, Format_utils_1.maskEmail)(user.email)
+            });
+        }
+        yield user.save();
+        // Generate session tokens
+        const sessionId = generateSessionId();
+        const tokens = (0, jwt_enhanced_1.generateTokenPair)(user._id.toString(), sessionId);
+        // Store session in Redis
+        yield redisClient.setex(`session:${sessionId}`, 7 * 24 * 60 * 60, JSON.stringify({
+            userId: user._id.toString(),
+            email: user.email,
+            role: user.role,
+            lastLogin: new Date().toISOString(),
+            verificationMethod: 'magic-link'
+        }));
+        // Cache user
+        yield (0, Cache_utils_1.cacheUser)(user._id.toString(), {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            role: user.role,
+            profilePic: user.profilePic,
+            isOnboarded: user.isOnboarded,
+            isVerified: user.isVerified,
+            isActive: user.isActive
+        });
+        logger_utils_1.logger.info('Magic link authentication successful for verified student', {
+            userId: user._id,
+            email: (0, Format_utils_1.maskEmail)(user.email),
+            verificationStatus: user.verificationStatus,
+            institution: user.institutionInfo.name
+        });
+        res.json({
+            success: true,
+            message: "Welcome back, verified student! 🎓",
+            user: {
+                _id: user._id,
+                fullName: user.fullName,
+                email: user.email,
+                profilePic: user.profilePic,
+                role: user.role,
+                isOnboarded: user.isOnboarded,
+                isVerified: user.isVerified,
+                isActive: user.isActive,
+                verificationStatus: user.verificationStatus,
+                verificationMethod: user.verificationMethod,
+                institutionInfo: user.institutionInfo,
+                bio: user.bio,
+                location: user.location
+            },
+            token: tokens.accessToken
+        });
+    }
+    catch (error) {
+        logger_utils_1.logger.error("Verify magic link error:", {
+            error: error.message,
+            stack: error.stack,
+            email: req.body.email ? (0, Format_utils_1.maskEmail)(req.body.email) : 'unknown'
+        });
+        res.status(500).json({
+            success: false,
+            message: "Failed to verify magic link"
+        });
+    }
+});
+exports.verifyMagicLink = verifyMagicLink;
 //# sourceMappingURL=auth.controllers.js.map

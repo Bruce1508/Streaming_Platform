@@ -11,10 +11,10 @@ import {
 import {
     protectRoute,
     requireAdmin
-} from '../middleware/auth.middleware';
+} from '../middleWare/auth.middleware';
 
 // Rate limiting
-import { createRateLimit } from '../middleware/rateLimiter';
+import { createRateLimit } from '../middleWare/rateLimiter';
 
 const router = express.Router();
 

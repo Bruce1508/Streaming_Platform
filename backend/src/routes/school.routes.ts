@@ -15,8 +15,8 @@ import {
     protectRoute, 
     authorize,
     requireAdmin 
-} from '../middleware/auth.middleware';
-import { createRateLimit } from '../middleware/rateLimiter';
+} from '../middleWare/auth.middleware';
+import { createRateLimit } from '../middleWare/rateLimiter';
 
 // Validation imports
 import {
@@ -24,9 +24,8 @@ import {
     validateSearch,
     validateSort,
     validateObjectId,
-    handleValidationErrors
-} from '../middleware/validation/common.validation';
-import { validateSchoolQuery, validateSchoolCreate } from '../middleware/validation/school.validation';
+} from '../middleWare/validation/common.validation';
+import { validateSchoolQuery, validateSchoolCreate } from '../middleWare/validation/school.validation';
 
 const router = Router();
 

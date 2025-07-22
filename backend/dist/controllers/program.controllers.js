@@ -309,7 +309,7 @@ exports.getProgramCredentials = (0, asyncHandler_1.asyncHandler)((req, res) => _
         return res.status(200).json(cached);
     }
     try {
-        const credentials = yield Program_1.Program.distinct('credential', { isActive: true, credential: { $ne: null, $ne: '' } });
+        const credentials = yield Program_1.Program.distinct('credential', { isActive: true, credential: { $nin: [null, ''] } });
         // Sort credentials alphabetically
         const sortedCredentials = credentials.sort();
         const response = new ApiResponse_1.ApiResponse(200, { credentials: sortedCredentials }, 'Program credentials retrieved successfully');
@@ -564,7 +564,8 @@ exports.bulkImportStandardizedPrograms = (0, asyncHandler_1.asyncHandler)((req, 
                             school === 'georgebrown' ? 'George Brown College' :
                                 school === 'humber' ? 'Humber College' :
                                     school === 'tmu' ? 'Toronto Metropolitan University' :
-                                        'Unknown School',
+                                        school === 'manitobaUni' ? 'University of Manitoba' :
+                                            'Unknown School',
                 level: mapStandardCredentialToLevel(programData.credential),
                 isActive: true,
                 stats: {

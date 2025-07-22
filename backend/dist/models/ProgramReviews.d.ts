@@ -2,15 +2,16 @@ import mongoose, { Document } from 'mongoose';
 export interface IProgramReview extends Document {
     program: mongoose.Types.ObjectId;
     user: mongoose.Types.ObjectId;
-    year: number;
-    criteriaRatings: {
-        TeachingQuality: number;
-        FacultySupport: number;
-        LearningEnvironment: number;
-        LibraryResources: number;
-        StudentSupport: number;
-        CampusLife: number;
-        OverallExperience: number;
+    currentSemester: string;
+    ratings: {
+        instructorRating: number;
+        contentQualityRating: number;
+        practicalValueRating: number;
+    };
+    takeTheCourseAgain: boolean;
+    author: {
+        fullName: string;
+        email: string;
     };
     comment?: string;
     likes: number;

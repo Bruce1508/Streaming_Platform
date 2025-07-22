@@ -1,6 +1,6 @@
 // backend/src/routes/user.routes.ts - CLEANED VERSION
 import express from 'express';
-import { protectRoute } from '../middleware/auth.middleware';
+import { protectRoute } from '../middleWare/auth.middleware';
 import { 
     getRecommendedUsers, 
     getMyFriends, 
@@ -12,8 +12,8 @@ import {
 } from '../controllers/user.controllers';
 
 // Import rate limiters và validators
-import { createRateLimit } from '../middleware/rateLimiter';
-import { validateObjectId } from '../middleware/validation/common.validation';
+import { createRateLimit } from '../middleWare/rateLimiter';
+import { validateObjectId } from '../middleWare/validation/common.validation';
 
 const router = express.Router();
 

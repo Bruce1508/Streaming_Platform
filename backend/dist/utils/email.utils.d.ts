@@ -37,6 +37,11 @@ export interface EmailTemplate {
 export declare const emailTemplates: {
     welcome: ({ name, loginUrl }: EmailTemplateData["welcome"]) => EmailTemplate;
     resetPassword: ({ name, resetUrl, expiresIn }: EmailTemplateData["resetPassword"]) => EmailTemplate;
+    magicLink: ({ name, magicLinkUrl, expiryMinutes }: {
+        name: string;
+        magicLinkUrl: string;
+        expiryMinutes: number;
+    }) => EmailTemplate;
     emailVerification: ({ name, verificationUrl }: EmailTemplateData["emailVerification"]) => EmailTemplate;
     materialApproved: ({ name, materialTitle, materialUrl }: EmailTemplateData["materialApproved"]) => EmailTemplate;
     materialRejected: ({ name, materialTitle, reason }: EmailTemplateData["materialRejected"]) => EmailTemplate;
@@ -51,7 +56,7 @@ export declare const sendBulkEmail: (recipients: string[], subject: string, html
     sent: number;
     failed: number;
 }>;
-export declare const isEmailServiceAvailable: () => boolean;
+export declare const isEmailServiceAvailable: () => Promise<boolean>;
 export declare const emailService: {
     sendEmail: (options: EmailOptions) => Promise<boolean>;
     sendWelcomeEmail: (to: string, data: EmailTemplateData["welcome"]) => Promise<boolean>;
@@ -63,6 +68,41 @@ export declare const emailService: {
         sent: number;
         failed: number;
     }>;
-    isAvailable: () => boolean;
+    isAvailable: () => Promise<boolean>;
+};
+export interface EmailVerificationResult {
+    isEducational: boolean;
+    institutionName?: string;
+    domain?: string;
+    verificationMethod: 'domain-match' | 'pattern-match' | 'none';
+    confidence: 'high' | 'medium' | 'low';
+}
+/**
+ * Detect if an email belongs to an educational institution
+ */
+export declare const detectEducationalEmail: (email: string) => EmailVerificationResult;
+/**
+ * Get verification status and method based on email
+ */
+export declare const getVerificationStatusFromEmail: (email: string) => {
+    isVerified: boolean;
+    verificationStatus: string;
+    verificationMethod: string;
+};
+/**
+ * Validate educational email format
+ */
+export declare const validateEducationalEmail: (email: string) => {
+    isValid: boolean;
+    errors: string[];
+    suggestions?: string[];
+};
+/**
+ * Get institution info from email
+ */
+export declare const getInstitutionFromEmail: (email: string) => {
+    name?: string;
+    domain?: string;
+    type?: "university" | "college" | "polytechnic" | "institute";
 };
 //# sourceMappingURL=email.utils.d.ts.map

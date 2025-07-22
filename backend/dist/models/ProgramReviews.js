@@ -38,17 +38,18 @@ const mongoose_1 = __importStar(require("mongoose"));
 const programReviewSchema = new mongoose_1.Schema({
     program: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Program', required: true },
     user: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User', required: true },
-    year: { type: Number, required: true },
-    criteriaRatings: {
-        TeachingQuality: { type: Number, min: 1, max: 5, required: true },
-        FacultySupport: { type: Number, min: 1, max: 5, required: true },
-        LearningEnvironment: { type: Number, min: 1, max: 5, required: true },
-        LibraryResources: { type: Number, min: 1, max: 5, required: true },
-        StudentSupport: { type: Number, min: 1, max: 5, required: true },
-        CampusLife: { type: Number, min: 1, max: 5, required: true },
-        OverallExperience: { type: Number, min: 1, max: 5, required: true },
+    currentSemester: { type: String, required: true },
+    ratings: {
+        instructorRating: { type: Number, min: 0, max: 100, required: true },
+        contentQualityRating: { type: Number, min: 0, max: 100, required: true },
+        practicalValueRating: { type: Number, min: 0, max: 100, required: true }
     },
-    comment: { type: String, maxlength: 2000 },
+    takeTheCourseAgain: { type: Boolean, required: true },
+    author: {
+        fullName: { type: String, required: true },
+        email: { type: String, required: true }
+    },
+    comment: { type: String, maxlength: 500 },
     likes: { type: Number, default: 0 },
     dislikes: { type: Number, default: 0 },
 }, { timestamps: true });

@@ -11,12 +11,12 @@ import {
 } from '../controllers/programReview.controllers';
 
 // Middleware imports
-import { protectRoute } from '../middleware/auth.middleware';
-import { createRateLimit } from '../middleware/rateLimiter';
+import { protectRoute } from '../middleWare/auth.middleware';
+import { createRateLimit } from '../middleWare/rateLimiter';
 import {
     validateObjectId,
     handleValidationErrors
-} from '../middleware/validation/common.validation';
+} from '../middleWare/validation/common.validation';
 
 const router = Router();
 

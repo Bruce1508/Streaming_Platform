@@ -9,7 +9,7 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
-const chat_routes_1 = __importDefault(require("./routes/chat.routes"));
+// ✅ REMOVED: chatRoutes - stream.io no longer used
 const session_routes_1 = __importDefault(require("./routes/session.routes"));
 const material_routes_1 = __importDefault(require("./routes/material.routes"));
 const upload_routes_1 = __importDefault(require("./routes/upload.routes"));
@@ -28,7 +28,6 @@ require("./models/User");
 require("./models/School");
 require("./models/Program");
 require("./models/ProgramReviews");
-// import "./models/Course"; // Commented out - Course model doesn't exist, only ProgramCourses
 require("./models/StudyMaterial");
 require("./models/BookMark");
 require("./models/Enrollment");
@@ -45,6 +44,20 @@ app.use((0, cors_1.default)({
 // Increase body size limit for large imports
 app.use(express_1.default.json({ limit: '50mb' }));
 app.use(express_1.default.urlencoded({ limit: '50mb', extended: true }));
+// ✅ DEBUG: Log all incoming requests
+app.use((req, res, next) => {
+    console.log(`🔥 Backend: ${req.method} ${req.url} - ${new Date().toISOString()}`);
+    console.log('📋 Backend: Request details:', {
+        headers: {
+            'content-type': req.headers['content-type'],
+            'user-agent': req.headers['user-agent'],
+            'origin': req.headers.origin
+        },
+        body: req.body,
+        query: req.query
+    });
+    next();
+});
 // Security middleware
 app.use((0, helmet_1.default)());
 // Rate limiting
@@ -58,7 +71,7 @@ app.use('/api/', limiter);
 app.use("/api/auth", auth_routes_1.default);
 app.use("/api/sessions", session_routes_1.default);
 app.use("/api/users", user_routes_1.default);
-app.use("/api/chat", chat_routes_1.default);
+// ✅ REMOVED: /api/chat routes - stream.io no longer used
 app.use("/api/materials", material_routes_1.default);
 app.use("/api/upload", upload_routes_1.default);
 app.use("/api/courses", course_routes_1.default);

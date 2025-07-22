@@ -17,28 +17,6 @@ exports.defaultSecurityChain = exports.composeValidation = exports.validationHel
 const joi_1 = __importDefault(require("joi"));
 const logger_utils_1 = require("../../utils/logger.utils");
 const Format_utils_1 = require("../../utils/Format.utils");
-// ✅ ENHANCED PASSWORD VALIDATION - more flexible
-const passwordSchema = joi_1.default.string()
-    .min(6) // Reduced from 8 for better UX
-    .max(128)
-    .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])')) // Removed special char requirement
-    .required()
-    .messages({
-    'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
-    'string.min': 'Password must be at least 6 characters long',
-    'string.max': 'Password cannot exceed 128 characters'
-});
-// ✅ STRONG PASSWORD VALIDATION - for admin/sensitive operations
-const strongPasswordSchema = joi_1.default.string()
-    .min(8)
-    .max(128)
-    .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])'))
-    .required()
-    .messages({
-    'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
-    'string.min': 'Password must be at least 8 characters long',
-    'string.max': 'Password cannot exceed 128 characters'
-});
 // ✅ ENHANCED EMAIL VALIDATION
 const emailSchema = joi_1.default.string()
     .email()
@@ -110,13 +88,6 @@ const tokenSchemas = {
         .messages({
         'string.pattern.base': 'Invalid token format'
     }),
-    resetToken: joi_1.default.string()
-        .length(64) // Secure token length
-        .pattern(new RegExp('^[a-f0-9]{64}$'))
-        .required()
-        .messages({
-        'string.pattern.base': 'Invalid reset token format'
-    }),
     verificationToken: joi_1.default.string()
         .length(64)
         .pattern(new RegExp('^[a-f0-9]{64}$'))
@@ -134,23 +105,7 @@ const paginationSchema = joi_1.default.object({
 });
 // ✅ ENHANCED VALIDATION SCHEMAS
 const authSchemas = {
-    signUp: joi_1.default.object({
-        email: emailSchema,
-        password: passwordSchema,
-        fullName: nameSchema,
-        phone: phoneSchema,
-        role: joi_1.default.string().valid('student', 'teacher', 'admin', 'guest').default('student'),
-        academic: academicSchema.optional(),
-        terms: joi_1.default.boolean().valid(true).required().messages({
-            'any.only': 'You must accept the terms and conditions'
-        }),
-        newsletter: joi_1.default.boolean().default(false)
-    }),
-    signIn: joi_1.default.object({
-        email: emailSchema,
-        password: joi_1.default.string().required(),
-        rememberMe: joi_1.default.boolean().default(false)
-    }),
+    // ✅ REMOVED: signUp, signIn schemas - now using magic link + OAuth
     oauth: joi_1.default.object({
         provider: oauthProviderSchema,
         email: emailSchema,
@@ -186,20 +141,37 @@ const authSchemas = {
             language: joi_1.default.string().valid('en', 'vi', 'fr', 'es').optional()
         }).optional()
     }),
-    // ✅ NEW SCHEMAS
-    forgotPassword: joi_1.default.object({
-        email: emailSchema
-    }),
-    resetPassword: joi_1.default.object({
-        token: tokenSchemas.resetToken,
-        password: passwordSchema
-    }),
+    // ✅ TOKEN SCHEMAS
     refreshToken: joi_1.default.object({
         refreshToken: tokenSchemas.refreshToken
     }),
-    changePassword: joi_1.default.object({
-        currentPassword: joi_1.default.string().required(),
-        newPassword: strongPasswordSchema // Require strong password for changes
+    sendMagicLink: joi_1.default.object({
+        email: emailSchema,
+        callbackUrl: joi_1.default.string().pattern(/^[\/\w\-\.]+$/).optional().messages({
+            'string.pattern.base': 'Callback URL must be a valid path (e.g., /dashboard, /profile)'
+        }),
+        baseUrl: joi_1.default.string().uri().optional()
+    }),
+    verifyMagicLink: joi_1.default.object({
+        email: emailSchema,
+        token: joi_1.default.string().required().messages({
+            'any.required': 'Magic link token is required',
+            'string.empty': 'Magic link token cannot be empty'
+        })
+    }),
+    completeProfile: joi_1.default.object({
+        fullName: nameSchema,
+        bio: joi_1.default.string().max(500).allow('').optional(),
+        location: joi_1.default.string().max(100).allow('').optional(),
+        website: urlSchema,
+        profilePic: urlSchema,
+        phone: phoneSchema,
+        academic: academicSchema.optional(),
+        preferences: joi_1.default.object({
+            notifications: joi_1.default.boolean().default(true),
+            theme: joi_1.default.string().valid('light', 'dark', 'auto').default('auto'),
+            language: joi_1.default.string().valid('en', 'vi', 'fr', 'es').default('en')
+        }).optional()
     }),
     // ✅ ADMIN SCHEMAS
     getUsersList: paginationSchema.keys({
@@ -232,9 +204,15 @@ const authSchemas = {
 const createValidator = (schema, source = 'body') => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
+            console.log(`🔥 Backend: Validation middleware called for ${req.method} ${req.path}`);
             const dataToValidate = source === 'body' ? req.body :
                 source === 'query' ? req.query :
                     req.params;
+            console.log('📋 Backend: Data to validate:', {
+                source,
+                data: dataToValidate,
+                contentType: req.headers['content-type']
+            });
             const { error, value } = schema.validate(dataToValidate, {
                 abortEarly: false,
                 stripUnknown: true,
@@ -250,6 +228,12 @@ const createValidator = (schema, source = 'body') => {
                         value: (_a = detail.context) === null || _a === void 0 ? void 0 : _a.value
                     });
                 });
+                console.log('❌ Backend: Validation FAILED:', {
+                    endpoint: req.path,
+                    method: req.method,
+                    errors: errorMessages,
+                    originalData: dataToValidate
+                });
                 logger_utils_1.logger.warn('Validation failed', {
                     endpoint: req.path,
                     method: req.method,
@@ -262,6 +246,10 @@ const createValidator = (schema, source = 'body') => {
                     errors: errorMessages
                 });
             }
+            console.log('✅ Backend: Validation PASSED:', {
+                endpoint: req.path,
+                validatedData: value
+            });
             // Update the request object with validated data
             if (source === 'body')
                 req.body = value;
@@ -272,6 +260,7 @@ const createValidator = (schema, source = 'body') => {
             next();
         }
         catch (err) {
+            console.error('💥 Backend: Validation middleware error:', err);
             logger_utils_1.logger.error('Validation middleware error:', err);
             return res.status(500).json({
                 success: false,
@@ -391,40 +380,22 @@ exports.securityMiddleware = {
 };
 // ✅ EXPORT ENHANCED VALIDATORS
 exports.authValidators = {
-    // Basic auth
-    validateSignUp: createValidator(authSchemas.signUp),
-    validateSignIn: createValidator(authSchemas.signIn),
+    // ✅ REMOVED: validateSignUp, validateSignIn - now using magic link + OAuth
     validateOAuth: createValidator(authSchemas.oauth),
+    // Magic Link
+    validateSendMagicLink: createValidator(authSchemas.sendMagicLink),
+    validateVerifyMagicLink: createValidator(authSchemas.verifyMagicLink),
     // Profile management
     validateOnBoarding: createValidator(authSchemas.onBoarding),
-    validateUpdateProfile: createValidator(authSchemas.updateProfile),
-    // Password management
-    validateForgotPassword: createValidator(authSchemas.forgotPassword),
-    validateResetPassword: createValidator(authSchemas.resetPassword),
-    validateChangePassword: createValidator(authSchemas.changePassword),
-    // Token management
-    validateRefreshToken: createValidator(authSchemas.refreshToken),
+    validateCompleteProfile: createValidator(authSchemas.completeProfile),
     // Admin functions
     validateGetUsersList: createValidator(authSchemas.getUsersList, 'query'),
     validateUpdateUserStatus: createValidator(authSchemas.updateUserStatus),
     // Params validation
     validateUserParams: createValidator(authSchemas.userParams, 'params'),
     validateVerificationToken: createValidator(authSchemas.verificationParams, 'params'),
-    // ✅ NEW - Combined validation for complex operations
-    validateCompleteProfile: [
-        createValidator(authSchemas.updateProfile),
-        (req, res, next) => {
-            // Additional business logic validation
-            const { fullName, bio, academic } = req.body;
-            if ((academic === null || academic === void 0 ? void 0 : academic.role) === 'student' && !(academic === null || academic === void 0 ? void 0 : academic.studentId)) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Student ID is required for student role'
-                });
-            }
-            next();
-        }
-    ]
+    // Pagination
+    validatePagination: createValidator(paginationSchema, 'query')
 };
 // ✅ NEW - VALIDATION HELPERS
 exports.validationHelpers = {

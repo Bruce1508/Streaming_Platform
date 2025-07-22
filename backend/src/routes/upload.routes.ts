@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { uploadFile, uploadFiles, deleteFile, getUserFiles} from '../controllers/upload.controllers';
-import { protectRoute } from '../middleware/auth.middleware';
-import { uploadSingle, uploadMultiple } from '../middleware/upload.middleware';
+import { protectRoute } from '../middleWare/auth.middleware';
+import { uploadSingle, uploadMultiple } from '../middleWare/upload.middleware';
 
 const router = Router();
 

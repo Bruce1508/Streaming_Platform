@@ -292,15 +292,42 @@ const userSchema = new mongoose_1.default.Schema({
         type: Boolean,
         default: false
     },
-    // ===== SECURITY FIELDS =====
-    passwordResetToken: {
+    verificationStatus: {
         type: String,
-        select: false
+        enum: {
+            values: ['unverified', 'email-verified', 'edu-verified', 'manual-verified', 'non-student'],
+            message: '{VALUE} is not a valid verification status'
+        },
+        default: 'unverified'
     },
-    passwordResetExpires: {
-        type: Date,
-        select: false
+    verificationMethod: {
+        type: String,
+        enum: {
+            values: ['none', 'email-link', 'edu-domain', 'edu-pattern', 'admin-manual', 'oauth-pending', 'magic-link'],
+            message: '{VALUE} is not a valid verification method'
+        },
+        default: 'none'
     },
+    hasTemporaryPassword: {
+        type: Boolean,
+        default: false
+    },
+    institutionInfo: {
+        name: {
+            type: String,
+            default: ''
+        },
+        domain: {
+            type: String,
+            default: ''
+        },
+        type: {
+            type: String,
+            enum: ['university', 'college', 'polytechnic', 'institute', ''],
+            default: ''
+        }
+    },
+    // ===== SECURITY FIELDS =====
     emailVerificationToken: {
         type: String,
         select: false
@@ -311,8 +338,6 @@ const userSchema = new mongoose_1.default.Schema({
         virtuals: true,
         transform: function (doc, ret) {
             delete ret.password;
-            delete ret.passwordResetToken;
-            delete ret.passwordResetExpires;
             delete ret.emailVerificationToken;
             return ret;
         }

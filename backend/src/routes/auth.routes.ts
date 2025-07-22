@@ -11,11 +11,11 @@ import {
     sendMagicLink,    // ✅ Magic link authentication
     verifyMagicLink   // ✅ Magic link verification
 } from "../controllers/auth.controllers";
-import { protectRoute } from "../middleware/auth.middleware";
+import { protectRoute } from "../middleWare/auth.middleware";
 
 // Import rate limiters và validators  
-import { authRateLimiters } from "../middleware/rateLimiter";
-import { authValidators, securityMiddleware } from "../middleware/validation/auth.validation";
+import { authRateLimiters } from "../middleWare/rateLimiter";
+import { authValidators, securityMiddleware } from "../middleWare/validation/auth.validation";
 
 const router = express.Router();
 

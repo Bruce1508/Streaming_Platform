@@ -9,14 +9,11 @@ import {
 // Middleware imports
 import { 
     protectRoute 
-} from '../middleware/auth.middleware';
-import { createRateLimit } from '../middleware/rateLimiter';
+} from '../middleWare/auth.middleware';
+import { createRateLimit } from '../middleWare/rateLimiter';
 
 // Validation imports
-import {
-    handleValidationErrors
-} from '../middleware/validation/common.validation';
-import { validateOnboardingComplete, validateAcademicUpdate } from '../middleware/validation/onboarding.validation';
+import { validateOnboardingComplete, validateAcademicUpdate } from '../middleWare/validation/onboarding.validation';
 
 const router = Router();
 

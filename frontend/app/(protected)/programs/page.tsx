@@ -51,6 +51,9 @@ const ProgramsPage = () => {
         credentials: []
     });
 
+    // Show more schools state
+    const [showMoreSchools, setShowMoreSchools] = useState(false);
+
     // Refs
     const searchInputRef = useRef<HTMLInputElement>(null);
     const suggestionsRef = useRef<HTMLDivElement>(null);
@@ -222,14 +225,15 @@ const ProgramsPage = () => {
         }
     };
 
-    // Số lượng program chính xác theo từng trường (từ dữ liệu thực tế)
+    
     const schoolCounts: { [key: string]: number } = {
         "Seneca College": 195,
         "Centennial College": 138,
         "George Brown College": 114,
         "Humber College": 52,
         "Toronto Metropolitan University": 65,
-        "York University": 290
+        "York University": 192,
+        "University of Manitoba": 120 // Placeholder, update with real count if available
     };
 
     if (loading && programs.length === 0) {
@@ -378,14 +382,14 @@ const ProgramsPage = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Left Sidebar - Filter */}
                     <div className="lg:col-span-1">
-                        <div className="bg-white rounded-lg p-6 shadow-sm sticky top-8">
-                            <h2 className="text-xl font-semibold mb-6 text-gray-900">Filters</h2>
+                        <div className="bg-white rounded-lg p-6 shadow-sm sticky top-8 py-10">
+                            {/* <h2 className="text-xl font-semibold mb-6 text-gray-900">Filters</h2> */}
 
                             {/* School Names Filter */}
                             <div className="mb-8">
-                                <h3 className="text-lg font-medium mb-4 text-gray-900">BRAND</h3>
+                                <h3 className="text-lg font-medium mb-4 text-gray-900">SCHOOL</h3>
                                 <div className="space-y-3">
-                                    {availableFilters.schools.slice(0, 5).map((school, index) => (
+                                    {(showMoreSchools ? availableFilters.schools : availableFilters.schools.slice(0, 5)).map((school, index) => (
                                         <label key={school} className="flex items-center justify-between cursor-pointer group">
                                             <div className="flex items-center">
                                                 <input
@@ -404,9 +408,14 @@ const ProgramsPage = () => {
                                         </label>
                                     ))}
                                 </div>
-                                {availableFilters.schools.length > 5 && (
-                                    <button className="text-gray-600 text-sm mt-3 hover:text-gray-800 transition-colors">
+                                {availableFilters.schools.length > 5 && !showMoreSchools && (
+                                    <button type="button" className="text-gray-600 text-sm mt-3 hover:text-gray-800 transition-colors" onClick={() => setShowMoreSchools(true)}>
                                         + Show more
+                                    </button>
+                                )}
+                                {availableFilters.schools.length > 5 && showMoreSchools && (
+                                    <button type="button" className="text-gray-600 text-sm mt-3 hover:text-gray-800 transition-colors" onClick={() => setShowMoreSchools(false)}>
+                                        Show less
                                     </button>
                                 )}
                             </div>
@@ -455,8 +464,8 @@ const ProgramsPage = () => {
                             </div>
 
                             {/* Credentials Filter */}
-                            <div className="mb-6">
-                                <h3 className="text-lg font-medium mb-4 text-gray-900">DEGREE</h3>
+                            <div>
+                                <h3 className="text-lg font-medium text-gray-900">DEGREE</h3>
                                 <div className="space-y-3">
                                     {availableFilters.credentials.slice(0, 6).map((credential, index) => (
                                         <label key={credential} className="flex items-center justify-between cursor-pointer group">
@@ -503,13 +512,6 @@ const ProgramsPage = () => {
                             </div>
                         </div>
 
-                        {/* Results Count */}
-                        {/* <div className="mb-6">
-                            <p className="text-gray-600">
-                                Entries <span className="font-semibold">{((currentPage - 1) * 12) + 1}-{Math.min(currentPage * 12, totalItems)}</span> of <span className="font-semibold">{totalItems.toLocaleString()}</span>
-                                {loading && <span className="ml-2 text-gray-400">Loading...</span>}
-                            </p>
-                        </div> */}
 
                         {/* Programs Grid */}
                         <div className="space-y-6">

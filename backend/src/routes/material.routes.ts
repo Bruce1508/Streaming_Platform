@@ -24,7 +24,7 @@ import {
     getMaterialsByProgram,
     searchMaterials       // ← NEW: Enhanced search endpoint
 } from '../controllers/material.controllers';
-import { protectRoute } from '../middleware/auth.middleware';
+import { protectRoute } from '../middleWare/auth.middleware';
 import { 
     validateObjectId,
     validateCreateMaterial,
@@ -32,7 +32,7 @@ import {
     validateRating,
     validateComment,
     validateQueryParams
-} from '../middleware/material.middleware';
+} from '../middleWare/material.middleware';
 
 const router = Router();
 

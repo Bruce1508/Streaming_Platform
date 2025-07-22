@@ -9,8 +9,8 @@ import {
     getMyActivity,
     getTrendingContent
 } from '../controllers/dashboard.controllers'; // <-- Sử dụng file mới (số nhiều)
-import { protectRoute, authorize } from '../middleware/auth.middleware';
-import { validateQueryParams } from '../middleware/validation/query.validation';
+import { protectRoute, authorize } from '../middleWare/auth.middleware';
+import { validateQueryParams } from '../middleWare/validation/query.validation';
 
 const router = Router();
 
@@ -19,7 +19,7 @@ const router = Router();
 // =====================================================
 
 /**
- * @route   GET /api/dashboard/overview
+ * @route   GET /api/dashboard/overview 
  * @desc    Get comprehensive dashboard overview statistics
  * @access  Admin/Professor only
  */

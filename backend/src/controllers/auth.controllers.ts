@@ -1,6 +1,6 @@
 // src/controllers/auth.controllers.ts - ENHANCED VERSION WITH UTILS
 import { Request, Response } from "express";
-import { AuthRequest } from "../middleware/auth.middleware";
+import { AuthRequest } from "../middleWare/auth.middleware";
 import User, { IUser } from "../models/User";
 import { 
     generateTokenPair, 

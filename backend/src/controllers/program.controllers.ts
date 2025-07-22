@@ -16,7 +16,7 @@ import {
 } from '../utils/Cache.utils';
 import { logger } from '../utils/logger.utils';
 import mongoose from 'mongoose';
-import { AuthRequest } from '../middleware/auth.middleware';
+import { AuthRequest } from '../middleWare/auth.middleware';
 
 // ===== INTERFACE DEFINITIONS =====
 interface ProgramQuery {
@@ -751,6 +751,7 @@ export const bulkImportStandardizedPrograms = asyncHandler(async (req: AuthReque
                         school === 'georgebrown' ? 'George Brown College' :
                         school === 'humber' ? 'Humber College' :
                         school === 'tmu' ? 'Toronto Metropolitan University' :
+                        school === 'manitobaUni' ? 'University of Manitoba' :
                         'Unknown School',
                 level: mapStandardCredentialToLevel(programData.credential),
                 isActive: true,
