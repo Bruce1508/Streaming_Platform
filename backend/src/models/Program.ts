@@ -61,6 +61,18 @@ const programSchema = new Schema<IProgramDocument>({
         trim: true,
         maxlength: [200, 'School name cannot exceed 200 characters']
     },
+    url: {
+        type: String,
+        trim: true,
+        validate: {
+            validator: function(v: string) {
+                // Allow empty string or valid URLs
+                return !v || /^https?:\/\/.+/.test(v);
+            },
+            message: 'URL must be a valid HTTP or HTTPS URL'
+        },
+        maxlength: [500, 'URL cannot exceed 500 characters']
+    },
     level: {
         type: String,
         enum: [

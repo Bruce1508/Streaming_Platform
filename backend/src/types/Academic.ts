@@ -69,6 +69,7 @@ export interface IProgram {
     delivery?: string;
     credential?: string; // now optional
     school: string;
+    url?: string; // URL to the program's official page
     // Derived/computed fields
     level: 'Certificate' | 'Diploma' | 'Advanced Diploma' | 'Bachelor' | 'Graduate Certificate' | 'Honours Bachelor Degree' | 'Honours Bachelor' | 'Seneca Certificate of Standing' | 'Certificate of Apprenticeship, Ontario College Certificate';
     isActive: boolean;

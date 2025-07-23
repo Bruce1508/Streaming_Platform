@@ -5,11 +5,6 @@
   "main": "index.js",
   "scripts": {
     "setup": "node setup-env.js",
-    "migrate": "ts-node scripts/migration/run-migration.ts",
-    "migrate:academic": "ts-node scripts/migration/01-academic-migration.ts",
-    "migrate:enrollment": "ts-node scripts/migration/02-enrollment-migration.ts",
-    "migrate:dev": "NODE_ENV=development ts-node scripts/run-migration.ts",
-    "migrate:prod": "NODE_ENV=production ts-node scripts/run-migration.ts",
     "dev": "tsx src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",

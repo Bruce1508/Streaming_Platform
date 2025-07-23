@@ -10,6 +10,7 @@ export interface Program {
     credential: string;
     school: string;
     level: string;
+    url?: string; // URL to the program's official page
     isActive: boolean;
     stats: {
         enrollmentCount: number;

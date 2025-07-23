@@ -5,6 +5,8 @@ import {
 } from '../src/utils/programTransformer';
 import path from 'path';
 import fs from 'fs/promises';
+import dotenv from 'dotenv';
+dotenv.config();
 import axios from 'axios';
 
 const BACKEND_URL = 'http://localhost:5001';

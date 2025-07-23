@@ -522,101 +522,109 @@ const ProgramsPage = () => {
                                 </div>
                             )}
 
-                            {!loading && filteredPrograms.map((program, index) => (
-                                <div
-                                    key={program._id}
-                                    className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow"
-                                >
-                                    {/* Header with school name and location */}
-                                    <div className="mb-4">
-                                        <h3 className="text-xl font-bold text-gray-900 mb-2">
-                                            {program.name}
-                                        </h3>
-                                        <div className="flex items-center text-gray-600 mb-4">
-                                            <span className="text-lg">🇨🇦</span>
-                                            <span className="ml-2">Canada, {program.campus[0] || 'Multiple Locations'}</span>
+                            {!loading && filteredPrograms.map((program, index) => {
+                                console.log("Program you just clicked", program);
+                                return (
+                                    <div
+                                        key={program._id}
+                                        className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                                    >
+                                        {/* Header with school name and location */}
+                                        <div className="mb-4">
+                                            <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                                {program.name}
+                                            </h3>
+                                            <div className="flex items-center text-gray-600 mb-4">
+                                                <span className="text-lg">🇨🇦</span>
+                                                <span className="ml-2">Canada, {program.campus[0] || 'Multiple Locations'}</span>
+                                            </div>
+
+                                            {/* Rankings */}
+                                            <div className="flex flex-wrap gap-2 mb-6">
+                                                <span className="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
+                                                    #{Math.floor(Math.random() * 50) + 1} QS Rankings
+                                                </span>
+                                                <span className="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
+                                                    #{Math.floor(Math.random() * 50) + 1} THE Rankings
+                                                </span>
+                                                <span className="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
+                                                    #{Math.floor(Math.random() * 50) + 1} ARWU Rankings
+                                                </span>
+                                            </div>
                                         </div>
 
-                                        {/* Rankings */}
-                                        <div className="flex flex-wrap gap-2 mb-6">
-                                            <span className="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
-                                                #{Math.floor(Math.random() * 50) + 1} QS Rankings
-                                            </span>
-                                            <span className="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
-                                                #{Math.floor(Math.random() * 50) + 1} THE Rankings
-                                            </span>
-                                            <span className="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
-                                                #{Math.floor(Math.random() * 50) + 1} ARWU Rankings
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    {/* Degree Programs and Pricing */}
-                                    <div className="grid grid-cols-3 gap-6 mb-6">
-                                        {/* Bachelor's degree */}
-                                        <div className="text-center">
-                                            <h4 className="font-semibold text-gray-800 mb-3">Bachelor's degree</h4>
-                                            <div className="space-y-1">
-                                                <div className="text-xs text-gray-500">from</div>
-                                                <div className="text-lg font-bold text-gray-900">
-                                                    {(Math.floor(Math.random() * 5000) + 15000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                        {/* Degree Programs and Pricing */}
+                                        <div className="grid grid-cols-3 gap-6 mb-6">
+                                            {/* Bachelor's degree */}
+                                            <div className="text-center">
+                                                <h4 className="font-semibold text-gray-800 mb-3">Bachelor's degree</h4>
+                                                <div className="space-y-1">
+                                                    <div className="text-xs text-gray-500">from</div>
+                                                    <div className="text-lg font-bold text-gray-900">
+                                                        {(Math.floor(Math.random() * 5000) + 15000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                                    </div>
+                                                    <div className="text-xs text-gray-500">to</div>
+                                                    <div className="text-lg font-bold text-gray-900">
+                                                        {(Math.floor(Math.random() * 15000) + 35000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                                    </div>
                                                 </div>
-                                                <div className="text-xs text-gray-500">to</div>
-                                                <div className="text-lg font-bold text-gray-900">
-                                                    {(Math.floor(Math.random() * 15000) + 35000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                            </div>
+
+                                            {/* Master's degree */}
+                                            <div className="text-center">
+                                                <h4 className="font-semibold text-gray-800 mb-3">Master's degree</h4>
+                                                <div className="space-y-1">
+                                                    <div className="text-xs text-gray-500">from</div>
+                                                    <div className="text-lg font-bold text-gray-900">
+                                                        {(Math.floor(Math.random() * 8000) + 20000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                                    </div>
+                                                    <div className="text-xs text-gray-500">to</div>
+                                                    <div className="text-lg font-bold text-gray-900">
+                                                        {(Math.floor(Math.random() * 20000) + 45000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Doctoral studies */}
+                                            <div className="text-center">
+                                                <h4 className="font-semibold text-gray-800 mb-3">Doctoral studies</h4>
+                                                <div className="space-y-1">
+                                                    <div className="text-xs text-gray-500">from</div>
+                                                    <div className="text-lg font-bold text-gray-900">
+                                                        {(Math.floor(Math.random() * 5000) + 25000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                                    </div>
+                                                    <div className="text-xs text-gray-500">to</div>
+                                                    <div className="text-lg font-bold text-gray-900">
+                                                        {(Math.floor(Math.random() * 10000) + 35000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* Master's degree */}
-                                        <div className="text-center">
-                                            <h4 className="font-semibold text-gray-800 mb-3">Master's degree</h4>
-                                            <div className="space-y-1">
-                                                <div className="text-xs text-gray-500">from</div>
-                                                <div className="text-lg font-bold text-gray-900">
-                                                    {(Math.floor(Math.random() * 8000) + 20000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
-                                                </div>
-                                                <div className="text-xs text-gray-500">to</div>
-                                                <div className="text-lg font-bold text-gray-900">
-                                                    {(Math.floor(Math.random() * 20000) + 45000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Doctoral studies */}
-                                        <div className="text-center">
-                                            <h4 className="font-semibold text-gray-800 mb-3">Doctoral studies</h4>
-                                            <div className="space-y-1">
-                                                <div className="text-xs text-gray-500">from</div>
-                                                <div className="text-lg font-bold text-gray-900">
-                                                    {(Math.floor(Math.random() * 5000) + 25000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
-                                                </div>
-                                                <div className="text-xs text-gray-500">to</div>
-                                                <div className="text-lg font-bold text-gray-900">
-                                                    {(Math.floor(Math.random() * 10000) + 35000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Action Buttons */}
-                                    <div className="flex gap-4">
-                                        <button
-                                            onClick={() => {
+                                        {/* Action Buttons */}
+                                        <div className="flex gap-4">
+                                            <button
+                                                onClick={() => {
+                                                    // Use program.url if available, otherwise navigate to program detail page
+                                                    if (program.url) {
+                                                        window.open(program.url, '_blank', 'noopener,noreferrer');
+                                                    } else {
+                                                        window.location.href = `/programs/${program.programId}`;
+                                                    }
+                                                }}
+                                                className="cursor-pointer flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-3 px-4 rounded-lg transition-colors"
+                                            >
+                                                {program.url ? 'Visit Official Page' : 'Read more'}
+                                            </button>
+                                            <button className="cursor-pointer flex-1 bg-gray-800 hover:bg-gray-900 text-white font-medium py-3 px-4 rounded-lg transition-colors" onClick={() => {
                                                 window.location.href = `/programs/${program.programId}`;
-                                            }}
-                                            className="cursor-pointer flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-3 px-4 rounded-lg transition-colors"
-                                        >
-                                            Read more
-                                        </button>
-                                        <button className="cursor-pointer flex-1 bg-gray-800 hover:bg-gray-900 text-white font-medium py-3 px-4 rounded-lg transition-colors" onClick={() => {
-                                            window.location.href = `/programs/${program.programId}`;
-                                        }}>
-                                            Write a review
-                                        </button>
+                                            }}>
+                                                Write a review
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
 
                         {/* Empty State */}

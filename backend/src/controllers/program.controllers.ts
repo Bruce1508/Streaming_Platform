@@ -108,6 +108,20 @@ export const getPrograms = asyncHandler(async (req: Request, res: Response) => {
             Program.countDocuments(filter)
         ]);
 
+        // Log programs data for debugging
+        logger.info('Programs retrieved from database:', {
+            totalFound: programs.length,
+            firstProgramSample: programs[0] ? {
+                _id: programs[0]._id,
+                name: programs[0].name,
+                hasUrl: !!programs[0].url,
+                url: programs[0].url,
+                allFields: Object.keys(programs[0])
+            } : null,
+            programsWithUrl: programs.filter((p: any) => p.url).length,
+            programsWithoutUrl: programs.filter((p: any) => !p.url).length
+        });
+
         // ✅ Create paginated response
         const response = createPaginatedResponse(
             programs,
@@ -735,6 +749,16 @@ export const bulkImportStandardizedPrograms = asyncHandler(async (req: AuthReque
                 ]
             });
 
+            // Log input data for debugging
+            logger.info('Processing program data:', {
+                id: programData.id,
+                code: programData.code,
+                name: programData.name,
+                hasUrl: !!programData.url,
+                url: programData.url,
+                allFields: Object.keys(programData)
+            });
+
             const programDoc = {
                 id: programData.id,
                 code: programData.code,
@@ -742,6 +766,7 @@ export const bulkImportStandardizedPrograms = asyncHandler(async (req: AuthReque
                 duration: programData.duration || '',
                 campus: Array.isArray(programData.campus) ? programData.campus : [],
                 credential: programData.credential,
+                url: programData.url, // Add URL field
                 
                 // Set legacy fields for backward compatibility
                 programId: programData.id,
@@ -762,17 +787,39 @@ export const bulkImportStandardizedPrograms = asyncHandler(async (req: AuthReque
                 }
             };
 
+            // Log the document to be saved
+            logger.info('Program document to save:', {
+                id: programDoc.id,
+                code: programDoc.code,
+                name: programDoc.name,
+                hasUrl: !!programDoc.url,
+                url: programDoc.url,
+                allDocFields: Object.keys(programDoc)
+            });
+
             if (existingProgram) {
                 // Update existing program
-                await Program.findByIdAndUpdate(existingProgram._id, programDoc, { 
+                const updatedProgram = await Program.findByIdAndUpdate(existingProgram._id, programDoc, { 
                     new: true, 
                     runValidators: true 
                 });
-                logger.debug(`Updated program: ${programData.name}`);
+                if (updatedProgram) {
+                    logger.info(`Updated program: ${programData.name}`, {
+                        programId: updatedProgram._id,
+                        hasUrlAfterUpdate: !!updatedProgram.url,
+                        urlAfterUpdate: updatedProgram.url,
+                        allFieldsAfterUpdate: Object.keys(updatedProgram.toObject())
+                    });
+                }
             } else {
                 // Create new program
-                await Program.create(programDoc);
-                logger.debug(`Created program: ${programData.name}`);
+                const createdProgram = await Program.create(programDoc);
+                logger.info(`Created program: ${programData.name}`, {
+                    programId: createdProgram._id,
+                    hasUrlAfterCreate: !!createdProgram.url,
+                    urlAfterCreate: createdProgram.url,
+                    allFieldsAfterCreate: Object.keys(createdProgram.toObject())
+                });
             }
             
             results.successCount++;
