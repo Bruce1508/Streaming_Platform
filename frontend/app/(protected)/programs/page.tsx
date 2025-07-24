@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/Button";
 import PageLoader from "@/components/ui/PageLoader";
 import { programAPI } from "@/lib/api";
 import { Program } from "@/types/Program";
-import { Listbox } from '@headlessui/react';
 import Footer from '@/components/Footer';
+import { schoolCounts } from "@/constants/programData";
 
 const ProgramsPage = () => {
     // State management
@@ -225,16 +225,6 @@ const ProgramsPage = () => {
         }
     };
 
-    
-    const schoolCounts: { [key: string]: number } = {
-        "Seneca College": 195,
-        "Centennial College": 138,
-        "George Brown College": 114,
-        "Humber College": 52,
-        "Toronto Metropolitan University": 65,
-        "York University": 192,
-        "University of Manitoba": 120 // Placeholder, update with real count if available
-    };
 
     if (loading && programs.length === 0) {
         return <PageLoader />;
@@ -308,7 +298,7 @@ const ProgramsPage = () => {
                     <div className="relative -mt-21 z-50">
                         <div className="absolute inset-0 w-full h-full rounded-2xl pointer-events-none" style={{ boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10)' }} />
                         <div className="relative">
-                            
+
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-6 h-6" />
                             <input
                                 ref={searchInputRef}
@@ -523,7 +513,18 @@ const ProgramsPage = () => {
                             )}
 
                             {!loading && filteredPrograms.map((program, index) => {
-                                console.log("Program you just clicked", program);
+                                console.log(`Program ${index}:`, {
+                                    id: program._id,
+                                    name: program.name,
+                                    code: program.code,
+                                    school: program.school,
+                                    url: program.url,
+                                    programId: program.programId,
+                                    credential: program.credential,
+                                    level: program.level,
+                                    // Log toàn bộ object để xem có field nào khác
+                                    fullProgram: program
+                                });
                                 return (
                                     <div
                                         key={program._id}
@@ -605,7 +606,15 @@ const ProgramsPage = () => {
                                         <div className="flex gap-4">
                                             <button
                                                 onClick={() => {
-                                                    // Use program.url if available, otherwise navigate to program detail page
+                                                    // Debug: Log program data when button is clicked
+                                                    console.log('Program data:', {
+                                                        id: program._id,
+                                                        name: program.name,
+                                                        url: program.url,
+                                                        programId: program.programId,
+                                                        fullProgram: program
+                                                    });
+
                                                     if (program.url) {
                                                         window.open(program.url, '_blank', 'noopener,noreferrer');
                                                     } else {
