@@ -1,6 +1,9 @@
 import { createTransformer, validateStandardizedProgram } from '../src/utils/programTransformer';
 import fs from 'fs/promises';
+import dotenv from 'dotenv';
 import path from 'path';
+
+dotenv.config();
 
 async function testTransformation() {
     console.log('🧪 TESTING PROGRAM TRANSFORMATION');

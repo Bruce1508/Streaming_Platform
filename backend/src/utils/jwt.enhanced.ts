@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import Redis from 'ioredis';
 
-const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
+const redis = new Redis(process.env.REDIS_URL!!);
 
 interface TokenPair {
     accessToken: string;
@@ -23,7 +23,7 @@ export const generateTokenPair = (userId: string, sessionId: string): TokenPair 
     const accessToken = jwt.sign(
         { userId, sessionId, type: 'access' },
         process.env.JWT_SECRET!,
-        { expiresIn: '30d' } // Development: 30 days instead of 15 minutes
+        { expiresIn: '30d' }
     );
 
     const refreshToken = jwt.sign(

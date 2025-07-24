@@ -737,8 +737,8 @@ export const bulkImportStandardizedPrograms = asyncHandler(async (req: AuthReque
     for (const programData of programs) {
         try {
             // Validate required fields
-            if (!programData.id || !programData.code || !programData.name || !programData.credential) {
-                throw new Error('Missing required fields: id, code, name, credential');
+            if (!programData.id || !programData.code || !programData.name || !programData.credential || !programData.url) {
+                throw new Error('Missing required fields: id, code, name, credential, url');
             }
 
             // Check if program already exists
@@ -827,9 +827,11 @@ export const bulkImportStandardizedPrograms = asyncHandler(async (req: AuthReque
             results.errorCount++;
             results.errors.push({
                 program: programData.name || 'Unknown',
+                url: programData.url,
                 error: error.message
             });
-            logger.error(`Error processing program ${programData.name}:`, error.message);
+            console.log('Error processing program:', programData.name, 'URL:', programData.url, 'Error:', error.message);
+            logger.error(`Error processing program ${programData.name}:`, { error: error.message, url: programData.url });
         }
     }
 

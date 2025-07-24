@@ -19,8 +19,6 @@ import { authValidators, securityMiddleware } from "../middleWare/validation/aut
 
 const router = express.Router();
 
-// ===== PUBLIC ROUTES =====
-// ✅ REMOVED: Traditional signUp/signIn routes - now using magic link + OAuth
 
 // ✅ ENHANCED OAUTH ENDPOINT
 router.post("/oauth", [

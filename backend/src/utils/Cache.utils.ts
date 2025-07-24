@@ -1,17 +1,19 @@
 import Redis from 'ioredis';
 import { logger } from './logger.utils';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // ===== REDIS CONFIGURATION =====
 let redis: Redis | null = null;
 let isRedisConnected = false;
 let connectionAttempts = 0;
-const MAX_CONNECTION_ATTEMPTS = 3;
+const MAX_CONNECTION_ATTEMPTS = parseInt(process.env.MAX_CONNECTION_ATTEMPTS!!);
 
 // ✅ Initialize Redis with proper configuration
 const initializeRedis = async (): Promise<void> => {
     try {
-        const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
-        
+        const redisUrl = process.env.REDIS_URL!!;
         redis = new Redis(redisUrl, {
             lazyConnect: true,
             maxRetriesPerRequest: 3,

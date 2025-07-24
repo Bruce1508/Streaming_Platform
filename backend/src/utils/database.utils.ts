@@ -5,7 +5,7 @@ import { logger } from './logger.utils';
 // Database connection utility
 export const connectDatabase = async (): Promise<void> => {
     try {
-        const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/studybuddy';
+        const mongoUri = process.env.MONGODB_URL!!;
         
         const conn = await mongoose.connect(mongoUri, {
             maxPoolSize: 10,

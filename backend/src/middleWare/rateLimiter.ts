@@ -15,7 +15,7 @@ export const createRateLimit = (maxRequest: number, windowMinutes: number) => {
     })
 }
 
-const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
+const redis = new Redis(process.env.REDIS_URL!!);
 
 interface AuthAttempt {
     ip: string;

@@ -9,11 +9,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 import axios from 'axios';
 
-const BACKEND_URL = 'http://localhost:5001';
+const BACKEND_URL = process.env.BACKEND_URL!!;
 const BATCH_SIZE = 20;
 
 // Admin token - Update this with your actual token
-const ADMIN_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhZG1pbiIsImlkIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQHNlbmVjYS5jYSIsImlhdCI6MTc1MTA2NzE4NCwiZXhwIjoxNzUxMTUzNTg0LCJhdWQiOiJzZW5lY2EtYXBpIiwiaXNzIjoic2VuZWNhLWJhY2tlbmQifQ.Ly8s9lW7DuOSgFsY2yCBvxvr0rdIALk1hwcLfjg-_jQ';
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN!!;
 
 // School configurations
 const SCHOOL_CONFIGS: Record<string, { filePath: string; name: string }> = {
@@ -73,7 +73,7 @@ async function importBatch(schoolKey: string, standardizedPrograms: Standardized
                 successCount: response.data.results?.successCount || standardizedPrograms.length,
                 errorCount: response.data.results?.errorCount || 0,
                 totalProcessed: standardizedPrograms.length,
-                errors: response.data.results?.errors || []
+                errors: response.data.results?.errors || [],
             };
         } else {
             console.error(`❌ Batch import failed:`, response.data.message);
@@ -194,7 +194,7 @@ async function importSchoolPrograms(schoolKey: string): Promise<ImportResult> {
 
 async function main() {
     console.log('🚀 UNIVERSAL PROGRAM IMPORTER STARTED');
-    console.log('🎯 Standardized Fields: id, code, name, duration, campus, credential');
+    console.log('🎯 Standardized Fields: id, code, name, duration, campus, credential, url');
     console.log('🔧 Credential Types: bachelor, diploma, advanced diploma, certificate, other');
     console.log('=' .repeat(50));
 

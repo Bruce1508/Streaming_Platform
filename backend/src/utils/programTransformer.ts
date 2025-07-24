@@ -1,6 +1,5 @@
 import { logger } from './logger.utils';
 
-// Simplified standardized program interface
 export interface StandardizedProgram {
     id: string;
     code: string;
@@ -8,7 +7,7 @@ export interface StandardizedProgram {
     duration: string;
     campus: string[];
     credential: 'bachelor' | 'diploma' | 'advanced diploma' | 'certificate' | 'other';
-    url?: string;
+    url: string;
 }
 
 // School transformation configurations
@@ -248,6 +247,7 @@ export function validateStandardizedProgram(program: StandardizedProgram): boole
         program.code && 
         program.name && 
         program.credential &&
-        ['bachelor', 'diploma', 'advanced diploma', 'certificate', 'other'].includes(program.credential)
+        ['bachelor', 'diploma', 'advanced diploma', 'certificate', 'other'].includes(program.credential) &&
+        program.url
     );
 } 

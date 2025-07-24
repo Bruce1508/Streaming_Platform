@@ -8,7 +8,7 @@ import {
     getSystemHealth,
     getMyActivity,
     getTrendingContent
-} from '../controllers/dashboard.controllers'; // <-- Sử dụng file mới (số nhiều)
+} from '../controllers/dashboard.controllers';
 import { protectRoute, authorize } from '../middleWare/auth.middleware';
 import { validateQueryParams } from '../middleWare/validation/query.validation';
 
