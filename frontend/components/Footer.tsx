@@ -4,8 +4,15 @@ import Image from "next/image";
 
 export default function Footer() {
     return (
-        <footer className="bg-[#FAF9F6] text-gray-400 py-20">
-            <div className="flex flex-col md:flex-row items-center justify-between mb-30 max-w-7xl mx-auto w-full">
+        <footer className="bg-[#FAF9F6] text-gray-400 pt-20 pb-30 relative">
+            {/* Diagonal border top - Even thickness with black-red-white gradient */}
+            <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-r from-black via-red-600 to-white" 
+                 style={{
+                     clipPath: 'polygon(0 100%, 100% 0%, 100% 100%, 0% 100%)'
+                 }}>
+            </div>
+            
+            <div className="flex flex-col md:flex-row items-center justify-between mb-30 max-w-7xl mx-auto w-full pt-6">
                 
             </div>
             {/* Footer links and info */}

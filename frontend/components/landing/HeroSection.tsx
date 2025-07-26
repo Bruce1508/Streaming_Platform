@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from "@/components/ui/Button";
-import { MapPin, Edit3 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
@@ -13,16 +12,8 @@ const HeroSection = () => {
     const words = ["University", "College", "Program"];
 
     return (
-        <section className="w-full h-screen relative overflow-hidden flex items-center justify-center ">
-            <div
-                className={cn(
-                    "absolute inset-0",
-                    "[background-size:40px_40px]",
-                    "[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
-                    "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]",
-                )}
-            />
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[#FAF9F6] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black"></div>
+        <section className="w-full h-[80vh] relative overflow-hidden flex items-center justify-center bg-[#FAF9F6]">
+
 
             {/* Content Container - Left Aligned */}
             <div className="w-full relative z-10 flex items-center min-h-full">

@@ -171,10 +171,10 @@ export default function ExplorePrograms() {
         <section className="pt-40 pb-40 bg-[#FAF9F6] w-full border-t border-gray-200 overflow-hidden">
             <div className="w-full max-w-full mx-auto">
                 <h2 className="text-4xl sm:text-6xl font-bold mb-6 text-center tracking-tight">
-                    <span className="text-red-600">Discover. Learn. Succeed</span>
+                    <span className="text-red-600">Your Voice</span> <span className="text-black">Matters</span>
                 </h2>
                 <p className="text-[#899499] text-md mb-10 text-center max-w-3xl mx-auto font-semibold">
-                    Select a program to unlock resources shared by students like you.
+                    Share your experiences and help others make informed decisions about their education.
                 </p>
                 
                 {/* MagicUI Marquee */}

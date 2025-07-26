@@ -252,10 +252,8 @@ const ProgramsPage = () => {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6]">
-            {/* Navigation */}
-            <div className="sticky top-0 z-30">
-                <LandingNavBar />
-            </div>
+            {/* Navigation - đưa ra ngoài không bị sticky */}
+            <LandingNavBar />
 
             {/* Hero Section */}
             <div className="relative h-[500px] overflow-hidden">
@@ -504,17 +502,32 @@ const ProgramsPage = () => {
                     {/* Right Content - Results */}
                     <div className="lg:col-span-3">
 
-                        {/* Info Notice */}
-                        <div className="bg-white border border-gray-200 rounded-xl flex items-center gap-5 p-6 mb-8 mt-4 shadow-sm">
-                            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center">
-                                <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
-                                    <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                                    <circle cx="12" cy="16" r="1.5" fill="currentColor" />
-                                </svg>
-                            </div>
-                            <div className="text-lg text-gray-900 font-normal">
-                                The information is for informational purposes only. Check more details on the official website of the educational institution.
+                        {/* School Filter Buttons */}
+                        <div className="mb-8 mt-4">
+                            <div className="flex gap-2 flex-wrap">
+                                <button
+                                    onClick={() => setSelectedSchool("")}
+                                    className={`px-4 py-2 rounded-lg cursor-pointer border transition-colors
+                                        ${selectedSchool === ""
+                                            ? "border-black bg-white font-semibold shadow-sm"
+                                            : "border border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100"}
+                                    `}
+                                >
+                                    All Schools
+                                </button>
+                                {availableFilters.schools.slice(0, 8).map((school) => (
+                                    <button
+                                        key={school}
+                                        onClick={() => setSelectedSchool(school)}
+                                        className={`px-4 py-2 rounded-lg border cursor-pointer transition-colors
+                                            ${selectedSchool === school
+                                                ? "border-black bg-white font-semibold shadow-sm"
+                                                : "border border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100"}
+                                        `}
+                                    >
+                                        {school}
+                                    </button>
+                                ))}
                             </div>
                         </div>
 
@@ -537,7 +550,7 @@ const ProgramsPage = () => {
                                     'George Brown College': '/George_Brown_College_logo.svg',
                                     'Toronto Metropolitan University': '/TMU_logo.svg',
                                     'York University': '/Logo_York_University.svg',
-                                    'University of Manitoba': '/Winnipeg_univ_ca_textlogo.png',
+                                    'University of Manitoba': '/University-of-Manitoba-logo_1.png',
                                 };
                                 const logoSrc = schoolLogoMap[program.school] || '/logo.png';
                                 
@@ -548,7 +561,7 @@ const ProgramsPage = () => {
                                 };
                                 
                                 // Generate random colors for card backgrounds
-                                const cardColors = ['bg-purple-100', 'bg-green-100', 'bg-gray-100', 'bg-blue-100', 'bg-yellow-100'];
+                                const cardColors = ['bg-purple-200/60', 'bg-green-100', 'bg-red-100', 'bg-blue-100', 'bg-yellow-100'];
                                 const cardColor = cardColors[index % cardColors.length];
                                 
                                 return (
@@ -570,29 +583,35 @@ const ProgramsPage = () => {
                                                     {program.school}
                                                 </p>
                                             </div>
-                                            <Image  
-                                                src={logoSrc} 
-                                                alt={program.school} 
-                                                className="hover:grayscale-0 transition object-contain" 
-                                                width={program.school === 'Humber College' || program.school === 'University of Manitoba' ? 100 : 64}
-                                                height={program.school === 'Humber College' || program.school === 'University of Manitoba' ? 100 : 64}
-                                            />
                                         </div>
 
                                         {/* Location and credential info */}
-                                        <div className="mb-3 space-y-1">
-                                            <div className="flex items-center text-gray-600">
-                                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                </svg>
-                                                <span>{getLocation(program.school)}</span>
+                                        <div className="flex items-center justify-between mb-3">
+                                            {/* Left: Location + Credential */}
+                                            <div className="space-y-1">
+                                                <div className="flex items-center text-gray-600">
+                                                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                    <span>{getLocation(program.school)}</span>
+                                                </div>
+                                                <div className="flex items-center text-gray-600">
+                                                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    <span>{program.credential ? program.credential.charAt(0).toUpperCase() + program.credential.slice(1) : 'Various Programs'}</span>
+                                                </div>
                                             </div>
-                                            <div className="flex items-center text-gray-600">
-                                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                                <span>{program.credential ? program.credential.charAt(0).toUpperCase() + program.credential.slice(1) : 'Various Programs'}</span>
+                                            {/* Right: Logo */}
+                                            <div className="flex-shrink-0 flex items-center h-full">
+                                                <Image
+                                                    src={logoSrc}
+                                                    alt={program.school}
+                                                    width={program.school === 'Humber College' ? 100 : program.school === 'University of Manitoba' ? 140 : 64}
+                                                    height={program.school === 'Humber College' ? 100 : 64}
+                                                    className="object-contain"
+                                                />
                                             </div>
                                         </div>
 

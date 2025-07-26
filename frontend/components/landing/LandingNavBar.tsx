@@ -4,13 +4,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/Button';
-import { SearchIcon, BookOpenCheck, UserIcon, ChevronDownIcon } from 'lucide-react';
+import { UserIcon, ChevronDownIcon } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
 const LandingNavBar = () => {
     const { data: session } = useSession();
     const user = session?.user;
-    const [showUserMenu, setShowUserMenu] = useState(false);
     const [showAccountModal, setShowAccountModal] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null);
     const [isScrolled, setIsScrolled] = useState(false);
@@ -42,35 +41,26 @@ const LandingNavBar = () => {
 
     return (
         <header
-            className={`top-0 left-0 right-0 z-50 w-full transition-all duration-300
-                ${isScrolled ? 'fixed backdrop-blur-sm bg-[#18191A]/70 shadow-lg' : 'absolute bg-transparent'}`}
+            className={`relative w-full transition-all duration-300 bg-white shadow-sm border-b border-gray-200 z-50`}
         >
             {/* Nav Links - Centered */}
-            <nav className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center gap-8 font-medium ${isScrolled ? 'text-white' : 'text-black'}`}>
-                <Link href="/" className="hover:text-gray-400">Home</Link>
-                <Link href="/courses" className="hover:text-gray-400">Courses</Link>
-                <Link href="/programs" className="hover:text-gray-400">Programs</Link>
-                <Link href="/resources" className="hover:text-gray-400">Resources</Link>
-                <Link href="/about" className="hover:text-gray-400">About</Link>
+            <nav className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center gap-8 font-medium text-black`}>
+                <Link href="/" className="hover:text-gray-600">Home</Link>
+                <Link href="/courses" className="hover:text-gray-600">Courses</Link>
+                <Link href="/programs" className="hover:text-gray-600">Programs</Link>
+                <Link href="/resources" className="hover:text-gray-600">Resources</Link>
+                <Link href="/about" className="hover:text-gray-600">About</Link>
             </nav>
             <div className="flex items-center justify-between h-20 w-full px-6 xl:px-16 2xl:px-32">
                 {/* Left Side: Logo */}
                 <div className="flex items-center">
                     <Link href="/" className="flex items-center gap-2.5">
-                        <span className={`text-2xl md:text-3xl font-bold ${isScrolled ? 'text-white' : 'text-black'}`}>StudyBuddy</span>
+                        <span className={`text-2xl md:text-3xl font-bold text-black`}>StudyHub</span>
                     </Link>
                 </div>
                 {/* Right Side: Search, Auth buttons */}
                 <div className="flex items-center gap-4">
-                    {/* <div className="relative hidden sm:block">
-                        <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                        <input
-                            type="text"
-                            placeholder="Search"
-                            className="pl-10 pr-4 py-2 w-64 md:w-80 rounded-full bg-white/20 border-transparent text-white placeholder-gray-300 focus:bg-white focus:border-gray-300 focus:ring-0 focus:text-black transition"
-                        />
-                    </div> */}
-                    {/* Conditional rendering based on authentication */}
+                    
                     {user ? (
                         // Logged in user
                         <div className="flex items-center gap-3">
