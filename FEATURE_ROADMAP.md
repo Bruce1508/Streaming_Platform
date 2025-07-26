@@ -278,7 +278,7 @@ interface ForumSystem {
 
 #### **8.1 Program Review Forums**
 - 📝 **Detailed Program Reviews** - In-depth reviews with ratings
-- 💼 **Post-Graduation Employment Reports** - Job outcomes and salaries
+- 💼 **Post-Graduation Employment Reports** - Job outcomes and salarieskl
 - 📊 **Program vs Program Comparisons** - Side-by-side analysis
 - ⚠️ **Program Red Flags & Warnings** - Issues to watch out for
 - 🏆 **Best Programs by Category** - Top-rated programs

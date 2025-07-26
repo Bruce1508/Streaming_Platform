@@ -15,6 +15,7 @@ async function main() {
         programs.forEach((program, idx) => {
             console.log(`${idx + 1}. Name: ${program.name}`);
             console.log(`   ProgramId: ${program.programId || program.id}`);
+            console.log(`   Credential: ${program.credential}`);
             console.log(`   URL: ${program.url}`);
             console.log('---');
         });
