@@ -490,7 +490,7 @@ const ProgramReviewPage = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-8">
                     {/* Title centered below back button (removed back button here) */}
                     <div className="flex justify-center mb-12">
-                        <h1 className={`text-4xl md:text-5xl font-bold text-[#0047AB] ${geist.className} text-center`}>
+                        <h1 className={`text-4xl md:text-5xl font-bold text-red-600 ${geist.className} text-center`}>
                             What others say about this program
                         </h1>
                     </div>

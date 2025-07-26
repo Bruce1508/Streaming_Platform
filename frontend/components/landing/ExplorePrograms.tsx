@@ -168,12 +168,10 @@ const ProgramCard = ({ program }: { program: typeof programs[0] }) => {
 
 export default function ExplorePrograms() {
     return (
-        <section className="pt-30 pb-40 bg-[#FAF9F6] w-full border-t border-gray-200 overflow-hidden">
+        <section className="pt-40 pb-40 bg-[#FAF9F6] w-full border-t border-gray-200 overflow-hidden">
             <div className="w-full max-w-full mx-auto">
                 <h2 className="text-4xl sm:text-6xl font-bold mb-6 text-center tracking-tight">
-                    <span className="text-[#191970]">Discover.</span>{' '}
-                    <span className="text-[#301934]">Learn.</span>{' '}
-                    <span className="text-[#191970]">Succeed</span>
+                    <span className="text-red-600">Discover. Learn. Succeed</span>
                 </h2>
                 <p className="text-[#899499] text-md mb-10 text-center max-w-3xl mx-auto font-semibold">
                     Select a program to unlock resources shared by students like you.

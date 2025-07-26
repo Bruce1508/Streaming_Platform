@@ -9,6 +9,7 @@ import { programAPI } from "@/lib/api";
 import { Program } from "@/types/Program";
 import Footer from '@/components/Footer';
 import { schoolCounts } from "@/constants/programData";
+import Image from 'next/image';
 
 const ProgramsPage = () => {
     // State management
@@ -369,15 +370,30 @@ const ProgramsPage = () => {
 
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-6 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                     {/* Left Sidebar - Filter */}
                     <div className="lg:col-span-1">
                         <div className="bg-white rounded-lg p-6 shadow-sm sticky top-8 py-10">
-                            {/* <h2 className="text-xl font-semibold mb-6 text-gray-900">Filters</h2> */}
+                            <div className="flex items-center justify-between mb-15">
+                                <h2 className="text-2xl font-bold text-gray-900">Filters</h2>
+                                <button
+                                    className="text-md text-indigo-500 hover:underline cursor-pointer font-medium px-0 py-0 bg-transparent shadow-none border-none outline-none"
+                                    onClick={() => {
+                                        setSearchTerm("");
+                                        setSelectedSchool("");
+                                        setSelectedLevel("");
+                                        setSelectedCredential("");
+                                        fetchPrograms(1);
+                                    }}
+                                    type="button"
+                                >
+                                    Reset all
+                                </button>
+                            </div>
 
                             {/* School Names Filter */}
                             <div className="mb-8">
-                                <h3 className="text-lg font-medium mb-4 text-gray-900">SCHOOL</h3>
+                                <h3 className="text-lg font-medium mb-4 text-gray-900">School</h3>
                                 <div className="space-y-3">
                                     {(showMoreSchools ? availableFilters.schools : availableFilters.schools.slice(0, 5)).map((school, index) => (
                                         <label key={school} className="flex items-center justify-between cursor-pointer group">
@@ -399,12 +415,12 @@ const ProgramsPage = () => {
                                     ))}
                                 </div>
                                 {availableFilters.schools.length > 5 && !showMoreSchools && (
-                                    <button type="button" className="text-gray-600 text-sm mt-3 hover:text-gray-800 transition-colors" onClick={() => setShowMoreSchools(true)}>
+                                    <button type="button" className="text-gray-600 text-sm mt-3 hover:text-gray-800 transition-colors opacity-50 cursor-pointer" onClick={() => setShowMoreSchools(true)}>
                                         + Show more
                                     </button>
                                 )}
                                 {availableFilters.schools.length > 5 && showMoreSchools && (
-                                    <button type="button" className="text-gray-600 text-sm mt-3 hover:text-gray-800 transition-colors" onClick={() => setShowMoreSchools(false)}>
+                                    <button type="button" className="text-gray-600 text-sm mt-3 hover:text-gray-800 transition-colors opacity-50 cursor-pointer" onClick={() => setShowMoreSchools(false)}>
                                         Show less
                                     </button>
                                 )}
@@ -412,7 +428,7 @@ const ProgramsPage = () => {
 
                             {/* Study Level Filter */}
                             <div className="mb-8">
-                                <h3 className="text-lg font-medium mb-4 text-gray-900">STUDY LEVEL</h3>
+                                <h3 className="text-lg font-medium mb-4 text-gray-900">Study Level</h3>
                                 <div className="space-y-3">
                                     <label className="flex items-center cursor-pointer group">
                                         <input
@@ -455,7 +471,7 @@ const ProgramsPage = () => {
 
                             {/* Credentials Filter */}
                             <div>
-                                <h3 className="text-lg font-medium text-gray-900">DEGREE</h3>
+                                <h3 className="text-lg font-medium text-gray-900 mb-4">Degree</h3>
                                 <div className="space-y-3">
                                     {availableFilters.credentials.slice(0, 6).map((credential, index) => (
                                         <label key={credential} className="flex items-center justify-between cursor-pointer group">
@@ -504,7 +520,7 @@ const ProgramsPage = () => {
 
 
                         {/* Programs Grid */}
-                        <div className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6">
                             {loading && filteredPrograms.length === 0 && (
                                 <div className="text-center py-12">
                                     <div className="animate-spin w-8 h-8 border-4 border-gray-400 border-t-transparent rounded-full mx-auto mb-4"></div>
@@ -513,122 +529,108 @@ const ProgramsPage = () => {
                             )}
 
                             {!loading && filteredPrograms.map((program, index) => {
-                                console.log(`Program ${index}:`, {
-                                    id: program._id,
-                                    name: program.name,
-                                    code: program.code,
-                                    school: program.school,
-                                    url: program.url,
-                                    programId: program.programId,
-                                    credential: program.credential,
-                                    level: program.level,
-                                    // Log toàn bộ object để xem có field nào khác
-                                    fullProgram: program
-                                });
+                                // Map school name to logo file name
+                                const schoolLogoMap: Record<string, string> = {
+                                    'Humber College': '/Humber_College_logo.svg',
+                                    'Seneca College': '/Seneca-logo.svg',
+                                    'Centennial College': '/centennial.png',
+                                    'George Brown College': '/George_Brown_College_logo.svg',
+                                    'Toronto Metropolitan University': '/TMU_logo.svg',
+                                    'York University': '/Logo_York_University.svg',
+                                    'University of Manitoba': '/Winnipeg_univ_ca_textlogo.png',
+                                };
+                                const logoSrc = schoolLogoMap[program.school] || '/logo.png';
+                                
+                                // Location mapping
+                                const getLocation = (school: string) => {
+                                    if (school === 'University of Manitoba') return 'Winnipeg, MB';
+                                    return 'Ontario, CA';
+                                };
+                                
+                                // Generate random colors for card backgrounds
+                                const cardColors = ['bg-purple-100', 'bg-green-100', 'bg-gray-100', 'bg-blue-100', 'bg-yellow-100'];
+                                const cardColor = cardColors[index % cardColors.length];
+                                
                                 return (
                                     <div
                                         key={program._id}
-                                        className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                                        className={`${cardColor} rounded-2xl border border-gray-200 px-8 py-6 hover:shadow-lg transition-shadow relative flex flex-col w-full min-h-[200px]`}
                                     >
-                                        {/* Header with school name and location */}
-                                        <div className="mb-4">
-                                            <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                        {/* Top section with salary/tuition */}
+                                        <div className="mb-3">
+                                            <div className="text-xl font-bold text-gray-900 mb-1 leading-tight">
                                                 {program.name}
-                                            </h3>
-                                            <div className="flex items-center text-gray-600 mb-4">
-                                                <span className="text-lg">🇨🇦</span>
-                                                <span className="ml-2">Canada, {program.campus[0] || 'Multiple Locations'}</span>
-                                            </div>
-
-                                            {/* Rankings */}
-                                            <div className="flex flex-wrap gap-2 mb-6">
-                                                <span className="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
-                                                    #{Math.floor(Math.random() * 50) + 1} QS Rankings
-                                                </span>
-                                                <span className="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
-                                                    #{Math.floor(Math.random() * 50) + 1} THE Rankings
-                                                </span>
-                                                <span className="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
-                                                    #{Math.floor(Math.random() * 50) + 1} ARWU Rankings
-                                                </span>
                                             </div>
                                         </div>
 
-                                        {/* Degree Programs and Pricing */}
-                                        <div className="grid grid-cols-3 gap-6 mb-6">
-                                            {/* Bachelor's degree */}
-                                            <div className="text-center">
-                                                <h4 className="font-semibold text-gray-800 mb-3">Bachelor's degree</h4>
-                                                <div className="space-y-1">
-                                                    <div className="text-xs text-gray-500">from</div>
-                                                    <div className="text-lg font-bold text-gray-900">
-                                                        {(Math.floor(Math.random() * 5000) + 15000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
-                                                    </div>
-                                                    <div className="text-xs text-gray-500">to</div>
-                                                    <div className="text-lg font-bold text-gray-900">
-                                                        {(Math.floor(Math.random() * 15000) + 35000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
-                                                    </div>
-                                                </div>
+                                        {/* Program name and school with logo */}
+                                        <div className="flex items-start justify-between mb-3">
+                                            <div className="flex-1 pr-4">
+                                                <p className="text-gray-700 font-medium text-lg">
+                                                    {program.school}
+                                                </p>
                                             </div>
+                                            <Image  
+                                                src={logoSrc} 
+                                                alt={program.school} 
+                                                className="hover:grayscale-0 transition object-contain" 
+                                                width={program.school === 'Humber College' || program.school === 'University of Manitoba' ? 100 : 64}
+                                                height={program.school === 'Humber College' || program.school === 'University of Manitoba' ? 100 : 64}
+                                            />
+                                        </div>
 
-                                            {/* Master's degree */}
-                                            <div className="text-center">
-                                                <h4 className="font-semibold text-gray-800 mb-3">Master's degree</h4>
-                                                <div className="space-y-1">
-                                                    <div className="text-xs text-gray-500">from</div>
-                                                    <div className="text-lg font-bold text-gray-900">
-                                                        {(Math.floor(Math.random() * 8000) + 20000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
-                                                    </div>
-                                                    <div className="text-xs text-gray-500">to</div>
-                                                    <div className="text-lg font-bold text-gray-900">
-                                                        {(Math.floor(Math.random() * 20000) + 45000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
-                                                    </div>
-                                                </div>
+                                        {/* Location and credential info */}
+                                        <div className="mb-3 space-y-1">
+                                            <div className="flex items-center text-gray-600">
+                                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                </svg>
+                                                <span>{getLocation(program.school)}</span>
                                             </div>
+                                            <div className="flex items-center text-gray-600">
+                                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span>{program.credential ? program.credential.charAt(0).toUpperCase() + program.credential.slice(1) : 'Various Programs'}</span>
+                                            </div>
+                                        </div>
 
-                                            {/* Doctoral studies */}
-                                            <div className="text-center">
-                                                <h4 className="font-semibold text-gray-800 mb-3">Doctoral studies</h4>
-                                                <div className="space-y-1">
-                                                    <div className="text-xs text-gray-500">from</div>
-                                                    <div className="text-lg font-bold text-gray-900">
-                                                        {(Math.floor(Math.random() * 5000) + 25000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
-                                                    </div>
-                                                    <div className="text-xs text-gray-500">to</div>
-                                                    <div className="text-lg font-bold text-gray-900">
-                                                        {(Math.floor(Math.random() * 10000) + 35000).toLocaleString()} <span className="text-xs font-normal text-gray-600">USD</span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        {/* Tags */}
+                                        <div className="flex flex-wrap gap-2 mb-4">
+                                            {program.level && (
+                                                <span className="bg-gray-100 text-gray-700 text-xs font-medium px-3 py-1 rounded-full">
+                                                    {program.level}
+                                                </span>
+                                            )}
+                                            <span className="bg-gray-100 text-gray-700 text-xs font-medium px-3 py-1 rounded-full">
+                                                {program.credential ? program.credential.charAt(0).toUpperCase() + program.credential.slice(1) : 'Program'}
+                                            </span>
+                                            <span className="bg-gray-100 text-gray-700 text-xs font-medium px-3 py-1 rounded-full">
+                                                {Math.floor(Math.random() * 3) + 2}-{Math.floor(Math.random() * 2) + 4} years
+                                            </span>
                                         </div>
 
                                         {/* Action Buttons */}
-                                        <div className="flex gap-4">
+                                        <div className="flex gap-3 mt-auto">
                                             <button
                                                 onClick={() => {
-                                                    // Debug: Log program data when button is clicked
-                                                    console.log('Program data:', {
-                                                        id: program._id,
-                                                        name: program.name,
-                                                        url: program.url,
-                                                        programId: program.programId,
-                                                        fullProgram: program
-                                                    });
-
                                                     if (program.url) {
                                                         window.open(program.url, '_blank', 'noopener,noreferrer');
                                                     } else {
-                                                        window.location.href = `/programs/${program.programId}`;
+                                                        alert('Program URL not available');
                                                     }
                                                 }}
-                                                className="cursor-pointer flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-3 px-4 rounded-lg transition-colors"
+                                                className="cursor-pointer bg-[#36454F] hover:bg-gray-600 text-white font-medium py-3 px-4 rounded-xl flex-1 transition-colors"
                                             >
-                                                {program.url ? 'Visit Official Page' : 'Read more'}
+                                                See more
                                             </button>
-                                            <button className="cursor-pointer flex-1 bg-gray-800 hover:bg-gray-900 text-white font-medium py-3 px-4 rounded-lg transition-colors" onClick={() => {
-                                                window.location.href = `/programs/${program.programId}`;
+                                            <button className="w-12 h-12 bg-white hover:bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center transition-colors cursor-pointer" onClick={() => {
+                                                // Heart/favorite functionality
                                             }}>
-                                                Write a review
+                                                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                                </svg>
                                             </button>
                                         </div>
                                     </div>

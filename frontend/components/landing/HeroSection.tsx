@@ -50,26 +50,25 @@ const HeroSection = () => {
                                 </div>
                             </motion.h1>
                             {/* Description */}
-                            <p className="text-base md:text-lg text-gray-600 mb-8 md:mb-10 max-w-xl leading-relaxed">
-                            Explore detailed and honest reviews shared by Canadian students about the academic programs, individual courses, and overall university life they've experienced. 
-                            Gain valuable insights to help you make confident decisions about your future education.
+                            <p className="text-base md:text-lg text-gray-7s00 mb-10 md:mb-15 max-w-xl leading-relaxed">
+                                Honest insights from Canadian students to help you choose the right school, program, and path
                             </p>
                             {/* Action Buttons */}
                             <div className="flex flex-col sm:flex-row gap-4 justify-start items-start sm:items-center">
                                 <Link href="/programs">
                                     <InteractiveHoverButton
-                                        className="bg-red-600 text-white px-6 md:px-8 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                                        className="bg-red-600 text-white px-6 py-3 md:px-8 md:py-4 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
                                     >
                                         Browse Schools
                                     </InteractiveHoverButton>
                                 </Link>
-                                <Link href="/sign-up">
+                                <Link href="/programs">
                                     <Button
                                         variant="outline"
                                         size="lg"
-                                        className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-6 md:px-8 py-3 md:py-4 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                                        className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-6 py-3 md:px-8 md:py-7 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
                                     >
-                                        <Edit3 className="w-4 h-4 md:w-5 md:h-5" />
+
                                         Write a Review
                                     </Button>
                                 </Link>
@@ -77,11 +76,11 @@ const HeroSection = () => {
                         </div>
                         {/* Right: Iphone image */}
                         <div className="flex-1 hidden md:flex justify-center items-center flex-shrink-0 ml-7 mt-25">
-                            <Image 
+                            <Image
                                 src="/Iphone.png"
-                                alt="iPhone" 
-                                className="h-[500px] lg:h-[700px] 2xl:h-[800px] 4xl:h-[1000px] w-auto object-cover drop-shadow-2xl" 
-                                width={500} 
+                                alt="iPhone"
+                                className="h-[500px] lg:h-[700px] 2xl:h-[800px] 4xl:h-[1000px] w-auto object-cover drop-shadow-2xl"
+                                width={500}
                                 height={500}
                                 priority
                             />
