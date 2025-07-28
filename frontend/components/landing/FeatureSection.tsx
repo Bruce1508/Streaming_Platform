@@ -5,12 +5,12 @@ import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 export function GlowingEffectDemoSecond() {
     return (
-        <div className="pb-20">
+        <div className="pb-20 pt-40 bg-[#F8FFE5]">
             <div className="container mx-auto px-6 xl:px-16 2xl:max-w-7xl">
                 {/* Title Section */}
                 <div className="w-full mb-16">
-                    <h4 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black dark:text-white">
-                        <span>The Leading Platform</span> for <span className="text-red-600">Program &</span> <span className="text-red-600"> School</span> Reviews in <span className="text-red-600">Canada</span>
+                    <h4 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight text-black dark:text-white">
+                        <span>The Leading Platform</span> for <span className="text-[#9B2037] font-bold">Program &</span> <span className="text-[#9B2037] font-bold"> School</span> Reviews in <span className="text-[#9B2037] font-bold">Canada</span>
                     </h4>
                     <p className="text-sm lg:text-base max-w-2xl my-4 mx-auto text-neutral-500 text-center font-normal dark:text-neutral-300">
                         Browse real student reviews, compare programs, and help others make informed decisions about their education across Canada.

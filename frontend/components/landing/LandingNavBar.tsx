@@ -41,10 +41,10 @@ const LandingNavBar = () => {
 
     return (
         <header
-            className={`relative w-full transition-all duration-300 bg-white shadow-sm border-b border-gray-200 z-50`}
+            className={`relative w-full transition-all duration-300 bg-[#013237]`}
         >
             {/* Nav Links - Centered */}
-            <nav className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center gap-8 font-medium text-black`}>
+            <nav className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center gap-8 font-bold text-[#DDC09F]`}>
                 <Link href="/" className="hover:text-gray-600">Home</Link>
                 <Link href="/courses" className="hover:text-gray-600">Courses</Link>
                 <Link href="/programs" className="hover:text-gray-600">Programs</Link>
@@ -55,7 +55,7 @@ const LandingNavBar = () => {
                 {/* Left Side: Logo */}
                 <div className="flex items-center">
                     <Link href="/" className="flex items-center gap-2.5">
-                        <span className={`text-2xl md:text-3xl font-bold text-black`}>StudyHub</span>
+                        <span className={`text-2xl md:text-3xl font-bold text-[#DDC09F]`}>StudyHub</span>
                     </Link>
                 </div>
                 {/* Right Side: Search, Auth buttons */}

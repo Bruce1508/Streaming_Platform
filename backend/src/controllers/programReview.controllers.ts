@@ -5,7 +5,7 @@ import User from '../models/User';
 import { ApiError } from '../utils/ApiError';
 import { ApiResponse } from '../utils/ApiResponse';
 import { asyncHandler } from '../utils/asyncHandler';
-import { AuthRequest } from '../middleware/auth.middleware';
+import { AuthRequest } from '../middleWare/auth.middleware';
 import { createNotification } from './notification.controllers';
 import { calculateAverageRating, getGradeFromScore, calculateGradeDistribution } from '../utils/gradeCalculator';
 

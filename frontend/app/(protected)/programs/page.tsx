@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Search, ChevronDown } from "lucide-react";
 import LandingNavBar from "@/components/landing/LandingNavBar";
 import { Button } from "@/components/ui/Button";
@@ -12,6 +13,8 @@ import { schoolCounts } from "@/constants/programData";
 import Image from 'next/image';
 
 const ProgramsPage = () => {
+    const router = useRouter();
+    
     // State management
     const [programs, setPrograms] = useState<Program[]>([]);
     const [filteredPrograms, setFilteredPrograms] = useState<Program[]>([]);
@@ -367,11 +370,11 @@ const ProgramsPage = () => {
             </div>
 
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-6 py-8">
+            <div className="max-w-7xl mx-auto px-6 pt-10 pb-30">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                     {/* Left Sidebar - Filter */}
                     <div className="lg:col-span-1">
-                        <div className="bg-white rounded-lg p-6 shadow-sm sticky top-8 py-10">
+                        <div className="bg-[#E0E0E0] rounded-lg p-6 shadow-sm sticky top-8 py-10">
                             <div className="flex items-center justify-between mb-15">
                                 <h2 className="text-2xl font-bold text-gray-900">Filters</h2>
                                 <button
@@ -634,11 +637,7 @@ const ProgramsPage = () => {
                                         <div className="flex gap-3 mt-auto">
                                             <button
                                                 onClick={() => {
-                                                    if (program.url) {
-                                                        window.open(program.url, '_blank', 'noopener,noreferrer');
-                                                    } else {
-                                                        alert('Program URL not available');
-                                                    }
+                                                    router.push(`/programs/${program.programId}`);
                                                 }}
                                                 className="cursor-pointer bg-[#36454F] hover:bg-gray-600 text-white font-medium py-3 px-4 rounded-xl flex-1 transition-colors"
                                             >
@@ -730,6 +729,7 @@ const ProgramsPage = () => {
                     </div>
                 </div>
             </div>
+            <div className="pb-60"></div>
             <Footer />
         </div>
     );

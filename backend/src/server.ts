@@ -11,15 +11,12 @@ import uploadRoutes from "./routes/upload.routes";
 import { connectDB } from "./lib/db";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
-import courseRoutes from "./routes/course.routes";
 import schoolRoutes from "./routes/school.routes";
 import programRoutes from "./routes/program.routes";
 import programReviewRoutes from "./routes/programReview.routes";
-import onboardingRoutes from "./routes/onboarding.routes";
 import notificationRoutes from "./routes/notification.routes";
 import { errorHandler, notFound } from "./middleWare/error.middleware";
 
-// ✅ Import all models to register schemas
 import "./models/User";
 import "./models/School";
 import "./models/Program";
@@ -76,11 +73,9 @@ app.use("/api/sessions", sessionRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/materials", materialRoutes);
 app.use("/api/upload", uploadRoutes);
-app.use("/api/courses", courseRoutes);
 app.use("/api/schools", schoolRoutes);
 app.use("/api/programs", programRoutes);
 app.use("/api/program-reviews", programReviewRoutes);
-app.use("/api/onboarding", onboardingRoutes);
 app.use("/api/notifications", notificationRoutes);
 
 // Handle undefined routes
@@ -89,7 +84,7 @@ app.all('/{*any}', notFound);
 // ✅ Global error handler
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT!!;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     connectDB();

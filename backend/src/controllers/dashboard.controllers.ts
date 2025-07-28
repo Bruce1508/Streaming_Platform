@@ -1,6 +1,6 @@
 // controllers/dashboard.controllers.ts - NEW FILE WITH COMPREHENSIVE STATS
 import { Request, Response } from 'express';
-import { AuthRequest } from '../middleware/auth.middleware';
+import { AuthRequest } from '../middleWare/auth.middleware';
 import { asyncHandler } from '../utils/asyncHandler';
 import { ApiResponse } from '../utils/ApiResponse';
 import { 

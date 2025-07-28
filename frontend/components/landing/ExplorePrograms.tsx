@@ -141,7 +141,7 @@ const programs = [
 // Component for individual program card
 const ProgramCard = ({ program }: { program: typeof programs[0] }) => {
     return (
-        <div className="bg-[#FAF9F6] rounded-xl border border-gray-200 min-h-[200px] w-[400px] flex flex-col justify-between transition-all cursor-pointer duration-300 hover:shadow-2xl hover:border-2 hover:bg-white/95 flex-shrink-0 mx-4"
+        <div className="bg-[#F8FFE5] rounded-xl border border-gray-200 min-h-[200px] w-[400px] flex flex-col justify-between transition-all cursor-pointer duration-300 hover:shadow-2xl hover:border-2 hover:bg-white/95 flex-shrink-0 mx-4"
             style={{ 
                 boxShadow: '0 8px 32px 0 rgba(16,30,54,0.08), 0 1.5px 3px 0 rgba(16,30,54,0.03), 0 0 0 1px rgba(0,0,0,0.05), 0 4px 8px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1), 0 16px 32px rgba(0,0,0,0.1)' 
             }}
@@ -168,10 +168,10 @@ const ProgramCard = ({ program }: { program: typeof programs[0] }) => {
 
 export default function ExplorePrograms() {
     return (
-        <section className="pt-40 pb-40 bg-[#FAF9F6] w-full border-t border-gray-200 overflow-hidden">
+        <section className="pt-40 pb-40 bg-[#F8FFE5] w-full border-t border-gray-200 overflow-hidden">
             <div className="w-full max-w-full mx-auto">
                 <h2 className="text-4xl sm:text-6xl font-bold mb-6 text-center tracking-tight">
-                    <span className="text-red-600">Your Voice</span> <span className="text-black">Matters</span>
+                    <span className="text-[#9B2037]">Your Voice</span> <span className="text-black">Matters</span>
                 </h2>
                 <p className="text-[#899499] text-md mb-10 text-center max-w-3xl mx-auto font-semibold">
                     Share your experiences and help others make informed decisions about their education.

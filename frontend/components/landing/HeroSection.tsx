@@ -12,7 +12,7 @@ const HeroSection = () => {
     const words = ["University", "College", "Program"];
 
     return (
-        <section className="w-full h-[80vh] relative overflow-hidden flex items-center justify-center bg-[#FAF9F6]">
+        <section className="bg-[#023436] w-full h-[65vh] relative overflow-hidden flex items-center justify-center pt-10 pb-20">
 
 
             {/* Content Container - Left Aligned */}
@@ -30,25 +30,25 @@ const HeroSection = () => {
                                 )}
                                 layout
                             >
-                                <div className="mb-2">
+                                <div className="mb-2 text-[#FBF1F0]">
                                     Find Your Perfect
                                 </div>
                                 <div className="flex items-baseline flex-wrap xl:flex-nowrap">
-                                    <span className="text-red-600 text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-bold">Canadian</span>
+                                    <span className="text-[#FBFF12] text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-bold">Canadian</span>
                                     <div className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-bold w-[280px] md:w-[420px] lg:w-[520px] xl:w-[640px] 2xl:w-[720px] ml-3">
                                         <ContainerTextFlip words={words} />
                                     </div>
                                 </div>
                             </motion.h1>
                             {/* Description */}
-                            <p className="text-base md:text-lg text-gray-7s00 mb-10 md:mb-15 max-w-xl leading-relaxed">
+                            <p className="text-base md:text-lg text-[#D8C99B] mb-10 md:mb-15 max-w-xl leading-relaxed font-medium">
                                 Honest insights from Canadian students to help you choose the right school, program, and path
                             </p>
                             {/* Action Buttons */}
                             <div className="flex flex-col sm:flex-row gap-4 justify-start items-start sm:items-center">
                                 <Link href="/programs">
                                     <InteractiveHoverButton
-                                        className="bg-red-600 text-white px-6 py-3 md:px-8 md:py-4 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                                        className="text-[#FBFF12] bg-[#0C0F0A] px-6 py-3 md:px-8 md:py-3 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
                                     >
                                         Browse Schools
                                     </InteractiveHoverButton>
@@ -57,7 +57,7 @@ const HeroSection = () => {
                                     <Button
                                         variant="outline"
                                         size="lg"
-                                        className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-6 py-3 md:px-8 md:py-7 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                                        className="text-[#FBFF12] bg-[#0C0F0A] border-none px-6 py-3 md:px-8 md:py-7 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
                                     >
 
                                         Write a Review
@@ -66,11 +66,11 @@ const HeroSection = () => {
                             </div>
                         </div>
                         {/* Right: Iphone image */}
-                        <div className="flex-1 hidden md:flex justify-center items-center flex-shrink-0 ml-7 mt-25">
+                        <div className="flex-1 hidden md:flex justify-center items-center flex-shrink-0 ml-7 mt-30">
                             <Image
                                 src="/Iphone.png"
                                 alt="iPhone"
-                                className="h-[500px] lg:h-[700px] 2xl:h-[800px] 4xl:h-[1000px] w-auto object-cover drop-shadow-2xl"
+                                className="h-[500px] lg:h-[700px] 2xl:h-[900px] 4xl:h-[1200px] w-auto object-cover drop-shadow-2xl"
                                 width={500}
                                 height={500}
                                 priority

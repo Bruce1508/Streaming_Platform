@@ -16,7 +16,7 @@ export default function HomePage() {
 				<GlowingEffectDemoSecond />
 
 				{/* Trusted By Universities Section */}
-				<div className="bg-[#FAF9F6] pb-10 pt-20">
+				<div className="bg-[#F8FFE5] pb-10 pt-20">
 					<div className="flex flex-col items-center gap-6 mb-10">
 						<div className="flex flex-wrap justify-center items-center gap-20 mb-10">
 							<img src="/Seneca-logo.svg" alt="Seneca College" className="h-10 hover:grayscale-0 transition" />
@@ -38,12 +38,9 @@ export default function HomePage() {
 				<ReadyToGetStarted />
 
 				{/* Main Content Container */}
-				<div className="container mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="max-w-5xl mx-auto">
-						{/* Future sections can be added here */}
-					</div>
-				</div>
+				
 			</main>
+			
 			<Footer />
 		</div>
 	);
