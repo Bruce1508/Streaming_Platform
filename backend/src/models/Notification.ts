@@ -12,7 +12,7 @@ export interface INotification extends Document {
     'enrollment' | 'achievement' | 'report-resolved' | 'like' | 'general';
 
     // Context references
-    relatedModel?: 'StudyMaterial' | 'Course' | 'Program' | 'User' | 'Enrollment' | 'ProgramReview' | 'Comment' | 'Material';
+    relatedModel?: 'StudyMaterial' | 'Course' | 'Program' | 'User' | 'ProgramReview' | 'Comment' | 'Material';
     relatedId?: mongoose.Types.ObjectId;
 
     // Additional data for rich notifications
@@ -107,7 +107,7 @@ const notificationSchema = new Schema<INotification>({
     relatedModel: {
         type: String,
         enum: {
-            values: ['StudyMaterial', 'Course', 'Program', 'User', 'Enrollment', 'ProgramReview', 'Comment', 'Material'],
+            values: ['StudyMaterial', 'Course', 'Program', 'User', 'ProgramReview', 'Comment', 'Material'],
             message: 'Invalid related model'
         }
     },
@@ -267,6 +267,8 @@ notificationSchema.pre<INotification>('save', function (next) {
 });
 
 // Static methods
+
+// Find all notifications for a user
 notificationSchema.statics.findByUser = function (
     userId: string,
     options: any = {}

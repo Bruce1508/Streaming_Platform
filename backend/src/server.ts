@@ -15,6 +15,7 @@ import schoolRoutes from "./routes/school.routes";
 import programRoutes from "./routes/program.routes";
 import programReviewRoutes from "./routes/programReview.routes";
 import notificationRoutes from "./routes/notification.routes";
+import forumRoutes from "./routes/forum.routes";
 import { errorHandler, notFound } from "./middleWare/error.middleware";
 
 import "./models/User";
@@ -23,7 +24,9 @@ import "./models/Program";
 import "./models/ProgramReviews";
 import "./models/StudyMaterial";
 import "./models/BookMark";
-import "./models/Enrollment";
+import "./models/ForumPost";
+import "./models/ForumComment";
+
 import "./models/File";
 import "./models/Notification";
 import "./models/Report";
@@ -77,6 +80,7 @@ app.use("/api/schools", schoolRoutes);
 app.use("/api/programs", programRoutes);
 app.use("/api/program-reviews", programReviewRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/forum", forumRoutes);
 
 // Handle undefined routes
 app.all('/{*any}', notFound);

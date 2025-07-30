@@ -46,7 +46,7 @@ const LandingNavBar = () => {
             {/* Nav Links - Centered */}
             <nav className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center gap-8 font-bold text-[#DDC09F]`}>
                 <Link href="/" className="hover:text-gray-600">Home</Link>
-                <Link href="/courses" className="hover:text-gray-600">Courses</Link>
+                <Link href="/forum" className="hover:text-gray-600">Forum</Link>
                 <Link href="/programs" className="hover:text-gray-600">Programs</Link>
                 <Link href="/resources" className="hover:text-gray-600">Resources</Link>
                 <Link href="/about" className="hover:text-gray-600">About</Link>

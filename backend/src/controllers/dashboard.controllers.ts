@@ -26,8 +26,7 @@ import { logger } from '../utils/logger.utils';
 // Import models
 import User from '../models/User';
 import StudyMaterial from '../models/StudyMaterial';
-import {ProgramCourses} from '../models/ProgramCourses';
-import Enrollment from '../models/Enrollment';
+
 
 /**
  * @desc    Get comprehensive dashboard statistics
@@ -53,7 +52,7 @@ export const getDashboard = asyncHandler(async (req: AuthRequest, res: Response)
 
     try {
         // ✅ Get comprehensive stats using utils
-        const models = { User, Material: StudyMaterial, Course: ProgramCourses, Enrollment };
+        const models = { User, Material: StudyMaterial };
         const dashboardData = await getDashboardStats(models);
 
         if (!dashboardData) {
@@ -235,22 +234,20 @@ export const getCourseAnalytics = asyncHandler(async (req: AuthRequest, res: Res
     const { programId } = req.query;
 
     try {
-        // ✅ Get course statistics
-        const courseStats = await getCourseStats(ProgramCourses, Enrollment, programId as string);
-
-        if (!courseStats) {
-            return res.status(500).json(
-                new ApiResponse(500, null, 'Failed to generate course statistics')
-            );
-        }
-
+        // ✅ Course analytics removed - no longer available
         const analyticsData = {
-            overview: courseStats,
+            overview: {
+                totalCourses: 0,
+                avgCredits: 0,
+                totalEnrollments: 0,
+                completedEnrollments: 0,
+                completionRate: 0
+            },
             enrollmentTrends: {
-                totalEnrollments: courseStats.totalEnrollments,
-                completedEnrollments: courseStats.completedEnrollments,
-                completionRate: courseStats.completionRate,
-                avgCredits: courseStats.avgCredits
+                totalEnrollments: 0,
+                completedEnrollments: 0,
+                completionRate: 0,
+                avgCredits: 0
             },
             filters: {
                 programId: programId || null
@@ -287,7 +284,7 @@ export const getMyActivity = asyncHandler(async (req: AuthRequest, res: Response
 
     try {
         // ✅ Get user's personal activity stats
-        const models = { User, Material: StudyMaterial, Enrollment };
+        const models = { User, Material: StudyMaterial };
         const activityStats = await getUserActivityStats(
             models, 
             req.user._id.toString(), 
@@ -405,11 +402,9 @@ export const getSystemHealth = asyncHandler(async (req: AuthRequest, res: Respon
 
     try {
         // Get basic system metrics
-        const [userCount, materialCount, courseCount, enrollmentCount] = await Promise.all([
+        const [userCount, materialCount] = await Promise.all([
             User.countDocuments({ isActive: true }),
-            StudyMaterial.countDocuments({ status: 'published' }),
-            ProgramCourses.countDocuments(),
-            Enrollment.countDocuments({})
+            StudyMaterial.countDocuments({ status: 'published' })
         ]);
 
         // ✅ System health indicators
@@ -418,8 +413,8 @@ export const getSystemHealth = asyncHandler(async (req: AuthRequest, res: Respon
                 status: 'healthy', // Could implement actual DB health check
                 totalUsers: userCount,
                 totalMaterials: materialCount,
-                totalCourses: courseCount,
-                totalEnrollments: enrollmentCount
+                totalCourses: 0,
+                totalEnrollments: 0
             },
             
             performance: {

@@ -115,66 +115,15 @@ export const getMaterialStats = async (MaterialModel: any, courseId?: string) =>
     }
 };
 
-// Get course statistics
+// Get course statistics - removed due to model deletion
 export const getCourseStats = async (CourseModel: any, EnrollmentModel: any, programId?: string) => {
-    try {
-        const cacheKey = generateCacheKey('course_stats', programId || 'all');
-        const cached = cache.get(cacheKey);
-        if (cached) return cached;
-
-        const match = programId ? { programId } : {};
-
-        const courseStats = await CourseModel.aggregate([
-            { $match: match },
-            {
-                $group: {
-                    _id: null,
-                    totalCourses: { $sum: 1 },
-                    avgCredits: { $avg: '$credits' }
-                }
-            }
-        ]);
-
-        const enrollmentStats = await EnrollmentModel.aggregate([
-            {
-                $lookup: {
-                    from: 'courses',
-                    localField: 'courseId',
-                    foreignField: '_id',
-                    as: 'course'
-                }
-            },
-            { $unwind: '$course' },
-            ...(programId ? [{ $match: { 'course.programId': programId } }] : []),
-            {
-                $group: {
-                    _id: null,
-                    totalEnrollments: { $sum: 1 },
-                    completedEnrollments: { $sum: { $cond: [{ $eq: ['$status', 'completed'] }, 1, 0] } }
-                }
-            }
-        ]);
-
-        const result = {
-            totalCourses: courseStats[0]?.totalCourses || 0,
-            avgCredits: courseStats[0]?.avgCredits ? parseFloat(courseStats[0].avgCredits.toFixed(2)) : 0,
-            totalEnrollments: enrollmentStats[0]?.totalEnrollments || 0,
-            completedEnrollments: enrollmentStats[0]?.completedEnrollments || 0,
-            completionRate: 0
-        };
-
-        if (result.totalEnrollments > 0) {
-            result.completionRate = parseFloat(
-                ((result.completedEnrollments / result.totalEnrollments) * 100).toFixed(2)
-            );
-        }
-
-        cache.set(cacheKey, result, 300);
-        return result;
-    } catch (error) {
-        logger.error('Course stats calculation error:', error);
-        return null;
-    }
+    return {
+        totalCourses: 0,
+        avgCredits: 0,
+        totalEnrollments: 0,
+        completedEnrollments: 0,
+        completionRate: 0
+    };
 };
 
 // Get dashboard statistics
@@ -184,16 +133,21 @@ export const getDashboardStats = async (models: any) => {
         const cached = cache.get(cacheKey);
         if (cached) return cached;
 
-        const [userStats, materialStats, courseStats] = await Promise.all([
+        const [userStats, materialStats] = await Promise.all([
             getUserStats(models.User),
-            getMaterialStats(models.Material),
-            getCourseStats(models.Course, models.Enrollment)
+            getMaterialStats(models.Material)
         ]);
 
         const result = {
             users: userStats,
             materials: materialStats,
-            courses: courseStats,
+            courses: {
+                totalCourses: 0,
+                avgCredits: 0,
+                totalEnrollments: 0,
+                completedEnrollments: 0,
+                completionRate: 0
+            },
             lastUpdated: new Date()
         };
 
@@ -294,11 +248,8 @@ export const getUserActivityStats = async (models: any, userId: string, days: nu
                 createdAt: { $gte: startDate }
             }),
 
-            // New enrollments
-            models.Enrollment.countDocuments({
-                studentId: userId,
-                enrollmentDate: { $gte: startDate }
-            }),
+            // New enrollments - model removed
+            Promise.resolve(0),
 
             // Comments made
             models.Material.aggregate([
@@ -315,7 +266,7 @@ export const getUserActivityStats = async (models: any, userId: string, days: nu
 
         const result = {
             materialsUploaded: materialStats,
-            newEnrollments: enrollmentStats,
+            newEnrollments: 0, // Enrollment model removed
             commentsMade: commentStats[0]?.total || 0,
             period: `${days} days`
         };

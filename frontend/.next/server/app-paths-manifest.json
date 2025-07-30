@@ -1,11 +1,7 @@
 {
-  "/(auth)/sign-in/page": "app/(auth)/sign-in/page.js",
-  "/(protected)/programs/page": "app/(protected)/programs/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
+  "/(protected)/forum/[id]/page": "app/(protected)/forum/[id]/page.js",
+  "/(protected)/forum/create/page": "app/(protected)/forum/create/page.js",
+  "/(protected)/forum/page": "app/(protected)/forum/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/api/auth/callback/email/route": "app/api/auth/callback/email/route.js",
-  "/api/auth/send-magic-link/route": "app/api/auth/send-magic-link/route.js",
-  "/auth/create-session/page": "app/auth/create-session/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js"
 }

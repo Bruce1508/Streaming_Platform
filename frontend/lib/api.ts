@@ -133,14 +133,67 @@ export const programAPI = {
     deleteProgram: (id: string) => api.delete(`/programs/${id}`),
 };
 
-// ===== COURSE APIs =====
-export const courseAPI = {
-    getProgramCourses: (programId: string) => api.get(`/courses/program-courses/${programId}`),
-    searchCourses: (params?: any) => {
+// ===== FORUM APIs =====
+// APIs cho hệ thống forum - posts, comments, voting, search
+export const forumAPI = {
+    // ===== POST OPERATIONS =====
+    // Lấy danh sách posts với filters và pagination
+    getPosts: (params?: any) => {
         const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
-        return api.get(`/courses/program-courses/search${queryString}`);
+        return api.get(`/forum/posts${queryString}`);
     },
-    getCourseStats: () => api.get('/courses/program-courses/stats'),
+    
+    // Lấy chi tiết một post
+    getPost: (id: string) => api.get(`/forum/posts/${id}`),
+    
+    // Tạo post mới
+    createPost: (data: any) => api.post('/forum/posts/create', data),
+    
+    // Cập nhật post
+    updatePost: (id: string, data: any) => api.put(`/forum/posts/${id}`, data),
+    
+    // Xóa post
+    deletePost: (id: string) => api.delete(`/forum/posts/${id}`),
+    
+    // Vote cho post
+    votePost: (id: string, vote: 'up' | 'down') => api.post(`/forum/posts/${id}/vote`, { vote }),
+    
+    // ===== COMMENT OPERATIONS =====
+    // Lấy comments của một post
+    getComments: (postId: string, params?: any) => {
+        const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
+        return api.get(`/forum/posts/${postId}/comments${queryString}`);
+    },
+    
+    // Tạo comment hoặc reply
+    createComment: (postId: string, data: any) => api.post(`/forum/posts/${postId}/comments`, data),
+    
+    // Cập nhật comment
+    updateComment: (id: string, data: any) => api.put(`/forum/comments/${id}`, data),
+    
+    // Xóa comment
+    deleteComment: (id: string) => api.delete(`/forum/comments/${id}`),
+    
+    // Vote cho comment
+    voteComment: (id: string, vote: 'up' | 'down') => api.post(`/forum/comments/${id}/vote`, { vote }),
+    
+    // Đánh dấu comment là accepted answer (chỉ post author)
+    acceptAnswer: (id: string) => api.post(`/forum/comments/${id}/accept`),
+    
+    // ===== SEARCH & DISCOVERY =====
+    // Tìm kiếm posts
+    searchPosts: (query: string, params?: any) => {
+        const searchParams = new URLSearchParams({ q: query, ...params });
+        return api.get(`/forum/search?${searchParams.toString()}`);
+    }
+};
+
+// ===== COURSE APIs =====
+// Removed due to model deletion
+export const courseAPI = {
+    getProgramCourses: (programId: string) => Promise.resolve({ data: null }),
+    searchCourses: (params?: any) => Promise.resolve({ data: null }),
+    getCourseStats: () => Promise.resolve({ data: null }),
 };
 
 // ===== PROGRAM REVIEW APIs =====
