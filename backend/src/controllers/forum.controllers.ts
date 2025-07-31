@@ -28,6 +28,28 @@ export const getForumPosts = asyncHandler(async (req: Request, res: Response) =>
     const skip = (Number(page) - 1) * Number(limit);
     const query: any = { status };
 
+    // Handle special routes
+    const path = req.path;
+    if (path === '/my-topics') {
+        // Get posts by current user
+        const authReq = req as AuthRequest;
+        if (!authReq.user) {
+            return res.status(401).json(new ApiResponse(401, null, 'Authentication required'));
+        }
+        query.author = authReq.user._id;
+    } else if (path === '/explore') {
+        // Explore: Show ALL posts from all schools (discovery feed)
+        delete query.status; // Show all statuses in explore
+        // Could add trending/popular logic here later
+    } else if (path === '/posts' || path === '/') {
+        // Home: Show posts from user's school/program (personalized feed)
+        const authReq = req as AuthRequest;
+        if (authReq.user && authReq.user.academic?.program) {
+            query.program = authReq.user.academic.program;
+        }
+        // Could also filter by user's school here
+    }
+
     // Add filters
     if (category) query.category = category;
     if (program) query.program = program;

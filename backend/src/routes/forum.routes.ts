@@ -28,6 +28,10 @@ router.get('/test', (req, res) => {
 // ===== SEARCH ROUTES (đặt trước để tránh conflict) =====
 router.get('/search', searchForumPosts);
 
+// ===== SPECIAL ROUTES (đặt trước dynamic routes) =====
+router.get('/my-topics', protectRoute, getForumPosts); // Posts của user hiện tại
+router.get('/explore', getForumPosts); // Explore posts
+
 // ===== FORUM POSTS ROUTES =====
 router.get('/posts', getForumPosts);
 router.post('/posts/create', protectRoute, createForumPost); // Route riêng cho create

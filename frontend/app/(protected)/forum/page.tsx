@@ -1,22 +1,27 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { Filter, SortAsc, RotateCcw } from 'lucide-react';
+import { Filter, SortAsc, RotateCcw, Clock, MessageCircle, MessageSquare, FileText, BookOpen, HelpCircle, Users } from 'lucide-react';
 import ForumLayout from '@/components/forum/ForumLayout';
 import ForumPostCard from '@/components/forum/ForumPostCard';
 import PageLoader from '@/components/ui/PageLoader';
 import { forumAPI } from '@/lib/api';
 import { ForumPost, ForumFilters } from '@/types/Forum';
 import { toast } from 'react-hot-toast';
+import { mockForumPosts } from '@/constants/forumMockData';
 
 // ===== FORUM PAGE =====
 // Trang chính hiển thị danh sách posts với filters và pagination
 const ForumPage = () => {
     const searchParams = useSearchParams();
+    const router = useRouter();
     const { data: session } = useSession();
     const currentUserId = session?.user?.id;
+    
+    const currentSort = searchParams.get('sort') || 'latest';
+    const currentCategory = searchParams.get('category') || '';
 
     // ===== STATES =====
     const [posts, setPosts] = useState<ForumPost[]>([]);
@@ -37,22 +42,22 @@ const ForumPage = () => {
         { value: 'votes', label: 'Most Voted', icon: '⬆️' }
     ];
 
-    // ===== CATEGORY OPTIONS =====
-    const categoryOptions = [
-        { value: '', label: 'All Categories' },
-        { value: 'general', label: 'General' },
-        { value: 'question', label: 'Questions' },
-        { value: 'discussion', label: 'Discussions' },
-        { value: 'course-specific', label: 'Course Specific' },
-        { value: 'assignment', label: 'Assignments' },
-        { value: 'exam', label: 'Exams' },
-        { value: 'career', label: 'Career' }
-    ];
+
 
     // ===== FETCH POSTS =====
     const fetchPosts = async () => {
         try {
             setLoading(true);
+            // ===== MOCK DATA TEST =====
+            // Home page: Show posts from user's school/program (personalized feed)
+            // For now, filter by first few posts to simulate personalized content
+            const personalizedPosts = mockForumPosts.slice(0, 5); // Show first 5 posts as "personalized"
+            setPosts(personalizedPosts as ForumPost[]);
+            setCurrentPage(1);
+            setTotalPages(1);
+            setLoading(false);
+            return;
+            // ===== END MOCK =====
             
             const queryParams = {
                 ...filters,
@@ -134,71 +139,84 @@ const ForumPage = () => {
         <ForumLayout>
             <div className="space-y-6">
                 {/* ===== PAGE HEADER ===== */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-900">
-                            Community Forum
-                        </h1>
-                        <p className="text-gray-600 mt-1">
-                            Ask questions, share knowledge, and connect with fellow students
-                        </p>
-                    </div>
-
-                    {/* Quick Stats */}
-                    <div className="flex items-center gap-4 text-sm text-gray-600">
-                        <span>📝 {posts.length} posts</span>
-                        <span>👥 1.2k members</span>
-                        <span>🔥 89 active today</span>
-                    </div>
+                <div className="text-center">
+                    <h1 className="text-2xl font-bold text-white mb-2">Home</h1>
+                    <p className="text-gray-400">Posts from your school and program</p>
                 </div>
 
-                {/* ===== FILTERS & SORTING ===== */}
-                <div className="bg-white rounded-lg border border-gray-200 p-4">
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        {/* Sort Options */}
-                        <div className="flex items-center gap-2">
-                            <SortAsc className="w-5 h-5 text-gray-400" />
-                            <select
-                                value={filters.sort}
-                                onChange={(e) => handleFilterChange({ sort: e.target.value as any })}
-                                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            >
-                                {sortOptions.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.icon} {option.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        {/* Category Filter */}
-                        <div className="flex items-center gap-2">
-                            <Filter className="w-5 h-5 text-gray-400" />
-                            <select
-                                value={filters.category || ''}
-                                onChange={(e) => handleFilterChange({ category: e.target.value as any })}
-                                className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            >
-                                {categoryOptions.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        {/* Reset Filters */}
-                        <button
-                            onClick={() => handleFilterChange({ 
-                                category: undefined, 
-                                search: undefined, 
-                                sort: 'latest' 
-                            })}
-                            className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200"
-                        >
-                            <RotateCcw className="w-4 h-4" />
-                            Reset
-                        </button>
+                {/* ===== SORT & FILTER BUTTONS ===== */}
+                <div className="space-y-3">
+                    {/* Row 1: Sort Buttons */}
+                    <div className="flex gap-3">
+                        {[
+                            { id: 'latest', label: 'Latest', icon: Clock },
+                            { id: 'oldest', label: 'Oldest', icon: Clock }
+                        ].map((item) => {
+                            const handleClick = () => {
+                                const params = new URLSearchParams(searchParams.toString());
+                                params.set('sort', item.id);
+                                router.push(`/forum?${params.toString()}`);
+                            };
+                            
+                            const isActive = currentSort === item.id;
+                            const IconComponent = item.icon;
+                            
+                            return (
+                                <button
+                                    key={item.id}
+                                    onClick={handleClick}
+                                    className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
+                                        isActive
+                                            ? 'bg-blue-600 text-white shadow-sm'
+                                            : 'bg-gray-800 text-gray-300 border border-gray-600 hover:bg-gray-700 hover:text-white'
+                                    }`}
+                                >
+                                    <IconComponent className="w-4 h-4" />
+                                    {item.label}
+                                </button>
+                            );
+                        })}
+                    </div>
+                    
+                    {/* Row 2: Category Buttons */}
+                    <div className="flex flex-wrap gap-3">
+                        {[
+                            { id: 'general', label: 'General', icon: MessageCircle },
+                            { id: 'question', label: 'Question', icon: HelpCircle },
+                            { id: 'discussion', label: 'Discussion', icon: MessageSquare },
+                            { id: 'assignment', label: 'Assignment', icon: FileText },
+                            { id: 'course-specific', label: 'Course Specific', icon: BookOpen },
+                            { id: 'exam', label: 'Exam', icon: HelpCircle },
+                            { id: 'career', label: 'Career', icon: Users }
+                        ].map((item) => {
+                            const handleClick = () => {
+                                const params = new URLSearchParams(searchParams.toString());
+                                if (currentCategory === item.id) {
+                                    params.delete('category');
+                                } else {
+                                    params.set('category', item.id);
+                                }
+                                router.push(`/forum?${params.toString()}`);
+                            };
+                            
+                            const isActive = currentCategory === item.id;
+                            const IconComponent = item.icon;
+                            
+                            return (
+                                <button
+                                    key={item.id}
+                                    onClick={handleClick}
+                                    className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
+                                        isActive
+                                            ? 'bg-white text-gray-900 shadow-sm border border-gray-300'
+                                            : 'bg-gray-800 text-gray-300 border border-gray-600 hover:bg-gray-700 hover:text-white'
+                                    }`}
+                                >
+                                    <IconComponent className="w-4 h-4" />
+                                    {item.label}
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
 

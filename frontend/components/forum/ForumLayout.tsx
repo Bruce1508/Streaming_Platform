@@ -1,17 +1,17 @@
 'use client';
 
-import React from 'react';
-import { Search, Bell, User } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, Bell, User, Plus } from 'lucide-react';
 import ForumSidebar from './ForumSidebar';
 import ForumRightSidebar from './ForumRightSidebar';
 import LandingNavBar from '../landing/LandingNavBar';
 import Link from 'next/link';
 
 // ===== FORUM LAYOUT COMPONENT =====
-// Layout 3 cột chính cho toàn bộ forum với navigation nhất quán
+// Layout với sticky search bar và blur effect khi scroll
 interface ForumLayoutProps {
     children: React.ReactNode;
-    showRightSidebar?: boolean; // Option để ẩn right sidebar nếu cần
+    showRightSidebar?: boolean;
     className?: string;
 }
 
@@ -20,82 +20,80 @@ export const ForumLayout: React.FC<ForumLayoutProps> = ({
     showRightSidebar = true,
     className = ''
 }) => {
+    const [isScrolled, setIsScrolled] = useState(false);
+    const searchBarRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY;
+            setIsScrolled(scrollTop > 700);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
-        <div className={`min-h-screen bg-gray-50 ${className}`}>
+        <div className={`min-h-screen bg-[#0a0a0a] ${className}`}>
             {/* ===== MAIN NAVIGATION BAR ===== */}
             <LandingNavBar />
 
-            {/* ===== FORUM HEADER WITH SEARCH ===== */}
-            <header className="bg-white border-b border-gray-200 sticky top-20 z-40">
-                <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16">
-                        {/* Left: Forum Title */}
-                        <div className="flex-shrink-0">
-                            <h1 className="text-xl font-semibold text-gray-900">Forum</h1>
-                        </div>
-
-                        {/* Center: Search Bar */}
-                        <div className="flex-1 max-w-2xl mx-8">
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <Search className="h-5 w-5 text-gray-400" />
-                                </div>
-                                <input
-                                    type="text"
-                                    placeholder="Search for Topics"
-                                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                                />
+            {/* ===== SEARCH BAR SECTION ===== */}
+            <div 
+                ref={searchBarRef}
+                className={`sticky top-0 z-40 transition-all duration-300 mt-20 ${
+                    isScrolled 
+                        ? 'bg-black/60 backdrop-blur-md shadow-lg py-2' 
+                        : 'bg-[#0a0a0a]'
+                }`}
+            >
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                    <div className="flex items-center justify-center gap-8">
+                        {/* Search Bar - Centered */}
+                        <div className="relative w-full max-w-xl ">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <Search className="h-5 w-5 text-gray-400" />
                             </div>
+                            <input
+                                type="text"
+                                placeholder="Search for anything"
+                                className="block w-full pl-10 pr-3 py-5 border border-gray-300 rounded-xl leading-5 bg-[#ffffff] text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 transition-all duration-200"
+                            />
                         </div>
-
-                        {/* Right: Quick Actions */}
-                        <div className="flex items-center space-x-4">
-                            {/* Notification Bell */}
-                            <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors duration-200 relative">
-                                <Bell className="h-6 w-6" />
-                                {/* Notification Badge */}
-                                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                                    3
-                                </span>
-                            </button>
-
-                            {/* Start New Topic Button */}
-                            <Link href="/forum/create">
-                                <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 font-medium">
-                                    Start New Topic
-                                </button>
-                            </Link>
-                        </div>
+                        
+                        {/* Create Post Button */}
+                        <Link
+                            href="/forum/create"
+                            className="flex items-center gap-2 px-4 py-3 bg-[#d93a00] text-white rounded-xl font-medium hover:bg-blue-700 transition-all duration-200 shadow-sm hover:shadow-md"
+                        >
+                            <Plus className="w-5 h-5" />
+                            Create Post
+                        </Link>
                     </div>
                 </div>
-            </header>
+            </div>
 
             {/* ===== MAIN CONTENT AREA ===== */}
-            <div className="flex">
+            <div 
+                ref={contentRef}
+                className={`flex transition-all duration-300 ${
+                    isScrolled ? 'blur-[0.5px]' : ''
+                }`}
+            >
                 {/* ===== LEFT SIDEBAR ===== */}
-                <aside className="w-64 flex-shrink-0 hidden lg:block">
-                    <div className="h-[calc(100vh-8rem)] overflow-y-auto">
+                <aside className="w-64 flex-shrink-0 hidden lg:block sticky top-36 h-[calc(100vh-9rem)]">
+                    <div className="h-full overflow-y-auto">
                         <ForumSidebar />
                     </div>
                 </aside>
 
                 {/* ===== MAIN CONTENT ===== */}
-                <main className={`flex-1 min-w-0 ${showRightSidebar ? 'lg:mr-80' : ''}`}>
-                    <div className="h-[calc(100vh-8rem)] overflow-y-auto">
-                        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                            {children}
-                        </div>
+                <main className="flex-1 min-w-0">
+                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                        {children}
                     </div>
                 </main>
-
-                {/* ===== RIGHT SIDEBAR ===== */}
-                {showRightSidebar && (
-                    <aside className="w-80 flex-shrink-0 hidden lg:block fixed right-0 top-36 border-l border-gray-200">
-                        <div className="h-[calc(100vh-8rem)] overflow-y-auto">
-                            <ForumRightSidebar />
-                        </div>
-                    </aside>
-                )}
             </div>
 
             {/* ===== MOBILE MENU OVERLAY (Future Implementation) ===== */}
