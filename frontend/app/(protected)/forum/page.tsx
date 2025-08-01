@@ -48,54 +48,44 @@ const ForumPage = () => {
     const fetchPosts = async () => {
         try {
             setLoading(true);
-            // ===== MOCK DATA TEST =====
-            // Home page: Show posts from user's school/program (personalized feed)
-            // For now, filter by first few posts to simulate personalized content
-            const personalizedPosts = mockForumPosts.slice(0, 5); // Show first 5 posts as "personalized"
-            setPosts(personalizedPosts as ForumPost[]);
-            setCurrentPage(1);
-            setTotalPages(1);
-            setLoading(false);
-            return;
-            // ===== END MOCK =====
             
-            const queryParams = {
-                ...filters,
-                category: searchParams.get('category') || filters.category,
-                search: searchParams.get('search') || filters.search,
-                tag: searchParams.get('tag') || undefined
+            const queryParams: any = {
+                sort: searchParams.get('sort') || 'latest',
+                page: currentPage,
+                limit: 10
             };
+
+            // Only add parameters if they have actual values
+            const category = searchParams.get('category');
+            const search = searchParams.get('search');
+            const tag = searchParams.get('tag');
+            
+            if (category) queryParams.category = category;
+            if (search && search.trim()) queryParams.search = search.trim();
+            if (tag) queryParams.tag = tag;
 
             console.log('🔄 Fetching posts with params:', queryParams);
             
             const response = await forumAPI.getPosts(queryParams);
             
             console.log('📨 API Response:', response);
-            console.log('📊 Response data:', response.data);
             
-            // Check if response exists and has data
-            if (response && response.data) {
-                // Check if response has success flag and valid data structure
-                const isSuccess = response.success === true || response.statusCode === 200;
-                
-                if (isSuccess && response.data.posts) {
-                    const postsData = response.data.posts;
-                    const paginationData = response.data.pagination || {};
-                    
-                    setPosts(postsData);
-                    setCurrentPage(paginationData.currentPage || 1);
-                    setTotalPages(paginationData.totalPages || 1);
-                    
-                    console.log('✅ Posts loaded:', postsData.length);
-                } else {
-                    console.error('❌ API Error - Invalid posts data:', response.data);
-                    setPosts([]);
-                    toast.error('Failed to load posts - invalid response data');
-                }
+            // Check if response exists and has the expected structure
+            if (response && response.posts) {
+                setPosts(response.posts);
+                setCurrentPage(response.pagination?.currentPage || 1);
+                setTotalPages(response.pagination?.totalPages || 1);
+                console.log('✅ Posts loaded:', response.posts.length);
+            } else if (response && response.success !== false) {
+                // Handle case where response structure might be different
+                setPosts(response.data?.posts || []);
+                setCurrentPage(response.data?.pagination?.currentPage || 1);
+                setTotalPages(response.data?.pagination?.totalPages || 1);
+                console.log('✅ Posts loaded (alt structure):', response.data?.posts?.length || 0);
             } else {
-                console.error('❌ API Error - No response data');
+                console.error('❌ API Error:', response);
                 setPosts([]);
-                toast.error('Failed to load posts - no response data');
+                toast.error(response?.message || 'Failed to load posts');
             }
         } catch (error: any) {
             console.error('❌ Fetch posts error:', error);
@@ -110,6 +100,23 @@ const ForumPage = () => {
     useEffect(() => {
         fetchPosts();
     }, [filters, searchParams]);
+
+    // ===== FILTER HANDLERS =====
+    const handleSortChange = (sortType: string) => {
+        const params = new URLSearchParams(searchParams);
+        params.set('sort', sortType);
+        router.push(`/forum?${params.toString()}`);
+    };
+
+    const handleCategoryFilter = (category: string) => {
+        const params = new URLSearchParams(searchParams);
+        if (searchParams.get('category') === category) {
+            params.delete('category'); // Remove filter if same category clicked
+        } else {
+            params.set('category', category);
+        }
+        router.push(`/forum?${params.toString()}`);
+    };
 
     // ===== HANDLE FILTER CHANGE =====
     const handleFilterChange = (newFilters: Partial<ForumFilters>) => {

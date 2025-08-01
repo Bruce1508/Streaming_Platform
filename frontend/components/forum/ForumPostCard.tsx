@@ -129,12 +129,12 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                                 {/* Author Info */}
                                 <div className="flex items-center gap-2">
                                     <img
-                                        src={post.displayAuthor.profilePic || '/default-avatar.png'}
-                                        alt={post.displayAuthor.fullName}
+                                        src={post.displayAuthor?.profilePic || '/default-avatar.jpg'}
+                                        alt={post.displayAuthor?.fullName}
                                         className="w-6 h-6 rounded-full object-cover"
                                     />
                                     <span className="text-sm font-medium text-white">
-                                        {post.displayAuthor.fullName}
+                                        {post.displayAuthor?.fullName}
                                     </span>
                                 </div>
 

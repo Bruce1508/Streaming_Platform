@@ -30,12 +30,15 @@ export const getForumPosts = asyncHandler(async (req: Request, res: Response) =>
 
     // Handle special routes
     const path = req.path;
+    console.log('🔍 Path detected:', path);
+    
     if (path === '/my-topics') {
         // Get posts by current user
         const authReq = req as AuthRequest;
         if (!authReq.user) {
             return res.status(401).json(new ApiResponse(401, null, 'Authentication required'));
         }
+        console.log('👤 Filtering posts by author:', authReq.user._id);
         query.author = authReq.user._id;
     } else if (path === '/explore') {
         // Explore: Show ALL posts from all schools (discovery feed)
@@ -50,11 +53,16 @@ export const getForumPosts = asyncHandler(async (req: Request, res: Response) =>
         // Could also filter by user's school here
     }
 
-    // Add filters
-    if (category) query.category = category;
-    if (program) query.program = program;
-    if (search) {
-        query.$text = { $search: search as string };
+    // Add filters (check for valid values, not "undefined" string)
+    if (category && category !== 'undefined') query.category = category;
+    if (program && program !== 'undefined') query.program = program;
+    if (search && search !== 'undefined' && typeof search === 'string' && search.trim() !== '') {
+        // Search in title, content, and tags
+        query.$or = [
+            { $text: { $search: search as string } },
+            { tags: { $regex: search as string, $options: 'i' } },
+            { title: { $regex: search as string, $options: 'i' } }
+        ];
     }
 
     // Sort options
@@ -76,6 +84,9 @@ export const getForumPosts = asyncHandler(async (req: Request, res: Response) =>
             sortOption = { isPinned: -1, createdAt: -1 };
     }
 
+    console.log('📊 Final query:', JSON.stringify(query, null, 2));
+    console.log('🔄 Sort option:', JSON.stringify(sortOption, null, 2));
+
     const [posts, total] = await Promise.all([
         ForumPost.find(query)
             .populate('author', 'fullName profilePic')
@@ -86,6 +97,9 @@ export const getForumPosts = asyncHandler(async (req: Request, res: Response) =>
             .lean(),
         ForumPost.countDocuments(query)
     ]);
+
+    console.log('📋 Posts found:', posts.length);
+    console.log('📊 Total count:', total);
 
     const totalPages = Math.ceil(total / Number(limit));
 
@@ -202,6 +216,8 @@ export const createForumPost = asyncHandler(async (req: AuthRequest, res: Respon
         });
 
         console.log('✅ Post created with ID:', post._id);
+        console.log('👤 Post author saved as:', post.author);
+        console.log('👤 Request user ID:', req.user._id);
 
         const populatedPost = await ForumPost.findById(post._id)
             .populate('author', 'fullName profilePic')

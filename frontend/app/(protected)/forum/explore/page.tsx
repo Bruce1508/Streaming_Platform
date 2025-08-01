@@ -38,30 +38,44 @@ const ExplorePage = () => {
     const fetchPosts = async () => {
         try {
             setLoading(true);
-            // ===== MOCK DATA TEST =====
-            // Explore page: Show ALL posts from all schools (discovery feed)
-            setPosts(mockForumPosts);
-            setCurrentPage(1);
-            setTotalPages(1);
-            setLoading(false);
-            return;
-            // ===== END MOCK =====
             
-            const queryParams = {
+            const queryParams: any = {
+                sort: searchParams.get('sort') || 'latest',
                 page: currentPage,
-                limit: 10,
-                sort: currentSort,
-                category: currentCategory,
-                ...filters
+                limit: 10
             };
 
-            const response = await forumAPI.getPosts(queryParams);
+            // Only add parameters if they have actual values
+            const category = searchParams.get('category');
+            const search = searchParams.get('search');
+            const tag = searchParams.get('tag');
             
-            if (response.success) {
-                setPosts(response.data.posts);
-                setTotalPages(response.data.pagination.totalPages);
+            if (category) queryParams.category = category;
+            if (search && search.trim()) queryParams.search = search.trim();
+            if (tag) queryParams.tag = tag;
+
+            console.log('🔄 Fetching explore posts with params:', queryParams);
+            
+            const response = await forumAPI.getPosts(queryParams, '/explore');
+            
+            console.log('📨 Explore API Response:', response);
+            
+            // Check if response exists and has the expected structure
+            if (response && response.posts) {
+                setPosts(response.posts);
+                setCurrentPage(response.pagination?.currentPage || 1);
+                setTotalPages(response.pagination?.totalPages || 1);
+                console.log('✅ Explore posts loaded:', response.posts.length);
+            } else if (response && response.success !== false) {
+                // Handle case where response structure might be different
+                setPosts(response.data?.posts || []);
+                setCurrentPage(response.data?.pagination?.currentPage || 1);
+                setTotalPages(response.data?.pagination?.totalPages || 1);
+                console.log('✅ Explore posts loaded (alt structure):', response.data?.posts?.length || 0);
             } else {
-                toast.error('Failed to fetch posts');
+                console.error('❌ API Error:', response);
+                setPosts([]);
+                toast.error(response?.message || 'Failed to load explore posts');
             }
         } catch (error) {
             console.error('Error fetching posts:', error);

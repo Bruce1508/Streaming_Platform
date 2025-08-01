@@ -137,11 +137,14 @@ export const programAPI = {
 // APIs cho hệ thống forum - posts, comments, voting, search
 export const forumAPI = {
     // ===== POST OPERATIONS =====
-    // Lấy danh sách posts với filters và pagination
-    getPosts: (params?: any) => {
+    // Lấy danh sách posts với filters và pagination (Home - personalized)
+    getPosts: (params?: any, customPath?: string) => {
         const queryString = params ? `?${new URLSearchParams(params).toString()}` : '';
-        return api.get(`/forum/posts${queryString}`);
+        const path = customPath ? `/forum${customPath}` : '/forum/posts';
+        return api.get(`${path}${queryString}`);
     },
+    
+
     
     // Lấy chi tiết một post
     getPost: (id: string) => api.get(`/forum/posts/${id}`),

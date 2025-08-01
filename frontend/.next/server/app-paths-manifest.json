@@ -1,11 +1,6 @@
 {
-  "/(auth)/sign-in/page": "app/(auth)/sign-in/page.js",
-  "/(protected)/forum/[id]/page": "app/(protected)/forum/[id]/page.js",
-  "/(protected)/forum/create/page": "app/(protected)/forum/create/page.js",
-  "/(protected)/forum/explore/page": "app/(protected)/forum/explore/page.js",
   "/(protected)/forum/my-topics/page": "app/(protected)/forum/my-topics/page.js",
   "/(protected)/forum/page": "app/(protected)/forum/page.js",
-  "/(protected)/programs/page": "app/(protected)/programs/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/page": "app/page.js"
 }

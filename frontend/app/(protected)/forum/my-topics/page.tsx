@@ -38,31 +38,54 @@ const MyTopicsPage = () => {
     const fetchPosts = async () => {
         try {
             setLoading(true);
-            // ===== MOCK DATA TEST =====
-            // Filter mock data to show only posts by current user
-            const userPosts = mockForumPosts.filter(post => post.author._id === currentUserId);
-            setPosts(userPosts);
-            setCurrentPage(1);
-            setTotalPages(1);
-            setLoading(false);
-            return;
-            // ===== END MOCK =====
             
-            const queryParams = {
+            if (!currentUserId) {
+                console.log('❌ No current user ID found in session');
+                console.log('Session data:', session);
+                setPosts([]);
+                setLoading(false);
+                return;
+            }
+            
+            console.log('👤 Current user ID:', currentUserId);
+            
+            const queryParams: any = {
+                sort: searchParams.get('sort') || 'latest',
                 page: currentPage,
-                limit: 10,
-                sort: currentSort,
-                category: currentCategory,
-                ...filters
+                limit: 10
             };
 
-            const response = await forumAPI.getPosts(queryParams);
+            // Only add parameters if they have actual values
+            const category = searchParams.get('category');
+            const search = searchParams.get('search');
+            const tag = searchParams.get('tag');
             
-            if (response.success) {
-                setPosts(response.data.posts);
-                setTotalPages(response.data.pagination.totalPages);
+            if (category) queryParams.category = category;
+            if (search && search.trim()) queryParams.search = search.trim();
+            if (tag) queryParams.tag = tag;
+
+            console.log('🔄 Fetching my topics with params:', queryParams);
+            
+            const response = await forumAPI.getPosts(queryParams, '/my-topics');
+            
+            console.log('📨 My Topics API Response:', response);
+            
+            // Check if response exists and has the expected structure
+            if (response && response.posts) {
+                setPosts(response.posts);
+                setCurrentPage(response.pagination?.currentPage || 1);
+                setTotalPages(response.pagination?.totalPages || 1);
+                console.log('✅ My topics loaded:', response.posts.length);
+            } else if (response && response.success !== false) {
+                // Handle case where response structure might be different
+                setPosts(response.data?.posts || []);
+                setCurrentPage(response.data?.pagination?.currentPage || 1);
+                setTotalPages(response.data?.pagination?.totalPages || 1);
+                console.log('✅ My topics loaded (alt structure):', response.data?.posts?.length || 0);
             } else {
-                toast.error('Failed to fetch posts');
+                console.error('❌ API Error:', response);
+                setPosts([]);
+                toast.error(response?.message || 'Failed to load your topics');
             }
         } catch (error) {
             console.error('Error fetching posts:', error);
