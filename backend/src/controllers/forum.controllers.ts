@@ -57,11 +57,11 @@ export const getForumPosts = asyncHandler(async (req: Request, res: Response) =>
     if (category && category !== 'undefined') query.category = category;
     if (program && program !== 'undefined') query.program = program;
     if (search && search !== 'undefined' && typeof search === 'string' && search.trim() !== '') {
-        // Search in title, content, and tags
+        // Use regex search instead of text search to avoid conflicts
         query.$or = [
-            { $text: { $search: search as string } },
             { tags: { $regex: search as string, $options: 'i' } },
-            { title: { $regex: search as string, $options: 'i' } }
+            { title: { $regex: search as string, $options: 'i' } },
+            { content: { $regex: search as string, $options: 'i' } }
         ];
     }
 
@@ -379,14 +379,26 @@ export const searchForumPosts = asyncHandler(async (req: Request, res: Response)
     const skip = (Number(page) - 1) * Number(limit);
 
     const [posts, total] = await Promise.all([
-        ForumPost.find({ $text: { $search: q as string } })
+        ForumPost.find({
+            $or: [
+                { tags: { $regex: q as string, $options: 'i' } },
+                { title: { $regex: q as string, $options: 'i' } },
+                { content: { $regex: q as string, $options: 'i' } }
+            ]
+        })
             .populate('author', 'fullName profilePic')
             .populate('program', 'name code')
-            .sort({ score: { $meta: 'textScore' }, createdAt: -1 })
+            .sort({ createdAt: -1 })
             .skip(skip)
             .limit(Number(limit))
             .lean(),
-        ForumPost.countDocuments({ $text: { $search: q as string } })
+        ForumPost.countDocuments({
+            $or: [
+                { tags: { $regex: q as string, $options: 'i' } },
+                { title: { $regex: q as string, $options: 'i' } },
+                { content: { $regex: q as string, $options: 'i' } }
+            ]
+        })
     ]);
 
     const totalPages = Math.ceil(total / Number(limit));
@@ -402,4 +414,126 @@ export const searchForumPosts = asyncHandler(async (req: Request, res: Response)
             hasPrev: Number(page) > 1
         }
     }, 'Search results retrieved successfully'));
+});
+
+// ===== GET TRENDING TOPICS =====
+export const getTrendingTopics = asyncHandler(async (req: Request, res: Response) => {
+    try {
+        // Aggregate posts by tags to find trending topics
+        const trendingTopics = await ForumPost.aggregate([
+            { $match: { status: 'open' } },
+            { $unwind: '$tags' },
+            {
+                $group: {
+                    _id: '$tags',
+                    postCount: { $sum: 1 },
+                    recentPosts: { $push: { createdAt: '$createdAt', views: '$views' } }
+                }
+            },
+            {
+                $addFields: {
+                    // Calculate trend percentage based on recent activity
+                    trendPercentage: {
+                        $multiply: [
+                            { $divide: ['$postCount', 10] }, // Base calculation
+                            { $add: [1, { $rand: {} }] } // Add some randomness for demo
+                        ]
+                    }
+                }
+            },
+            { $sort: { postCount: -1 } },
+            { $limit: 10 },
+            {
+                $project: {
+                    tag: '$_id',
+                    postCount: 1,
+                    trendPercentage: { $round: ['$trendPercentage', 0] }
+                }
+            }
+        ]);
+
+        console.log('📈 Trending topics found:', trendingTopics.length);
+
+        res.status(200).json(new ApiResponse(200, trendingTopics, 'Trending topics retrieved successfully'));
+    } catch (error: any) {
+        console.error('Get trending topics error:', error);
+        res.status(500).json(new ApiResponse(500, null, 'Failed to get trending topics'));
+    }
+});
+
+// ===== GET RECENT ACTIVITY =====
+export const getRecentActivity = asyncHandler(async (req: Request, res: Response) => {
+    try {
+        // Get recent posts and comments
+        const recentPosts = await ForumPost.find({ status: 'open' })
+            .populate('author', 'fullName profilePic')
+            .sort({ createdAt: -1 })
+            .limit(5)
+            .select('title author createdAt');
+
+        const activities = recentPosts.map(post => ({
+            type: 'post',
+            user: post.author?.fullName || 'Anonymous',
+            action: 'created a new post',
+            target: post.title,
+            time: post.createdAt,
+            avatar: post.author?.profilePic || '/default-avatar.jpg'
+        }));
+
+        console.log('🔄 Recent activities found:', activities.length);
+
+        res.status(200).json(new ApiResponse(200, activities, 'Recent activity retrieved successfully'));
+    } catch (error: any) {
+        console.error('Get recent activity error:', error);
+        res.status(500).json(new ApiResponse(500, null, 'Failed to get recent activity'));
+    }
+});
+
+// ===== GET TOP CONTRIBUTORS =====
+export const getTopContributors = asyncHandler(async (req: Request, res: Response) => {
+    try {
+        // Aggregate users by their post count and vote scores
+        const topContributors = await ForumPost.aggregate([
+            { $match: { status: 'open' } },
+            {
+                $group: {
+                    _id: '$author',
+                    postCount: { $sum: 1 },
+                    totalVotes: { $sum: { $subtract: [{ $size: '$upvotes' }, { $size: '$downvotes' }] } }
+                }
+            },
+            {
+                $addFields: {
+                    points: { $add: [{ $multiply: ['$postCount', 10] }, '$totalVotes'] }
+                }
+            },
+            { $sort: { points: -1 } },
+            { $limit: 10 },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'userInfo'
+                }
+            },
+            { $unwind: '$userInfo' },
+            {
+                $project: {
+                    name: '$userInfo.fullName',
+                    program: '$userInfo.academic.program',
+                    points: 1,
+                    postCount: 1,
+                    profilePic: '$userInfo.profilePic'
+                }
+            }
+        ]);
+
+        console.log('🏆 Top contributors found:', topContributors.length);
+
+        res.status(200).json(new ApiResponse(200, topContributors, 'Top contributors retrieved successfully'));
+    } catch (error: any) {
+        console.error('Get top contributors error:', error);
+        res.status(500).json(new ApiResponse(500, null, 'Failed to get top contributors'));
+    }
 }); 

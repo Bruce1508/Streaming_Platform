@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { ArrowLeft, MessageSquare, Eye, Clock, Tag, Share2, Flag, Bookmark } from 'lucide-react';
 import ForumLayout from '@/components/forum/ForumLayout';
-import ForumCommentCard from '@/components/forum/ForumCommentCard';
+import ForumCommentThread from '@/components/forum/ForumCommentThread';
 import VoteButtons from '@/components/forum/VoteButtons';
 import PageLoader from '@/components/ui/PageLoader';
 import { forumAPI } from '@/lib/api';
@@ -172,7 +172,11 @@ const ForumPostDetailPage = () => {
 
     if (loading) {
         return (
-            <ForumLayout>
+            <ForumLayout 
+                showRightSidebar={true}
+                showOtherDiscussions={true}
+                currentPostId={postId}
+            >
                 <div className="flex justify-center py-12">
                     <PageLoader />
                 </div>
@@ -182,7 +186,11 @@ const ForumPostDetailPage = () => {
 
     if (!post) {
         return (
-            <ForumLayout>
+            <ForumLayout 
+                showRightSidebar={true}
+                showOtherDiscussions={true}
+                currentPostId={postId}
+            >
                 <div className="text-center py-12">
                     <h3 className="text-lg font-medium text-gray-900 mb-2">Post not found</h3>
                     <button 
@@ -197,218 +205,215 @@ const ForumPostDetailPage = () => {
     }
 
     return (
-        <ForumLayout>
-            <div className="space-y-6">
+        <ForumLayout 
+            showRightSidebar={true}
+            showOtherDiscussions={true}
+            currentPostId={postId}
+        >
+            <div className="max-w-4xl mx-auto">
                 {/* ===== BACK BUTTON ===== */}
                 <button
                     onClick={() => router.back()}
-                    className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200"
+                    className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors duration-200 mb-6"
                 >
                     <ArrowLeft className="w-5 h-5" />
                     Back to Forum
                 </button>
 
-                {/* ===== POST DETAIL ===== */}
-                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-                    <div className="p-6">
-                        <div className="flex gap-4">
-                            {/* ===== LEFT: VOTE BUTTONS ===== */}
-                            <div className="flex-shrink-0">
-                                <VoteButtons
-                                    id={post._id}
-                                    type="post"
-                                    voteCount={post.voteCount}
-                                    upvotes={post.upvotes}
-                                    downvotes={post.downvotes}
-                                    currentUserId={currentUserId}
-                                    onVoteUpdate={handleVoteUpdate}
-                                />
-                            </div>
-
-                            {/* ===== RIGHT: POST CONTENT ===== */}
-                            <div className="flex-1 min-w-0">
-                                {/* Header */}
-                                <div className="flex items-center gap-2 mb-4">
-                                    <span className={`px-3 py-1 text-sm font-medium rounded-full ${getCategoryColor(post.category)}`}>
-                                        {post.category.toUpperCase()}
-                                    </span>
-                                    
-                                    {post.isPinned && (
-                                        <span className="px-3 py-1 text-sm font-medium bg-yellow-100 text-yellow-800 rounded-full">
-                                            PINNED
-                                        </span>
-                                    )}
-
-                                    {post.status === 'resolved' && (
-                                        <span className="px-3 py-1 text-sm font-medium bg-green-100 text-green-800 rounded-full">
-                                            RESOLVED
-                                        </span>
-                                    )}
-                                </div>
-
-                                {/* Title */}
-                                <h1 className="text-2xl font-bold text-gray-900 mb-4">
-                                    {post.title}
-                                </h1>
-
-                                {/* Author & Meta */}
-                                <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
-                                    <div className="flex items-center gap-2">
-                                        <Image
-                                            src={post.displayAuthor?.profilePic || '/default-avatar.jpg'}
-                                            alt={post.displayAuthor?.fullName || 'Anonymous'}
-                                            className="w-8 h-8 rounded-full object-cover"
-                                            width={32}
-                                            height={32}
-                                        />
-                                        <span className="font-medium">
-                                            {post.displayAuthor?.fullName}
-                                        </span>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-1">
-                                        <Clock className="w-4 h-4" />
-                                        <span>{formatTimeAgo(post.createdAt)}</span>
-                                    </div>
-
-                                    <div className="flex items-center gap-1">
-                                        <Eye className="w-4 h-4" />
-                                        <span>{post.views} views</span>
-                                    </div>
-
-                                    <div className="flex items-center gap-1">
-                                        <MessageSquare className="w-4 h-4" />
-                                        <span>{post.commentCount} comments</span>
-                                    </div>
-                                </div>
-
-                                {/* Content */}
-                                <div className="prose prose-gray max-w-none mb-6">
-                                    {post.content.split('\n').map((paragraph, index) => (
-                                        <p key={index} className="mb-3 text-gray-800 leading-relaxed">
-                                            {paragraph}
-                                        </p>
-                                    ))}
-                                </div>
-
-                                {/* Tags */}
-                                {post.tags && post.tags.length > 0 && (
-                                    <div className="flex items-center gap-2 mb-4 flex-wrap">
-                                        <Tag className="w-4 h-4 text-gray-400" />
-                                        {post.tags.map((tag, index) => (
-                                            <span
-                                                key={index}
-                                                className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 cursor-pointer"
-                                            >
-                                                #{tag}
-                                            </span>
-                                        ))}
-                                    </div>
-                                )}
-
-                                {/* Action Buttons */}
-                                <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
-                                    <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200">
-                                        <Share2 className="w-4 h-4" />
-                                        Share
-                                    </button>
-                                    
-                                    <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200">
-                                        <Bookmark className="w-4 h-4" />
-                                        Save
-                                    </button>
-                                    
-                                    <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200">
-                                        <Flag className="w-4 h-4" />
-                                        Report
-                                    </button>
-                                </div>
-                            </div>
+                {/* ===== SINGLE UNIFIED CONTENT BLOCK ===== */}
+                <div className="space-y-6">
+                    {/* ===== POST CONTENT ===== */}
+                    <div className="flex gap-4">
+                        {/* Vote Buttons */}
+                        <div className="flex-shrink-0">
+                            <VoteButtons
+                                id={post._id}
+                                type="post"
+                                voteCount={post.voteCount}
+                                upvotes={post.upvotes}
+                                downvotes={post.downvotes}
+                                currentUserId={currentUserId}
+                                onVoteUpdate={handleVoteUpdate}
+                            />
                         </div>
-                    </div>
-                </div>
 
-                {/* ===== COMMENT FORM ===== */}
-                <div className="bg-white border border-gray-200 rounded-lg p-6">
-                    <h3 className="text-lg font-semibold mb-4">
-                        {replyToComment ? 'Reply to comment' : 'Add a comment'}
-                    </h3>
-                    
-                    <div id="comment-form" className="space-y-4">
-                        <textarea
-                            value={commentContent}
-                            onChange={(e) => setCommentContent(e.target.value)}
-                            placeholder="What are your thoughts?"
-                            className="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                        />
-                        
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                {replyToComment && (
-                                    <button
-                                        onClick={() => {
-                                            setReplyToComment(null);
-                                            setShowCommentForm(false);
-                                        }}
-                                        className="text-sm text-gray-600 hover:text-gray-900"
-                                    >
-                                        Cancel Reply
-                                    </button>
-                                )}
-                            </div>
-                            
-                            <div className="flex items-center gap-2">
-                                <button
-                                    onClick={() => {
-                                        setCommentContent('');
-                                        setShowCommentForm(false);
-                                        setReplyToComment(null);
-                                    }}
-                                    className="px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors duration-200"
-                                >
-                                    Cancel
-                                </button>
+                        {/* Main Content */}
+                        <div className="flex-1 min-w-0">
+                            {/* Category Badge */}
+                            <div className="flex items-center gap-2 mb-3">
+                                <span className={`px-3 py-1 text-sm font-medium rounded-full ${getCategoryColor(post.category)}`}>
+                                    {post.category.toUpperCase()}
+                                </span>
                                 
-                                <button
-                                    onClick={handleSubmitComment}
-                                    disabled={!commentContent.trim() || submittingComment}
-                                    className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    {submittingComment ? 'Posting...' : 'Post Comment'}
-                                </button>
+                                {post.isPinned && (
+                                    <span className="px-3 py-1 text-sm font-medium bg-yellow-100 text-yellow-800 rounded-full">
+                                        PINNED
+                                    </span>
+                                )}
+
+                                {post.status === 'resolved' && (
+                                    <span className="px-3 py-1 text-sm font-medium bg-green-100 text-green-800 rounded-full">
+                                        RESOLVED
+                                    </span>
+                                )}
                             </div>
-                        </div>
-                    </div>
-                </div>
 
-                {/* ===== COMMENTS SECTION ===== */}
-                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-                    <div className="p-6">
-                        <h3 className="text-lg font-semibold mb-6">
-                            {comments.length} {comments.length === 1 ? 'Comment' : 'Comments'}
-                        </h3>
+                            {/* Title */}
+                            <h1 className="text-2xl font-bold text-gray-900 mb-4">
+                                {post.title}
+                            </h1>
 
-                        {comments.length > 0 ? (
-                            <div className="space-y-4">
-                                {comments.map((comment) => (
-                                    <ForumCommentCard
-                                        key={comment._id}
-                                        comment={comment}
-                                        currentUserId={currentUserId}
-                                        postAuthorId={post.author._id}
-                                        onVoteUpdate={handleCommentVoteUpdate}
-                                        onReply={handleReply}
-                                        onAcceptAnswer={handleAcceptAnswer}
-                                    />
+                            {/* Author & Meta Info - Reddit Style */}
+                            <div className="flex items-center gap-2 mb-6 text-sm text-gray-500">
+                                <Image
+                                    src={post.displayAuthor?.profilePic || '/default-avatar.jpg'}
+                                    alt={post.displayAuthor?.fullName || 'Anonymous'}
+                                    className="w-5 h-5 rounded-full object-cover"
+                                    width={20}
+                                    height={20}
+                                />
+                                <span className="font-medium text-gray-900">
+                                    u/{post.displayAuthor?.fullName}
+                                </span>
+                                <span>•</span>
+                                <span>{formatTimeAgo(post.createdAt)}</span>
+                            </div>
+
+                            {/* Post Content */}
+                            <div className="prose max-w-none mb-6">
+                                {post.content.split('\n').map((paragraph, index) => (
+                                    <p key={index} className="mb-4 text-gray-700 leading-relaxed text-base">
+                                        {paragraph}
+                                    </p>
                                 ))}
                             </div>
-                        ) : (
-                            <div className="text-center py-8 text-gray-500">
-                                <MessageSquare className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                                <p className="text-lg font-medium mb-2">No comments yet</p>
-                                <p>Be the first to share your thoughts!</p>
+
+                            {/* Tags */}
+                            {post.tags && post.tags.length > 0 && (
+                                <div className="flex items-center gap-2 mb-6 flex-wrap">
+                                    {post.tags.map((tag, index) => (
+                                        <span
+                                            key={index}
+                                            className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 cursor-pointer transition-colors"
+                                        >
+                                            #{tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Action Buttons with Vote Buttons */}
+                            <div className="flex items-center gap-4 py-4">
+                                {/* Vote Buttons with blue background */}
+                                <div className="flex items-center bg-blue-50 rounded-full px-2 py-1">
+                                    <VoteButtons
+                                        id={post._id}
+                                        type="post"
+                                        voteCount={post.voteCount}
+                                        upvotes={post.upvotes}
+                                        downvotes={post.downvotes}
+                                        currentUserId={currentUserId}
+                                        onVoteUpdate={handleVoteUpdate}
+                                        size="sm"
+                                        className="scale-90"
+                                    />
+                                </div>
+
+                                <button className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors">
+                                    <Share2 className="w-4 h-4" />
+                                    Share
+                                </button>
+                                
+                                <button className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors">
+                                    <Bookmark className="w-4 h-4" />
+                                    Save
+                                </button>
+                                
+                                <button className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors">
+                                    <Flag className="w-4 h-4" />
+                                    Report
+                                </button>
                             </div>
-                        )}
+
+                            {/* Comment Form */}
+                            <div className="border-t border-gray-200 pt-6 mb-6">
+                                <div className="space-y-4">
+                                    <textarea
+                                        value={commentContent}
+                                        onChange={(e) => setCommentContent(e.target.value)}
+                                        placeholder="What are your thoughts?"
+                                        className="w-full h-24 p-3 border border-gray-300 rounded-lg resize-none text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    />
+                                    
+                                    <div className="flex justify-end gap-2">
+                                        <button
+                                            onClick={() => {
+                                                setCommentContent('');
+                                                setShowCommentForm(false);
+                                                setReplyToComment(null);
+                                            }}
+                                            className="px-4 py-2 text-gray-500 hover:text-gray-700 transition-colors"
+                                        >
+                                            Cancel
+                                        </button>
+                                        
+                                        <button
+                                            onClick={handleSubmitComment}
+                                            disabled={!commentContent.trim() || submittingComment}
+                                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            {submittingComment ? 'Posting...' : 'Post Comment'}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Comments Section */}
+                            <div className="border-t border-gray-200 pt-6">
+                                <div className="mb-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <span className="text-sm font-medium text-gray-700">{comments.length} comments</span>
+                                        
+                                        {/* Sort Dropdown - Reddit Style */}
+                                        <div className="relative">
+                                            <select className="appearance-none bg-white border border-gray-300 rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors cursor-pointer">
+                                                <option value="best">🏆 Best</option>
+                                                <option value="top">⬆️ Top</option>
+                                                <option value="new">🆕 New</option>
+                                                <option value="controversial">⚡ Controversial</option>
+                                                <option value="old">📅 Old</option>
+                                                <option value="qa">❓ Q&A</option>
+                                            </select>
+                                            <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {comments.length > 0 ? (
+                                    <div className="space-y-4">
+                                        {comments.map((comment) => (
+                                            <ForumCommentThread
+                                                key={comment._id}
+                                                comment={comment}
+                                                currentUserId={currentUserId}
+                                                onVoteUpdate={handleCommentVoteUpdate}
+                                                onReply={handleReply}
+                                                onAcceptAnswer={handleAcceptAnswer}
+                                                depth={0}
+                                            />
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-12">
+                                        <p className="text-gray-500">Be the first one to comment</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

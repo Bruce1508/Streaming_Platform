@@ -5,7 +5,7 @@ import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 export function GlowingEffectDemoSecond() {
     return (
-        <div className="pb-20 pt-40 bg-[#F8FFE5]">
+        <div className="pb-20 pt-40 bg-[#ffffff]">
             <div className="container mx-auto px-6 xl:px-16 2xl:max-w-7xl">
                 {/* Title Section */}
                 <div className="w-full mb-16">

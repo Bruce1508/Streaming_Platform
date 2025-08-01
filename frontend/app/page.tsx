@@ -7,7 +7,7 @@ import { GlowingEffectDemoSecond } from "@/components/landing/FeatureSection";
 
 export default function HomePage() {
 	return (
-		<div className="bg-[#FAF9F6]">
+		<div className="bg-[#ffffff]">
 			<LandingNavBar />
 			<main>
 				<HeroSection />
@@ -16,7 +16,7 @@ export default function HomePage() {
 				<GlowingEffectDemoSecond />
 
 				{/* Trusted By Universities Section */}
-				<div className="bg-[#F8FFE5] pb-10 pt-20">
+				<div className="bg-[#ffffff] pb-10 pt-20">
 					<div className="flex flex-col items-center gap-6 mb-10">
 						<div className="flex flex-wrap justify-center items-center gap-20 mb-10">
 							<img src="/Seneca-logo.svg" alt="Seneca College" className="h-10 hover:grayscale-0 transition" />

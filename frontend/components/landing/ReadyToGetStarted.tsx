@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function ReadyToGetStarted() {
     return (
-        <section className="pt-20 pb-30 bg-[#F8FFE5] w-full">
+        <section className="pt-20 pb-30 bg-[#ffffff] w-full">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="flex flex-col lg:flex-row items-start justify-between gap-16">
                     

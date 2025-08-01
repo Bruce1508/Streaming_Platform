@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Footer() {
     return (
-        <footer className="bg-[#F8FFE5] text-gray-400 pb-30 pt-10">
+        <footer className="bg-[#ffffff] text-gray-400 pb-30 pt-10">
             {/* Border top - Light gray line */}
             <div className="w-full h-px bg-gray-300 mb-30"></div>
             

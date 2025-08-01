@@ -1,238 +1,341 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Plus, TrendingUp, Crown, Award, Star } from 'lucide-react';
-import { TopUser } from '@/types/Forum';
+import { ChevronDown, ChevronUp, TrendingUp, Clock, Users, Star, MessageCircle } from 'lucide-react';
+import { forumAPI } from '@/lib/api';
+import { formatDistanceToNow } from 'date-fns';
 
-// ===== FORUM RIGHT SIDEBAR COMPONENT =====
-// Sidebar bên phải hiển thị Top Users, Trending Topics, Recent Activity
-interface ForumRightSidebarProps {
-    className?: string;
+// ===== COLLAPSIBLE SECTION COMPONENT =====
+interface CollapsibleSectionProps {
+    title: string;
+    icon: React.ReactNode;
+    children: React.ReactNode;
+    defaultOpen?: boolean;
 }
 
-export const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({
-    className = ''
+const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
+    title,
+    icon,
+    children,
+    defaultOpen = true
 }) => {
-    // ===== STATES =====
-    const [topUsers, setTopUsers] = useState<TopUser[]>([]);
+    const [isOpen, setIsOpen] = useState(defaultOpen);
+
+    return (
+        <div className="bg-white border border-gray-200 rounded-lg mb-4 overflow-hidden shadow-sm">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+            >
+                <div className="flex items-center gap-2">
+                    {icon}
+                    <h3 className="font-medium text-gray-900">{title}</h3>
+                </div>
+                {isOpen ? (
+                    <ChevronUp className="w-4 h-4 text-gray-500" />
+                ) : (
+                    <ChevronDown className="w-4 h-4 text-gray-500" />
+                )}
+            </button>
+            
+            {isOpen && (
+                <div className="border-t border-gray-200">
+                    {children}
+                </div>
+            )}
+        </div>
+    );
+};
+
+// ===== MAIN RIGHT SIDEBAR COMPONENT =====
+interface ForumRightSidebarProps {
+    currentPostId?: string;
+    showOtherDiscussions?: boolean;
+}
+
+const ForumRightSidebar: React.FC<ForumRightSidebarProps> = ({ 
+    currentPostId, 
+    showOtherDiscussions = false 
+}) => {
+    const [trendingTopics, setTrendingTopics] = useState<any[]>([]);
+    const [recentActivity, setRecentActivity] = useState<any[]>([]);
+    const [topContributors, setTopContributors] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
-    // ===== FETCH TOP USERS =====
+    // Fetch real data on component mount
     useEffect(() => {
-        const fetchTopUsers = async () => {
+        const fetchData = async () => {
             try {
                 setLoading(true);
-                // TODO: Implement API call to get top users
-                // const response = await forumAPI.getTopUsers();
-                // setTopUsers(response.data);
                 
-                // For now, set empty array until API is implemented
-                setTopUsers([]);
+                const [trendingRes, activityRes, contributorsRes] = await Promise.all([
+                    forumAPI.getTrendingTopics(),
+                    forumAPI.getRecentActivity(),
+                    forumAPI.getTopContributors()
+                ]);
+
+                if (trendingRes.success) setTrendingTopics(trendingRes.data || []);
+                if (activityRes.success) setRecentActivity(activityRes.data || []);
+                if (contributorsRes.success) setTopContributors(contributorsRes.data || []);
             } catch (error) {
-                console.error('Failed to fetch top users:', error);
-                setTopUsers([]);
+                console.error('Error fetching sidebar data:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchTopUsers();
+        fetchData();
     }, []);
 
-    // ===== HELPER FUNCTIONS =====
-    const formatReputation = (reputation: number) => {
-        if (reputation >= 1000) {
-            return `${(reputation / 1000).toFixed(1)}k`;
+    const formatTimeAgo = (dateString: string) => {
+        try {
+            return formatDistanceToNow(new Date(dateString), { addSuffix: true });
+        } catch {
+            return 'unknown';
         }
-        return reputation.toString();
     };
-
-    const getUserBadge = (index: number) => {
-        if (index === 0) return <Crown className="w-4 h-4 text-yellow-500" />;
-        if (index === 1) return <Award className="w-4 h-4 text-gray-400" />;
-        if (index === 2) return <Award className="w-4 h-4 text-orange-400" />;
-        return <Star className="w-4 h-4 text-gray-300" />;
-    };
-
-    // ===== FOOTER LINKS =====
-    const footerSections = [
-        {
-            title: 'Help',
-            links: ['Forum Pro', 'Careers']
-        },
-        {
-            title: 'About',
-            links: ['Topics', 'Press', 'Terms', 'Privacy Policy']
-        }
-    ];
 
     return (
-        <div className={`h-full ${className}`}>
-            <div className="p-6 space-y-6">
-                {/* ===== START NEW TOPIC BUTTON ===== */}
-                <Link href="/forum/create">
-                    <button className="w-full bg-blue-600 text-white font-medium py-3 px-4 rounded-xl hover:bg-blue-700 transition-all duration-200 flex items-center justify-center gap-2">
-                        <Plus className="w-4 h-4" />
-                        Start a New Topic
-                    </button>
-                </Link>
-
-                {/* ===== TOP USERS SECTION ===== */}
-                <div className="bg-gray-700 rounded-xl p-4">
-                    <div className="flex items-center gap-2 mb-4">
-                        <TrendingUp className="w-5 h-5 text-gray-400" />
-                        <h3 className="font-semibold text-white">Top Users</h3>
-                    </div>
-
-                    <div className="space-y-3">
-                        {loading ? (
-                            <p className="text-center py-4 text-gray-400">Loading top users...</p>
-                        ) : topUsers.length === 0 ? (
-                            <p className="text-center py-4 text-gray-400">No top users data available.</p>
-                        ) : (
-                            topUsers.map((user, index) => (
-                                <div
-                                    key={user._id}
-                                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-600 transition-all duration-200 cursor-pointer"
-                                >
-                                    {/* User Avatar */}
-                                    <div className="relative">
-                                        <img
-                                            src={user.profilePic || '/default-avatar.png'}
-                                            alt={user.fullName}
-                                            className="w-8 h-8 rounded-full object-cover border-2 border-gray-600"
-                                        />
-                                        {index < 3 && (
-                                            <div className="absolute -top-1 -right-1">
-                                                {getUserBadge(index)}
-                                            </div>
-                                        )}
+        <div className="space-y-4">
+            {/* ===== OTHER DISCUSSIONS SECTION (only show on post detail) ===== */}
+            {showOtherDiscussions && (
+                <CollapsibleSection
+                    title="Other discussions"
+                    icon={<MessageCircle className="w-4 h-4 text-blue-400" />}
+                    defaultOpen={true}
+                >
+                    <div className="p-4 space-y-3">
+                        {[
+                            { 
+                                title: 'Best practices for Node.js development?', 
+                                author: 'john_dev', 
+                                time: '2h ago', 
+                                votes: 45,
+                                comments: 12,
+                                category: 'question'
+                            },
+                            { 
+                                title: 'Struggling with React hooks implementation', 
+                                author: 'sarah_codes', 
+                                time: '4h ago', 
+                                votes: 32,
+                                comments: 8,
+                                category: 'discussion'
+                            },
+                            { 
+                                title: 'Database design for student management system', 
+                                author: 'mike_student', 
+                                time: '6h ago', 
+                                votes: 28,
+                                comments: 15,
+                                category: 'course-specific'
+                            },
+                            { 
+                                title: 'Tips for acing the final exam?', 
+                                author: 'anna_study', 
+                                time: '8h ago', 
+                                votes: 67,
+                                comments: 23,
+                                category: 'exam'
+                            }
+                        ].map((discussion, index) => (
+                            <div key={index} className="hover:bg-gray-50 p-3 rounded-lg cursor-pointer transition-colors border-l-2 border-gray-300 hover:border-blue-500">
+                                <h4 className="text-sm font-medium text-gray-900 mb-2 line-clamp-2 hover:text-blue-600">
+                                    {discussion.title}
+                                </h4>
+                                <div className="flex items-center justify-between text-xs text-gray-500">
+                                    <div className="flex items-center gap-2">
+                                        <span>u/{discussion.author}</span>
+                                        <span>•</span>
+                                        <span>{discussion.time}</span>
                                     </div>
-
-                                    {/* User Info */}
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center justify-between">
-                                            <p className="text-sm font-medium text-white truncate">
-                                                {user.fullName}
-                                            </p>
-                                            <span className="text-xs text-gray-400 flex items-center gap-1">
-                                                <TrendingUp className="w-3 h-3" />
-                                                {formatReputation(user.reputation)}
-                                            </span>
-                                        </div>
-                                        <p className="text-xs text-gray-400">
-                                            {user.postCount} posts
-                                        </p>
+                                    <div className="flex items-center gap-3">
+                                        <span className="flex items-center gap-1">
+                                            <TrendingUp className="w-3 h-3" />
+                                            {discussion.votes}
+                                        </span>
+                                        <span className="flex items-center gap-1">
+                                            <MessageCircle className="w-3 h-3" />
+                                            {discussion.comments}
+                                        </span>
                                     </div>
                                 </div>
-                            ))
-                        )}
-                    </div>
-
-                    {/* View All Link */}
-                    <div className="mt-4 pt-3 border-t border-gray-600">
-                        <Link
-                            href="/forum/leaderboard"
-                            className="text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors"
-                        >
-                            View All Users →
-                        </Link>
-                    </div>
-                </div>
-
-                {/* ===== TRENDING TOPICS ===== */}
-                <div className="bg-gray-700 rounded-xl p-4">
-                    <h3 className="font-semibold text-white mb-3">Trending Topics</h3>
-                    <div className="space-y-2">
-                        {[
-                            { tag: 'javascript', count: 125 },
-                            { tag: 'react', count: 89 },
-                            { tag: 'nextjs', count: 67 },
-                            { tag: 'typescript', count: 54 },
-                            { tag: 'nodejs', count: 43 }
-                        ].map((topic, index) => (
-                            <Link
-                                key={index}
-                                href={`/forum?tag=${topic.tag}`}
-                                className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-600 transition-all duration-200"
-                            >
-                                <span className="text-sm text-gray-300">#{topic.tag}</span>
-                                <span className="text-xs text-gray-400 bg-gray-600 px-2 py-1 rounded-full">
-                                    {topic.count}
-                                </span>
-                            </Link>
+                            </div>
                         ))}
-                    </div>
-                </div>
-
-                {/* ===== RECENT ACTIVITY ===== */}
-                <div className="bg-gray-700 rounded-xl p-4">
-                    <h3 className="font-semibold text-white mb-3">Recent Activity</h3>
-                    <div className="space-y-3 text-sm">
-                        <div className="flex items-start gap-2">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                            <div>
-                                <p className="text-gray-300">
-                                    <span className="font-medium text-white">John Doe</span> answered 
-                                    <Link href="/forum/123" className="text-blue-400 hover:text-blue-300 transition-colors ml-1">
-                                        "How to deploy Next.js?"
-                                    </Link>
-                                </p>
-                                <p className="text-gray-500 text-xs">2 minutes ago</p>
-                            </div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                            <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                            <div>
-                                <p className="text-gray-300">
-                                    <span className="font-medium text-white">Sarah Kim</span> posted 
-                                    <Link href="/forum/124" className="text-blue-400 hover:text-blue-300 transition-colors ml-1">
-                                        "React State Management"
-                                    </Link>
-                                </p>
-                                <p className="text-gray-500 text-xs">5 minutes ago</p>
-                            </div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                            <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
-                            <div>
-                                <p className="text-gray-300">
-                                    <span className="font-medium text-white">Mike Chen</span> liked 
-                                    <Link href="/forum/125" className="text-blue-400 hover:text-blue-300 transition-colors ml-1">
-                                        "CSS Grid Layout"
-                                    </Link>
-                                </p>
-                                <p className="text-gray-500 text-xs">10 minutes ago</p>
-                            </div>
+                        <div className="pt-2 border-t border-gray-200">
+                            <button className="text-xs text-blue-600 hover:text-blue-700 font-medium">
+                                View more discussions →
+                            </button>
                         </div>
                     </div>
-                </div>
+                </CollapsibleSection>
+            )}
 
-                {/* ===== FOOTER LINKS ===== */}
-                <div className="pt-4 border-t border-gray-600">
-                    {footerSections.map((section, sectionIndex) => (
-                        <div key={sectionIndex} className="mb-4">
-                            <h4 className="text-sm font-medium text-white mb-2">
-                                {section.title}
-                            </h4>
-                            <div className="flex flex-wrap gap-2">
-                                {section.links.map((link, linkIndex) => (
-                                    <Link
-                                        key={linkIndex}
-                                        href={`/${link.toLowerCase().replace(' ', '-')}`}
-                                        className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
-                                    >
-                                        {link}
-                                    </Link>
-                                ))}
+            {/* ===== TRENDING TOPICS SECTION ===== */}
+            <CollapsibleSection
+                title="Trending Topics"
+                icon={<TrendingUp className="w-4 h-4 text-red-400" />}
+                defaultOpen={true}
+            >
+                <div className="p-4 space-y-3">
+                    {loading ? (
+                        <div className="space-y-2">
+                            {[1, 2, 3, 4, 5].map((i) => (
+                                <div key={i} className="animate-pulse">
+                                    <div className="h-4 bg-gray-700 rounded w-3/4 mb-1"></div>
+                                    <div className="h-3 bg-gray-800 rounded w-1/2"></div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : trendingTopics.length > 0 ? (
+                        trendingTopics.map((topic, index) => (
+                            <div key={index} className="flex items-center justify-between hover:bg-gray-800/30 p-2 rounded-lg cursor-pointer transition-colors">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                    <div>
+                                        <p className="text-sm font-medium text-blue-400 hover:text-blue-300">#{topic.tag}</p>
+                                        <p className="text-xs text-gray-400">{topic.postCount} posts</p>
+                                    </div>
+                                </div>
+                                <span className="text-xs text-green-400 font-medium">+{topic.trendPercentage}%</span>
                             </div>
+                        ))
+                    ) : (
+                        <div className="text-center py-4 text-gray-500">
+                            <TrendingUp className="w-8 h-8 mx-auto mb-2 text-gray-600" />
+                            <p className="text-sm">No trending topics yet</p>
+                        </div>
+                    )}
+                </div>
+            </CollapsibleSection>
+
+            {/* ===== RECENT ACTIVITY SECTION ===== */}
+            <CollapsibleSection
+                title="Recent Activity"
+                icon={<Clock className="w-4 h-4 text-blue-400" />}
+                defaultOpen={false}
+            >
+                <div className="p-4 space-y-3">
+                    {loading ? (
+                        <div className="space-y-3">
+                            {[1, 2, 3, 4].map((i) => (
+                                <div key={i} className="animate-pulse flex items-start gap-3">
+                                    <div className="w-8 h-8 bg-gray-700 rounded-full"></div>
+                                    <div className="flex-1">
+                                        <div className="h-4 bg-gray-700 rounded w-3/4 mb-1"></div>
+                                        <div className="h-3 bg-gray-800 rounded w-1/2"></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : recentActivity.length > 0 ? (
+                        recentActivity.map((activity, index) => (
+                            <div key={index} className="flex items-start gap-3 hover:bg-gray-800/30 p-2 rounded-lg cursor-pointer transition-colors">
+                                <img 
+                                    src={activity.avatar} 
+                                    alt={activity.user}
+                                    className="w-6 h-6 rounded-full object-cover"
+                                />
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm text-white">
+                                        <span className="font-medium">{activity.user}</span>
+                                        <span className="text-gray-400 ml-1">{activity.action}</span>
+                                    </p>
+                                    <p className="text-xs text-gray-500 truncate">{activity.target}</p>
+                                    <p className="text-xs text-gray-500">{formatTimeAgo(activity.time)}</p>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-center py-4 text-gray-500">
+                            <Clock className="w-8 h-8 mx-auto mb-2 text-gray-600" />
+                            <p className="text-sm">No recent activity</p>
+                        </div>
+                    )}
+                </div>
+            </CollapsibleSection>
+
+            {/* ===== TOP CONTRIBUTORS SECTION ===== */}
+            <CollapsibleSection
+                title="Top Contributors"
+                icon={<Users className="w-4 h-4 text-purple-400" />}
+                defaultOpen={false}
+            >
+                <div className="p-4 space-y-3">
+                    {loading ? (
+                        <div className="space-y-3">
+                            {[1, 2, 3, 4].map((i) => (
+                                <div key={i} className="animate-pulse flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-6 h-6 bg-gray-700 rounded-full"></div>
+                                        <div>
+                                            <div className="h-4 bg-gray-700 rounded w-20 mb-1"></div>
+                                            <div className="h-3 bg-gray-800 rounded w-16"></div>
+                                        </div>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className="h-4 bg-gray-700 rounded w-12 mb-1"></div>
+                                        <div className="h-3 bg-gray-800 rounded w-8"></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : topContributors.length > 0 ? (
+                        topContributors.map((contributor, index) => {
+                            const badges = ['🏆', '🥈', '🥉', '⭐', '⭐', '⭐', '⭐', '⭐', '⭐', '⭐'];
+                            return (
+                                <div key={index} className="flex items-center justify-between hover:bg-gray-800/30 p-2 rounded-lg cursor-pointer transition-colors">
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-lg">{badges[index] || '⭐'}</span>
+                                        <div>
+                                            <p className="text-sm font-medium text-white">{contributor.name || 'Anonymous'}</p>
+                                            <p className="text-xs text-gray-400">{contributor.program || 'Unknown Program'}</p>
+                                        </div>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-sm font-medium text-yellow-400">{contributor.points}</p>
+                                        <p className="text-xs text-gray-500">points</p>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <div className="text-center py-4 text-gray-500">
+                            <Users className="w-8 h-8 mx-auto mb-2 text-gray-600" />
+                            <p className="text-sm">No contributors yet</p>
+                        </div>
+                    )}
+                </div>
+            </CollapsibleSection>
+
+            {/* ===== FORUM RULES SECTION ===== */}
+            <CollapsibleSection
+                title="Forum Rules"
+                icon={<Star className="w-4 h-4 text-green-400" />}
+                defaultOpen={false}
+            >
+                <div className="p-4 space-y-2">
+                    {[
+                        'Be respectful and civil',
+                        'No spam or self-promotion',
+                        'Use descriptive titles',
+                        'Search before posting',
+                        'Stay on topic'
+                    ].map((rule, index) => (
+                        <div key={index} className="flex items-start gap-2 text-sm text-gray-300">
+                            <span className="text-green-400 mt-1">•</span>
+                            <span>{rule}</span>
                         </div>
                     ))}
+                    <div className="mt-3 pt-3 border-t border-gray-800">
+                        <button className="text-xs text-blue-400 hover:text-blue-300 underline">
+                            View full guidelines
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </CollapsibleSection>
         </div>
     );
 };
 
-export default ForumRightSidebar; 
+export default ForumRightSidebar;

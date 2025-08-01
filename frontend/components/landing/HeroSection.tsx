@@ -12,7 +12,7 @@ const HeroSection = () => {
     const words = ["University", "College", "Program"];
 
     return (
-        <section className="bg-[#023436] w-full h-[65vh] relative overflow-hidden flex items-center justify-center pt-10 pb-20">
+        <section className="bg-[#ffffff] w-full h-[65vh] relative overflow-hidden flex items-center justify-center pt-10 pb-10">
 
 
             {/* Content Container - Left Aligned */}
@@ -30,18 +30,18 @@ const HeroSection = () => {
                                 )}
                                 layout
                             >
-                                <div className="mb-2 text-[#FBF1F0]">
+                                <div className="mb-2 text-[#1d1d1f]">
                                     Find Your Perfect
                                 </div>
                                 <div className="flex items-baseline flex-wrap xl:flex-nowrap">
-                                    <span className="text-[#FBFF12] text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-bold">Canadian</span>
+                                    <span className="text-[#1d1d1f] text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-bold">Canadian</span>
                                     <div className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-bold w-[280px] md:w-[420px] lg:w-[520px] xl:w-[640px] 2xl:w-[720px] ml-3">
                                         <ContainerTextFlip words={words} />
                                     </div>
                                 </div>
                             </motion.h1>
                             {/* Description */}
-                            <p className="text-base md:text-lg text-[#D8C99B] mb-10 md:mb-15 max-w-xl leading-relaxed font-medium">
+                            <p className="text-base md:text-lg text-[#1d1d1f] mb-10 md:mb-15 max-w-xl leading-relaxed font-medium opacity-70">
                                 Honest insights from Canadian students to help you choose the right school, program, and path
                             </p>
                             {/* Action Buttons */}

@@ -15,6 +15,7 @@ interface VoteButtonsProps {
     downvotes: string[]; // Array user IDs đã downvote
     currentUserId?: string; // ID user hiện tại
     onVoteUpdate?: (newVoteData: any) => void; // Callback khi vote thành công
+    size?: 'sm' | 'md' | 'lg'; // Size của buttons
     className?: string;
 }
 
@@ -26,6 +27,7 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
     downvotes,
     currentUserId,
     onVoteUpdate,
+    size = 'md',
     className = ''
 }) => {
     // ===== STATES =====
@@ -97,28 +99,52 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
         }
     };
 
+    // Size configurations
+    const sizeConfig = {
+        sm: {
+            container: 'space-y-0.5',
+            button: 'p-0.5',
+            icon: 'w-3 h-3',
+            text: 'text-xs'
+        },
+        md: {
+            container: 'space-y-1',
+            button: 'p-1',
+            icon: 'w-4 h-4',
+            text: 'text-sm'
+        },
+        lg: {
+            container: 'space-y-1',
+            button: 'p-1',
+            icon: 'w-5 h-5',
+            text: 'text-sm'
+        }
+    };
+
+    const config = sizeConfig[size];
+
     return (
-        <div className={`flex flex-col items-center space-y-1 ${className}`}>
+        <div className={`flex flex-col items-center ${config.container} ${className}`}>
             {/* ===== UPVOTE BUTTON ===== */}
             <button
                 onClick={() => handleVote('up')}
                 disabled={isVoting}
                 className={`
-                    p-1 rounded-md transition-all duration-200 hover:bg-gray-100
+                    ${config.button} rounded-md transition-all duration-200 hover:bg-gray-100
                     ${hasUpvoted 
                         ? 'text-green-600 bg-green-50' 
-                        : 'text-gray-400 hover:text-green-600'
+                        : 'text-gray-500 hover:text-green-600'
                     }
                     ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                 `}
                 title="Upvote"
             >
-                <ChevronUp className="w-5 h-5" />
+                <ChevronUp className={config.icon} />
             </button>
 
             {/* ===== VOTE COUNT ===== */}
             <span className={`
-                text-sm font-medium min-w-[20px] text-center
+                ${config.text} font-medium min-w-[20px] text-center
                 ${localVoteCount > 0 
                     ? 'text-green-600' 
                     : localVoteCount < 0 
@@ -134,16 +160,16 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
                 onClick={() => handleVote('down')}
                 disabled={isVoting}
                 className={`
-                    p-1 rounded-md transition-all duration-200 hover:bg-gray-100
+                    ${config.button} rounded-md transition-all duration-200 hover:bg-gray-100
                     ${hasDownvoted 
                         ? 'text-red-600 bg-red-50' 
-                        : 'text-gray-400 hover:text-red-600'
+                        : 'text-gray-500 hover:text-red-600'
                     }
                     ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                 `}
                 title="Downvote"
             >
-                <ChevronDown className="w-5 h-5" />
+                <ChevronDown className={config.icon} />
             </button>
         </div>
     );

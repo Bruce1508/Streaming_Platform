@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { MessageCircle, Eye, Clock, Tag } from 'lucide-react';
+import { MessageCircle, Eye, Clock, Tag, MoreHorizontal, Share, Bookmark, Flag, TrendingUp, ChevronUp, ChevronDown } from 'lucide-react';
 import { ForumPost } from '@/types/Forum';
 import VoteButtons from './VoteButtons';
 import { formatDistanceToNow } from 'date-fns';
@@ -22,6 +22,25 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
     onVoteUpdate,
     className = ''
 }) => {
+    const [showDropdown, setShowDropdown] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setShowDropdown(false);
+            }
+        };
+
+        if (showDropdown) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showDropdown]);
     // ===== HELPER FUNCTIONS =====
     const formatTimeAgo = (dateString: string) => {
         try {
@@ -33,13 +52,13 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
 
     const getCategoryColor = (category: string) => {
         const colors: Record<string, string> = {
-            'question': 'bg-gray-100 text-black',
-            'discussion': 'bg-gray-100 text-black',
-            'general': 'bg-gray-100 text-black',
-            'course-specific': 'bg-gray-100 text-black',
-            'assignment': 'bg-gray-100 text-black',
-            'exam': 'bg-gray-100 text-black',
-            'career': 'bg-gray-100 text-black'
+            'question': 'bg-orange-500 text-white',
+            'discussion': 'bg-blue-500 text-white',
+            'general': 'bg-gray-500 text-white',
+            'course-specific': 'bg-purple-500 text-white',
+            'assignment': 'bg-green-500 text-white',
+            'exam': 'bg-red-500 text-white',
+            'career': 'bg-yellow-500 text-black'
         };
         return colors[category] || colors['general'];
     };
@@ -49,128 +68,126 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
     };
 
     return (
-        <div className={`bg-[#161618] border border-gray-700 rounded-xl shadow-sm hover:shadow-lg hover:border-gray-600 transition-all duration-300 transform hover:-translate-y-1 ${className}`}>
-            <div className="p-6">
-                <div className="flex gap-4">
-                    {/* ===== LEFT: VOTE BUTTONS ===== */}
-                    <div className="flex-shrink-0">
-                        <VoteButtons
-                            id={post._id}
-                            type="post"
-                            voteCount={post.voteCount}
-                            upvotes={post.upvotes}
-                            downvotes={post.downvotes}
-                            currentUserId={currentUserId}
-                            onVoteUpdate={handleVoteUpdate}
-                        />
+        <div className={`bg-white border-t border-b border-gray-100 hover:bg-gray-50 transition-all duration-200 ${className}`}>
+            {/* ===== POST HEADER ===== */}
+            <div className="flex gap-2 px-4 py-3">
+                {/* Vote Buttons */}
+                <div className="flex-shrink-0">
+                    <VoteButtons
+                        id={post._id}
+                        type="post"
+                        voteCount={post.voteCount}
+                        upvotes={post.upvotes}
+                        downvotes={post.downvotes}
+                        currentUserId={currentUserId}
+                        onVoteUpdate={handleVoteUpdate}
+                        size="sm"
+                    />
+                </div>
+
+                {/* Main Content */}
+                <div className="flex-1 min-w-0">
+                    {/* Top Row: Category + Meta */}
+                    <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+                        <span className={`px-2 py-1 text-xs font-medium rounded ${getCategoryColor(post.category)}`}>
+                            {post.category.toUpperCase()}
+                        </span>
+                        <span>•</span>
+                        <span>u/{post.displayAuthor?.fullName}</span>
+                        <span>•</span>
+                        <span>{formatTimeAgo(post.createdAt)}</span>
+                        
+                        {/* Pinned/Resolved Badges */}
+                        {post.isPinned && (
+                            <>
+                                <span>•</span>
+                                <span className="text-yellow-600 font-medium">📌 PINNED</span>
+                            </>
+                        )}
+                        {post.status === 'resolved' && (
+                            <>
+                                <span>•</span>
+                                <span className="text-green-600 font-medium">✅ RESOLVED</span>
+                            </>
+                        )}
                     </div>
 
-                    {/* ===== RIGHT: POST CONTENT ===== */}
-                    <div className="flex-1 min-w-0">
-                        {/* ===== HEADER ===== */}
-                        <div className="flex items-start justify-between mb-3">
-                            <div className="flex items-center gap-2 flex-wrap">
-                                {/* Category Badge */}
-                                <span className={`px-3 py-1 text-xs font-semibold rounded-full ${getCategoryColor(post.category)}`}>
-                                    {post.category.toUpperCase()}
+                    {/* Title */}
+                    <h3 className="text-lg font-medium text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+                        <Link href={`/forum/${post._id}`} className="line-clamp-2">
+                            {post.title}
+                        </Link>
+                    </h3>
+
+                    {/* Content Preview */}
+                    <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">
+                        {post.content}
+                    </p>
+
+                    {/* Tags */}
+                    {post.tags && post.tags.length > 0 && (
+                        <div className="flex items-center gap-1 mb-3 flex-wrap">
+                            {post.tags.slice(0, 3).map((tag, index) => (
+                                <span
+                                    key={index}
+                                    className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded hover:bg-gray-200 cursor-pointer transition-colors"
+                                >
+                                    #{tag}
                                 </span>
-                                
-                                {/* Pinned Badge */}
-                                {post.isPinned && (
-                                    <span className="px-3 py-1 text-xs font-semibold bg-yellow-50 text-yellow-800 border border-yellow-200 rounded-full">
-                                        📌 PINNED
-                                    </span>
-                                )}
-
-                                {/* Status Badge */}
-                                {post.status === 'resolved' && (
-                                    <span className="px-3 py-1 text-xs font-semibold bg-green-50 text-green-800 border border-green-200 rounded-full">
-                                        ✅ RESOLVED
-                                    </span>
-                                )}
-                            </div>
+                            ))}
+                            {post.tags.length > 3 && (
+                                <span className="text-xs text-gray-500">
+                                    +{post.tags.length - 3} more
+                                </span>
+                            )}
                         </div>
+                    )}
 
-                        {/* ===== TITLE ===== */}
-                        <h3 className="text-xl font-bold text-white mb-3 hover:text-gray-300 transition-colors">
-                            <Link href={`/forum/${post._id}`} className="line-clamp-2">
-                                {post.title}
-                            </Link>
-                        </h3>
-
-                        {/* ===== CONTENT PREVIEW ===== */}
-                        <p className="text-gray-300 text-base mb-4 line-clamp-3 leading-relaxed">
-                            {post.content}
-                        </p>
-
-                        {/* ===== TAGS ===== */}
-                        {post.tags && post.tags.length > 0 && (
-                            <div className="flex items-center gap-2 mb-4 flex-wrap">
-                                <Tag className="w-4 h-4 text-gray-400" />
-                                {post.tags.slice(0, 3).map((tag, index) => (
-                                    <span
-                                        key={index}
-                                        className="px-3 py-1 text-xs bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 cursor-pointer transition-colors"
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
-                                {post.tags.length > 3 && (
-                                    <span className="text-xs text-gray-500">
-                                        +{post.tags.length - 3} more
-                                    </span>
-                                )}
-                            </div>
-                        )}
-
-                        {/* ===== FOOTER STATS ===== */}
-                        <div className="flex items-center justify-between text-sm text-gray-400 pt-4 border-t border-gray-700">
-                            <div className="flex items-center gap-4">
-                                {/* Author Info */}
-                                <div className="flex items-center gap-2">
-                                    <img
-                                        src={post.displayAuthor?.profilePic || '/default-avatar.jpg'}
-                                        alt={post.displayAuthor?.fullName}
-                                        className="w-6 h-6 rounded-full object-cover"
-                                    />
-                                    <span className="text-sm font-medium text-white">
-                                        {post.displayAuthor?.fullName}
-                                    </span>
-                                </div>
-
-                                {/* Time */}
-                                <div className="flex items-center gap-1">
-                                    <Clock className="w-4 h-4" />
-                                    <span>{formatTimeAgo(post.createdAt)}</span>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center gap-4">
-                                {/* Comments Count */}
-                                <div className="flex items-center gap-1">
-                                    <MessageCircle className="w-4 h-4" />
-                                    <span>{post.commentCount}</span>
-                                </div>
-
-                                {/* Views Count */}
-                                <div className="flex items-center gap-1">
-                                    <Eye className="w-4 h-4" />
-                                    <span>{post.views}</span>
-                                </div>
-                            </div>
+                    {/* Bottom Actions */}
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                        <div className="flex items-center gap-1">
+                            <MessageCircle className="w-3 h-3" />
+                            <span>{post.commentCount} comments</span>
                         </div>
+                        
+                        <button className="flex items-center gap-1 hover:text-gray-700 transition-colors">
+                            <Share className="w-3 h-3" />
+                            <span>Share</span>
+                        </button>
+                        
+                        <button className="flex items-center gap-1 hover:text-gray-700 transition-colors">
+                            <Bookmark className="w-3 h-3" />
+                            <span>Save</span>
+                        </button>
 
-                        {/* ===== PROGRAM INFO ===== */}
-                        {post.program && (
-                            <div className="mt-3 pt-3 border-t border-gray-700">
-                                <div className="flex items-center gap-2 text-sm text-gray-400">
-                                    <span className="font-medium">Program:</span>
-                                    <span className="text-white hover:text-gray-300 cursor-pointer transition-colors">
-                                        {post.program.code} - {post.program.name}
-                                    </span>
+                        {/* Dropdown Menu */}
+                        <div className="relative ml-auto" ref={dropdownRef}>
+                            <button
+                                onClick={() => setShowDropdown(!showDropdown)}
+                                className="p-1 hover:bg-gray-200 rounded transition-colors"
+                            >
+                                <MoreHorizontal className="w-4 h-4" />
+                            </button>
+
+                            {showDropdown && (
+                                <div className="absolute right-0 top-6 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                                    <div className="py-1">
+                                        <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                                            <Bookmark className="w-4 h-4" />
+                                            Save Post
+                                        </button>
+                                        <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                                            <Eye className="w-4 h-4" />
+                                            Hide Post
+                                        </button>
+                                        <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                                            <Flag className="w-4 h-4" />
+                                            Report
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

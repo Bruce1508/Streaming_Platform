@@ -6,7 +6,10 @@ import {
     updateForumPost,
     deleteForumPost,
     voteForumPost,
-    searchForumPosts
+    searchForumPosts,
+    getTrendingTopics,
+    getRecentActivity,
+    getTopContributors
 } from '../controllers/forum.controllers';
 import {
     getComments,
@@ -27,6 +30,11 @@ router.get('/test', (req, res) => {
 
 // ===== SEARCH ROUTES (đặt trước để tránh conflict) =====
 router.get('/search', searchForumPosts);
+
+// ===== STATISTICS ROUTES =====
+router.get('/trending-topics', getTrendingTopics);
+router.get('/recent-activity', getRecentActivity);
+router.get('/top-contributors', getTopContributors);
 
 // ===== SPECIAL ROUTES (đặt trước dynamic routes) =====
 router.get('/my-topics', protectRoute, getForumPosts); // Posts của user hiện tại

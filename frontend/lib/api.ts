@@ -188,7 +188,17 @@ export const forumAPI = {
     searchPosts: (query: string, params?: any) => {
         const searchParams = new URLSearchParams({ q: query, ...params });
         return api.get(`/forum/search?${searchParams.toString()}`);
-    }
+    },
+
+    // ===== STATISTICS APIs =====
+    // Get trending topics
+    getTrendingTopics: () => api.get('/forum/trending-topics'),
+
+    // Get recent activity
+    getRecentActivity: () => api.get('/forum/recent-activity'),
+
+    // Get top contributors
+    getTopContributors: () => api.get('/forum/top-contributors')
 };
 
 // ===== COURSE APIs =====

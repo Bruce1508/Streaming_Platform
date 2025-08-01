@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Filter, SortAsc, RotateCcw, Clock, MessageCircle, MessageSquare, FileText, BookOpen, HelpCircle, Users } from 'lucide-react';
@@ -11,6 +11,7 @@ import { forumAPI } from '@/lib/api';
 import { ForumPost, ForumFilters } from '@/types/Forum';
 import { toast } from 'react-hot-toast';
 import { mockForumPosts } from '@/constants/forumMockData';
+import Footer from '@/components/Footer';
 
 // ===== FORUM PAGE =====
 // Trang chính hiển thị danh sách posts với filters và pagination
@@ -26,8 +27,9 @@ const ForumPage = () => {
     // ===== STATES =====
     const [posts, setPosts] = useState<ForumPost[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
     const [filters, setFilters] = useState<ForumFilters>({
         category: undefined,
         sort: 'latest',
@@ -45,13 +47,22 @@ const ForumPage = () => {
 
 
     // ===== FETCH POSTS =====
-    const fetchPosts = async () => {
+    const fetchPosts = async (isLoadMore = false) => {
         try {
-            setLoading(true);
+            if (isLoadMore) {
+                setIsLoadingMore(true);
+            } else {
+                setLoading(true);
+                setPosts([]);
+                setCurrentPage(1);
+                setHasMore(true);
+            }
+            
+            const pageToFetch = isLoadMore ? currentPage + 1 : 1;
             
             const queryParams: any = {
                 sort: searchParams.get('sort') || 'latest',
-                page: currentPage,
+                page: pageToFetch,
                 limit: 10
             };
 
@@ -72,34 +83,71 @@ const ForumPage = () => {
             
             // Check if response exists and has the expected structure
             if (response && response.posts) {
-                setPosts(response.posts);
-                setCurrentPage(response.pagination?.currentPage || 1);
-                setTotalPages(response.pagination?.totalPages || 1);
-                console.log('✅ Posts loaded:', response.posts.length);
+                const newPosts = response.posts;
+                
+                if (isLoadMore) {
+                    setPosts(prev => [...prev, ...newPosts]);
+                    setCurrentPage(pageToFetch);
+                } else {
+                    setPosts(newPosts);
+                    setCurrentPage(1);
+                }
+                
+                setHasMore(response.pagination?.hasNext || false);
+                console.log('✅ Posts loaded:', newPosts.length);
             } else if (response && response.success !== false) {
                 // Handle case where response structure might be different
-                setPosts(response.data?.posts || []);
-                setCurrentPage(response.data?.pagination?.currentPage || 1);
-                setTotalPages(response.data?.pagination?.totalPages || 1);
-                console.log('✅ Posts loaded (alt structure):', response.data?.posts?.length || 0);
+                const newPosts = response.data?.posts || [];
+                
+                if (isLoadMore) {
+                    setPosts(prev => [...prev, ...newPosts]);
+                    setCurrentPage(pageToFetch);
+                } else {
+                    setPosts(newPosts);
+                    setCurrentPage(1);
+                }
+                
+                setHasMore(response.data?.pagination?.hasNext || false);
+                console.log('✅ Posts loaded (alt structure):', newPosts.length);
             } else {
                 console.error('❌ API Error:', response);
-                setPosts([]);
+                if (!isLoadMore) setPosts([]);
                 toast.error(response?.message || 'Failed to load posts');
             }
         } catch (error: any) {
             console.error('❌ Fetch posts error:', error);
-            setPosts([]);
+            if (!isLoadMore) setPosts([]);
             toast.error('Failed to load posts from server');
         } finally {
             setLoading(false);
+            setIsLoadingMore(false);
         }
     };
+
+    // ===== INTERSECTION OBSERVER FOR INFINITE SCROLL =====
+    const observerRef = useRef<IntersectionObserver>();
+    const lastPostRef = useCallback((node: HTMLDivElement) => {
+        if (isLoadingMore) return;
+        
+        if (observerRef.current) observerRef.current.disconnect();
+        
+        observerRef.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && hasMore && !isLoadingMore) {
+                console.log('🔄 Loading more posts...');
+                fetchPosts(true);
+            }
+        }, {
+            threshold: 0.1,
+            rootMargin: '100px'
+        });
+        
+        if (node) observerRef.current.observe(node);
+    }, [isLoadingMore, hasMore]);
 
     // ===== EFFECTS =====
     useEffect(() => {
         fetchPosts();
-    }, [filters, searchParams]);
+    }, [searchParams]);
 
     // ===== FILTER HANDLERS =====
     const handleSortChange = (sortType: string) => {
@@ -136,168 +184,142 @@ const ForumPage = () => {
         ));
     };
 
-    // ===== HANDLE PAGINATION =====
-    const handlePageChange = (page: number) => {
-        setFilters(prev => ({ ...prev, page }));
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+
 
     return (
-        <ForumLayout>
-            <div className="space-y-6">
-                {/* ===== PAGE HEADER ===== */}
-                <div className="text-center">
-                    <h1 className="text-2xl font-bold text-white mb-2">Home</h1>
-                    <p className="text-gray-400">Posts from your school and program</p>
+        <>
+            <ForumLayout showRightSidebar={false}>
+                <div className="space-y-6">
+                    {/* ===== PAGE HEADER ===== */}
+                    <div className="text-center">
+                        <h1 className="text-2xl font-bold text-gray-900 mb-2">Home</h1>
+                        <p className="text-gray-600">Posts from your school and program</p>
+                    </div>
+
+                    {/* ===== SORT & FILTER BUTTONS ===== */}
+                    <div className="space-y-3">
+                        {/* Row 1: Sort Buttons */}
+                        <div className="flex gap-3">
+                            {[
+                                { id: 'latest', label: 'Latest', icon: Clock },
+                                { id: 'oldest', label: 'Oldest', icon: Clock }
+                            ].map((item) => {
+                                const handleClick = () => {
+                                    const params = new URLSearchParams(searchParams.toString());
+                                    params.set('sort', item.id);
+                                    router.push(`/forum?${params.toString()}`);
+                                };
+                                
+                                const isActive = currentSort === item.id;
+                                const IconComponent = item.icon;
+                                
+                                return (
+                                    <button
+                                        key={item.id}
+                                        onClick={handleClick}
+                                        className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 shadow-md ${
+                                            isActive
+                                                ? 'bg-gray-900 text-white shadow-lg'
+                                                : 'bg-white text-gray-900 border border-gray-200 hover:bg-gray-900 hover:text-white hover:shadow-lg'
+                                        }`}
+                                    >
+                                        <IconComponent className="w-4 h-4" />
+                                        {item.label}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        
+                        {/* Row 2: Category Buttons */}
+                        <div className="flex flex-wrap gap-3">
+                            {[
+                                { id: 'general', label: 'General', icon: MessageCircle },
+                                { id: 'question', label: 'Question', icon: HelpCircle },
+                                { id: 'discussion', label: 'Discussion', icon: MessageSquare },
+                                { id: 'assignment', label: 'Assignment', icon: FileText },
+                                { id: 'course-specific', label: 'Course Specific', icon: BookOpen },
+                                { id: 'exam', label: 'Exam', icon: HelpCircle },
+                                { id: 'career', label: 'Career', icon: Users }
+                            ].map((item) => {
+                                const handleClick = () => {
+                                    const params = new URLSearchParams(searchParams.toString());
+                                    if (currentCategory === item.id) {
+                                        params.delete('category');
+                                    } else {
+                                        params.set('category', item.id);
+                                    }
+                                    router.push(`/forum?${params.toString()}`);
+                                };
+                                
+                                const isActive = currentCategory === item.id;
+                                const IconComponent = item.icon;
+                                
+                                return (
+                                    <button
+                                        key={item.id}
+                                        onClick={handleClick}
+                                        className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 shadow-md ${
+                                            isActive
+                                                ? 'bg-gray-900 text-white shadow-lg'
+                                                : 'bg-white text-gray-900 border border-gray-200 hover:bg-gray-900 hover:text-white hover:shadow-lg'
+                                        }`}
+                                    >
+                                        <IconComponent className="w-4 h-4" />
+                                        {item.label}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    {/* ===== POSTS LIST ===== */}
+                    {loading ? (
+                        <div className="flex justify-center py-12">
+                            <PageLoader />
+                        </div>
+                    ) : (
+                        <div className="bg-white">
+                            {posts.length > 0 ? (
+                                posts.map((post, index) => (
+                                    <div 
+                                        key={post._id}
+                                        ref={index === posts.length - 1 ? lastPostRef : null}
+                                    >
+                                        <ForumPostCard
+                                            post={post}
+                                            currentUserId={currentUserId}
+                                            onVoteUpdate={handleVoteUpdate}
+                                        />
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="text-center py-12">
+                                    <div className="text-gray-400 text-6xl mb-4">📭</div>
+                                    <h3 className="text-lg font-medium text-gray-900 mb-2">No posts found</h3>
+                                    <p className="text-gray-600 mb-4">
+                                        Be the first to start a discussion in this category!
+                                    </p>
+                                    <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                                        Create First Post
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* ===== INFINITE SCROLL LOADING ===== */}
+                    {isLoadingMore && (
+                        <div className="flex justify-center py-8">
+                            <PageLoader />
+                        </div>
+                    )}
+
                 </div>
-
-                {/* ===== SORT & FILTER BUTTONS ===== */}
-                <div className="space-y-3">
-                    {/* Row 1: Sort Buttons */}
-                    <div className="flex gap-3">
-                        {[
-                            { id: 'latest', label: 'Latest', icon: Clock },
-                            { id: 'oldest', label: 'Oldest', icon: Clock }
-                        ].map((item) => {
-                            const handleClick = () => {
-                                const params = new URLSearchParams(searchParams.toString());
-                                params.set('sort', item.id);
-                                router.push(`/forum?${params.toString()}`);
-                            };
-                            
-                            const isActive = currentSort === item.id;
-                            const IconComponent = item.icon;
-                            
-                            return (
-                                <button
-                                    key={item.id}
-                                    onClick={handleClick}
-                                    className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
-                                        isActive
-                                            ? 'bg-blue-600 text-white shadow-sm'
-                                            : 'bg-gray-800 text-gray-300 border border-gray-600 hover:bg-gray-700 hover:text-white'
-                                    }`}
-                                >
-                                    <IconComponent className="w-4 h-4" />
-                                    {item.label}
-                                </button>
-                            );
-                        })}
-                    </div>
-                    
-                    {/* Row 2: Category Buttons */}
-                    <div className="flex flex-wrap gap-3">
-                        {[
-                            { id: 'general', label: 'General', icon: MessageCircle },
-                            { id: 'question', label: 'Question', icon: HelpCircle },
-                            { id: 'discussion', label: 'Discussion', icon: MessageSquare },
-                            { id: 'assignment', label: 'Assignment', icon: FileText },
-                            { id: 'course-specific', label: 'Course Specific', icon: BookOpen },
-                            { id: 'exam', label: 'Exam', icon: HelpCircle },
-                            { id: 'career', label: 'Career', icon: Users }
-                        ].map((item) => {
-                            const handleClick = () => {
-                                const params = new URLSearchParams(searchParams.toString());
-                                if (currentCategory === item.id) {
-                                    params.delete('category');
-                                } else {
-                                    params.set('category', item.id);
-                                }
-                                router.push(`/forum?${params.toString()}`);
-                            };
-                            
-                            const isActive = currentCategory === item.id;
-                            const IconComponent = item.icon;
-                            
-                            return (
-                                <button
-                                    key={item.id}
-                                    onClick={handleClick}
-                                    className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
-                                        isActive
-                                            ? 'bg-white text-gray-900 shadow-sm border border-gray-300'
-                                            : 'bg-gray-800 text-gray-300 border border-gray-600 hover:bg-gray-700 hover:text-white'
-                                    }`}
-                                >
-                                    <IconComponent className="w-4 h-4" />
-                                    {item.label}
-                                </button>
-                            );
-                        })}
-                    </div>
-                </div>
-
-                {/* ===== POSTS LIST ===== */}
-                {loading ? (
-                    <div className="flex justify-center py-12">
-                        <PageLoader />
-                    </div>
-                ) : (
-                    <div className="space-y-4">
-                        {posts.length > 0 ? (
-                            posts.map((post) => (
-                                <ForumPostCard
-                                    key={post._id}
-                                    post={post}
-                                    currentUserId={currentUserId}
-                                    onVoteUpdate={handleVoteUpdate}
-                                />
-                            ))
-                        ) : (
-                            <div className="text-center py-12">
-                                <div className="text-gray-400 text-6xl mb-4">📭</div>
-                                <h3 className="text-lg font-medium text-gray-900 mb-2">No posts found</h3>
-                                <p className="text-gray-600 mb-4">
-                                    Be the first to start a discussion in this category!
-                                </p>
-                                <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
-                                    Create First Post
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* ===== PAGINATION ===== */}
-                {totalPages > 1 && (
-                    <div className="flex justify-center items-center gap-2 py-8">
-                        <button
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage <= 1}
-                            className="px-3 py-2 rounded-md border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            Previous
-                        </button>
-
-                        {/* Page Numbers */}
-                        {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                            const pageNum = i + 1;
-                            return (
-                                <button
-                                    key={pageNum}
-                                    onClick={() => handlePageChange(pageNum)}
-                                    className={`px-3 py-2 rounded-md text-sm font-medium ${
-                                        currentPage === pageNum
-                                            ? 'bg-indigo-600 text-white'
-                                            : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                                    }`}
-                                >
-                                    {pageNum}
-                                </button>
-                            );
-                        })}
-
-                        <button
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage >= totalPages}
-                            className="px-3 py-2 rounded-md border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            Next
-                        </button>
-                    </div>
-                )}
-            </div>
-        </ForumLayout>
+            </ForumLayout>
+            
+            {/* ===== FOOTER (OUTSIDE LAYOUT) ===== */}
+            <Footer />
+        </>
     );
 };
 

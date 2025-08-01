@@ -107,7 +107,8 @@ forumPostSchema.index({ author: 1, createdAt: -1 });
 forumPostSchema.index({ program: 1, createdAt: -1 });
 forumPostSchema.index({ category: 1, createdAt: -1 });
 forumPostSchema.index({ tags: 1 });
-forumPostSchema.index({ title: 'text', content: 'text' });
+// Text search index - currently using regex search instead to avoid query conflicts
+// forumPostSchema.index({ title: 'text', content: 'text' });
 forumPostSchema.index({ status: 1, isPinned: -1, createdAt: -1 });
 forumPostSchema.index({ lastActivity: -1 });
 
