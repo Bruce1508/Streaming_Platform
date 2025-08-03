@@ -87,29 +87,63 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
 
                 {/* Main Content */}
                 <div className="flex-1 min-w-0">
-                    {/* Top Row: Category + Meta */}
-                    <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
-                        <span className={`px-2 py-1 text-xs font-medium rounded ${getCategoryColor(post.category)}`}>
-                            {post.category.toUpperCase()}
-                        </span>
-                        <span>•</span>
-                        <span>u/{post.displayAuthor?.fullName}</span>
-                        <span>•</span>
-                        <span>{formatTimeAgo(post.createdAt)}</span>
-                        
-                        {/* Pinned/Resolved Badges */}
-                        {post.isPinned && (
-                            <>
-                                <span>•</span>
-                                <span className="text-yellow-600 font-medium">📌 PINNED</span>
-                            </>
-                        )}
-                        {post.status === 'resolved' && (
-                            <>
-                                <span>•</span>
-                                <span className="text-green-600 font-medium">✅ RESOLVED</span>
-                            </>
-                        )}
+                    {/* Top Row: Avatar + Info (2 lines) */}
+                    <div className="flex items-start gap-3 mb-2">
+                        {/* Avatar */}
+                        <div className="flex-shrink-0">
+                            {post.isAnonymous ? (
+                                <img
+                                    src="/default-avatar.jpg"
+                                    alt="Anonymous"
+                                    className="w-10 h-10 rounded-full object-cover"
+                                />
+                            ) : post.author?.profilePic ? (
+                                <img
+                                    src={post.author.profilePic}
+                                    alt={post.author.fullName}
+                                    className="w-10 h-10 rounded-full object-cover"
+                                />
+                            ) : (
+                                <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                                    <span className="text-sm text-gray-600 font-medium">
+                                        {post.author?.fullName?.charAt(0) || 'A'}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Info Container - 2 lines */}
+                        <div className="flex-1 min-w-0">
+                            {/* Line 1: Category + Time */}
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className={`px-1.5 py-0.5 text-xs font-medium rounded ${getCategoryColor(post.category)}`}>
+                                    {post.category.toUpperCase()}
+                                </span>
+                                <span className="text-xs text-gray-500">•</span>
+                                <span className="text-xs text-gray-500">
+                                    {formatTimeAgo(post.createdAt)}
+                                </span>
+                                
+                                {/* Pinned/Resolved Badges */}
+                                {post.isPinned && (
+                                    <>
+                                        <span className="text-xs text-gray-500">•</span>
+                                        <span className="text-xs text-yellow-600 font-medium">📌 PINNED</span>
+                                    </>
+                                )}
+                                {post.status === 'resolved' && (
+                                    <>
+                                        <span className="text-xs text-gray-500">•</span>
+                                        <span className="text-xs text-green-600 font-medium">✅ RESOLVED</span>
+                                    </>
+                                )}
+                            </div>
+
+                            {/* Line 2: Author Name */}
+                            <div className="text-sm font-medium text-gray-900">
+                                {post.isAnonymous ? 'Anonymous' : (post.author?.fullName || post.author?.email || 'Unknown User')}
+                            </div>
+                        </div>
                     </div>
 
                     {/* Title */}

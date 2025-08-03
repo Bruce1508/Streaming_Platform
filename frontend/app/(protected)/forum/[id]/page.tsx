@@ -8,7 +8,7 @@ import ForumLayout from '@/components/forum/ForumLayout';
 import ForumCommentThread from '@/components/forum/ForumCommentThread';
 import VoteButtons from '@/components/forum/VoteButtons';
 import PageLoader from '@/components/ui/PageLoader';
-import { forumAPI } from '@/lib/api';
+import { forumAPI, authAPI } from '@/lib/api';
 import { ForumPost, ForumComment } from '@/types/Forum';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'react-hot-toast';
@@ -21,7 +21,17 @@ const ForumPostDetailPage = () => {
     const router = useRouter();
     const { data: session } = useSession();
     const postId = params.id as string;
-    const currentUserId = session?.user?.id;
+    const [currentUserId, setCurrentUserId] = useState<string | undefined>(session?.user?.id);
+    
+    // Debug session structure
+    console.log('🔍 Full session:', session);
+    console.log('🔍 Session user:', session?.user);
+    console.log('🔍 Current user ID:', currentUserId);
+    console.log('🔍 Session user keys:', Object.keys(session?.user || {}));
+    
+
+    
+
 
     // ===== STATES =====
     const [post, setPost] = useState<ForumPost | null>(null);
@@ -56,6 +66,8 @@ const ForumPostDetailPage = () => {
                     setComments(commentsData);
                     
                     console.log('✅ Post detail loaded:', postData.title);
+                    console.log('📝 Comments data:', commentsData);
+                    console.log('📊 Comments length:', commentsData.length);
                 } else {
                     console.error('❌ API Error - Invalid post data:', response.data);
                     setPost(null);
@@ -84,6 +96,34 @@ const ForumPostDetailPage = () => {
             fetchPostDetail();
         }
     }, [postId]);
+
+    // Get MongoDB user ID from API
+    useEffect(() => {
+        console.log('🔍 useEffect triggered, session?.user?.id:', session?.user?.id);
+        
+        const fetchUserProfile = async () => {
+            if (session?.user?.id) {
+                console.log('🔍 Fetching user profile...');
+                try {
+                    const response = await authAPI.getMe();
+                    console.log('🔍 getMe response:', response);
+                    if (response.data?.user?._id) {
+                        setCurrentUserId(response.data.user._id);
+                        console.log('🔍 MongoDB user ID set to:', response.data.user._id);
+                    } else {
+                        console.log('🔍 No _id in response data.user');
+                        console.log('🔍 Response data structure:', response.data);
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch user profile:', error);
+                }
+            } else {
+                console.log('🔍 No session?.user?.id available');
+            }
+        };
+        
+        fetchUserProfile();
+    }, [session?.user?.id]);
 
     // ===== HELPER FUNCTIONS =====
     const formatTimeAgo = (dateString: string) => {
@@ -131,16 +171,67 @@ const ForumPostDetailPage = () => {
         }, 100);
     };
 
-    const handleAcceptAnswer = (commentId: string) => {
-        setComments(prev => prev.map(comment => 
-            comment._id === commentId 
-                ? { ...comment, isAcceptedAnswer: true }
-                : { ...comment, isAcceptedAnswer: false } // Unaccept others
-        ));
+    const handleAcceptAnswer = async (commentId: string) => {
+        try {
+            await forumAPI.acceptAnswer(commentId);
+            
+            // Update local state
+            setComments(prev => prev.map(comment => 
+                comment._id === commentId 
+                    ? { ...comment, isAcceptedAnswer: true }
+                    : { ...comment, isAcceptedAnswer: false } // Unaccept others
+            ));
+            
+            toast.success('Answer accepted successfully!');
+        } catch (error: any) {
+            console.error('Accept answer error:', error);
+            toast.error(error.response?.data?.message || 'Failed to accept answer');
+        }
+    };
+
+    const handleEditComment = async (commentId: string, newContent: string) => {
+        try {
+            const response = await forumAPI.updateComment(commentId, { content: newContent });
+            
+            // Update local state
+            setComments(prev => prev.map(comment => 
+                comment._id === commentId 
+                    ? { ...comment, content: newContent, updatedAt: new Date().toISOString() }
+                    : comment
+            ));
+            
+            toast.success('Comment updated successfully!');
+        } catch (error: any) {
+            console.error('Edit comment error:', error);
+            toast.error(error.response?.data?.message || 'Failed to update comment');
+        }
+    };
+
+    const handleDeleteComment = async (commentId: string) => {
+        try {
+            await forumAPI.deleteComment(commentId);
+            
+            // Remove comment from local state
+            setComments(prev => prev.filter(comment => comment._id !== commentId));
+            
+            // Update post comment count
+            if (post) {
+                setPost(prev => prev ? { ...prev, commentCount: prev.commentCount - 1 } : null);
+            }
+            
+            toast.success('Comment deleted successfully!');
+        } catch (error: any) {
+            console.error('Delete comment error:', error);
+            toast.error(error.response?.data?.message || 'Failed to delete comment');
+        }
     };
 
     const handleSubmitComment = async () => {
         if (!commentContent.trim() || submittingComment) return;
+
+        // Save current values for error recovery
+        const currentContent = commentContent;
+        const currentReplyTo = replyToComment;
 
         try {
             setSubmittingComment(true);
@@ -151,19 +242,72 @@ const ForumPostDetailPage = () => {
                 isAnonymous: false
             };
 
-            await forumAPI.createComment(postId, commentData);
+            // Create optimistic comment
+            const optimisticComment: ForumComment = {
+                _id: `temp-${Date.now()}`,
+                content: commentContent,
+                post: postId,
+                author: {
+                    _id: session?.user?.id || currentUserId || '', // Use session user ID (MongoDB ID)
+                    fullName: session?.user?.name || 'You',
+                    profilePic: session?.user?.image || '/default-avatar.jpg'
+                },
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                voteCount: 0,
+                upvotes: [],
+                downvotes: [],
+                isAcceptedAnswer: false,
+                replies: [],
+                isAnonymous: false,
+                replyCount: 0,
+                displayAuthor: {
+                    _id: session?.user?.id || currentUserId || '', // Use session user ID (MongoDB ID)
+                    fullName: session?.user?.name || 'You',
+                    profilePic: session?.user?.image || '/default-avatar.jpg'
+                }
+            };
+
+            // Add optimistic comment to UI immediately
+            setComments(prev => [optimisticComment, ...prev]);
             
-            // Refresh comments
-            await fetchPostDetail();
+            // Update post comment count locally
+            if (post) {
+                setPost(prev => prev ? { ...prev, commentCount: prev.commentCount + 1 } : null);
+            }
             
-            // Reset form
+            // Reset form immediately
             setCommentContent('');
             setShowCommentForm(false);
             setReplyToComment(null);
+
+            // Call API in background
+            const response = await forumAPI.createComment(postId, commentData);
+            
+
+            
+            // Replace optimistic comment with real comment from server
+            setComments(prev => prev.map(comment => 
+                comment._id === optimisticComment._id ? response.data : comment
+            ));
             
             toast.success('Comment posted!');
         } catch (error: any) {
             console.error('Submit comment error:', error);
+            
+            // Remove optimistic comment on error
+            setComments(prev => prev.filter(comment => !comment._id.startsWith('temp-')));
+            
+            // Revert comment count
+            if (post) {
+                setPost(prev => prev ? { ...prev, commentCount: prev.commentCount - 1 } : null);
+            }
+            
+            // Restore form content
+            setCommentContent(currentContent);
+            setShowCommentForm(true);
+            setReplyToComment(currentReplyTo);
+            
             toast.error('Failed to post comment');
         } finally {
             setSubmittingComment(false);
@@ -214,7 +358,7 @@ const ForumPostDetailPage = () => {
                 {/* ===== BACK BUTTON ===== */}
                 <button
                     onClick={() => router.back()}
-                    className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors duration-200 mb-6"
+                    className="flex items-center gap-2 mb-10 text-gray-500 hover:text-gray-700 transition-colors duration-200"
                 >
                     <ArrowLeft className="w-5 h-5" />
                     Back to Forum
@@ -239,44 +383,77 @@ const ForumPostDetailPage = () => {
 
                         {/* Main Content */}
                         <div className="flex-1 min-w-0">
+                            {/* Author & Meta Info - Reddit Style */}
+                            <div className="flex items-start gap-3 mb-4">
+                                {/* Avatar */}
+                                <div className="flex-shrink-0">
+                                    {post.isAnonymous ? (
+                                        <Image
+                                            src="/default-avatar.jpg"
+                                            alt="Anonymous"
+                                            className="w-10 h-10 rounded-full object-cover"
+                                            width={40}
+                                            height={40}
+                                        />
+                                    ) : post.author?.profilePic ? (
+                                        <Image
+                                            src={post.author.profilePic}
+                                            alt={post.author.fullName}
+                                            className="w-10 h-10 rounded-full object-cover"
+                                            width={40}
+                                            height={40}
+                                        />
+                                    ) : (
+                                        <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                                            <span className="text-sm text-gray-600 font-medium">
+                                                {post.author?.fullName?.charAt(0) || 'A'}
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Info Container - 2 lines */}
+                                <div className="flex-1 min-w-0 mb-4">
+                                    {/* Line 1: Category + Time */}
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className={`px-1.5 py-0.5 text-xs font-medium rounded ${getCategoryColor(post.category)}`}>
+                                            {post.category.toUpperCase()}
+                                        </span>
+                                        <span className="text-xs text-gray-500">•</span>
+                                        <span className="text-xs text-gray-500">
+                                            {formatTimeAgo(post.createdAt)}
+                                        </span>
+                                    </div>
+
+                                    {/* Line 2: Author Name */}
+                                    <div className="text-sm font-medium text-gray-900">
+                                        {post.isAnonymous ? 'Anonymous' : (post.author?.fullName || post.author?.email || 'Unknown User')}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Title */}
+                            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                                {post.title}
+                            </h1>
+
                             {/* Category Badge */}
-                            <div className="flex items-center gap-2 mb-3">
-                                <span className={`px-3 py-1 text-sm font-medium rounded-full ${getCategoryColor(post.category)}`}>
+                            <div className="flex items-center gap-2">
+                                {/* <span className={`px-1.5 py-0.5 text-xs font-medium rounded ${getCategoryColor(post.category)}`}>
                                     {post.category.toUpperCase()}
-                                </span>
+                                </span> */}
                                 
                                 {post.isPinned && (
-                                    <span className="px-3 py-1 text-sm font-medium bg-yellow-100 text-yellow-800 rounded-full">
+                                    <span className="px-1.5 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded">
                                         PINNED
                                     </span>
                                 )}
 
                                 {post.status === 'resolved' && (
-                                    <span className="px-3 py-1 text-sm font-medium bg-green-100 text-green-800 rounded-full">
+                                    <span className="px-1.5 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded">
                                         RESOLVED
                                     </span>
                                 )}
-                            </div>
-
-                            {/* Title */}
-                            <h1 className="text-2xl font-bold text-gray-900 mb-4">
-                                {post.title}
-                            </h1>
-
-                            {/* Author & Meta Info - Reddit Style */}
-                            <div className="flex items-center gap-2 mb-6 text-sm text-gray-500">
-                                <Image
-                                    src={post.displayAuthor?.profilePic || '/default-avatar.jpg'}
-                                    alt={post.displayAuthor?.fullName || 'Anonymous'}
-                                    className="w-5 h-5 rounded-full object-cover"
-                                    width={20}
-                                    height={20}
-                                />
-                                <span className="font-medium text-gray-900">
-                                    u/{post.displayAuthor?.fullName}
-                                </span>
-                                <span>•</span>
-                                <span>{formatTimeAgo(post.createdAt)}</span>
                             </div>
 
                             {/* Post Content */}
@@ -302,10 +479,10 @@ const ForumPostDetailPage = () => {
                                 </div>
                             )}
 
-                            {/* Action Buttons with Vote Buttons */}
-                            <div className="flex items-center gap-4 py-4">
-                                {/* Vote Buttons with blue background */}
-                                <div className="flex items-center bg-blue-50 rounded-full px-2 py-1">
+                            {/* Action Buttons - Pill Style */}
+                            <div className="flex items-center gap-3 py-4">
+                                {/* Vote Buttons - Pill Style */}
+                                <div className="flex items-center bg-gray-50 rounded-full px-3 py-2">
                                     <VoteButtons
                                         id={post._id}
                                         type="post"
@@ -319,40 +496,45 @@ const ForumPostDetailPage = () => {
                                     />
                                 </div>
 
-                                <button className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors">
+                                {/* Comments Button - Pill Style */}
+                                <button className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-3 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
+                                    <MessageSquare className="w-4 h-4" />
+                                    <span className="text-sm font-medium">{comments.length}</span>
+                                </button>
+
+                                {/* Award Button - Pill Style */}
+                                <button className="flex items-center justify-center bg-gray-50 border border-gray-200 rounded-full px-3 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                                    </svg>
+                                </button>
+
+                                {/* Share Button - Pill Style */}
+                                <button className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-3 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
                                     <Share2 className="w-4 h-4" />
-                                    Share
-                                </button>
-                                
-                                <button className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors">
-                                    <Bookmark className="w-4 h-4" />
-                                    Save
-                                </button>
-                                
-                                <button className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors">
-                                    <Flag className="w-4 h-4" />
-                                    Report
+                                    <span className="text-sm font-medium">Share</span>
                                 </button>
                             </div>
 
                             {/* Comment Form */}
                             <div className="border-t border-gray-200 pt-6 mb-6">
-                                <div className="space-y-4">
+                                <div className="relative">
                                     <textarea
                                         value={commentContent}
                                         onChange={(e) => setCommentContent(e.target.value)}
-                                        placeholder="What are your thoughts?"
-                                        className="w-full h-24 p-3 border border-gray-300 rounded-lg resize-none text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        placeholder="Aa"
+                                        className="w-full h-24 p-4 pr-32 border border-gray-300 rounded-lg resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-600 transition-colors"
                                     />
                                     
-                                    <div className="flex justify-end gap-2">
+                                    {/* Buttons inside textarea */}
+                                    <div className="absolute bottom-3 right-2 flex gap-2">
                                         <button
                                             onClick={() => {
                                                 setCommentContent('');
                                                 setShowCommentForm(false);
                                                 setReplyToComment(null);
                                             }}
-                                            className="px-4 py-2 text-gray-500 hover:text-gray-700 transition-colors"
+                                            className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors text-sm"
                                         >
                                             Cancel
                                         </button>
@@ -360,9 +542,9 @@ const ForumPostDetailPage = () => {
                                         <button
                                             onClick={handleSubmitComment}
                                             disabled={!commentContent.trim() || submittingComment}
-                                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="px-4 py-1.5 bg-blue-800 text-white rounded-full hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                                         >
-                                            {submittingComment ? 'Posting...' : 'Post Comment'}
+                                            {submittingComment ? 'Posting...' : 'Comment'}
                                         </button>
                                     </div>
                                 </div>
@@ -395,14 +577,25 @@ const ForumPostDetailPage = () => {
 
                                 {comments.length > 0 ? (
                                     <div className="space-y-4">
-                                        {comments.map((comment) => (
+                                        {comments
+                                            .sort((a, b) => {
+                                                // Sort user's own comments first
+                                                if (a.author._id === currentUserId && b.author._id !== currentUserId) return -1;
+                                                if (a.author._id !== currentUserId && b.author._id === currentUserId) return 1;
+                                                // Then sort by creation time (newest first)
+                                                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                                            })
+                                            .map((comment) => (
                                             <ForumCommentThread
                                                 key={comment._id}
                                                 comment={comment}
                                                 currentUserId={currentUserId}
+                                                postAuthorId={post.author?._id}
                                                 onVoteUpdate={handleCommentVoteUpdate}
                                                 onReply={handleReply}
                                                 onAcceptAnswer={handleAcceptAnswer}
+                                                onEditComment={handleEditComment}
+                                                onDeleteComment={handleDeleteComment}
                                                 depth={0}
                                             />
                                         ))}

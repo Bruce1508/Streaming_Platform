@@ -27,14 +27,14 @@ const emailSchema = Joi.string()
         return normalizedEmail;
     });
 
-// ✅ ENHANCED NAME VALIDATION
+// ✅ ENHANCED NAME VALIDATION - Support Vietnamese and international characters
 const nameSchema = Joi.string()
     .min(2)
     .max(100)  // Increased from 50
-    .pattern(new RegExp('^[a-zA-Z\\s\\-\\.\'àáäâèéëêìíïîòóöôùúüûñç]+$'))  // Added international chars
+    .pattern(new RegExp('^[a-zA-ZÀ-ỹ\\s\\-\\.\']+$'))  // Support Vietnamese and international chars
     .required()
     .messages({
-        'string.pattern.base': 'Name can only contain letters, spaces, hyphens, dots, apostrophes, and accented characters'
+        'string.pattern.base': 'Name can only contain letters, spaces, hyphens, dots, apostrophes, and accented characters (including Vietnamese)'
     });
 
 // ✅ PHONE VALIDATION

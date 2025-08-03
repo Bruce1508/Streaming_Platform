@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { MessageSquare, ChevronUp, ChevronDown, MoreHorizontal, Reply, Flag } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { MessageSquare, ChevronUp, ChevronDown, MoreHorizontal, Reply, Flag, Edit, Trash2 } from 'lucide-react';
 import { ForumComment } from '@/types/Forum';
 import VoteButtons from './VoteButtons';
 import { formatDistanceToNow } from 'date-fns';
@@ -11,22 +11,31 @@ import Image from 'next/image';
 interface ForumCommentThreadProps {
     comment: ForumComment;
     currentUserId?: string;
+    postAuthorId?: string;
     depth?: number;
     onReply?: (commentId: string) => void;
     onVoteUpdate?: (commentId: string, newVoteData: any) => void;
     onAcceptAnswer?: (commentId: string) => void;
+    onEditComment?: (commentId: string, newContent: string) => void;
+    onDeleteComment?: (commentId: string) => void;
 }
 
 const ForumCommentThread: React.FC<ForumCommentThreadProps> = ({
     comment,
     currentUserId,
+    postAuthorId,
     depth = 0,
     onReply,
     onVoteUpdate,
-    onAcceptAnswer
+    onAcceptAnswer,
+    onEditComment,
+    onDeleteComment
 }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [showActions, setShowActions] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editContent, setEditContent] = useState(comment.content);
+    const menuRef = useRef<HTMLDivElement>(null);
 
     const formatTimeAgo = (dateString: string) => {
         try {
@@ -40,8 +49,61 @@ const ForumCommentThread: React.FC<ForumCommentThreadProps> = ({
         onVoteUpdate?.(comment._id, newVoteData);
     };
 
+    const handleEdit = () => {
+        setIsEditing(true);
+        setEditContent(comment.content);
+        setShowActions(false);
+    };
+
+    const handleSaveEdit = () => {
+        if (editContent.trim() && editContent !== comment.content) {
+            onEditComment?.(comment._id, editContent);
+        }
+        setIsEditing(false);
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+        setEditContent(comment.content);
+    };
+
+    const handleDelete = () => {
+        if (window.confirm('Are you sure you want to delete this comment?')) {
+            onDeleteComment?.(comment._id);
+        }
+        setShowActions(false);
+    };
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setShowActions(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     const maxDepth = 8; // Maximum nesting depth like Reddit
     const isMaxDepth = depth >= maxDepth;
+    
+    // Debug: Log user IDs for this comment
+    console.log('🔍 Comment debug:', {
+        commentId: comment._id,
+        currentUserId,
+        authorId: comment.author._id,
+        isMatch: currentUserId === comment.author._id,
+        currentUserIdType: typeof currentUserId,
+        authorIdType: typeof comment.author._id
+    });
+    
+
+    
+
     
     // Colors for different depth levels (light theme)
     const getDepthColor = (depth: number) => {
@@ -94,7 +156,7 @@ const ForumCommentThread: React.FC<ForumCommentThreadProps> = ({
                             </span>
                             
                             {/* OP Badge */}
-                            {comment.isAuthor && (
+                            {comment.author._id === postAuthorId && (
                                 <span className="px-1.5 py-0.5 text-xs bg-blue-600 text-white rounded text-[10px] font-medium">
                                     OP
                                 </span>
@@ -111,27 +173,80 @@ const ForumCommentThread: React.FC<ForumCommentThreadProps> = ({
                                 {formatTimeAgo(comment.createdAt)}
                             </span>
 
-                            {/* Collapse Button */}
-                            <button
-                                onClick={() => setIsCollapsed(!isCollapsed)}
-                                className="ml-auto text-gray-400 hover:text-gray-600 transition-colors"
-                            >
-                                {isCollapsed ? (
-                                    <ChevronDown className="w-3 h-3" />
-                                ) : (
-                                    <ChevronUp className="w-3 h-3" />
-                                )}
-                            </button>
+                            {/* Edit indicator */}
+                            {comment.updatedAt && comment.updatedAt !== comment.createdAt && (
+                                <span className="text-xs text-gray-400">
+                                    • edited {formatTimeAgo(comment.updatedAt)}
+                                </span>
+                            )}
+
+                            {/* Three dots menu - Only show for comment author */}
+                            {/* Debug: currentUserId={currentUserId}, author._id={comment.author._id} */}
+                            {currentUserId && comment.author._id && currentUserId === comment.author._id && (
+                                <div className="relative ml-auto" ref={menuRef}>
+                                    <button
+                                        onClick={() => setShowActions(!showActions)}
+                                        className="text-gray-400 hover:text-gray-600 transition-colors p-1"
+                                    >
+                                        <MoreHorizontal className="w-4 h-4" />
+                                    </button>
+                                    
+                                    {/* Dropdown menu */}
+                                    {showActions && (
+                                        <div className="absolute right-0 top-6 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[120px]">
+                                            <button
+                                                onClick={handleEdit}
+                                                className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                                            >
+                                                <Edit className="w-3 h-3" />
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={handleDelete}
+                                                className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-gray-50 flex items-center gap-2"
+                                            >
+                                                <Trash2 className="w-3 h-3" />
+                                                Delete
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
 
                         {/* Comment Content */}
                         {!isCollapsed && (
                             <>
-                                <div className="mb-3">
-                                    <p className="text-gray-700 leading-relaxed text-sm">
-                                        {comment.content}
-                                    </p>
-                                </div>
+                                {isEditing ? (
+                                    <div className="mb-3">
+                                        <textarea
+                                            value={editContent}
+                                            onChange={(e) => setEditContent(e.target.value)}
+                                            className="w-full p-3 border border-gray-300 rounded-lg resize-none text-gray-700 text-sm focus:outline-none focus:border-gray-600"
+                                            rows={3}
+                                        />
+                                        <div className="flex gap-2 mt-2">
+                                            <button
+                                                onClick={handleSaveEdit}
+                                                className="px-3 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors text-xs"
+                                            >
+                                                Save
+                                            </button>
+                                            <button
+                                                onClick={handleCancelEdit}
+                                                className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors text-xs"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="mb-3">
+                                        <p className="text-gray-700 leading-relaxed text-sm">
+                                            {comment.content}
+                                        </p>
+                                    </div>
+                                )}
 
                                 {/* Comment Actions */}
                                 <div className="flex items-center gap-3 text-xs">
@@ -145,8 +260,8 @@ const ForumCommentThread: React.FC<ForumCommentThreadProps> = ({
                                         </button>
                                     )}
 
-                                    {/* Accept Answer Button */}
-                                    {onAcceptAnswer && !comment.isAcceptedAnswer && (
+                                    {/* Accept Answer Button - Only show for post author */}
+                                    {onAcceptAnswer && !comment.isAcceptedAnswer && currentUserId === postAuthorId && (
                                         <button
                                             onClick={() => onAcceptAnswer(comment._id)}
                                             className="text-green-600 hover:text-green-700 font-medium transition-colors"
@@ -187,10 +302,13 @@ const ForumCommentThread: React.FC<ForumCommentThreadProps> = ({
                             key={reply._id}
                             comment={reply}
                             currentUserId={currentUserId}
+                            postAuthorId={postAuthorId}
                             depth={depth + 1}
                             onReply={onReply}
                             onVoteUpdate={onVoteUpdate}
                             onAcceptAnswer={onAcceptAnswer}
+                            onEditComment={onEditComment}
+                            onDeleteComment={onDeleteComment}
                         />
                     ))}
                 </div>

@@ -91,8 +91,13 @@ export const createComment = asyncHandler(async (req: AuthRequest, res: Response
         isAnonymous: isAnonymous || false
     });
 
+    // Update post comment count (only for top-level comments, not replies)
+    if (!parentComment) {
+        await ForumPost.findByIdAndUpdate(postId, { $inc: { commentCount: 1 } });
+    }
+
     const populatedComment = await ForumComment.findById(comment._id)
-        .populate('author', 'fullName profilePic');
+        .populate('author', 'fullName profilePic email');
 
     res.status(201).json(new ApiResponse(201, populatedComment, 'Comment created successfully'));
 });
@@ -155,11 +160,18 @@ export const deleteComment = asyncHandler(async (req: AuthRequest, res: Response
         return res.status(403).json(new ApiResponse(403, null, 'Not authorized to delete this comment'));
     }
 
+    // Count total comments to be deleted (including replies)
+    const repliesCount = await ForumComment.countDocuments({ parentComment: id });
+    const totalCommentsToDelete = repliesCount + 1; // +1 for the main comment
+
     // Delete all replies first
     await ForumComment.deleteMany({ parentComment: id });
     
     // Delete the comment
     await ForumComment.findByIdAndDelete(id);
+
+    // Update post comment count
+    await ForumPost.findByIdAndUpdate(comment.post, { $inc: { commentCount: -totalCommentsToDelete } });
 
     res.json(new ApiResponse(200, null, 'Comment deleted successfully'));
 });

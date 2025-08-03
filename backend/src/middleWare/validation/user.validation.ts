@@ -11,16 +11,16 @@ export const validateUserUpdate = [
         .trim()
         .isLength({ min: 2, max: 50 })
         .withMessage('First name must be 2-50 characters')
-        .matches(/^[a-zA-Z\s]+$/)
-        .withMessage('First name can only contain letters and spaces'),
+        .matches(/^[a-zA-ZÀ-ỹ\s]+$/)
+        .withMessage('First name can only contain letters and spaces (including Vietnamese characters)'),
     
     body('lastName')
         .optional()
         .trim()
         .isLength({ min: 2, max: 50 })
         .withMessage('Last name must be 2-50 characters')
-        .matches(/^[a-zA-Z\s]+$/)
-        .withMessage('Last name can only contain letters and spaces'),
+        .matches(/^[a-zA-ZÀ-ỹ\s]+$/)
+        .withMessage('Last name can only contain letters and spaces (including Vietnamese characters)'),
     
     body('email')
         .optional()
@@ -90,14 +90,18 @@ export const validateUserProfile = [
         .notEmpty()
         .withMessage('First name is required')
         .isLength({ min: 2, max: 50 })
-        .withMessage('First name must be 2-50 characters'),
+        .withMessage('First name must be 2-50 characters')
+        .matches(/^[a-zA-ZÀ-ỹ\s]+$/)
+        .withMessage('First name can only contain letters and spaces (including Vietnamese characters)'),
     
     body('lastName')
         .trim()
         .notEmpty()
         .withMessage('Last name is required')
         .isLength({ min: 2, max: 50 })
-        .withMessage('Last name must be 2-50 characters'),
+        .withMessage('Last name must be 2-50 characters')
+        .matches(/^[a-zA-ZÀ-ỹ\s]+$/)
+        .withMessage('Last name can only contain letters and spaces (including Vietnamese characters)'),
     
     body('programId')
         .notEmpty()

@@ -89,7 +89,7 @@ export const getForumPosts = asyncHandler(async (req: Request, res: Response) =>
 
     const [posts, total] = await Promise.all([
         ForumPost.find(query)
-            .populate('author', 'fullName profilePic')
+            .populate('author', 'fullName profilePic email')
             .populate('program', 'name code')
             .sort(sortOption)
             .skip(skip)
@@ -133,21 +133,42 @@ export const getForumPost = asyncHandler(async (req: Request, res: Response) => 
 
     const [post, comments, totalComments] = await Promise.all([
         ForumPost.findById(id)
-            .populate('author', 'fullName profilePic')
+            .populate('author', 'fullName profilePic email')
             .populate('program', 'name code')
             .lean(),
-        ForumComment.find({ post: id, parentComment: { $exists: false } })
-            .populate('author', 'fullName profilePic')
-            .populate({
-                path: 'replies',
-                populate: { path: 'author', select: 'fullName profilePic' }
-            })
+        ForumComment.find({ post: id, $or: [{ parentComment: { $exists: false } }, { parentComment: null }] })
+            .populate('author', 'fullName profilePic email')
             .sort({ isAcceptedAnswer: -1, createdAt: 1 })
             .skip(skip)
             .limit(Number(limit))
             .lean(),
-        ForumComment.countDocuments({ post: id, parentComment: { $exists: false } })
+        ForumComment.countDocuments({ post: id, $or: [{ parentComment: { $exists: false } }, { parentComment: null }] })
     ]);
+
+    console.log('🔍 Debug - Post ID:', id);
+    console.log('🔍 Debug - Comments found:', comments.length);
+    console.log('🔍 Debug - Total comments count:', totalComments);
+    console.log('🔍 Debug - Comments data:', JSON.stringify(comments, null, 2));
+    
+    // Debug: Check raw comments without populate
+    const rawComments = await ForumComment.find({ post: id, $or: [{ parentComment: { $exists: false } }, { parentComment: null }] }).lean();
+    console.log('🔍 Debug - Raw comments found:', rawComments.length);
+    console.log('🔍 Debug - Raw comments:', JSON.stringify(rawComments, null, 2));
+
+    // Populate replies for each comment
+    const commentsWithReplies = await Promise.all(
+        comments.map(async (comment) => {
+            const replies = await ForumComment.find({ parentComment: comment._id })
+                .populate('author', 'fullName profilePic email')
+                .sort({ createdAt: 1 })
+                .lean();
+            
+            return {
+                ...comment,
+                replies
+            };
+        })
+    );
 
     if (!post) {
         return res.status(404).json(new ApiResponse(404, null, 'Post not found'));
@@ -157,7 +178,7 @@ export const getForumPost = asyncHandler(async (req: Request, res: Response) => 
 
     res.json(new ApiResponse(200, {
         post,
-        comments,
+        comments: commentsWithReplies,
         pagination: {
             currentPage: Number(page),
             totalPages,
@@ -220,7 +241,7 @@ export const createForumPost = asyncHandler(async (req: AuthRequest, res: Respon
         console.log('👤 Request user ID:', req.user._id);
 
         const populatedPost = await ForumPost.findById(post._id)
-            .populate('author', 'fullName profilePic')
+            .populate('author', 'fullName profilePic email')
             .populate('program', 'name code');
 
         console.log('✅ Post populated successfully');
@@ -272,7 +293,7 @@ export const updateForumPost = asyncHandler(async (req: AuthRequest, res: Respon
         id,
         { title, content, category, tags, isAnonymous },
         { new: true, runValidators: true }
-    ).populate('author', 'fullName profilePic')
+    ).populate('author', 'fullName profilePic email')
      .populate('program', 'name code');
 
     res.json(new ApiResponse(200, updatedPost, 'Forum post updated successfully'));
@@ -386,7 +407,7 @@ export const searchForumPosts = asyncHandler(async (req: Request, res: Response)
                 { content: { $regex: q as string, $options: 'i' } }
             ]
         })
-            .populate('author', 'fullName profilePic')
+            .populate('author', 'fullName profilePic email')
             .populate('program', 'name code')
             .sort({ createdAt: -1 })
             .skip(skip)
@@ -466,7 +487,7 @@ export const getRecentActivity = asyncHandler(async (req: Request, res: Response
     try {
         // Get recent posts and comments
         const recentPosts = await ForumPost.find({ status: 'open' })
-            .populate('author', 'fullName profilePic')
+            .populate('author', 'fullName profilePic email')
             .sort({ createdAt: -1 })
             .limit(5)
             .select('title author createdAt');
