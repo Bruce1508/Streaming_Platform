@@ -159,7 +159,7 @@ export const forumAPI = {
     deletePost: (id: string) => api.delete(`/forum/posts/${id}`),
     
     // Vote cho post
-    votePost: (id: string, vote: 'up' | 'down') => api.post(`/forum/posts/${id}/vote`, { vote }),
+    votePost: (postId: string, voteType: 'up' | 'down') => api.post(`/forum/posts/${postId}/vote`, { voteType }),
     
     // ===== COMMENT OPERATIONS =====
     // Lấy comments của một post
@@ -178,7 +178,7 @@ export const forumAPI = {
     deleteComment: (id: string) => api.delete(`/forum/comments/${id}`),
     
     // Vote cho comment
-    voteComment: (id: string, vote: 'up' | 'down') => api.post(`/forum/comments/${id}/vote`, { vote }),
+    voteComment: (commentId: string, voteType: 'up' | 'down') => api.post(`/forum/comments/${commentId}/vote`, { voteType }),
     
     // Đánh dấu comment là accepted answer (chỉ post author)
     acceptAnswer: (id: string) => api.post(`/forum/comments/${id}/accept`),

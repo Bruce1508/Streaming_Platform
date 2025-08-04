@@ -1,9 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { ArrowLeft, MessageSquare, Eye, Clock, Tag, Share2, Flag, Bookmark } from 'lucide-react';
+import { ArrowLeft, Eye, Clock, Tag, Flag, Bookmark, ChevronDown, Trophy, TrendingUp, Star, Zap, Calendar, Mic } from 'lucide-react';
+import { TbShare3 } from "react-icons/tb";
+import { BiUpvote, BiDownvote } from "react-icons/bi";
+import { FaRegCommentDots } from "react-icons/fa";
 import ForumLayout from '@/components/forum/ForumLayout';
 import ForumCommentThread from '@/components/forum/ForumCommentThread';
 import VoteButtons from '@/components/forum/VoteButtons';
@@ -41,6 +44,11 @@ const ForumPostDetailPage = () => {
     const [replyToComment, setReplyToComment] = useState<string | null>(null);
     const [commentContent, setCommentContent] = useState('');
     const [submittingComment, setSubmittingComment] = useState(false);
+    const [sortBy, setSortBy] = useState('best');
+    const [showSortDropdown, setShowSortDropdown] = useState(false);
+    const [localUpvotes, setLocalUpvotes] = useState<string[]>([]);
+    const [localDownvotes, setLocalDownvotes] = useState<string[]>([]);
+    const sortDropdownRef = useRef<HTMLDivElement>(null);
 
     // ===== FETCH POST & COMMENTS =====
     const fetchPostDetail = async () => {
@@ -125,6 +133,28 @@ const ForumPostDetailPage = () => {
         fetchUserProfile();
     }, [session?.user?.id]);
 
+    // Initialize local vote states when post loads
+    useEffect(() => {
+        if (post) {
+            setLocalUpvotes(post.upvotes || []);
+            setLocalDownvotes(post.downvotes || []);
+        }
+    }, [post]);
+
+    // Click outside to close sort dropdown
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target as Node)) {
+                setShowSortDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     // ===== HELPER FUNCTIONS =====
     const formatTimeAgo = (dateString: string) => {
         try {
@@ -153,6 +183,45 @@ const ForumPostDetailPage = () => {
             setPost(prev => prev ? { ...prev, voteCount: newVoteData.voteCount } : null);
         }
     };
+
+    const handleUpvote = () => {
+        if (!currentUserId || !post) return;
+        
+        if (localUpvotes.includes(currentUserId)) {
+            // Remove upvote
+            setLocalUpvotes(prev => prev.filter(id => id !== currentUserId));
+            const newVoteCount = post.voteCount - 1;
+            setPost(prev => prev ? { ...prev, voteCount: newVoteCount } : null);
+        } else {
+            // Add upvote, remove downvote if exists
+            setLocalUpvotes(prev => [...prev.filter(id => id !== currentUserId), currentUserId]);
+            setLocalDownvotes(prev => prev.filter(id => id !== currentUserId));
+            const voteChange = localDownvotes.includes(currentUserId) ? 2 : 1;
+            const newVoteCount = post.voteCount + voteChange;
+            setPost(prev => prev ? { ...prev, voteCount: newVoteCount } : null);
+        }
+    };
+
+    const handleDownvote = () => {
+        if (!currentUserId || !post) return;
+        
+        if (localDownvotes.includes(currentUserId)) {
+            // Remove downvote
+            setLocalDownvotes(prev => prev.filter(id => id !== currentUserId));
+            const newVoteCount = post.voteCount + 1;
+            setPost(prev => prev ? { ...prev, voteCount: newVoteCount } : null);
+        } else {
+            // Add downvote, remove upvote if exists
+            setLocalDownvotes(prev => [...prev.filter(id => id !== currentUserId), currentUserId]);
+            setLocalUpvotes(prev => prev.filter(id => id !== currentUserId));
+            const voteChange = localUpvotes.includes(currentUserId) ? 2 : 1;
+            const newVoteCount = post.voteCount - voteChange;
+            setPost(prev => prev ? { ...prev, voteCount: newVoteCount } : null);
+        }
+    };
+
+    const hasUpvoted = currentUserId ? localUpvotes.includes(currentUserId) : false;
+    const hasDownvoted = currentUserId ? localDownvotes.includes(currentUserId) : false;
 
     const handleCommentVoteUpdate = (commentId: string, newVoteData: any) => {
         setComments(prev => prev.map(comment => 
@@ -224,6 +293,26 @@ const ForumPostDetailPage = () => {
             console.error('Delete comment error:', error);
             toast.error(error.response?.data?.message || 'Failed to delete comment');
         }
+    };
+
+    // ===== SORT OPTIONS =====
+    const sortOptions = [
+        { value: 'best', label: 'Best', icon: Trophy, color: 'text-yellow-600' },
+        { value: 'top', label: 'Top', icon: TrendingUp, color: 'text-gray-600' },
+        { value: 'new', label: 'New', icon: Star, color: 'text-blue-600' },
+        { value: 'controversial', label: 'Controversial', icon: Zap, color: 'text-yellow-600' },
+        { value: 'old', label: 'Old', icon: Calendar, color: 'text-gray-600' },
+        { value: 'qa', label: 'Q&A', icon: Mic, color: 'text-red-600' }
+    ];
+
+    const getSortIcon = (value: string) => {
+        const option = sortOptions.find(opt => opt.value === value);
+        return option ? option.icon : Trophy;
+    };
+
+    const getSortLabel = (value: string) => {
+        const option = sortOptions.find(opt => opt.value === value);
+        return option ? option.label : 'Best';
     };
 
     const handleSubmitComment = async () => {
@@ -358,7 +447,7 @@ const ForumPostDetailPage = () => {
                 {/* ===== BACK BUTTON ===== */}
                 <button
                     onClick={() => router.back()}
-                    className="flex items-center gap-2 mb-10 text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                    className="flex items-center cursor-pointer gap-2 mb-10 text-gray-500 hover:text-gray-700 hover:bg-[#e4ebee] px-3 py-1.5 rounded-full transition-colors duration-200"
                 >
                     <ArrowLeft className="w-5 h-5" />
                     Back to Forum
@@ -368,19 +457,6 @@ const ForumPostDetailPage = () => {
                 <div className="space-y-6">
                     {/* ===== POST CONTENT ===== */}
                     <div className="flex gap-4">
-                        {/* Vote Buttons */}
-                        <div className="flex-shrink-0">
-                            <VoteButtons
-                                id={post._id}
-                                type="post"
-                                voteCount={post.voteCount}
-                                upvotes={post.upvotes}
-                                downvotes={post.downvotes}
-                                currentUserId={currentUserId}
-                                onVoteUpdate={handleVoteUpdate}
-                            />
-                        </div>
-
                         {/* Main Content */}
                         <div className="flex-1 min-w-0">
                             {/* Author & Meta Info - Reddit Style */}
@@ -481,37 +557,49 @@ const ForumPostDetailPage = () => {
 
                             {/* Action Buttons - Pill Style */}
                             <div className="flex items-center gap-3 py-4">
-                                {/* Vote Buttons - Pill Style */}
-                                <div className="flex items-center bg-gray-50 rounded-full px-3 py-2">
-                                    <VoteButtons
-                                        id={post._id}
-                                        type="post"
-                                        voteCount={post.voteCount}
-                                        upvotes={post.upvotes}
-                                        downvotes={post.downvotes}
-                                        currentUserId={currentUserId}
-                                        onVoteUpdate={handleVoteUpdate}
-                                        size="sm"
-                                        className="scale-90"
-                                    />
+                                {/* Vote Button - Reddit Style */}
+                                <div className="flex items-center bg-[#b5f3fa] rounded-full px-3 py-2">
+                                    <button
+                                        onClick={handleUpvote}
+                                        className={`flex items-center justify-center p-1 rounded-md transition-all duration-200 cursor-pointer ${
+                                            hasUpvoted 
+                                                ? 'bg-[#d93a00] text-white' 
+                                                : 'text-gray-700 hover:text-green-600'
+                                        }`}
+                                    >
+                                        <BiUpvote className="w-5 h-5" />
+                                    </button>
+                                    <span className="text-sm font-medium text-gray-900 min-w-[20px] text-center mx-2">
+                                        {post.voteCount || 0}
+                                    </span>
+                                    <button
+                                        onClick={handleDownvote}
+                                        className={`flex items-center justify-center p-1 rounded-md transition-all duration-200 cursor-pointer ${
+                                            hasDownvoted 
+                                                ? 'bg-[#d93a00] text-white' 
+                                                : 'text-gray-700 hover:text-red-600'
+                                        }`}
+                                    >
+                                        <BiDownvote className="w-5 h-5" />
+                                    </button>
                                 </div>
 
                                 {/* Comments Button - Pill Style */}
-                                <button className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-3 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
-                                    <MessageSquare className="w-4 h-4" />
+                                <button className="flex items-center gap-2 bg-[#b5f3fa] rounded-full px-3 py-2 text-gray-700 hover:bg-[#a0e8f0] transition-colors">
+                                    <FaRegCommentDots className="w-4 h-4" />
                                     <span className="text-sm font-medium">{comments.length}</span>
                                 </button>
 
                                 {/* Award Button - Pill Style */}
-                                <button className="flex items-center justify-center bg-gray-50 border border-gray-200 rounded-full px-3 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
+                                <button className="flex items-center justify-center bg-[#b5f3fa] rounded-full px-3 py-2 text-gray-700 hover:bg-[#a0e8f0] transition-colors">
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                                     </svg>
                                 </button>
 
                                 {/* Share Button - Pill Style */}
-                                <button className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-3 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
-                                    <Share2 className="w-4 h-4" />
+                                <button className="flex items-center gap-2 bg-[#b5f3fa] rounded-full px-3 py-2 text-gray-700 hover:bg-[#a0e8f0] transition-colors">
+                                    <TbShare3 className="w-4 h-4" />
                                     <span className="text-sm font-medium">Share</span>
                                 </button>
                             </div>
@@ -557,20 +645,53 @@ const ForumPostDetailPage = () => {
                                         <span className="text-sm font-medium text-gray-700">{comments.length} comments</span>
                                         
                                         {/* Sort Dropdown - Reddit Style */}
-                                        <div className="relative">
-                                            <select className="appearance-none bg-white border border-gray-300 rounded-lg px-3 py-1.5 pr-8 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors cursor-pointer">
-                                                <option value="best">🏆 Best</option>
-                                                <option value="top">⬆️ Top</option>
-                                                <option value="new">🆕 New</option>
-                                                <option value="controversial">⚡ Controversial</option>
-                                                <option value="old">📅 Old</option>
-                                                <option value="qa">❓ Q&A</option>
-                                            </select>
-                                            <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                                </svg>
+                                        <div className="relative" ref={sortDropdownRef}>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-sm font-medium text-gray-700">Sort by:</span>
+                                                <button
+                                                    onClick={() => setShowSortDropdown(!showSortDropdown)}
+                                                    className="flex items-center gap-2 bg-blue-100 text-blue-800 rounded-full px-3 py-1.5 text-sm font-medium hover:bg-blue-200 transition-colors cursor-pointer"
+                                                >
+                                                    {(() => {
+                                                        const IconComponent = getSortIcon(sortBy);
+                                                        return <IconComponent className="w-4 h-4" />;
+                                                    })()}
+                                                    <span>{getSortLabel(sortBy)}</span>
+                                                    <ChevronDown className="w-3 h-3" />
+                                                </button>
                                             </div>
+
+                                            {/* Dropdown Menu */}
+                                            {showSortDropdown && (
+                                                <div className="absolute right-0 top-10 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                                                    <div className="py-1">
+                                                        <div className="px-3 py-2 border-b border-gray-100">
+                                                            <span className="text-sm font-medium text-gray-900">Sort by</span>
+                                                        </div>
+                                                        {sortOptions.map((option) => {
+                                                            const IconComponent = option.icon;
+                                                            return (
+                                                                <button
+                                                                    key={option.value}
+                                                                    onClick={() => {
+                                                                        setSortBy(option.value);
+                                                                        setShowSortDropdown(false);
+                                                                    }}
+                                                                    className={`w-full flex items-center gap-3 px-3 py-2 text-sm hover:bg-gray-50 transition-colors cursor-pointer ${
+                                                                        sortBy === option.value ? 'bg-blue-50 text-blue-800' : 'text-gray-700'
+                                                                    }`}
+                                                                >
+                                                                    <IconComponent className={`w-4 h-4 ${option.color}`} />
+                                                                    <span>{option.label}</span>
+                                                                    {sortBy === option.value && (
+                                                                        <div className="ml-auto w-2 h-2 bg-blue-600 rounded-full"></div>
+                                                                    )}
+                                                                </button>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -591,8 +712,8 @@ const ForumPostDetailPage = () => {
                                                 comment={comment}
                                                 currentUserId={currentUserId}
                                                 postAuthorId={post.author?._id}
-                                                onVoteUpdate={handleCommentVoteUpdate}
                                                 onReply={handleReply}
+                                                onVoteUpdate={handleCommentVoteUpdate}
                                                 onAcceptAnswer={handleAcceptAnswer}
                                                 onEditComment={handleEditComment}
                                                 onDeleteComment={handleDeleteComment}

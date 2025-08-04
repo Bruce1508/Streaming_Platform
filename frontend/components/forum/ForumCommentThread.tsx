@@ -1,9 +1,12 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, ChevronUp, ChevronDown, MoreHorizontal, Reply, Flag, Edit, Trash2 } from 'lucide-react';
+import { MessageSquare, MoreHorizontal, Edit, Trash2 } from 'lucide-react';
+import { BiUpvote, BiDownvote } from "react-icons/bi";
+import { BsReply } from "react-icons/bs";
+import { TbShare3 } from "react-icons/tb";
+import { MdOutlineReportProblem } from "react-icons/md";
 import { ForumComment } from '@/types/Forum';
-import VoteButtons from './VoteButtons';
 import { formatDistanceToNow } from 'date-fns';
 import Image from 'next/image';
 
@@ -35,6 +38,10 @@ const ForumCommentThread: React.FC<ForumCommentThreadProps> = ({
     const [showActions, setShowActions] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState(comment.content);
+    const [localVoteCount, setLocalVoteCount] = useState(comment.voteCount);
+    const [localUpvotes, setLocalUpvotes] = useState(comment.upvotes);
+    const [localDownvotes, setLocalDownvotes] = useState(comment.downvotes);
+    const [isVoting, setIsVoting] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
     const formatTimeAgo = (dateString: string) => {
@@ -45,9 +52,52 @@ const ForumCommentThread: React.FC<ForumCommentThreadProps> = ({
         }
     };
 
-    const handleVoteUpdate = (newVoteData: any) => {
-        onVoteUpdate?.(comment._id, newVoteData);
+    // Check user vote status
+    const hasUpvoted = currentUserId ? localUpvotes.includes(currentUserId) : false;
+    const hasDownvoted = currentUserId ? localDownvotes.includes(currentUserId) : false;
+
+    // Handle vote function
+    const handleVote = async (voteType: 'up' | 'down') => {
+        if (!currentUserId || isVoting) return;
+
+        try {
+            setIsVoting(true);
+            
+            // Update local state optimistically
+            if (voteType === 'up') {
+                if (hasUpvoted) {
+                    // Remove upvote
+                    setLocalUpvotes(prev => prev.filter(id => id !== currentUserId));
+                    setLocalVoteCount(prev => prev - 1);
+                } else {
+                    // Add upvote, remove downvote if exists
+                    setLocalUpvotes(prev => [...prev.filter(id => id !== currentUserId), currentUserId]);
+                    setLocalDownvotes(prev => prev.filter(id => id !== currentUserId));
+                    setLocalVoteCount(prev => prev + (hasDownvoted ? 2 : 1));
+                }
+            } else {
+                if (hasDownvoted) {
+                    // Remove downvote
+                    setLocalDownvotes(prev => prev.filter(id => id !== currentUserId));
+                    setLocalVoteCount(prev => prev + 1);
+                } else {
+                    // Add downvote, remove upvote if exists
+                    setLocalDownvotes(prev => [...prev.filter(id => id !== currentUserId), currentUserId]);
+                    setLocalUpvotes(prev => prev.filter(id => id !== currentUserId));
+                    setLocalVoteCount(prev => prev - (hasUpvoted ? 2 : 1));
+                }
+            }
+
+            // Call parent callback
+            onVoteUpdate?.(comment._id, { voteCount: localVoteCount });
+        } catch (error) {
+            console.error('Vote error:', error);
+        } finally {
+            setIsVoting(false);
+        }
     };
+
+
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -126,20 +176,6 @@ const ForumCommentThread: React.FC<ForumCommentThreadProps> = ({
         <div className={`${depth > 0 ? 'ml-6 pl-4' : ''} ${depth > 0 ? `border-l-2 ${depthColor}` : ''}`}>
             <div className="group hover:bg-gray-50 transition-colors rounded-lg">
                 <div className="flex gap-3 py-3">
-                    {/* Vote Buttons */}
-                    <div className="flex-shrink-0">
-                        <VoteButtons
-                            id={comment._id}
-                            type="comment"
-                            voteCount={comment.voteCount}
-                            upvotes={comment.upvotes}
-                            downvotes={comment.downvotes}
-                            currentUserId={currentUserId}
-                            onVoteUpdate={handleVoteUpdate}
-                            size="sm"
-                        />
-                    </div>
-
                     {/* Comment Content */}
                     <div className="flex-1 min-w-0">
                         {/* Header */}
@@ -250,12 +286,41 @@ const ForumCommentThread: React.FC<ForumCommentThreadProps> = ({
 
                                 {/* Comment Actions */}
                                 <div className="flex items-center gap-3 text-xs">
+                                    {/* Upvote Button */}
+                                    <button
+                                        onClick={() => handleVote('up')}
+                                        disabled={isVoting}
+                                        className={`flex items-center gap-1 px-2 py-1 rounded-full transition-all duration-200 ${
+                                            hasUpvoted 
+                                                ? 'bg-[#b5f3fa] text-green-600' 
+                                                : 'text-gray-500 hover:bg-[#b5f3fa] hover:text-green-600'
+                                        } ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                                    >
+                                        <BiUpvote className="w-4 h-4" />
+                                        <span className="font-medium">{localUpvotes.length}</span>
+                                    </button>
+
+                                    {/* Downvote Button */}
+                                    <button
+                                        onClick={() => handleVote('down')}
+                                        disabled={isVoting}
+                                        className={`flex items-center gap-1 px-2 py-1 rounded-full transition-all duration-200 ${
+                                            hasDownvoted 
+                                                ? 'bg-[#b5f3fa] text-red-600' 
+                                                : 'text-gray-500 hover:bg-[#b5f3fa] hover:text-red-600'
+                                        } ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                                    >
+                                        <BiDownvote className="w-4 h-4" />
+                                        <span className="font-medium">{localDownvotes.length}</span>
+                                    </button>
+
                                     {/* Reply Button */}
                                     {!isMaxDepth && (
                                         <button
                                             onClick={() => onReply?.(comment._id)}
-                                            className="text-gray-500 hover:text-gray-700 font-medium transition-colors"
+                                            className="flex items-center gap-1 text-gray-500 hover:text-gray-700 font-medium transition-colors"
                                         >
+                                            <BsReply className="w-4 h-4" />
                                             Reply
                                         </button>
                                     )}
@@ -271,12 +336,14 @@ const ForumCommentThread: React.FC<ForumCommentThreadProps> = ({
                                     )}
 
                                     {/* Share Button */}
-                                    <button className="text-gray-500 hover:text-gray-700 font-medium transition-colors">
+                                    <button className="flex items-center gap-1 text-gray-500 hover:text-gray-700 font-medium transition-colors">
+                                        <TbShare3 className="w-4 h-4" />
                                         Share
                                     </button>
 
                                     {/* Report Button */}
-                                    <button className="text-gray-500 hover:text-red-600 font-medium transition-colors">
+                                    <button className="flex items-center gap-1 text-gray-500 hover:text-red-600 font-medium transition-colors">
+                                        <MdOutlineReportProblem className="w-4 h-4" />
                                         Report
                                     </button>
                                 </div>

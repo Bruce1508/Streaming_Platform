@@ -657,12 +657,20 @@
     margin: calc(var(--spacing) * 0);
   }
 
+  .mx-2 {
+    margin-inline: calc(var(--spacing) * 2);
+  }
+
   .mx-4 {
     margin-inline: calc(var(--spacing) * 4);
   }
 
   .mx-auto {
     margin-inline: auto;
+  }
+
+  .my-1 {
+    margin-block: calc(var(--spacing) * 1);
   }
 
   .my-4 {
@@ -1094,6 +1102,10 @@
 
   .w-30 {
     width: calc(var(--spacing) * 30);
+  }
+
+  .w-32 {
+    width: calc(var(--spacing) * 32);
   }
 
   .w-48 {
@@ -1791,12 +1803,40 @@
     background-color: #faf9f6;
   }
 
+  .bg-\[\#b5f3fa\] {
+    background-color: #b5f3fa;
+  }
+
+  .bg-\[\#d93a00\] {
+    background-color: #d93a00;
+  }
+
+  .bg-\[\#e0f7fa\] {
+    background-color: #e0f7fa;
+  }
+
+  .bg-\[\#e4ebee\] {
+    background-color: #e4ebee;
+  }
+
+  .bg-\[\#f2fcfd\] {
+    background-color: #f2fcfd;
+  }
+
+  .bg-\[\#f9fcfc\] {
+    background-color: #f9fcfc;
+  }
+
   .bg-\[\#fafafa\] {
     background-color: #fafafa;
   }
 
   .bg-\[\#ffffff\] {
     background-color: #fff;
+  }
+
+  .bg-\[black\] {
+    background-color: #000;
   }
 
   .bg-background {
@@ -2342,10 +2382,6 @@
     padding-top: calc(var(--spacing) * 45);
   }
 
-  .pr-2 {
-    padding-right: calc(var(--spacing) * 2);
-  }
-
   .pr-3 {
     padding-right: calc(var(--spacing) * 3);
   }
@@ -2400,6 +2436,10 @@
 
   .pl-4 {
     padding-left: calc(var(--spacing) * 4);
+  }
+
+  .pl-5 {
+    padding-left: calc(var(--spacing) * 5);
   }
 
   .pl-10 {
@@ -2576,7 +2616,7 @@
     color: #1d1d1f;
   }
 
-  .text-\[\#9B2037\] {
+  .text-\[\#9B2037\], .text-\[\#9b2037\] {
     color: #9b2037;
   }
 
@@ -2620,8 +2660,12 @@
     color: #f9f6ee;
   }
 
-  .text-\[\#FBFF12\] {
-    color: #fbff12;
+  .text-\[\#d93a00\] {
+    color: #d93a00;
+  }
+
+  .text-\[\#ffffff\] {
+    color: #fff;
   }
 
   .text-amber-400 {
@@ -2858,8 +2902,16 @@
     opacity: .5;
   }
 
+  .opacity-60 {
+    opacity: .6;
+  }
+
   .opacity-70 {
     opacity: .7;
+  }
+
+  .opacity-80 {
+    opacity: .8;
   }
 
   .opacity-100 {
@@ -3244,6 +3296,42 @@
   }
 
   @media (hover: hover) {
+    .hover\:bg-\[\#a0e8f0\]:hover {
+      background-color: #a0e8f0;
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-\[\#b5f3fa\]:hover {
+      background-color: #b5f3fa;
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-\[\#d1d8db\]:hover {
+      background-color: #d1d8db;
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-\[\#e4ebee\]:hover {
+      background-color: #e4ebee;
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-blue-100:hover {
+      background-color: var(--color-blue-100);
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-blue-200:hover {
+      background-color: var(--color-blue-200);
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:bg-blue-500:hover {
       background-color: var(--color-blue-500);
     }
@@ -3566,6 +3654,10 @@
     border-color: var(--color-amber-400);
   }
 
+  .focus\:border-blue-200:focus {
+    border-color: var(--color-blue-200);
+  }
+
   .focus\:border-blue-500:focus {
     border-color: var(--color-blue-500);
   }
@@ -3609,6 +3701,10 @@
 
   .focus\:ring-amber-500:focus {
     --tw-ring-color: var(--color-amber-500);
+  }
+
+  .focus\:ring-blue-200:focus {
+    --tw-ring-color: var(--color-blue-200);
   }
 
   .focus\:ring-blue-500:focus {

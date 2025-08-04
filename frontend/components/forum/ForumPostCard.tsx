@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { MessageCircle, Eye, Clock, Tag, MoreHorizontal, Share, Bookmark, Flag, TrendingUp, ChevronUp, ChevronDown } from 'lucide-react';
+import { MessageCircle, Eye, Clock, Tag, MoreHorizontal, Share, Bookmark, Flag, TrendingUp } from 'lucide-react';
 import { ForumPost } from '@/types/Forum';
-import VoteButtons from './VoteButtons';
+import { BiUpvote, BiDownvote } from "react-icons/bi";
 import { formatDistanceToNow } from 'date-fns';
+import { forumAPI } from '@/lib/api';
+import { toast } from 'react-hot-toast';
 
 // ===== FORUM POST CARD COMPONENT =====
 // Component hiển thị preview của một forum post trong danh sách
@@ -23,6 +25,9 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
     className = ''
 }) => {
     const [showDropdown, setShowDropdown] = useState(false);
+    const [localUpvotes, setLocalUpvotes] = useState<string[]>(post.upvotes || []);
+    const [localDownvotes, setLocalDownvotes] = useState<string[]>(post.downvotes || []);
+    const [isVoting, setIsVoting] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     // Close dropdown when clicking outside
@@ -67,28 +72,98 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
         onVoteUpdate?.(post._id, newVoteData);
     };
 
+    const handleUpvote = async () => {
+        if (!currentUserId || isVoting) return;
+        
+        setIsVoting(true);
+        
+        try {
+            const response = await forumAPI.votePost(post._id, 'up');
+            
+            if (response.data.success) {
+                const { upvotes, downvotes, voteCount } = response.data.data;
+                setLocalUpvotes(upvotes);
+                setLocalDownvotes(downvotes);
+                onVoteUpdate?.(post._id, { voteCount });
+                console.log('✅ Upvote successful');
+            }
+        } catch (error: any) {
+            console.error('❌ Upvote failed:', error);
+            toast.error('Failed to vote. Please try again.');
+        } finally {
+            setIsVoting(false);
+        }
+    };
+
+    const handleDownvote = async () => {
+        if (!currentUserId || isVoting) return;
+        
+        setIsVoting(true);
+        
+        try {
+            const response = await forumAPI.votePost(post._id, 'down');
+            
+            if (response.data.success) {
+                const { upvotes, downvotes, voteCount } = response.data.data;
+                setLocalUpvotes(upvotes);
+                setLocalDownvotes(downvotes);
+                onVoteUpdate?.(post._id, { voteCount });
+                console.log('✅ Downvote successful');
+            }
+        } catch (error: any) {
+            console.error('❌ Downvote failed:', error);
+            toast.error('Failed to vote. Please try again.');
+        } finally {
+            setIsVoting(false);
+        }
+    };
+
+    const hasUpvoted = currentUserId ? localUpvotes.includes(currentUserId) : false;
+    const hasDownvoted = currentUserId ? localDownvotes.includes(currentUserId) : false;
+
     return (
-        <div className={`bg-white border-t border-b border-gray-100 hover:bg-gray-50 transition-all duration-200 ${className}`}>
+        <div className={`bg-[#ffffff] border-t border-b border-gray-100 hover:bg-gray-50 transition-all duration-200 ${className}`}>
             {/* ===== POST HEADER ===== */}
             <div className="flex gap-2 px-4 py-3">
-                {/* Vote Buttons */}
-                <div className="flex-shrink-0">
-                    <VoteButtons
-                        id={post._id}
-                        type="post"
-                        voteCount={post.voteCount}
-                        upvotes={post.upvotes}
-                        downvotes={post.downvotes}
-                        currentUserId={currentUserId}
-                        onVoteUpdate={handleVoteUpdate}
-                        size="sm"
-                    />
+                {/* Vote Buttons - Reddit Style */}
+                <div className="flex-shrink-0 flex items-center mr-3">
+                    <div className={`flex flex-col items-center rounded-full px-3 py-2 transition-all duration-200 ${
+                        hasUpvoted || hasDownvoted ? 'bg-[#d93a00]' : 'bg-[#b5f3fa]'
+                    }`}>
+                        <button
+                            onClick={handleUpvote}
+                            disabled={isVoting}
+                            className={`flex items-center justify-center p-1 transition-all duration-200 ${
+                                isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                            } ${
+                                hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-700 hover:text-green-600'
+                            }`}
+                        >
+                            <BiUpvote className="w-4 h-4" />
+                        </button>
+                        <span className={`text-sm font-medium min-w-[20px] text-center my-1 ${
+                            hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-900'
+                        }`}>
+                            {post.voteCount || 0}
+                        </span>
+                        <button
+                            onClick={handleDownvote}
+                            disabled={isVoting}
+                            className={`flex items-center justify-center p-1 transition-all duration-200 ${
+                                isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                            } ${
+                                hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-700 hover:text-red-600'
+                            }`}
+                        >
+                            <BiDownvote className="w-4 h-4" />
+                        </button>
+                    </div>
                 </div>
 
                 {/* Main Content */}
                 <div className="flex-1 min-w-0">
                     {/* Top Row: Avatar + Info (2 lines) */}
-                    <div className="flex items-start gap-3 mb-2">
+                    <div className="flex items-start gap-3 mb-4">
                         {/* Avatar */}
                         <div className="flex-shrink-0">
                             {post.isAnonymous ? (
@@ -140,14 +215,14 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                             </div>
 
                             {/* Line 2: Author Name */}
-                            <div className="text-sm font-medium text-gray-900">
+                            <div className="text-sm font-medium text-gray-900 opacity-70">
                                 {post.isAnonymous ? 'Anonymous' : (post.author?.fullName || post.author?.email || 'Unknown User')}
                             </div>
                         </div>
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-lg font-medium text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+                    <h3 className="text-2xl font-medium text-gray-900 mb-2 hover:text-blue-600 transition-colors">
                         <Link href={`/forum/${post._id}`} className="line-clamp-2">
                             {post.title}
                         </Link>
@@ -178,18 +253,18 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                     )}
 
                     {/* Bottom Actions */}
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
-                        <div className="flex items-center gap-1">
-                            <MessageCircle className="w-3 h-3" />
-                            <span>{post.commentCount} comments</span>
+                    <div className="flex items-center gap-4 text-xs text-black font-semibold cursor-pointer">
+                        <div className="flex items-center gap-1 bg-[#e4ebee] px-3 py-1.5 rounded-full hover:bg-[#d1d8db] transition-colors cursor-pointer">
+                                <MessageCircle className="w-3 h-3" />
+                            <span>{post.commentCount}</span>
                         </div>
                         
-                        <button className="flex items-center gap-1 hover:text-gray-700 transition-colors">
+                        <button className="flex items-center gap-1 bg-[#e4ebee] px-3 py-1.5 rounded-full hover:bg-[#d1d8db] transition-colors cursor-pointer">
                             <Share className="w-3 h-3" />
                             <span>Share</span>
                         </button>
                         
-                        <button className="flex items-center gap-1 hover:text-gray-700 transition-colors">
+                        <button className="flex items-center gap-1 bg-[#e4ebee] px-3 py-1.5 rounded-full hover:bg-[#d1d8db] transition-colors cursor-pointer">
                             <Bookmark className="w-3 h-3" />
                             <span>Save</span>
                         </button>

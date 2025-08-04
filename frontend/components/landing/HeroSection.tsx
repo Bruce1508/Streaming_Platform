@@ -12,7 +12,7 @@ const HeroSection = () => {
     const words = ["University", "College", "Program"];
 
     return (
-        <section className="bg-[#ffffff] w-full h-[65vh] relative overflow-hidden flex items-center justify-center pt-10 pb-10">
+        <section className="bg-[#f9fcfc] w-full h-[65vh] relative overflow-hidden flex items-center justify-center pt-10 pb-10">
 
 
             {/* Content Container - Left Aligned */}
@@ -34,7 +34,7 @@ const HeroSection = () => {
                                     Find Your Perfect
                                 </div>
                                 <div className="flex items-baseline flex-wrap xl:flex-nowrap">
-                                    <span className="text-[#1d1d1f] text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-bold">Canadian</span>
+                                    <span className="text-[#9b2037] text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-bold">Canadian</span>
                                     <div className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-bold w-[280px] md:w-[420px] lg:w-[520px] xl:w-[640px] 2xl:w-[720px] ml-3">
                                         <ContainerTextFlip words={words} />
                                     </div>
@@ -48,7 +48,7 @@ const HeroSection = () => {
                             <div className="flex flex-col sm:flex-row gap-4 justify-start items-start sm:items-center">
                                 <Link href="/programs">
                                     <InteractiveHoverButton
-                                        className="text-[#FBFF12] bg-[#0C0F0A] px-6 py-3 md:px-8 md:py-3 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                                        className="text-[#ffffff] bg-[#0C0F0A] px-6 py-3 md:px-8 md:py-3 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
                                     >
                                         Browse Schools
                                     </InteractiveHoverButton>
@@ -57,7 +57,7 @@ const HeroSection = () => {
                                     <Button
                                         variant="outline"
                                         size="lg"
-                                        className="text-[#FBFF12] bg-[#0C0F0A] border-none px-6 py-3 md:px-8 md:py-7 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                                        className="text-[#ffffff] bg-[#0C0F0A] border-none px-6 py-3 md:px-8 md:py-7 cursor-pointer rounded-lg font-semibold text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
                                     >
 
                                         Write a Review

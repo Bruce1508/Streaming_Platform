@@ -5,7 +5,7 @@ import {
     createForumPost,
     updateForumPost,
     deleteForumPost,
-    voteForumPost,
+    voteOnPost,
     searchForumPosts,
     getTrendingTopics,
     getRecentActivity,
@@ -16,10 +16,11 @@ import {
     createComment,
     updateComment,
     deleteComment,
-    voteComment,
     acceptAnswer
 } from '../controllers/comment.controllers';
+import { voteOnComment } from '../controllers/forum.controllers';
 import { protectRoute } from '../middleWare/auth.middleware';
+import { validateVoteOnPost, validateVoteOnComment } from '../middleWare/validation/vote.validation';
 
 const router = express.Router();
 
@@ -47,14 +48,14 @@ router.post('/posts', protectRoute, createForumPost); // Fallback
 router.get('/posts/:id', getForumPost);
 router.put('/posts/:id', protectRoute, updateForumPost);
 router.delete('/posts/:id', protectRoute, deleteForumPost);
-router.post('/posts/:id/vote', protectRoute, voteForumPost);
+router.post('/posts/:postId/vote', protectRoute, validateVoteOnPost, voteOnPost);
 
 // ===== COMMENTS ROUTES =====
 router.get('/posts/:postId/comments', getComments);
 router.post('/posts/:postId/comments', protectRoute, createComment);
 router.put('/comments/:id', protectRoute, updateComment);
 router.delete('/comments/:id', protectRoute, deleteComment);
-router.post('/comments/:id/vote', protectRoute, voteComment);
+router.post('/comments/:commentId/vote', protectRoute, validateVoteOnComment, voteOnComment);
 router.post('/comments/:id/accept', protectRoute, acceptAnswer);
 
 export default router; 

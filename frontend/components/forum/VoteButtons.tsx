@@ -124,16 +124,16 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
     const config = sizeConfig[size];
 
     return (
-        <div className={`flex flex-col items-center ${config.container} ${className}`}>
+        <div className={`flex flex-col items-center bg-[#b5f3fa] rounded-full px-3 py-2 ${className}`}>
             {/* ===== UPVOTE BUTTON ===== */}
             <button
                 onClick={() => handleVote('up')}
                 disabled={isVoting}
                 className={`
-                    ${config.button} rounded-md transition-all duration-200 hover:bg-gray-100
+                    ${config.button} rounded-md transition-all duration-200 hover:bg-blue-100
                     ${hasUpvoted 
-                        ? 'text-green-600 bg-green-50' 
-                        : 'text-gray-500 hover:text-green-600'
+                        ? 'text-green-600' 
+                        : 'text-gray-600 hover:text-green-600'
                     }
                     ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                 `}
@@ -144,13 +144,7 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
 
             {/* ===== VOTE COUNT ===== */}
             <span className={`
-                ${config.text} font-medium min-w-[20px] text-center
-                ${localVoteCount > 0 
-                    ? 'text-green-600' 
-                    : localVoteCount < 0 
-                        ? 'text-red-600' 
-                        : 'text-gray-500'
-                }
+                ${config.text} font-medium min-w-[20px] text-center text-gray-900
             `}>
                 {localVoteCount}
             </span>
@@ -160,10 +154,10 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
                 onClick={() => handleVote('down')}
                 disabled={isVoting}
                 className={`
-                    ${config.button} rounded-md transition-all duration-200 hover:bg-gray-100
+                    ${config.button} rounded-md transition-all duration-200 hover:bg-blue-100
                     ${hasDownvoted 
-                        ? 'text-red-600 bg-red-50' 
-                        : 'text-gray-500 hover:text-red-600'
+                        ? 'text-red-600' 
+                        : 'text-gray-600 hover:text-red-600'
                     }
                     ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                 `}

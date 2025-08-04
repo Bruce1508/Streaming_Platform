@@ -557,4 +557,146 @@ export const getTopContributors = asyncHandler(async (req: Request, res: Respons
         console.error('Get top contributors error:', error);
         res.status(500).json(new ApiResponse(500, null, 'Failed to get top contributors'));
     }
+});
+
+/**
+ * @desc    Vote on a forum post (upvote/downvote)
+ * @route   POST /api/forum/posts/:postId/vote
+ * @access  Private
+ */
+export const voteOnPost = asyncHandler(async (req: AuthRequest, res: Response) => {
+    logApiRequest(req);
+
+    try {
+        const { postId } = req.params;
+        const { voteType } = req.body; // 'up' | 'down'
+        const userId = req.user._id;
+
+        console.log('🗳️ Vote on post:', { postId, voteType, userId });
+
+        // Validate vote type
+        if (!['up', 'down'].includes(voteType)) {
+            return res.status(400).json(new ApiResponse(400, null, 'Invalid vote type. Must be "up" or "down"'));
+        }
+
+        // Find the post
+        const post = await ForumPost.findById(postId);
+        if (!post) {
+            return res.status(404).json(new ApiResponse(404, null, 'Post not found'));
+        }
+
+        // Check if user already voted
+        const hasUpvoted = post.upvotes.includes(userId);
+        const hasDownvoted = post.downvotes.includes(userId);
+
+        // Remove existing vote if any
+        if (hasUpvoted) {
+            post.upvotes = post.upvotes.filter(id => !id.equals(userId));
+        }
+        if (hasDownvoted) {
+            post.downvotes = post.downvotes.filter(id => !id.equals(userId));
+        }
+
+        // Add new vote if different from existing vote
+        if (voteType === 'up' && !hasUpvoted) {
+            post.upvotes.push(userId);
+        } else if (voteType === 'down' && !hasDownvoted) {
+            post.downvotes.push(userId);
+        }
+
+        // Save the post
+        await post.save();
+
+        // Calculate new vote count
+        const voteCount = post.upvotes.length - post.downvotes.length;
+
+        console.log('✅ Vote successful:', {
+            upvotes: post.upvotes.length,
+            downvotes: post.downvotes.length,
+            voteCount
+        });
+
+        res.status(200).json(new ApiResponse(200, {
+            upvotes: post.upvotes,
+            downvotes: post.downvotes,
+            voteCount,
+            userVote: hasUpvoted && voteType === 'up' ? null : 
+                     hasDownvoted && voteType === 'down' ? null : voteType
+        }, 'Vote recorded successfully'));
+
+    } catch (error: any) {
+        console.error('Vote on post error:', error);
+        res.status(500).json(new ApiResponse(500, null, 'Failed to record vote'));
+    }
+});
+
+/**
+ * @desc    Vote on a forum comment (upvote/downvote)
+ * @route   POST /api/forum/comments/:commentId/vote
+ * @access  Private
+ */
+export const voteOnComment = asyncHandler(async (req: AuthRequest, res: Response) => {
+    logApiRequest(req);
+
+    try {
+        const { commentId } = req.params;
+        const { voteType } = req.body; // 'up' | 'down'
+        const userId = req.user._id;
+
+        console.log('🗳️ Vote on comment:', { commentId, voteType, userId });
+
+        // Validate vote type
+        if (!['up', 'down'].includes(voteType)) {
+            return res.status(400).json(new ApiResponse(400, null, 'Invalid vote type. Must be "up" or "down"'));
+        }
+
+        // Find the comment
+        const comment = await ForumComment.findById(commentId);
+        if (!comment) {
+            return res.status(404).json(new ApiResponse(404, null, 'Comment not found'));
+        }
+
+        // Check if user already voted
+        const hasUpvoted = comment.upvotes.includes(userId);
+        const hasDownvoted = comment.downvotes.includes(userId);
+
+        // Remove existing vote if any
+        if (hasUpvoted) {
+            comment.upvotes = comment.upvotes.filter(id => !id.equals(userId));
+        }
+        if (hasDownvoted) {
+            comment.downvotes = comment.downvotes.filter(id => !id.equals(userId));
+        }
+
+        // Add new vote if different from existing vote
+        if (voteType === 'up' && !hasUpvoted) {
+            comment.upvotes.push(userId);
+        } else if (voteType === 'down' && !hasDownvoted) {
+            comment.downvotes.push(userId);
+        }
+
+        // Save the comment
+        await comment.save();
+
+        // Calculate new vote count
+        const voteCount = comment.upvotes.length - comment.downvotes.length;
+
+        console.log('✅ Comment vote successful:', {
+            upvotes: comment.upvotes.length,
+            downvotes: comment.downvotes.length,
+            voteCount
+        });
+
+        res.status(200).json(new ApiResponse(200, {
+            upvotes: comment.upvotes,
+            downvotes: comment.downvotes,
+            voteCount,
+            userVote: hasUpvoted && voteType === 'up' ? null : 
+                     hasDownvoted && voteType === 'down' ? null : voteType
+        }, 'Comment vote recorded successfully'));
+
+    } catch (error: any) {
+        console.error('Vote on comment error:', error);
+        res.status(500).json(new ApiResponse(500, null, 'Failed to record comment vote'));
+    }
 }); 

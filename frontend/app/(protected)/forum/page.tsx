@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { Filter, SortAsc, RotateCcw, Clock, MessageCircle, MessageSquare, FileText, BookOpen, HelpCircle, Users } from 'lucide-react';
+import { Filter, SortAsc, RotateCcw, Clock, MessageCircle, MessageSquare, FileText, BookOpen, HelpCircle, Users, ChevronDown } from 'lucide-react';
 import ForumLayout from '@/components/forum/ForumLayout';
 import ForumPostCard from '@/components/forum/ForumPostCard';
 import PageLoader from '@/components/ui/PageLoader';
@@ -35,6 +35,24 @@ const ForumPage = () => {
         sort: 'latest',
         search: ''
     });
+    const [showSortDropdown, setShowSortDropdown] = useState(false);
+    const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+
+    // Click outside to close dropdowns
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as Element;
+            if (!target.closest('.dropdown-container')) {
+                setShowSortDropdown(false);
+                setShowCategoryDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     // ===== SORT OPTIONS =====
     const sortOptions = [
@@ -189,86 +207,123 @@ const ForumPage = () => {
     return (
         <>
             <ForumLayout showRightSidebar={false}>
-                <div className="space-y-6">
-                    {/* ===== PAGE HEADER ===== */}
-                    <div className="text-center">
-                        <h1 className="text-2xl font-bold text-gray-900 mb-2">Home</h1>
-                        <p className="text-gray-600">Posts from your school and program</p>
-                    </div>
+                <div className="space-y-4">
+                    {/* ===== DROPDOWN BUTTONS ===== */}
+                    <div className="flex gap-3">
+                        {/* Sort Dropdown */}
+                        <div className="relative dropdown-container">
+                            <button
+                                onClick={() => setShowSortDropdown(!showSortDropdown)}
+                                className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer shadow-sm"
+                            >
+                                <Clock className="w-4 h-4" />
+                                <span>{currentSort === 'latest' ? 'Latest' : 'Oldest'}</span>
+                                <ChevronDown className="w-3 h-3" />
+                            </button>
 
-                    {/* ===== SORT & FILTER BUTTONS ===== */}
-                    <div className="space-y-3">
-                        {/* Row 1: Sort Buttons */}
-                        <div className="flex gap-3">
-                            {[
-                                { id: 'latest', label: 'Latest', icon: Clock },
-                                { id: 'oldest', label: 'Oldest', icon: Clock }
-                            ].map((item) => {
-                                const handleClick = () => {
-                                    const params = new URLSearchParams(searchParams.toString());
-                                    params.set('sort', item.id);
-                                    router.push(`/forum?${params.toString()}`);
-                                };
-                                
-                                const isActive = currentSort === item.id;
-                                const IconComponent = item.icon;
-                                
-                                return (
-                                    <button
-                                        key={item.id}
-                                        onClick={handleClick}
-                                        className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 shadow-md ${
-                                            isActive
-                                                ? 'bg-gray-900 text-white shadow-lg'
-                                                : 'bg-white text-gray-900 border border-gray-200 hover:bg-gray-900 hover:text-white hover:shadow-lg'
-                                        }`}
-                                    >
-                                        <IconComponent className="w-4 h-4" />
-                                        {item.label}
-                                    </button>
-                                );
-                            })}
+                            {/* Sort Dropdown Menu */}
+                            {showSortDropdown && (
+                                <div className="absolute top-10 left-0 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                                    <div className="py-1">
+                                        <div className="px-3 py-2 border-b border-gray-100">
+                                            <span className="text-sm font-medium text-gray-900">Sort by</span>
+                                        </div>
+                                        {[
+                                            { id: 'latest', label: 'Latest', icon: Clock },
+                                            { id: 'oldest', label: 'Oldest', icon: Clock }
+                                        ].map((item) => {
+                                            const handleClick = () => {
+                                                const params = new URLSearchParams(searchParams.toString());
+                                                params.set('sort', item.id);
+                                                router.push(`/forum?${params.toString()}`);
+                                                setShowSortDropdown(false);
+                                            };
+                                            
+                                            const isActive = currentSort === item.id;
+                                            const IconComponent = item.icon;
+                                            
+                                            return (
+                                                <button
+                                                    key={item.id}
+                                                    onClick={handleClick}
+                                                    className={`w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors cursor-pointer ${
+                                                        isActive ? 'bg-gray-50 text-gray-900' : 'text-gray-700'
+                                                    }`}
+                                                >
+                                                    <IconComponent className="w-4 h-4" />
+                                                    <span>{item.label}</span>
+                                                    {isActive && (
+                                                        <div className="ml-auto w-2 h-2 bg-blue-600 rounded-full"></div>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                        
-                        {/* Row 2: Category Buttons */}
-                        <div className="flex flex-wrap gap-3">
-                            {[
-                                { id: 'general', label: 'General', icon: MessageCircle },
-                                { id: 'question', label: 'Question', icon: HelpCircle },
-                                { id: 'discussion', label: 'Discussion', icon: MessageSquare },
-                                { id: 'assignment', label: 'Assignment', icon: FileText },
-                                { id: 'course-specific', label: 'Course Specific', icon: BookOpen },
-                                { id: 'exam', label: 'Exam', icon: HelpCircle },
-                                { id: 'career', label: 'Career', icon: Users }
-                            ].map((item) => {
-                                const handleClick = () => {
-                                    const params = new URLSearchParams(searchParams.toString());
-                                    if (currentCategory === item.id) {
-                                        params.delete('category');
-                                    } else {
-                                        params.set('category', item.id);
-                                    }
-                                    router.push(`/forum?${params.toString()}`);
-                                };
-                                
-                                const isActive = currentCategory === item.id;
-                                const IconComponent = item.icon;
-                                
-                                return (
-                                    <button
-                                        key={item.id}
-                                        onClick={handleClick}
-                                        className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl transition-all duration-200 shadow-md ${
-                                            isActive
-                                                ? 'bg-gray-900 text-white shadow-lg'
-                                                : 'bg-white text-gray-900 border border-gray-200 hover:bg-gray-900 hover:text-white hover:shadow-lg'
-                                        }`}
-                                    >
-                                        <IconComponent className="w-4 h-4" />
-                                        {item.label}
-                                    </button>
-                                );
-                            })}
+
+                        {/* Category Dropdown */}
+                        <div className="relative dropdown-container">
+                            <button
+                                onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                                className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer shadow-sm"
+                            >
+                                <Filter className="w-4 h-4" />
+                                <span>{currentCategory || 'All'}</span>
+                                <ChevronDown className="w-3 h-3" />
+                            </button>
+
+                            {/* Category Dropdown Menu */}
+                            {showCategoryDropdown && (
+                                <div className="absolute top-10 left-0 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                                    <div className="py-1">
+                                        <div className="px-3 py-2 border-b border-gray-100">
+                                            <span className="text-sm font-medium text-gray-900">Categories</span>
+                                        </div>
+                                        {[
+                                            { id: 'all', label: 'All', icon: Filter },
+                                            { id: 'general', label: 'General', icon: MessageCircle },
+                                            { id: 'question', label: 'Question', icon: HelpCircle },
+                                            { id: 'discussion', label: 'Discussion', icon: MessageSquare },
+                                            { id: 'assignment', label: 'Assignment', icon: FileText },
+                                            { id: 'course-specific', label: 'Course Specific', icon: BookOpen },
+                                            { id: 'exam', label: 'Exam', icon: HelpCircle },
+                                            { id: 'career', label: 'Career', icon: Users }
+                                        ].map((item) => {
+                                            const handleClick = () => {
+                                                const params = new URLSearchParams(searchParams.toString());
+                                                if (item.id === 'all' || currentCategory === item.id) {
+                                                    params.delete('category');
+                                                } else {
+                                                    params.set('category', item.id);
+                                                }
+                                                router.push(`/forum?${params.toString()}`);
+                                                setShowCategoryDropdown(false);
+                                            };
+                                            
+                                            const isActive = item.id === 'all' ? !currentCategory : currentCategory === item.id;
+                                            const IconComponent = item.icon;
+                                            
+                                            return (
+                                                <button
+                                                    key={item.id}
+                                                    onClick={handleClick}
+                                                    className={`w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors cursor-pointer ${
+                                                        isActive ? 'bg-gray-50 text-gray-900' : 'text-gray-700'
+                                                    }`}
+                                                >
+                                                    <IconComponent className="w-4 h-4" />
+                                                    <span>{item.label}</span>
+                                                    {isActive && (
+                                                        <div className="ml-auto w-2 h-2 bg-blue-600 rounded-full"></div>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
 

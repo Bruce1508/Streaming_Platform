@@ -22,7 +22,7 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
     const [isOpen, setIsOpen] = useState(defaultOpen);
 
     return (
-        <div className="bg-white border border-gray-200 rounded-lg mb-4 overflow-hidden shadow-sm">
+        <div className="bg-[#ffffff] border border-gray-200 rounded-lg mb-4 overflow-hidden shadow-sm">
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"

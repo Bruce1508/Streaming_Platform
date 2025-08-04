@@ -95,7 +95,7 @@ export const ForumLayout: React.FC<ForumLayoutProps> = ({
         <div className={`min-h-screen bg-[#ffffff] ${className}`}>
             {/* ===== MAIN NAVBAR ===== */}
             <div className="sticky top-0 z-50 bg-[#ffffff] border-b border-gray-200">
-                <div className="flex items-center h-12 px-4">
+                <div className="flex items-center h-14 px-4">
                     {/* Left Section */}
                     <div className="flex items-center gap-2">
                         {/* Sidebar Toggle */}
@@ -153,7 +153,7 @@ export const ForumLayout: React.FC<ForumLayoutProps> = ({
                                 onChange={handleSearchInputChange}
                                 onKeyDown={handleSearchKeyDown}
                                 placeholder="Search posts by title or tags..."
-                                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-full bg-gray-50 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white transition-all duration-200 text-sm cursor-text"
+                                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-full bg-[#e4ebee] text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-200 focus:bg-white transition-all duration-200 text-sm cursor-text"
                             />
                         </form>
 
@@ -253,7 +253,7 @@ export const ForumLayout: React.FC<ForumLayoutProps> = ({
                 </aside>
 
                 {/* ===== MAIN CONTENT ===== */}
-                <main className="flex-1 min-h-[calc(100vh-3rem)]">
+                <main className="flex-1 min-h-[calc(100vh-3rem)] bg-[#f2fcfd]">
                     <div className="max-w-3xl mx-auto px-4 py-6">
                         {children}
                     </div>

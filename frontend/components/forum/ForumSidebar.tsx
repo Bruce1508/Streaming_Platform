@@ -72,7 +72,7 @@ export const ForumSidebar: React.FC<ForumSidebarProps> = ({
     };
 
     return (
-        <div className={`bg-white border border-gray-200 rounded-lg h-full shadow-sm ${className}`}>
+        <div className={`bg-[#ffffff] border border-gray-200 h-full shadow-sm ${className}`}>
             <div className="p-4">
 
                 {/* ===== MAIN NAVIGATION ===== */}
