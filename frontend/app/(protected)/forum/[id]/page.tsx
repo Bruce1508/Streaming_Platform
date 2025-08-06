@@ -15,7 +15,6 @@ import { ForumPost, ForumComment } from '@/types/Forum';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
-import { voteStateManager } from '@/lib/voteStateManager';
 
 // ===== FORUM POST DETAIL PAGE =====
 // Trang chi tiết post với comment system giống Reddit
@@ -134,62 +133,7 @@ const ForumPostDetailPage = () => {
         fetchUserProfile();
     }, [session?.user?.id]);
 
-    // ===== VOTE STATE MANAGER SUBSCRIPTION =====
-    useEffect(() => {
-        if (!postId) {
-            console.log('🚫 Forum Detail - No postId for VoteStateManager subscription');
-            return;
-        }
 
-        console.log('👂 Forum Detail - Subscribing to VoteStateManager for postId:', postId);
-        
-        // Subscribe để lắng nghe thay đổi vote từ Forum List hoặc components khác
-        const unsubscribe = voteStateManager.subscribe(postId, (state) => {
-            console.log('📢 Forum Detail - Received vote state update:', { 
-                postId, 
-                newVoteCount: state.voteCount,
-                newUpvotes: state.upvotes?.length || 0,
-                newDownvotes: state.downvotes?.length || 0
-            });
-
-            // 🔄 CẬP NHẬT POST STATE VỚI DATA MỚI
-            if (post && post._id === postId) {
-                console.log('🔄 Forum Detail - Updating post voteCount from', post.voteCount, 'to', state.voteCount);
-                setPost(prev => prev ? { 
-                    ...prev, 
-                    voteCount: state.voteCount,
-                    upvotes: state.upvotes || [],
-                    downvotes: state.downvotes || []
-                } : null);
-                
-                // 🔄 CẬP NHẬT LOCAL VOTE STATES
-                setLocalUpvotes(state.upvotes || []);
-                setLocalDownvotes(state.downvotes || []);
-                
-                console.log('✅ Forum Detail - Post state updated from VoteStateManager');
-            }
-        });
-
-        // 🔍 KIỂM TRA VÀ LOAD STATE BAN ĐẦU TỪ VOTE STATE MANAGER
-        const existingState = voteStateManager.getVoteState(postId);
-        if (existingState && post) {
-            console.log('📱 Forum Detail - Loading existing state from VoteStateManager:', existingState);
-            setPost(prev => prev ? { 
-                ...prev, 
-                voteCount: existingState.voteCount,
-                upvotes: existingState.upvotes || [],
-                downvotes: existingState.downvotes || []
-            } : null);
-            setLocalUpvotes(existingState.upvotes || []);
-            setLocalDownvotes(existingState.downvotes || []);
-        }
-
-        // Cleanup subscription khi component unmount hoặc postId thay đổi
-        return () => {
-            console.log('🧹 Forum Detail - Unsubscribing from VoteStateManager for postId:', postId);
-            unsubscribe();
-        };
-    }, [postId, post]);
 
     // Initialize local vote states when post loads
     useEffect(() => {
@@ -254,26 +198,8 @@ const ForumPostDetailPage = () => {
 
     // ===== HANDLE ACTIONS =====
     const handleVoteUpdate = (newVoteData: any) => {
-        console.log('🔄 Forum Detail - handleVoteUpdate called:', { postId, newVoteData });
-        
         if (post) {
-            // 🔄 CẬP NHẬT LOCAL POST STATE
-            setPost(prev => prev ? { 
-                ...prev, 
-                voteCount: newVoteData.voteCount,
-                upvotes: newVoteData.upvotes || [],
-                downvotes: newVoteData.downvotes || []
-            } : null);
-            
-            // 🎯 CẬP NHẬT VOTE STATE MANAGER (để đồng bộ với Forum List)
-            console.log('🎯 Forum Detail - Updating VoteStateManager...');
-            voteStateManager.updateVoteState(
-                post._id,
-                newVoteData.voteCount,
-                newVoteData.upvotes || [],
-                newVoteData.downvotes || []
-            );
-            console.log('✅ Forum Detail - VoteStateManager updated successfully');
+            setPost(prev => prev ? { ...prev, voteCount: newVoteData.voteCount } : null);
         }
     };
 

@@ -8,7 +8,6 @@ import { BiUpvote, BiDownvote } from "react-icons/bi";
 import { formatDistanceToNow } from 'date-fns';
 import { forumAPI } from '@/lib/api';
 import { toast } from 'react-hot-toast';
-import { voteStateManager } from '@/lib/voteStateManager';
 
 // ===== FORUM POST CARD COMPONENT =====
 // Component hiển thị preview của một forum post trong danh sách
@@ -31,7 +30,6 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
     const [localUpvotes, setLocalUpvotes] = useState<string[]>(post.upvotes || []);
     const [localDownvotes, setLocalDownvotes] = useState<string[]>(post.downvotes || []);
     const [isVoting, setIsVoting] = useState(false);
-    const [localVoteCount, setLocalVoteCount] = useState(post.voteCount);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     // Load user vote status from localStorage on mount
@@ -70,42 +68,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
         };
     }, [showDropdown]);
 
-    // ===== VOTE STATE MANAGER SUBSCRIPTION =====
-    useEffect(() => {
-        console.log('👂 ForumPostCard - Subscribing to VoteStateManager for postId:', post._id);
-        
-        // Subscribe để lắng nghe thay đổi vote từ components khác
-        const unsubscribe = voteStateManager.subscribe(post._id, (state) => {
-            console.log('📢 ForumPostCard - Received vote state update:', { 
-                postId: post._id, 
-                newVoteCount: state.voteCount,
-                newUpvotes: state.upvotes?.length || 0,
-                newDownvotes: state.downvotes?.length || 0
-            });
 
-            // 🔄 CẬP NHẬT LOCAL STATE TỪ VOTE STATE MANAGER
-            setLocalVoteCount(state.voteCount);
-            setLocalUpvotes(state.upvotes || []);
-            setLocalDownvotes(state.downvotes || []);
-            
-            console.log('✅ ForumPostCard - Local state updated from VoteStateManager');
-        });
-
-        // 🔍 KIỂM TRA VÀ LOAD STATE BAN ĐẦU
-        const existingState = voteStateManager.getVoteState(post._id);
-        if (existingState) {
-            console.log('📱 ForumPostCard - Loading existing state from VoteStateManager:', existingState);
-            setLocalVoteCount(existingState.voteCount);
-            setLocalUpvotes(existingState.upvotes || []);
-            setLocalDownvotes(existingState.downvotes || []);
-        }
-
-        // Cleanup subscription khi component unmount
-        return () => {
-            console.log('🧹 ForumPostCard - Unsubscribing from VoteStateManager for postId:', post._id);
-            unsubscribe();
-        };
-    }, [post._id]);
 
     // ===== HELPER FUNCTIONS =====
     const formatTimeAgo = (dateString: string) => {
@@ -130,19 +93,6 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
     };
 
     const handleVoteUpdate = (newVoteData: any) => {
-        console.log('🔄 ForumPostCard - handleVoteUpdate called:', { postId: post._id, newVoteData });
-        
-        // 🎯 CẬP NHẬT VOTE STATE MANAGER (để đồng bộ với tất cả components)
-        console.log('🎯 ForumPostCard - Updating VoteStateManager...');
-        voteStateManager.updateVoteState(
-            post._id,
-            newVoteData.voteCount,
-            newVoteData.upvotes || [],
-            newVoteData.downvotes || []
-        );
-        console.log('✅ ForumPostCard - VoteStateManager updated successfully');
-
-        // 📢 CALLBACK ĐỂ PARENT COMPONENT UPDATE (compatibility với code cũ)
         onVoteUpdate?.(post._id, newVoteData);
     };
 
@@ -294,7 +244,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                         <span className={`text-sm font-medium min-w-[20px] text-center my-1 ${
                             hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-900'
                         }`}>
-                                                            {localVoteCount || 0}
+                                {post.voteCount || 0}
                         </span>
                         <button
                             onClick={handleDownvote}

@@ -40,10 +40,6 @@ export const getForumPosts = asyncHandler(async (req: Request, res: Response) =>
         }
         console.log('👤 Filtering posts by author:', authReq.user._id);
         query.author = authReq.user._id;
-    } else if (path === '/explore') {
-        // Explore: Show ALL posts from all schools (discovery feed)
-        delete query.status; // Show all statuses in explore
-        // Could add trending/popular logic here later
     } else if (path === '/posts' || path === '/') {
         // Home: Show posts from user's school/program (personalized feed)
         const authReq = req as AuthRequest;

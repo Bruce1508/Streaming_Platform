@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { forumAPI } from '@/lib/api';
 import { toast } from 'react-hot-toast';
-import { voteStateManager } from '@/lib/voteStateManager';
+import { debounce } from '@/lib/utils';
 
 // ===== VOTE BUTTONS COMPONENT =====
 // Component để hiển thị và xử lý upvote/downvote giống như trong ảnh forum
@@ -39,48 +39,96 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
     const [localUpvotes, setLocalUpvotes] = useState(upvotes);
     const [localDownvotes, setLocalDownvotes] = useState(downvotes);
 
-    // ===== VOTE STATE MANAGER INTEGRATION =====
-    useEffect(() => {
-        // 🎯 CHỈ SUBSCRIBE CHO POST TYPE (không phải comment)
-        if (type !== 'post') {
-            console.log('🚫 VoteButtons - Skipping VoteStateManager for type:', type);
-            return;
-        }
+    const debouncedVote = useCallback(
+        debounce(async (voteType: 'up' | 'down') => {
+            if (!currentUserId) {
+                console.log('🚫 VoteButtons - Please login to vote');
+                toast.error('Please login to vote');
+                return;
+            }
 
-        console.log('👂 VoteButtons - Subscribing to VoteStateManager for postId:', id);
-        
-        // Subscribe để lắng nghe thay đổi từ các component khác
-        const unsubscribe = voteStateManager.subscribe(id, (state) => {
-            console.log('📢 VoteButtons - Received vote state update:', { 
-                postId: id, 
-                newVoteCount: state.voteCount,
-                newUpvotes: state.upvotes?.length || 0,
-                newDownvotes: state.downvotes?.length || 0
+            if (isVoting) {
+                console.log('🚫 VoteButtons - Already voting, please wait');
+                return;
+            }
+
+            console.log('🔄 VoteButtons - Starting debounced vote:', {
+                id,
+                type,
+                voteType,
+                currentUserId
             });
 
-            // 🔄 CẬP NHẬT LOCAL STATE TỪ VOTE STATE MANAGER
-            setLocalVoteCount(state.voteCount);
-            setLocalUpvotes(state.upvotes || []);
-            setLocalDownvotes(state.downvotes || []);
-            
-            console.log('✅ VoteButtons - Local state updated from VoteStateManager');
-        });
+            try {
+                setIsVoting(true);
 
-        // 🔍 KIỂM TRA VÀ LOAD STATE BAN ĐẦU
-        const existingState = voteStateManager.getVoteState(id);
-        if (existingState) {
-            console.log('📱 VoteButtons - Loading existing state from VoteStateManager:', existingState);
-            setLocalVoteCount(existingState.voteCount);
-            setLocalUpvotes(existingState.upvotes || []);
-            setLocalDownvotes(existingState.downvotes || []);
-        }
+                // Gọi API vote tương ứng
+                const response = type === 'post'
+                    ? await forumAPI.votePost(id, voteType)
+                    : await forumAPI.voteComment(id, voteType);
 
-        // Cleanup subscription khi component unmount
-        return () => {
-            console.log('🧹 VoteButtons - Unsubscribing from VoteStateManager for postId:', id);
-            unsubscribe();
-        };
-    }, [id, type]);
+                console.log('📥 VoteButtons response received:', response);
+
+                if (response.success) {
+                    const { upvotes, downvotes, voteCount } = response.data;
+
+                    console.log('📊 VoteButtons updating with:', {
+                        upvotes: upvotes?.length || 0,
+                        downvotes: downvotes?.length || 0,
+                        voteCount
+                    });
+
+                    // Cập nhật state local
+                    setLocalVoteCount(voteCount);
+                    setLocalUpvotes(upvotes || []);
+                    setLocalDownvotes(downvotes || []);
+
+                    // Save user vote status to localStorage for sync (only for posts, not vote count)
+                    if (type === 'post' && currentUserId) {
+                        const voteState = {
+                            userId: currentUserId,
+                            upvotes: upvotes || [],
+                            downvotes: downvotes || [],
+                            timestamp: Date.now()
+                        };
+                        localStorage.setItem(`vote_${id}`, JSON.stringify(voteState));
+                        console.log('💾 VoteButtons - Saved user vote status to localStorage:', voteState);
+                    }
+                    // Callback để parent component update
+                    onVoteUpdate?.({ voteCount, upvotes, downvotes });
+
+                    console.log('✅ VoteButtons successful:', {
+                        newUpvotes: upvotes?.length || 0,
+                        newDownvotes: downvotes?.length || 0,
+                        newVoteCount: voteCount
+                    });
+
+                    toast.success('Vote updated!');
+                } else {
+                    console.error('❌ VoteButtons - API response not successful:', response);
+                }
+            } catch (error: any) {
+                console.error('❌ VoteButtons - Vote error:', error);
+                console.error('❌ VoteButtons - Error details:', error.response?.data);
+                
+                // 🚫 XỬ LÝ RATE LIMITING VÀ CÁC ERROR KHÁC
+                if (error.response?.status === 429) {
+                    toast.error('⚠️ Too many requests! Please wait a moment before voting again.');
+                } else if (error.response?.status === 401) {
+                    toast.error('�� Please login again to vote');
+                } else if (error.response?.status === 403) {
+                    toast.error('🚫 You are not allowed to vote on this content');
+                } else if (error.response?.status >= 500) {
+                    toast.error('🔧 Server error. Please try again later.');
+                } else {
+                    toast.error(error.response?.data?.message || 'Failed to vote. Please try again.');
+                }
+            } finally {
+                setIsVoting(false);
+            }
+        }, 500), // 500ms delay
+        [id, type, currentUserId, isVoting, onVoteUpdate]
+    );
 
     // ===== CHECK USER VOTE STATUS =====
     // Kiểm tra user hiện tại đã vote chưa
@@ -88,7 +136,11 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
     const hasDownvoted = currentUserId ? localDownvotes.includes(currentUserId) : false;
 
     // ===== HANDLE VOTE =====
-    const handleVote = async (voteType: 'up' | 'down') => {
+    // ===== HANDLE VOTE =====
+    const handleVote = (voteType: 'up' | 'down') => {
+        console.log('🖱️ VoteButtons - Vote button clicked:', { voteType, id });
+
+        // Basic validation
         if (!currentUserId) {
             console.log('🚫 VoteButtons - Please login to vote');
             toast.error('Please login to vote');
@@ -97,79 +149,15 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
 
         if (isVoting) {
             console.log('🚫 VoteButtons - Already voting, please wait');
+            toast.success('Please wait, vote is being processed...');
             return;
         }
 
-        console.log('🔄 VoteButtons - Starting vote:', { 
-            id, 
-            type, 
-            voteType, 
-            currentUserId, 
-            currentUpvotes: localUpvotes.length,
-            currentDownvotes: localDownvotes.length,
-            hasAlreadyUpvoted: hasUpvoted,
-            hasAlreadyDownvoted: hasDownvoted
-        });
+        // Show immediate feedback
+        toast.success('Vote registered! Processing...');
 
-        try {
-            setIsVoting(true);
-
-            // Gọi API vote tương ứng
-            const response = type === 'post' 
-                ? await forumAPI.votePost(id, voteType)
-                : await forumAPI.voteComment(id, voteType);
-
-            console.log('📥 VoteButtons response received:', response);
-            
-            if (response.success) {
-                const { upvotes, downvotes, voteCount } = response.data;
-                
-                console.log('📊 VoteButtons updating with:', { 
-                    upvotes: upvotes?.length || 0, 
-                    downvotes: downvotes?.length || 0, 
-                    voteCount 
-                });
-                
-                // 🎯 CẬP NHẬT VOTE STATE MANAGER TRƯỚC (để đồng bộ với tất cả components)
-                if (type === 'post') {
-                    console.log('🎯 VoteButtons - Updating VoteStateManager...');
-                    voteStateManager.updateVoteState(
-                        id,
-                        voteCount,
-                        upvotes || [],
-                        downvotes || []
-                    );
-                    console.log('✅ VoteButtons - VoteStateManager updated successfully');
-                } else {
-                    // 🔄 CHỈ CẬP NHẬT LOCAL STATE CHO COMMENTS (không dùng VoteStateManager)
-                    console.log('📝 VoteButtons - Updating local state for comment');
-                    setLocalVoteCount(voteCount);
-                    setLocalUpvotes(upvotes || []);
-                    setLocalDownvotes(downvotes || []);
-                }
-                
-                // 📢 CALLBACK ĐỂ PARENT COMPONENT UPDATE (compatibility với code cũ)
-                onVoteUpdate?.({ voteCount, upvotes, downvotes });
-                
-                console.log('✅ VoteButtons vote successful:', { 
-                    id,
-                    type,
-                    newUpvotes: upvotes?.length || 0, 
-                    newDownvotes: downvotes?.length || 0, 
-                    newVoteCount: voteCount 
-                });
-                
-                toast.success('Vote updated!');
-            } else {
-                console.error('❌ VoteButtons - API response not successful:', response);
-            }
-        } catch (error: any) {
-            console.error('❌ VoteButtons - Vote error:', error);
-            console.error('❌ VoteButtons - Error details:', error.response?.data);
-            toast.error(error.response?.data?.message || 'Failed to vote');
-        } finally {
-            setIsVoting(false);
-        }
+        // Schedule debounced vote
+        debouncedVote(voteType);
     };
 
     // Size configurations
@@ -204,8 +192,8 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
                 disabled={isVoting}
                 className={`
                     ${config.button} rounded-md transition-all duration-200 hover:bg-blue-100
-                    ${hasUpvoted 
-                        ? 'text-green-600' 
+                    ${hasUpvoted
+                        ? 'text-green-600'
                         : 'text-gray-600 hover:text-green-600'
                     }
                     ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
@@ -228,8 +216,8 @@ export const VoteButtons: React.FC<VoteButtonsProps> = ({
                 disabled={isVoting}
                 className={`
                     ${config.button} rounded-md transition-all duration-200 hover:bg-blue-100
-                    ${hasDownvoted 
-                        ? 'text-red-600' 
+                    ${hasDownvoted
+                        ? 'text-red-600'
                         : 'text-gray-600 hover:text-red-600'
                     }
                     ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}

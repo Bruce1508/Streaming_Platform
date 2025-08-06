@@ -39,7 +39,6 @@ router.get('/top-contributors', getTopContributors);
 
 // ===== SPECIAL ROUTES (đặt trước dynamic routes) =====
 router.get('/my-topics', protectRoute, getForumPosts); // Posts của user hiện tại
-router.get('/explore', getForumPosts); // Explore posts
 
 // ===== FORUM POSTS ROUTES =====
 router.get('/posts', getForumPosts);

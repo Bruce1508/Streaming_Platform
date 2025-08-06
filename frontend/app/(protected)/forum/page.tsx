@@ -12,7 +12,6 @@ import { ForumPost, ForumFilters } from '@/types/Forum';
 import { toast } from 'react-hot-toast';
 import { mockForumPosts } from '@/constants/forumMockData';
 import Footer from '@/components/Footer';
-import { voteStateManager } from '@/lib/voteStateManager';
 
 // ===== FORUM PAGE =====
 // Trang chính hiển thị danh sách posts với filters và pagination
@@ -144,7 +143,7 @@ const ForumPage = () => {
     };
 
     // ===== INTERSECTION OBSERVER FOR INFINITE SCROLL =====
-    const observerRef = useRef<IntersectionObserver>();
+    const observerRef = useRef<IntersectionObserver | null>(null);
     const lastPostRef = useCallback((node: HTMLDivElement) => {
         if (isLoadingMore) return;
         
@@ -243,16 +242,6 @@ const ForumPage = () => {
             
             return updatedPosts;
         });
-    
-        // ===== CẬP NHẬT VOTE STATE MANAGER =====
-        console.log('🎯 Forum list - Updating VoteStateManager...');
-        voteStateManager.updateVoteState(
-            postId,
-            newVoteData.voteCount,
-            newVoteData.upvotes || [],
-            newVoteData.downvotes || []
-        );
-        console.log('✅ Forum list - VoteStateManager updated successfully');
     };
 
 

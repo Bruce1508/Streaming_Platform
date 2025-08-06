@@ -1,7 +1,10 @@
 {
-  "/(auth)/sign-in/page": "app/(auth)/sign-in/page.js",
   "/(protected)/forum/[id]/page": "app/(protected)/forum/[id]/page.js",
+  "/(protected)/forum/explore/page": "app/(protected)/forum/explore/page.js",
   "/(protected)/forum/page": "app/(protected)/forum/page.js",
+  "/(protected)/programs/page": "app/(protected)/programs/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js"
 }

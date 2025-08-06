@@ -42,13 +42,6 @@ export const ForumSidebar: React.FC<ForumSidebarProps> = ({
             active: pathname === '/forum'
         },
         {
-            id: 'explore',
-            label: 'Explore Topics',
-            icon: 'Compass',
-            href: '/forum/explore',
-            active: pathname === '/forum/explore'
-        },
-        {
             id: 'my-topics',
             label: 'My Topics',
             icon: 'BookOpen',
