@@ -9,13 +9,13 @@ import { BiUpvote, BiDownvote } from "react-icons/bi";
 import { FaRegCommentDots } from "react-icons/fa";
 import ForumLayout from '@/components/forum/ForumLayout';
 import ForumCommentThread from '@/components/forum/ForumCommentThread';
-import VoteButtons from '@/components/forum/VoteButtons';
 import PageLoader from '@/components/ui/PageLoader';
 import { forumAPI, authAPI } from '@/lib/api';
 import { ForumPost, ForumComment } from '@/types/Forum';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
+import { voteStateManager } from '@/lib/voteStateManager';
 
 // ===== FORUM POST DETAIL PAGE =====
 // Trang chi tiết post với comment system giống Reddit
@@ -48,6 +48,7 @@ const ForumPostDetailPage = () => {
     const [showSortDropdown, setShowSortDropdown] = useState(false);
     const [localUpvotes, setLocalUpvotes] = useState<string[]>([]);
     const [localDownvotes, setLocalDownvotes] = useState<string[]>([]);
+    const [isVoting, setIsVoting] = useState(false);
     const sortDropdownRef = useRef<HTMLDivElement>(null);
 
     // ===== FETCH POST & COMMENTS =====
@@ -133,13 +134,87 @@ const ForumPostDetailPage = () => {
         fetchUserProfile();
     }, [session?.user?.id]);
 
+    // ===== VOTE STATE MANAGER SUBSCRIPTION =====
+    useEffect(() => {
+        if (!postId) {
+            console.log('🚫 Forum Detail - No postId for VoteStateManager subscription');
+            return;
+        }
+
+        console.log('👂 Forum Detail - Subscribing to VoteStateManager for postId:', postId);
+        
+        // Subscribe để lắng nghe thay đổi vote từ Forum List hoặc components khác
+        const unsubscribe = voteStateManager.subscribe(postId, (state) => {
+            console.log('📢 Forum Detail - Received vote state update:', { 
+                postId, 
+                newVoteCount: state.voteCount,
+                newUpvotes: state.upvotes?.length || 0,
+                newDownvotes: state.downvotes?.length || 0
+            });
+
+            // 🔄 CẬP NHẬT POST STATE VỚI DATA MỚI
+            if (post && post._id === postId) {
+                console.log('🔄 Forum Detail - Updating post voteCount from', post.voteCount, 'to', state.voteCount);
+                setPost(prev => prev ? { 
+                    ...prev, 
+                    voteCount: state.voteCount,
+                    upvotes: state.upvotes || [],
+                    downvotes: state.downvotes || []
+                } : null);
+                
+                // 🔄 CẬP NHẬT LOCAL VOTE STATES
+                setLocalUpvotes(state.upvotes || []);
+                setLocalDownvotes(state.downvotes || []);
+                
+                console.log('✅ Forum Detail - Post state updated from VoteStateManager');
+            }
+        });
+
+        // 🔍 KIỂM TRA VÀ LOAD STATE BAN ĐẦU TỪ VOTE STATE MANAGER
+        const existingState = voteStateManager.getVoteState(postId);
+        if (existingState && post) {
+            console.log('📱 Forum Detail - Loading existing state from VoteStateManager:', existingState);
+            setPost(prev => prev ? { 
+                ...prev, 
+                voteCount: existingState.voteCount,
+                upvotes: existingState.upvotes || [],
+                downvotes: existingState.downvotes || []
+            } : null);
+            setLocalUpvotes(existingState.upvotes || []);
+            setLocalDownvotes(existingState.downvotes || []);
+        }
+
+        // Cleanup subscription khi component unmount hoặc postId thay đổi
+        return () => {
+            console.log('🧹 Forum Detail - Unsubscribing from VoteStateManager for postId:', postId);
+            unsubscribe();
+        };
+    }, [postId, post]);
+
     // Initialize local vote states when post loads
     useEffect(() => {
         if (post) {
+            // Get user vote status from localStorage if available
+            const storedVoteState = localStorage.getItem(`vote_${post._id}`);
+            if (storedVoteState && currentUserId) {
+                try {
+                    const voteState = JSON.parse(storedVoteState);
+                    if (voteState.userId === currentUserId) {
+                        console.log('📱 Loading user vote status from localStorage:', voteState);
+                        setLocalUpvotes(voteState.upvotes || []);
+                        setLocalDownvotes(voteState.downvotes || []);
+                        return;
+                    }
+                } catch (error) {
+                    console.error('❌ Error parsing stored vote state:', error);
+                }
+            }
+            
+            // Fallback to server data
             setLocalUpvotes(post.upvotes || []);
             setLocalDownvotes(post.downvotes || []);
         }
-    }, [post]);
+    }, [post, currentUserId]);
 
     // Click outside to close sort dropdown
     useEffect(() => {
@@ -179,44 +254,154 @@ const ForumPostDetailPage = () => {
 
     // ===== HANDLE ACTIONS =====
     const handleVoteUpdate = (newVoteData: any) => {
+        console.log('🔄 Forum Detail - handleVoteUpdate called:', { postId, newVoteData });
+        
         if (post) {
-            setPost(prev => prev ? { ...prev, voteCount: newVoteData.voteCount } : null);
+            // 🔄 CẬP NHẬT LOCAL POST STATE
+            setPost(prev => prev ? { 
+                ...prev, 
+                voteCount: newVoteData.voteCount,
+                upvotes: newVoteData.upvotes || [],
+                downvotes: newVoteData.downvotes || []
+            } : null);
+            
+            // 🎯 CẬP NHẬT VOTE STATE MANAGER (để đồng bộ với Forum List)
+            console.log('🎯 Forum Detail - Updating VoteStateManager...');
+            voteStateManager.updateVoteState(
+                post._id,
+                newVoteData.voteCount,
+                newVoteData.upvotes || [],
+                newVoteData.downvotes || []
+            );
+            console.log('✅ Forum Detail - VoteStateManager updated successfully');
         }
     };
 
-    const handleUpvote = () => {
-        if (!currentUserId || !post) return;
+    const handleUpvote = async () => {
+        if (!currentUserId || !post || isVoting) {
+            console.log('🚫 Cannot upvote:', { currentUserId, hasPost: !!post, isVoting });
+            return;
+        }
         
-        if (localUpvotes.includes(currentUserId)) {
-            // Remove upvote
-            setLocalUpvotes(prev => prev.filter(id => id !== currentUserId));
-            const newVoteCount = post.voteCount - 1;
-            setPost(prev => prev ? { ...prev, voteCount: newVoteCount } : null);
-        } else {
-            // Add upvote, remove downvote if exists
-            setLocalUpvotes(prev => [...prev.filter(id => id !== currentUserId), currentUserId]);
-            setLocalDownvotes(prev => prev.filter(id => id !== currentUserId));
-            const voteChange = localDownvotes.includes(currentUserId) ? 2 : 1;
-            const newVoteCount = post.voteCount + voteChange;
-            setPost(prev => prev ? { ...prev, voteCount: newVoteCount } : null);
+        console.log('🔄 Starting upvote:', { 
+            postId: post._id, 
+            currentUserId, 
+            currentUpvotes: localUpvotes.length,
+            currentDownvotes: localDownvotes.length,
+            hasAlreadyUpvoted: localUpvotes.includes(currentUserId)
+        });
+        
+        setIsVoting(true);
+        
+        try {
+            const response = await forumAPI.votePost(post._id, 'up');
+            
+            console.log('📥 Upvote response received:', response);
+            
+            if (response.success) {
+                const { upvotes, downvotes, voteCount } = response.data;
+                
+                console.log('📊 Updating state with:', { 
+                    upvotes: upvotes?.length || 0, 
+                    downvotes: downvotes?.length || 0, 
+                    voteCount 
+                });
+                
+                // Update local vote arrays
+                setLocalUpvotes(upvotes || []);
+                setLocalDownvotes(downvotes || []);
+                
+                // Update post vote count
+                setPost(prev => prev ? { ...prev, voteCount } : null);
+                
+                // Save user vote status to localStorage
+                saveUserVoteStatus(upvotes || [], downvotes || []);
+                
+                console.log('✅ Upvote successful:', { 
+                    newUpvotes: upvotes?.length || 0, 
+                    newDownvotes: downvotes?.length || 0, 
+                    newVoteCount: voteCount 
+                });
+            } else {
+                console.error('❌ API response not successful:', response);
+            }
+        } catch (error: any) {
+            console.error('❌ Upvote failed:', error);
+            console.error('❌ Error details:', error.response?.data);
+            toast.error(error.response?.data?.message || 'Failed to vote. Please try again.');
+        } finally {
+            setIsVoting(false);
         }
     };
 
-    const handleDownvote = () => {
-        if (!currentUserId || !post) return;
+    const handleDownvote = async () => {
+        if (!currentUserId || !post || isVoting) {
+            console.log('🚫 Cannot downvote:', { currentUserId, hasPost: !!post, isVoting });
+            return;
+        }
         
-        if (localDownvotes.includes(currentUserId)) {
-            // Remove downvote
-            setLocalDownvotes(prev => prev.filter(id => id !== currentUserId));
-            const newVoteCount = post.voteCount + 1;
-            setPost(prev => prev ? { ...prev, voteCount: newVoteCount } : null);
-        } else {
-            // Add downvote, remove upvote if exists
-            setLocalDownvotes(prev => [...prev.filter(id => id !== currentUserId), currentUserId]);
-            setLocalUpvotes(prev => prev.filter(id => id !== currentUserId));
-            const voteChange = localUpvotes.includes(currentUserId) ? 2 : 1;
-            const newVoteCount = post.voteCount - voteChange;
-            setPost(prev => prev ? { ...prev, voteCount: newVoteCount } : null);
+        console.log('🔄 Starting downvote:', { 
+            postId: post._id, 
+            currentUserId, 
+            currentUpvotes: localUpvotes.length,
+            currentDownvotes: localDownvotes.length,
+            hasAlreadyDownvoted: localDownvotes.includes(currentUserId)
+        });
+        
+        setIsVoting(true);
+        
+        try {
+            const response = await forumAPI.votePost(post._id, 'down');
+            
+            console.log('📥 Downvote response received:', response);
+            
+            if (response.success) {
+                const { upvotes, downvotes, voteCount } = response.data;
+                
+                console.log('📊 Updating state with:', { 
+                    upvotes: upvotes?.length || 0, 
+                    downvotes: downvotes?.length || 0, 
+                    voteCount 
+                });
+                
+                // Update local vote arrays
+                setLocalUpvotes(upvotes || []);
+                setLocalDownvotes(downvotes || []);
+                
+                // Update post vote count
+                setPost(prev => prev ? { ...prev, voteCount } : null);
+                
+                // Save user vote status to localStorage
+                saveUserVoteStatus(upvotes || [], downvotes || []);
+                
+                console.log('✅ Downvote successful:', { 
+                    newUpvotes: upvotes?.length || 0, 
+                    newDownvotes: downvotes?.length || 0, 
+                    newVoteCount: voteCount 
+                });
+            } else {
+                console.error('❌ API response not successful:', response);
+            }
+        } catch (error: any) {
+            console.error('❌ Downvote failed:', error);
+            console.error('❌ Error details:', error.response?.data);
+            toast.error(error.response?.data?.message || 'Failed to vote. Please try again.');
+        } finally {
+            setIsVoting(false);
+        }
+    };
+
+    // Helper function to save user vote status to localStorage
+    const saveUserVoteStatus = (upvotes: string[], downvotes: string[]) => {
+        if (currentUserId && post) {
+            const voteState = {
+                userId: currentUserId,
+                upvotes: upvotes || [],
+                downvotes: downvotes || [],
+                timestamp: Date.now()
+            };
+            localStorage.setItem(`vote_${post._id}`, JSON.stringify(voteState));
+            console.log('💾 Saved user vote status to localStorage:', voteState);
         }
     };
 
@@ -558,26 +743,30 @@ const ForumPostDetailPage = () => {
                             {/* Action Buttons - Pill Style */}
                             <div className="flex items-center gap-3 py-4">
                                 {/* Vote Button - Reddit Style */}
-                                <div className="flex items-center bg-[#b5f3fa] rounded-full px-3 py-2">
+                                <div className={`flex items-center rounded-full px-3 py-2 transition-all duration-200 ${
+                                    hasUpvoted || hasDownvoted ? 'bg-[#d93a00]' : 'bg-[#b5f3fa]'
+                                }`}>
                                     <button
                                         onClick={handleUpvote}
                                         className={`flex items-center justify-center p-1 rounded-md transition-all duration-200 cursor-pointer ${
-                                            hasUpvoted 
-                                                ? 'bg-[#d93a00] text-white' 
-                                                : 'text-gray-700 hover:text-green-600'
+                                            isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                                        } ${
+                                            hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-700 hover:text-green-600'
                                         }`}
                                     >
                                         <BiUpvote className="w-5 h-5" />
                                     </button>
-                                    <span className="text-sm font-medium text-gray-900 min-w-[20px] text-center mx-2">
+                                    <span className={`text-sm font-medium min-w-[20px] text-center mx-2 ${
+                                        hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-900'
+                                    }`}>
                                         {post.voteCount || 0}
                                     </span>
                                     <button
                                         onClick={handleDownvote}
                                         className={`flex items-center justify-center p-1 rounded-md transition-all duration-200 cursor-pointer ${
-                                            hasDownvoted 
-                                                ? 'bg-[#d93a00] text-white' 
-                                                : 'text-gray-700 hover:text-red-600'
+                                            isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                                        } ${
+                                            hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-700 hover:text-red-600'
                                         }`}
                                     >
                                         <BiDownvote className="w-5 h-5" />

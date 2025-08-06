@@ -7,11 +7,12 @@ import { Filter, SortAsc, RotateCcw, Clock, MessageCircle, MessageSquare, FileTe
 import ForumLayout from '@/components/forum/ForumLayout';
 import ForumPostCard from '@/components/forum/ForumPostCard';
 import PageLoader from '@/components/ui/PageLoader';
-import { forumAPI } from '@/lib/api';
+import { forumAPI, authAPI } from '@/lib/api';
 import { ForumPost, ForumFilters } from '@/types/Forum';
 import { toast } from 'react-hot-toast';
 import { mockForumPosts } from '@/constants/forumMockData';
 import Footer from '@/components/Footer';
+import { voteStateManager } from '@/lib/voteStateManager';
 
 // ===== FORUM PAGE =====
 // Trang chính hiển thị danh sách posts với filters và pagination
@@ -19,7 +20,7 @@ const ForumPage = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const { data: session } = useSession();
-    const currentUserId = session?.user?.id;
+    const [currentUserId, setCurrentUserId] = useState<string | undefined>(session?.user?.id);
     
     const currentSort = searchParams.get('sort') || 'latest';
     const currentCategory = searchParams.get('category') || '';
@@ -163,6 +164,35 @@ const ForumPage = () => {
     }, [isLoadingMore, hasMore]);
 
     // ===== EFFECTS =====
+    
+    // Get MongoDB user ID from API
+    useEffect(() => {
+        console.log('🔍 Forum list useEffect triggered, session?.user?.id:', session?.user?.id);
+        
+        const fetchUserProfile = async () => {
+            if (session?.user?.id) {
+                console.log('🔍 Forum list - Fetching user profile...');
+                try {
+                    const response = await authAPI.getMe();
+                    console.log('🔍 Forum list - getMe response:', response);
+                    if (response.data?.user?._id) {
+                        setCurrentUserId(response.data.user._id);
+                        console.log('🔍 Forum list - MongoDB user ID set to:', response.data.user._id);
+                    } else {
+                        console.log('🔍 Forum list - No _id in response data.user');
+                        console.log('🔍 Forum list - Response data structure:', response.data);
+                    }
+                } catch (error) {
+                    console.error('Forum list - Failed to fetch user profile:', error);
+                }
+            } else {
+                console.log('🔍 Forum list - No session?.user?.id available');
+            }
+        };
+        
+        fetchUserProfile();
+    }, [session?.user?.id]);
+
     useEffect(() => {
         fetchPosts();
     }, [searchParams]);
@@ -195,11 +225,34 @@ const ForumPage = () => {
 
     // ===== HANDLE VOTE UPDATE =====
     const handleVoteUpdate = (postId: string, newVoteData: any) => {
-        setPosts(prev => prev.map(post => 
-            post._id === postId 
-                ? { ...post, voteCount: newVoteData.voteCount }
-                : post
-        ));
+        console.log('🔄 Forum list - handleVoteUpdate called:', { postId, newVoteData });
+        
+        // ===== CẬP NHẬT LOCAL STATE =====
+        setPosts(prev => {
+            const updatedPosts = prev.map(post => 
+                post._id === postId 
+                    ? { ...post, voteCount: newVoteData.voteCount }
+                    : post
+            );
+            
+            console.log('📊 Forum list - Posts updated:', {
+                originalPost: prev.find(p => p._id === postId)?.voteCount,
+                newVoteCount: newVoteData.voteCount,
+                totalPosts: updatedPosts.length
+            });
+            
+            return updatedPosts;
+        });
+    
+        // ===== CẬP NHẬT VOTE STATE MANAGER =====
+        console.log('🎯 Forum list - Updating VoteStateManager...');
+        voteStateManager.updateVoteState(
+            postId,
+            newVoteData.voteCount,
+            newVoteData.upvotes || [],
+            newVoteData.downvotes || []
+        );
+        console.log('✅ Forum list - VoteStateManager updated successfully');
     };
 
 

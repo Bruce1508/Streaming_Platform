@@ -8,6 +8,7 @@ import { BiUpvote, BiDownvote } from "react-icons/bi";
 import { formatDistanceToNow } from 'date-fns';
 import { forumAPI } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import { voteStateManager } from '@/lib/voteStateManager';
 
 // ===== FORUM POST CARD COMPONENT =====
 // Component hiển thị preview của một forum post trong danh sách
@@ -24,11 +25,33 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
     onVoteUpdate,
     className = ''
 }) => {
+    console.log('🔧 ForumPostCard - Component initialized for postId:', post._id);
+
     const [showDropdown, setShowDropdown] = useState(false);
     const [localUpvotes, setLocalUpvotes] = useState<string[]>(post.upvotes || []);
     const [localDownvotes, setLocalDownvotes] = useState<string[]>(post.downvotes || []);
     const [isVoting, setIsVoting] = useState(false);
+    const [localVoteCount, setLocalVoteCount] = useState(post.voteCount);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Load user vote status from localStorage on mount
+    useEffect(() => {
+        if (currentUserId) {
+            const storedVoteState = localStorage.getItem(`vote_${post._id}`);
+            if (storedVoteState) {
+                try {
+                    const voteState = JSON.parse(storedVoteState);
+                    if (voteState.userId === currentUserId) {
+                        console.log('📱 ForumPostCard - Loading user vote status from localStorage:', voteState);
+                        setLocalUpvotes(voteState.upvotes || []);
+                        setLocalDownvotes(voteState.downvotes || []);
+                    }
+                } catch (error) {
+                    console.error('❌ ForumPostCard - Error parsing stored vote state:', error);
+                }
+            }
+        }
+    }, [post._id, currentUserId]);
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -46,6 +69,44 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [showDropdown]);
+
+    // ===== VOTE STATE MANAGER SUBSCRIPTION =====
+    useEffect(() => {
+        console.log('👂 ForumPostCard - Subscribing to VoteStateManager for postId:', post._id);
+        
+        // Subscribe để lắng nghe thay đổi vote từ components khác
+        const unsubscribe = voteStateManager.subscribe(post._id, (state) => {
+            console.log('📢 ForumPostCard - Received vote state update:', { 
+                postId: post._id, 
+                newVoteCount: state.voteCount,
+                newUpvotes: state.upvotes?.length || 0,
+                newDownvotes: state.downvotes?.length || 0
+            });
+
+            // 🔄 CẬP NHẬT LOCAL STATE TỪ VOTE STATE MANAGER
+            setLocalVoteCount(state.voteCount);
+            setLocalUpvotes(state.upvotes || []);
+            setLocalDownvotes(state.downvotes || []);
+            
+            console.log('✅ ForumPostCard - Local state updated from VoteStateManager');
+        });
+
+        // 🔍 KIỂM TRA VÀ LOAD STATE BAN ĐẦU
+        const existingState = voteStateManager.getVoteState(post._id);
+        if (existingState) {
+            console.log('📱 ForumPostCard - Loading existing state from VoteStateManager:', existingState);
+            setLocalVoteCount(existingState.voteCount);
+            setLocalUpvotes(existingState.upvotes || []);
+            setLocalDownvotes(existingState.downvotes || []);
+        }
+
+        // Cleanup subscription khi component unmount
+        return () => {
+            console.log('🧹 ForumPostCard - Unsubscribing from VoteStateManager for postId:', post._id);
+            unsubscribe();
+        };
+    }, [post._id]);
+
     // ===== HELPER FUNCTIONS =====
     const formatTimeAgo = (dateString: string) => {
         try {
@@ -69,26 +130,70 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
     };
 
     const handleVoteUpdate = (newVoteData: any) => {
+        console.log('🔄 ForumPostCard - handleVoteUpdate called:', { postId: post._id, newVoteData });
+        
+        // 🎯 CẬP NHẬT VOTE STATE MANAGER (để đồng bộ với tất cả components)
+        console.log('🎯 ForumPostCard - Updating VoteStateManager...');
+        voteStateManager.updateVoteState(
+            post._id,
+            newVoteData.voteCount,
+            newVoteData.upvotes || [],
+            newVoteData.downvotes || []
+        );
+        console.log('✅ ForumPostCard - VoteStateManager updated successfully');
+
+        // 📢 CALLBACK ĐỂ PARENT COMPONENT UPDATE (compatibility với code cũ)
         onVoteUpdate?.(post._id, newVoteData);
     };
 
     const handleUpvote = async () => {
-        if (!currentUserId || isVoting) return;
+        if (!currentUserId || isVoting) {
+            console.log('🚫 Cannot upvote in card:', { currentUserId, isVoting });
+            return;
+        }
+        
+        console.log('🔄 Starting upvote in card:', { 
+            postId: post._id, 
+            currentUserId, 
+            currentUpvotes: localUpvotes.length,
+            currentDownvotes: localDownvotes.length,
+            hasAlreadyUpvoted: localUpvotes.includes(currentUserId)
+        });
         
         setIsVoting(true);
         
         try {
             const response = await forumAPI.votePost(post._id, 'up');
             
-            if (response.data.success) {
-                const { upvotes, downvotes, voteCount } = response.data.data;
-                setLocalUpvotes(upvotes);
-                setLocalDownvotes(downvotes);
+            console.log('📥 Upvote response in card:', response);
+            
+            if (response.success) {
+                const { upvotes, downvotes, voteCount } = response.data;
+                
+                console.log('📊 Updating card state with:', { 
+                    upvotes: upvotes?.length || 0, 
+                    downvotes: downvotes?.length || 0, 
+                    voteCount 
+                });
+                
+                setLocalUpvotes(upvotes || []);
+                setLocalDownvotes(downvotes || []);
                 onVoteUpdate?.(post._id, { voteCount });
-                console.log('✅ Upvote successful');
+                
+                // Save user vote status to localStorage
+                saveUserVoteStatus(upvotes || [], downvotes || []);
+                
+                console.log('✅ Upvote successful in card:', { 
+                    newUpvotes: upvotes?.length || 0, 
+                    newDownvotes: downvotes?.length || 0, 
+                    newVoteCount: voteCount 
+                });
+            } else {
+                console.error('❌ API response not successful in card:', response);
             }
         } catch (error: any) {
-            console.error('❌ Upvote failed:', error);
+            console.error('❌ Upvote failed in card:', error);
+            console.error('❌ Error details in card:', error.response?.data);
             toast.error('Failed to vote. Please try again.');
         } finally {
             setIsVoting(false);
@@ -96,25 +201,70 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
     };
 
     const handleDownvote = async () => {
-        if (!currentUserId || isVoting) return;
+        if (!currentUserId || isVoting) {
+            console.log('🚫 Cannot downvote in card:', { currentUserId, isVoting });
+            return;
+        }
+        
+        console.log('🔄 Starting downvote in card:', { 
+            postId: post._id, 
+            currentUserId, 
+            currentUpvotes: localUpvotes.length,
+            currentDownvotes: localDownvotes.length,
+            hasAlreadyDownvoted: localDownvotes.includes(currentUserId)
+        });
         
         setIsVoting(true);
         
         try {
             const response = await forumAPI.votePost(post._id, 'down');
             
-            if (response.data.success) {
-                const { upvotes, downvotes, voteCount } = response.data.data;
-                setLocalUpvotes(upvotes);
-                setLocalDownvotes(downvotes);
+            console.log('📥 Downvote response in card:', response);
+            
+            if (response.success) {
+                const { upvotes, downvotes, voteCount } = response.data;
+                
+                console.log('📊 Updating card state with:', { 
+                    upvotes: upvotes?.length || 0, 
+                    downvotes: downvotes?.length || 0, 
+                    voteCount 
+                });
+                
+                setLocalUpvotes(upvotes || []);
+                setLocalDownvotes(downvotes || []);
                 onVoteUpdate?.(post._id, { voteCount });
-                console.log('✅ Downvote successful');
+                
+                // Save user vote status to localStorage
+                saveUserVoteStatus(upvotes || [], downvotes || []);
+                
+                console.log('✅ Downvote successful in card:', { 
+                    newUpvotes: upvotes?.length || 0, 
+                    newDownvotes: downvotes?.length || 0, 
+                    newVoteCount: voteCount 
+                });
+            } else {
+                console.error('❌ API response not successful in card:', response);
             }
         } catch (error: any) {
-            console.error('❌ Downvote failed:', error);
+            console.error('❌ Downvote failed in card:', error);
+            console.error('❌ Error details in card:', error.response?.data);
             toast.error('Failed to vote. Please try again.');
         } finally {
             setIsVoting(false);
+        }
+    };
+
+    // Helper function to save user vote status to localStorage
+    const saveUserVoteStatus = (upvotes: string[], downvotes: string[]) => {
+        if (currentUserId) {
+            const voteState = {
+                userId: currentUserId,
+                upvotes: upvotes || [],
+                downvotes: downvotes || [],
+                timestamp: Date.now()
+            };
+            localStorage.setItem(`vote_${post._id}`, JSON.stringify(voteState));
+            console.log('💾 ForumPostCard - Saved user vote status to localStorage:', voteState);
         }
     };
 
@@ -144,7 +294,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                         <span className={`text-sm font-medium min-w-[20px] text-center my-1 ${
                             hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-900'
                         }`}>
-                            {post.voteCount || 0}
+                                                            {localVoteCount || 0}
                         </span>
                         <button
                             onClick={handleDownvote}

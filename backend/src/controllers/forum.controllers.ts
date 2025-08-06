@@ -174,10 +174,17 @@ export const getForumPost = asyncHandler(async (req: Request, res: Response) => 
         return res.status(404).json(new ApiResponse(404, null, 'Post not found'));
     }
 
+    // Convert ObjectIds to strings for upvotes and downvotes
+    const postWithStringIds = {
+        ...post,
+        upvotes: post.upvotes.map(id => id.toString()),
+        downvotes: post.downvotes.map(id => id.toString())
+    };
+
     const totalPages = Math.ceil(totalComments / Number(limit));
 
     res.json(new ApiResponse(200, {
-        post,
+        post: postWithStringIds,
         comments: commentsWithReplies,
         pagination: {
             currentPage: Number(page),
@@ -494,11 +501,11 @@ export const getRecentActivity = asyncHandler(async (req: Request, res: Response
 
         const activities = recentPosts.map(post => ({
             type: 'post',
-            user: post.author?.fullName || 'Anonymous',
+            user: (post.author as any)?.fullName || 'Anonymous',
             action: 'created a new post',
             target: post.title,
             time: post.createdAt,
-            avatar: post.author?.profilePic || '/default-avatar.jpg'
+            avatar: (post.author as any)?.profilePic || '/default-avatar.jpg'
         }));
 
         console.log('🔄 Recent activities found:', activities.length);
@@ -567,6 +574,10 @@ export const getTopContributors = asyncHandler(async (req: Request, res: Respons
 export const voteOnPost = asyncHandler(async (req: AuthRequest, res: Response) => {
     logApiRequest(req);
 
+    if (!req.user) {
+        return res.status(401).json(new ApiResponse(401, null, 'Authentication required'));
+    }
+
     try {
         const { postId } = req.params;
         const { voteType } = req.body; // 'up' | 'down'
@@ -617,8 +628,8 @@ export const voteOnPost = asyncHandler(async (req: AuthRequest, res: Response) =
         });
 
         res.status(200).json(new ApiResponse(200, {
-            upvotes: post.upvotes,
-            downvotes: post.downvotes,
+            upvotes: post.upvotes.map(id => id.toString()),
+            downvotes: post.downvotes.map(id => id.toString()),
             voteCount,
             userVote: hasUpvoted && voteType === 'up' ? null : 
                      hasDownvoted && voteType === 'down' ? null : voteType
@@ -637,6 +648,10 @@ export const voteOnPost = asyncHandler(async (req: AuthRequest, res: Response) =
  */
 export const voteOnComment = asyncHandler(async (req: AuthRequest, res: Response) => {
     logApiRequest(req);
+
+    if (!req.user) {
+        return res.status(401).json(new ApiResponse(401, null, 'Authentication required'));
+    }
 
     try {
         const { commentId } = req.params;
@@ -688,8 +703,8 @@ export const voteOnComment = asyncHandler(async (req: AuthRequest, res: Response
         });
 
         res.status(200).json(new ApiResponse(200, {
-            upvotes: comment.upvotes,
-            downvotes: comment.downvotes,
+            upvotes: comment.upvotes.map(id => id.toString()),
+            downvotes: comment.downvotes.map(id => id.toString()),
             voteCount,
             userVote: hasUpvoted && voteType === 'up' ? null : 
                      hasDownvoted && voteType === 'down' ? null : voteType
