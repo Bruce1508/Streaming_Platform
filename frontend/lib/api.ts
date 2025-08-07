@@ -106,7 +106,6 @@ export const materialAPI = {
     getMaterialById: (id: string) => api.get(`/materials/${id}`),
     searchMaterials: (query: string) => api.get(`/materials/search?search=${encodeURIComponent(query)}`),
     createMaterial: (data: any) => api.post('/materials', data),
-    saveMaterial: (id: string) => api.post(`/materials/${id}/save`),
     rateMaterial: (id: string, rating: number) => api.post(`/materials/${id}/rate`, { rating }),
 };
 
@@ -182,6 +181,16 @@ export const forumAPI = {
     
     // Đánh dấu comment là accepted answer (chỉ post author)
     acceptAnswer: (id: string) => api.post(`/forum/comments/${id}/accept`),
+    
+    // ===== SAVE POSTS =====
+    // Save forum post
+    savePost: (id: string) => api.post(`/forum/posts/${id}/save`),
+    
+    // Unsave forum post
+    unsavePost: (id: string) => api.delete(`/forum/posts/${id}/save`),
+    
+    // Get saved posts
+    getSavedPosts: (page = 1, limit = 10) => api.get(`/forum/saved-posts?page=${page}&limit=${limit}`),
     
     // ===== SEARCH & DISCOVERY =====
     // Tìm kiếm posts

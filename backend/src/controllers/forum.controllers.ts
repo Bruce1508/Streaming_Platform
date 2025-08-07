@@ -710,4 +710,114 @@ export const voteOnComment = asyncHandler(async (req: AuthRequest, res: Response
         console.error('Vote on comment error:', error);
         res.status(500).json(new ApiResponse(500, null, 'Failed to record comment vote'));
     }
+});
+
+// ===== SAVE POST CONTROLLERS =====
+
+/**
+ * @desc    Save forum post
+ * @route   POST /api/forum/posts/:id/save
+ * @access  Private
+ */
+export const saveForumPost = asyncHandler(async (req: AuthRequest, res: Response) => {
+    logApiRequest(req);
+
+    if (!req.user) {
+        return res.status(401).json(new ApiResponse(401, null, 'Authentication required'));
+    }
+
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json(new ApiResponse(400, null, 'Invalid post ID'));
+    }
+
+    const post = await ForumPost.findById(id);
+    if (!post) {
+        return res.status(404).json(new ApiResponse(404, null, 'Forum post not found'));
+    }
+
+    // Check if already saved
+    if (req.user.savedPosts.includes(new mongoose.Types.ObjectId(id))) {
+        return res.status(400).json(new ApiResponse(400, null, 'Post already saved'));
+    }
+
+    // Save post
+    await req.user.savePost(new mongoose.Types.ObjectId(id));
+
+    res.status(200).json(new ApiResponse(200, null, 'Forum post saved successfully'));
+});
+
+/**
+ * @desc    Unsave forum post
+ * @route   DELETE /api/forum/posts/:id/save
+ * @access  Private
+ */
+export const unsaveForumPost = asyncHandler(async (req: AuthRequest, res: Response) => {
+    logApiRequest(req);
+
+    if (!req.user) {
+        return res.status(401).json(new ApiResponse(401, null, 'Authentication required'));
+    }
+
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json(new ApiResponse(400, null, 'Invalid post ID'));
+    }
+
+    // Check if post is saved
+    if (!req.user.savedPosts.includes(new mongoose.Types.ObjectId(id))) {
+        return res.status(400).json(new ApiResponse(400, null, 'Post not in saved list'));
+    }
+
+    // Unsave post
+    await req.user.unsavePost(new mongoose.Types.ObjectId(id));
+
+    res.status(200).json(new ApiResponse(200, null, 'Forum post removed from saved list'));
+});
+
+/**
+ * @desc    Get user's saved forum posts
+ * @route   GET /api/forum/saved-posts
+ * @access  Private
+ */
+export const getSavedPosts = asyncHandler(async (req: AuthRequest, res: Response) => {
+    logApiRequest(req);
+
+    if (!req.user) {
+        return res.status(401).json(new ApiResponse(401, null, 'Authentication required'));
+    }
+
+    const { page = '1', limit = '10' } = req.query;
+    const pageNum = parseInt(page as string);
+    const limitNum = parseInt(limit as string);
+    const skip = (pageNum - 1) * limitNum;
+
+    // Get saved posts with pagination
+    const savedPostIds = req.user.savedPosts;
+    const totalSavedPosts = savedPostIds.length;
+    
+    const paginatedPostIds = savedPostIds.slice(skip, skip + limitNum);
+
+    const savedPosts = await ForumPost.find({
+        _id: { $in: paginatedPostIds }
+    })
+    .populate('author', 'fullName profilePic email')
+    .populate('academic.program', 'name code')
+    .sort({ createdAt: -1 })
+    .exec();
+
+    const pagination = {
+        currentPage: pageNum,
+        totalPages: Math.ceil(totalSavedPosts / limitNum),
+        totalPosts: totalSavedPosts,
+        hasNext: pageNum < Math.ceil(totalSavedPosts / limitNum),
+        hasPrev: pageNum > 1
+    };
+
+    res.status(200).json(new ApiResponse(200, {
+        posts: savedPosts,
+        pagination
+    }, 'Saved forum posts retrieved successfully'));
 }); 

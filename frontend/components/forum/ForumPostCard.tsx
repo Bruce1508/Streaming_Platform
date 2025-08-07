@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { MessageCircle, Eye, Clock, Tag, MoreHorizontal, Share, Bookmark, Flag, TrendingUp } from 'lucide-react';
+import { MessageCircle, Eye, Clock, Tag, MoreHorizontal, Share, Bookmark, Flag, TrendingUp, Check } from 'lucide-react';
 import { ForumPost } from '@/types/Forum';
 import { BiUpvote, BiDownvote } from "react-icons/bi";
 import { formatDistanceToNow } from 'date-fns';
@@ -30,6 +30,10 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
     const [localUpvotes, setLocalUpvotes] = useState<string[]>(post.upvotes || []);
     const [localDownvotes, setLocalDownvotes] = useState<string[]>(post.downvotes || []);
     const [isVoting, setIsVoting] = useState(false);
+    const [isSharing, setIsSharing] = useState(false);
+    const [shareCopied, setShareCopied] = useState(false);
+    const [isSaved, setIsSaved] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     // Load user vote status from localStorage on mount
@@ -68,7 +72,15 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
         };
     }, [showDropdown]);
 
-
+    // Load saved status from localStorage
+    useEffect(() => {
+        if (currentUserId) {
+            const savedStatus = localStorage.getItem(`saved_${post._id}`);
+            if (savedStatus) {
+                setIsSaved(JSON.parse(savedStatus));
+            }
+        }
+    }, [post._id, currentUserId]);
 
     // ===== HELPER FUNCTIONS =====
     const formatTimeAgo = (dateString: string) => {
@@ -92,6 +104,62 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
         return colors[category] || colors['general'];
     };
 
+    const handleShare = async () => {
+        if (isSharing) return;
+        setIsSharing(true);
+        try {
+            const postUrl = `${window.location.origin}/forum/${post._id}`;
+
+            await navigator.clipboard.writeText(postUrl);
+            setShareCopied(true);
+            toast.success('Link copied to clipboard');
+            setTimeout(() => {
+                setShareCopied(false);
+            }, 3000);
+        } catch (error: any) {
+            console.error('❌ Error sharing post:', error);
+            toast.error('Failed to share post. Please try again.');
+        } finally {
+            setIsSharing(false);
+        }
+    };
+
+    const handleSave = async () => {
+        if (isSaving || !currentUserId) return;
+        setIsSaving(true);
+        
+        try {
+            if (isSaved) {
+                // Unsave post
+                await forumAPI.unsavePost(post._id);
+                setIsSaved(false);
+                localStorage.removeItem(`saved_${post._id}`);
+                toast.success('Post removed from saved list');
+            } else {
+                // Save post
+                await forumAPI.savePost(post._id);
+                setIsSaved(true);
+                localStorage.setItem(`saved_${post._id}`, JSON.stringify(true));
+                toast.success('Post saved successfully');
+            }
+        } catch (error: any) {
+            console.error('❌ Error saving/unsaving post:', error);
+            
+            // Handle specific error messages
+            if (error.response?.status === 401) {
+                toast.error('Please login to save posts');
+            } else if (error.response?.status === 429) {
+                toast.error('Too many requests. Please wait a moment.');
+            } else if (error.response?.data?.message) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error('Failed to save post. Please try again.');
+            }
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
     const handleVoteUpdate = (newVoteData: any) => {
         onVoteUpdate?.(post._id, newVoteData);
     };
@@ -101,42 +169,42 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
             console.log('🚫 Cannot upvote in card:', { currentUserId, isVoting });
             return;
         }
-        
-        console.log('🔄 Starting upvote in card:', { 
-            postId: post._id, 
-            currentUserId, 
+
+        console.log('🔄 Starting upvote in card:', {
+            postId: post._id,
+            currentUserId,
             currentUpvotes: localUpvotes.length,
             currentDownvotes: localDownvotes.length,
             hasAlreadyUpvoted: localUpvotes.includes(currentUserId)
         });
-        
+
         setIsVoting(true);
-        
+
         try {
             const response = await forumAPI.votePost(post._id, 'up');
-            
+
             console.log('📥 Upvote response in card:', response);
-            
+
             if (response.success) {
                 const { upvotes, downvotes, voteCount } = response.data;
-                
-                console.log('📊 Updating card state with:', { 
-                    upvotes: upvotes?.length || 0, 
-                    downvotes: downvotes?.length || 0, 
-                    voteCount 
+
+                console.log('📊 Updating card state with:', {
+                    upvotes: upvotes?.length || 0,
+                    downvotes: downvotes?.length || 0,
+                    voteCount
                 });
-                
+
                 setLocalUpvotes(upvotes || []);
                 setLocalDownvotes(downvotes || []);
                 onVoteUpdate?.(post._id, { voteCount });
-                
+
                 // Save user vote status to localStorage
                 saveUserVoteStatus(upvotes || [], downvotes || []);
-                
-                console.log('✅ Upvote successful in card:', { 
-                    newUpvotes: upvotes?.length || 0, 
-                    newDownvotes: downvotes?.length || 0, 
-                    newVoteCount: voteCount 
+
+                console.log('✅ Upvote successful in card:', {
+                    newUpvotes: upvotes?.length || 0,
+                    newDownvotes: downvotes?.length || 0,
+                    newVoteCount: voteCount
                 });
             } else {
                 console.error('❌ API response not successful in card:', response);
@@ -155,42 +223,42 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
             console.log('🚫 Cannot downvote in card:', { currentUserId, isVoting });
             return;
         }
-        
-        console.log('🔄 Starting downvote in card:', { 
-            postId: post._id, 
-            currentUserId, 
+
+        console.log('🔄 Starting downvote in card:', {
+            postId: post._id,
+            currentUserId,
             currentUpvotes: localUpvotes.length,
             currentDownvotes: localDownvotes.length,
             hasAlreadyDownvoted: localDownvotes.includes(currentUserId)
         });
-        
+
         setIsVoting(true);
-        
+
         try {
             const response = await forumAPI.votePost(post._id, 'down');
-            
+
             console.log('📥 Downvote response in card:', response);
-            
+
             if (response.success) {
                 const { upvotes, downvotes, voteCount } = response.data;
-                
-                console.log('📊 Updating card state with:', { 
-                    upvotes: upvotes?.length || 0, 
-                    downvotes: downvotes?.length || 0, 
-                    voteCount 
+
+                console.log('📊 Updating card state with:', {
+                    upvotes: upvotes?.length || 0,
+                    downvotes: downvotes?.length || 0,
+                    voteCount
                 });
-                
+
                 setLocalUpvotes(upvotes || []);
                 setLocalDownvotes(downvotes || []);
                 onVoteUpdate?.(post._id, { voteCount });
-                
+
                 // Save user vote status to localStorage
                 saveUserVoteStatus(upvotes || [], downvotes || []);
-                
-                console.log('✅ Downvote successful in card:', { 
-                    newUpvotes: upvotes?.length || 0, 
-                    newDownvotes: downvotes?.length || 0, 
-                    newVoteCount: voteCount 
+
+                console.log('✅ Downvote successful in card:', {
+                    newUpvotes: upvotes?.length || 0,
+                    newDownvotes: downvotes?.length || 0,
+                    newVoteCount: voteCount
                 });
             } else {
                 console.error('❌ API response not successful in card:', response);
@@ -227,33 +295,27 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
             <div className="flex gap-2 px-4 py-3">
                 {/* Vote Buttons - Reddit Style */}
                 <div className="flex-shrink-0 flex items-center mr-3">
-                    <div className={`flex flex-col items-center rounded-full px-3 py-2 transition-all duration-200 ${
-                        hasUpvoted || hasDownvoted ? 'bg-[#d93a00]' : 'bg-[#b5f3fa]'
-                    }`}>
+                    <div className={`flex flex-col items-center rounded-full px-3 py-2 transition-all duration-200 ${hasUpvoted || hasDownvoted ? 'bg-[#d93a00]' : 'bg-[#b5f3fa]'
+                        }`}>
                         <button
                             onClick={handleUpvote}
                             disabled={isVoting}
-                            className={`flex items-center justify-center p-1 transition-all duration-200 ${
-                                isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-                            } ${
-                                hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-700 hover:text-green-600'
-                            }`}
+                            className={`flex items-center justify-center p-1 transition-all duration-200 ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                                } ${hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-700 hover:text-green-600'
+                                }`}
                         >
                             <BiUpvote className="w-4 h-4" />
                         </button>
-                        <span className={`text-sm font-medium min-w-[20px] text-center my-1 ${
-                            hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-900'
-                        }`}>
-                                {post.voteCount || 0}
+                        <span className={`text-sm font-medium min-w-[20px] text-center my-1 ${hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-900'
+                            }`}>
+                            {post.voteCount || 0}
                         </span>
                         <button
                             onClick={handleDownvote}
                             disabled={isVoting}
-                            className={`flex items-center justify-center p-1 transition-all duration-200 ${
-                                isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-                            } ${
-                                hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-700 hover:text-red-600'
-                            }`}
+                            className={`flex items-center justify-center p-1 transition-all duration-200 ${isVoting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                                } ${hasUpvoted || hasDownvoted ? 'text-white' : 'text-gray-700 hover:text-red-600'
+                                }`}
                         >
                             <BiDownvote className="w-4 h-4" />
                         </button>
@@ -298,7 +360,7 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                                 <span className="text-xs text-gray-500">
                                     {formatTimeAgo(post.createdAt)}
                                 </span>
-                                
+
                                 {/* Pinned/Resolved Badges */}
                                 {post.isPinned && (
                                     <>
@@ -355,18 +417,34 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
                     {/* Bottom Actions */}
                     <div className="flex items-center gap-4 text-xs text-black font-semibold cursor-pointer">
                         <div className="flex items-center gap-1 bg-[#e4ebee] px-3 py-1.5 rounded-full hover:bg-[#d1d8db] transition-colors cursor-pointer">
-                                <MessageCircle className="w-3 h-3" />
+                            <MessageCircle className="w-3 h-3" />
                             <span>{post.commentCount}</span>
                         </div>
-                        
-                        <button className="flex items-center gap-1 bg-[#e4ebee] px-3 py-1.5 rounded-full hover:bg-[#d1d8db] transition-colors cursor-pointer">
-                            <Share className="w-3 h-3" />
-                            <span>Share</span>
+
+                        <button
+                            onClick={handleShare}
+                            disabled={isSharing}
+                            className={`flex items-center gap-1 bg-[#e4ebee] px-3 py-1.5 rounded-full hover:bg-[#d1d8db] transition-colors cursor-pointer ${isSharing ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        >
+                            {shareCopied ? (
+                                <Check className="w-3 h-3 text-green-600" />
+                            ) : (
+                                <Share className="w-3 h-3" />
+                            )}
+                            <span>{shareCopied ? 'Copied!' : 'Share'}</span>
                         </button>
-                        
-                        <button className="flex items-center gap-1 bg-[#e4ebee] px-3 py-1.5 rounded-full hover:bg-[#d1d8db] transition-colors cursor-pointer">
-                            <Bookmark className="w-3 h-3" />
-                            <span>Save</span>
+
+                        <button 
+                            onClick={handleSave}
+                            disabled={isSaving || !currentUserId}
+                            className={`flex items-center gap-1 px-3 py-1.5 rounded-full transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+                                isSaved 
+                                    ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' 
+                                    : 'bg-[#e4ebee] hover:bg-[#d1d8db]'
+                            }`}
+                        >
+                            <Bookmark className={`w-3 h-3 ${isSaved ? 'fill-current' : ''}`} />
+                            <span>{isSaving ? 'Saving...' : isSaved ? 'Saved' : 'Save'}</span>
                         </button>
 
                         {/* Dropdown Menu */}

@@ -7,6 +7,7 @@ import {
     Home, 
     Compass, 
     BookOpen, 
+    Bookmark,
     TrendingUp,
     GraduationCap,
     ChevronDown,
@@ -47,6 +48,13 @@ export const ForumSidebar: React.FC<ForumSidebarProps> = ({
             icon: 'BookOpen',
             href: '/forum/my-topics',
             active: pathname === '/forum/my-topics'
+        },
+        {
+            id: 'saved-posts',
+            label: 'Saved Posts',
+            icon: 'Bookmark',
+            href: '/forum/saved-posts',
+            active: pathname === '/forum/saved-posts'
         }
     ];
 
@@ -56,6 +64,7 @@ export const ForumSidebar: React.FC<ForumSidebarProps> = ({
             Home,
             Compass,
             BookOpen,
+            Bookmark,
             TrendingUp,
             GraduationCap
         };

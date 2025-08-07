@@ -9,7 +9,10 @@ import {
     searchForumPosts,
     getTrendingTopics,
     getRecentActivity,
-    getTopContributors
+    getTopContributors,
+    saveForumPost,
+    unsaveForumPost,
+    getSavedPosts
 } from '../controllers/forum.controllers';
 import {
     getComments,
@@ -56,5 +59,10 @@ router.put('/comments/:id', protectRoute, updateComment);
 router.delete('/comments/:id', protectRoute, deleteComment);
 router.post('/comments/:commentId/vote', protectRoute, validateVoteOnComment, voteOnComment);
 router.post('/comments/:id/accept', protectRoute, acceptAnswer);
+
+// ===== SAVE POSTS ROUTES =====
+router.post('/posts/:id/save', protectRoute, saveForumPost);
+router.delete('/posts/:id/save', protectRoute, unsaveForumPost);
+router.get('/saved-posts', protectRoute, getSavedPosts);
 
 export default router; 

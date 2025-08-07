@@ -27,9 +27,11 @@ export interface IUser extends Document {
     providerId?: string;
     
     // ===== STUDY MATERIAL FIELDS =====
-    savedMaterials: mongoose.Types.ObjectId[];
     uploadedMaterials: mongoose.Types.ObjectId[];
     studyStats: IStudyStats;
+    
+    // ===== FORUM FIELDS =====
+    savedPosts: mongoose.Types.ObjectId[];
     
     // ===== ACADEMIC FIELDS =====
     role: 'student' | 'professor' | 'admin' | 'guest';
@@ -79,8 +81,8 @@ export interface IUser extends Document {
     
     // ===== METHODS =====
     matchPassword(enteredPassword: string): Promise<boolean>;
-    saveMaterial(materialId: mongoose.Types.ObjectId): Promise<IUser>;
-    unsaveMaterial(materialId: mongoose.Types.ObjectId): Promise<IUser>;
+    savePost(postId: mongoose.Types.ObjectId): Promise<IUser>;
+    unsavePost(postId: mongoose.Types.ObjectId): Promise<IUser>;
     generateAuthToken(): string;
     updateLastLogin(): Promise<IUser>;
     incrementUploadCount(): Promise<IUser>;
@@ -93,7 +95,6 @@ export interface IUser extends Document {
 
 export interface IStudyStats {
     materialsViewed: number;
-    materialsSaved: number;
     materialsCreated: number;
     ratingsGiven: number;
 }
@@ -181,24 +182,21 @@ const userSchema = new mongoose.Schema({
     },
     
     // ===== STUDY MATERIAL FIELDS =====
-    savedMaterials: [{
-        type: Schema.Types.ObjectId,
-        ref: 'StudyMaterial'
-    }],
     uploadedMaterials: [{
         type: Schema.Types.ObjectId,
         ref: 'StudyMaterial'
+    }],
+    
+    // ===== FORUM FIELDS =====
+    savedPosts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'ForumPost'
     }],
     studyStats: {
         materialsViewed: {
             type: Number,
             default: 0,
             min: [0, 'Materials viewed cannot be negative']
-        },
-        materialsSaved: {
-            type: Number,
-            default: 0,
-            min: [0, 'Materials saved cannot be negative']
         },
         materialsCreated: {
             type: Number,
@@ -553,25 +551,22 @@ userSchema.methods.matchPassword = async function (enteredPassword: string): Pro
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-userSchema.methods.saveMaterial = function(
-    this: IUser, 
-    materialId: mongoose.Types.ObjectId
+// ===== FORUM POST METHODS =====
+userSchema.methods.savePost = function(
+    this: IUser,
+    postId: mongoose.Types.ObjectId
 ): Promise<IUser> {
-    if (!this.savedMaterials.includes(materialId)) {
-        this.savedMaterials.push(materialId);
-        this.studyStats.materialsSaved += 1;
+    if (!this.savedPosts.includes(postId)) {
+        this.savedPosts.push(postId);
     }
     return this.save();
 };
 
-userSchema.methods.unsaveMaterial = function(
-    this: IUser, 
-    materialId: mongoose.Types.ObjectId
+userSchema.methods.unsavePost = function(
+    this: IUser,
+    postId: mongoose.Types.ObjectId
 ): Promise<IUser> {
-    this.savedMaterials = this.savedMaterials.filter(id => !id.equals(materialId));
-    if (this.studyStats.materialsSaved > 0) {
-        this.studyStats.materialsSaved -= 1;
-    }
+    this.savedPosts = this.savedPosts.filter(id => !id.equals(postId));
     return this.save();
 };
 

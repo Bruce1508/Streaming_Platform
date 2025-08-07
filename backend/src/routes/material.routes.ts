@@ -7,8 +7,6 @@ import {
     createStudyMaterial,
     updateStudyMaterial,
     deleteStudyMaterial,
-    saveMaterial,
-    removeSavedMaterial,
     rateMaterial,
     removeRating,
     addComment,
@@ -16,7 +14,6 @@ import {
     updateComment,
     reportMaterial,
     getMaterialStats,
-    getUserSavedMaterials,
     getUserUploadedMaterials,
     getMaterialsByCourse,
     getFeaturedMaterials,
@@ -62,9 +59,6 @@ router.delete('/:id', protectRoute, validateObjectId('id'), deleteStudyMaterial)
 // MATERIAL INTERACTION ROUTES - Authentication Required
 // =====================================================
 
-router.post('/:id/save', protectRoute, validateObjectId('id'), saveMaterial);
-router.delete('/:id/save', protectRoute, validateObjectId('id'), removeSavedMaterial);
-
 // Rating routes
 router.post('/:id/rate', protectRoute, validateObjectId('id'), validateRating, rateMaterial);
 router.delete('/:id/rate', protectRoute, validateObjectId('id'), removeRating);     // ← ADDED
@@ -80,12 +74,6 @@ router.post('/:id/report', protectRoute, validateObjectId('id'), reportMaterial)
 // =====================================================
 // USER-SPECIFIC ROUTES - Authentication Required
 // =====================================================
-
-/**
- * GET /api/materials/userSaved
- * Get current user's saved/bookmarked materials
- */
-router.get('/userSaved', protectRoute, validateQueryParams, getUserSavedMaterials);
 
 /**
  * GET /api/materials/userUploaded
